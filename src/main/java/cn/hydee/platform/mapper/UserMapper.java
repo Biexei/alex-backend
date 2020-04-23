@@ -1,11 +1,16 @@
 package cn.hydee.platform.mapper;
 
+import cn.hydee.platform.pojo.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 @Repository
 public interface UserMapper {
-    ArrayList<HashMap> getAllUser();
+    List<User> listUsers();
+    Integer updateUser(User user);
+    Integer insertUser(User user);
+    User getUserById(Integer userId);
+    User getUserByName(String username);
+    User getUserByJobNumber(Integer jobNumber);
 }

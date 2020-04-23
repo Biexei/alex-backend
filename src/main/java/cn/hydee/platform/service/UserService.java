@@ -1,9 +1,13 @@
 package cn.hydee.platform.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import cn.hydee.platform.pojo.User;
+import com.github.pagehelper.PageInfo;
+
 
 
 public interface UserService {
-    ArrayList<HashMap> getAllUser();
+    PageInfo<User> listUsers(Integer pageNum, Integer pageSize);
+    Integer updateUser(User user);
+    Boolean saveUser(User user);
+    User getUserById(Integer userId);
 }

@@ -3,7 +3,32 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hydee.platform.mapper.UserMapper">
-    <select id="getAllUser" resultType="java.util.HashMap">
-        select * from staff;
+    <select id="listUsers" resultType="cn.hydee.platform.pojo.User">
+        select user_id, username, password, job_number,sex, is_enable from user
     </select>
+    <select id="getUserById" resultType="cn.hydee.platform.pojo.User" parameterType="Integer">
+        select user_id, username, password, job_number,sex, is_enable from user where user_id = #{userId}
+    </select>
+    <select id="getUserByName" resultType="cn.hydee.platform.pojo.User" parameterType="String">
+        select user_id, username, password, job_number,sex, is_enable from user where username = #{username}
+    </select>
+    <select id="getUserByJobNumber" resultType="cn.hydee.platform.pojo.User" parameterType="Integer">
+        select user_id, username, password, job_number,sex, is_enable from user where job_number = #{jobNumber}
+    </select>
+    <update id="updateUser" parameterType="cn.hydee.platform.pojo.User">
+        update user
+        <set>
+            <if test="username!=null">username=#{username},</if>
+            <if test="password!=null">password=#{password},</if>
+            <if test="jobNumber!=null">job_number=#{jobNumber},</if>
+            <if test="isEnable!=null">is_enable=#{isEnable},</if>
+            <if test="sex!=null">sex=#{sex}</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+    <insert id="insertUser" parameterType="cn.hydee.platform.pojo.User">
+        insert into user(username, password, job_number, sex)
+        value(#{username}, #{password}, #{jobNumber}, #{sex})
+    </insert>
+
 </mapper>

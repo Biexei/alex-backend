@@ -43,6 +43,10 @@ public class Result {
         return new Result(200, "操作成功", data);
     }
 
+    public static Result success(){
+        return new Result(200, "操作成功", new HashMap<>());
+    }
+
     public static Result success(String msg, Object data){
         return new Result(200, msg, data);
     }
