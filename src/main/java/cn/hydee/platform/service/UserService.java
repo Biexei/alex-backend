@@ -1,5 +1,9 @@
 package cn.hydee.platform.service;
 
-public interface UserService {
+import java.util.ArrayList;
+import java.util.HashMap;
 
+
+public interface UserService {
+    ArrayList<HashMap> getAllUser();
 }
