@@ -1,8 +1,7 @@
-package cn.hydee.platform.service;
+package org.alex.platform.service;
 
-import cn.hydee.platform.pojo.User;
+import org.alex.platform.pojo.User;
 import com.github.pagehelper.PageInfo;
-
 
 
 public interface UserService {

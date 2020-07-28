@@ -1,8 +1,8 @@
-package cn.hydee.platform.service.impl;
+package org.alex.platform.service.impl;
 
-import cn.hydee.platform.mapper.UserMapper;
-import cn.hydee.platform.pojo.User;
-import cn.hydee.platform.service.UserService;
+import org.alex.platform.mapper.UserMapper;
+import org.alex.platform.pojo.User;
+import org.alex.platform.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

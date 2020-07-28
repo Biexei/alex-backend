@@ -8,7 +8,7 @@
         <version>2.2.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>cn.hydee</groupId>
+    <groupId>org.alex</groupId>
     <artifactId>platform</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>platform</name>

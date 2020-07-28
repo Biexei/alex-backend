@@ -1,4 +1,4 @@
-package cn.hydee.platform.common;
+package org.alex.platform.common;
 
 import java.util.HashMap;
 

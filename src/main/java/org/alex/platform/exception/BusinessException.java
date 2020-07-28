@@ -1,4 +1,4 @@
-package cn.hydee.platform.exception;
+package org.alex.platform.exception;
 
 public class BusinessException extends Exception {
     public BusinessException(){

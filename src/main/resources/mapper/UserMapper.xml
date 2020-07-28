@@ -2,20 +2,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.hydee.platform.mapper.UserMapper">
-    <select id="listUsers" resultType="cn.hydee.platform.pojo.User">
+<mapper namespace="org.alex.platform.mapper.UserMapper">
+    <select id="listUsers" resultType="org.alex.platform.pojo.User">
         select user_id, username, password, job_number,sex, is_enable from user
     </select>
-    <select id="getUserById" resultType="cn.hydee.platform.pojo.User" parameterType="Integer">
+    <select id="getUserById" resultType="org.alex.platform.pojo.User" parameterType="Integer">
         select user_id, username, password, job_number,sex, is_enable from user where user_id = #{userId}
     </select>
-    <select id="getUserByName" resultType="cn.hydee.platform.pojo.User" parameterType="String">
+    <select id="getUserByName" resultType="org.alex.platform.pojo.User" parameterType="String">
         select user_id, username, password, job_number,sex, is_enable from user where username = #{username}
     </select>
-    <select id="getUserByJobNumber" resultType="cn.hydee.platform.pojo.User" parameterType="Integer">
+    <select id="getUserByJobNumber" resultType="org.alex.platform.pojo.User" parameterType="Integer">
         select user_id, username, password, job_number,sex, is_enable from user where job_number = #{jobNumber}
     </select>
-    <update id="updateUser" parameterType="cn.hydee.platform.pojo.User">
+    <update id="updateUser" parameterType="org.alex.platform.pojo.User">
         update user
         <set>
             <if test="username!=null">username=#{username},</if>
@@ -26,7 +26,7 @@
         </set>
         where user_id = #{userId}
     </update>
-    <insert id="insertUser" parameterType="cn.hydee.platform.pojo.User">
+    <insert id="insertUser" parameterType="org.alex.platform.pojo.User">
         insert into user(username, password, job_number, sex)
         value(#{username}, #{password}, #{jobNumber}, #{sex})
     </insert>

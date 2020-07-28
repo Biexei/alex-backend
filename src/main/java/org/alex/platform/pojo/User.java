@@ -1,4 +1,4 @@
-package cn.hydee.platform.pojo;
+package org.alex.platform.pojo;
 
 public class User {
     private Integer userId;

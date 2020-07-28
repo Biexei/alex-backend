@@ -1,6 +1,6 @@
-package cn.hydee.platform.mapper;
+package org.alex.platform.mapper;
 
-import cn.hydee.platform.pojo.User;
+import org.alex.platform.pojo.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package cn.hydee.platform.util;
+package org.alex.platform.util;
 import java.security.MessageDigest;
 
 public class MD5Utils {
