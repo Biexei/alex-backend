@@ -7,10 +7,11 @@ import java.util.List;
 
 @Repository
 public interface UserMapper {
-    List<User> listUsers();
-    Integer updateUser(User user);
-    Integer insertUser(User user);
-    User getUserById(Integer userId);
-    User getUserByName(String username);
-    User getUserByJobNumber(Integer jobNumber);
+    List<User> selectUserList(User user);
+    void updateUser(User user);
+    void insertUser(User user);
+    User selectUserToLogin(User user);
+    User selectUserById(Integer userId);
+    User selectUserByName(String username);
+    User selectUserByJobNumber(Integer jobNumber);
 }

@@ -5,8 +5,9 @@ import com.github.pagehelper.PageInfo;
 
 
 public interface UserService {
-    PageInfo<User> listUsers(Integer pageNum, Integer pageSize);
-    Integer updateUser(User user);
+    PageInfo<User> findUserList(User user, Integer pageNum, Integer pageSize);
+    void modifyUser(User user);
     Boolean saveUser(User user);
-    User getUserById(Integer userId);
+    User findUserToLogin(User user);
+    User findUserById(Integer userId);
 }

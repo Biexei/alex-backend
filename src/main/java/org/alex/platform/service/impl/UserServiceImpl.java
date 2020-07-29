@@ -15,24 +15,20 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
-    public PageInfo<User> listUsers(Integer pageNum, Integer pageSize) {
+    public PageInfo<User> findUserList(User user, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo<>(userMapper.listUsers());
+        return new PageInfo<>(userMapper.selectUserList(user));
     }
 
     @Override
-    public Integer updateUser(User user) {
-        return userMapper.updateUser(user);
+    public void modifyUser(User user) {
+        userMapper.updateUser(user);
     }
 
     @Override
     public Boolean saveUser(User user) {
         String username = user.getUsername();
-        Integer jobNumber = user.getJobNumber();
-        if (userMapper.getUserByJobNumber(jobNumber) != null){
-            return false;
-        }
-        if (userMapper.getUserByName(username) != null){
+        if (userMapper.selectUserByName(username) != null){
             return false;
         }
         else{
@@ -42,7 +38,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Integer userId) {
-        return userMapper.getUserById(userId);
+    public User findUserToLogin(User user) {
+        return userMapper.selectUserToLogin(user);
+    }
+
+    @Override
+    public User findUserById(Integer userId) {
+        return userMapper.selectUserById(userId);
     }
 }

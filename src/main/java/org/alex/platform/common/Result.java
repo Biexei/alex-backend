@@ -31,7 +31,7 @@ public class Result {
         this.data = data;
     }
 
-    public Result(){};
+    public Result(){}
 
     public Result(Integer code, String msg, Object data) {
         this.code = code;
@@ -47,6 +47,10 @@ public class Result {
         return new Result(200, "操作成功", new HashMap<>());
     }
 
+    public static Result success(String msg){
+        return new Result(200, msg, new HashMap<>());
+    }
+
     public static Result success(String msg, Object data){
         return new Result(200, msg, data);
     }
@@ -57,6 +61,10 @@ public class Result {
 
     public static Result fail(String msg){
         return new Result(500, msg, new HashMap<>());
+    }
+
+    public static Result fail(int code, String msg){
+        return new Result(code, msg, new HashMap<>());
     }
 
 }

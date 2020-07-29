@@ -5,12 +5,15 @@ import org.alex.platform.pojo.User;
 import org.alex.platform.service.UserService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 
-@Controller
+
+@RestController
 public class UserController {
+
     @Autowired
     UserService userService;
 
@@ -19,10 +22,10 @@ public class UserController {
      */
     @GetMapping("/user/list")
     @ResponseBody
-    public Result users(Integer pageNum, Integer pageSize){
+    public Result users(User user, Integer pageNum, Integer pageSize){
         pageNum = pageNum==null?1:pageNum;
         pageSize = pageSize==null?10:pageSize;
-        PageInfo pageInfo = userService.listUsers(pageNum, pageSize);
+        PageInfo pageInfo = userService.findUserList(user, pageNum, pageSize);
         return Result.success(pageInfo);
     }
 
@@ -33,8 +36,8 @@ public class UserController {
      */
     @GetMapping("/user/info/{userId}")
     @ResponseBody
-    public Result users(@PathVariable Integer userId){
-        User userInfo = userService.getUserById(userId);
+    public Result user(@PathVariable Integer userId){
+        User userInfo = userService.findUserById(userId);
         return Result.success(userInfo);
     }
 
@@ -45,8 +48,9 @@ public class UserController {
      */
     @PostMapping("/user/update")
     @ResponseBody
-    public Result userUpdate(User user){
-        return Result.success(userService.updateUser(user));
+    public Result userUpdate(@Validated User user){
+        userService.modifyUser(user);
+        return Result.success("更新成功");
     }
 
     /**
@@ -56,19 +60,38 @@ public class UserController {
      */
     @PostMapping("/user/register")
     @ResponseBody
-    public Result register(User user){
+    public Result register(@Validated User user) {
         String username = user.getUsername();
         String password = user.getPassword();
-        Integer jobNumber = user.getJobNumber();
         Byte sex = user.getSex();
+        Date date = new Date();
+        user.setCreatedTime(date);
+        user.setUpdateTime(date);
         if (username==null || password==null || sex==null){
             return Result.fail("请完善注册信息");
         } else{
             if(userService.saveUser(user)){
-                return Result.success();
+                return Result.success("注册成功");
             } else{
-                return Result.fail("用户名或工号已存在");
+                return Result.fail("用户名已存在");
             }
+        }
+    }
+    @PostMapping("/user/login")
+    @ResponseBody
+    public Result login(User user){
+        String username = user.getUsername();
+        String password = user.getPassword();
+        if (null == username || "".equals(username) ||null == password || "".equals(password)){
+            return Result.fail("帐号名或者密码错误");
+        }
+        User u = new User();
+        u.setUsername(username);
+        u.setPassword(password);
+        if (userService.findUserToLogin(user) != null){
+            return Result.success("登录成功");
+        } else {
+            return Result.fail("帐号名或者密码错误");
         }
     }
 }
