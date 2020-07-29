@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.ProjectMapper">
+    <sql id="query">
+        select `project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`
+        from t_project
+        <where>
+            <if test="projectId != null">`project_id` = #{projectId}</if>
+            <if test="name != null">and `name` like concat("%", #{name}, "%")</if>
+            <if test="domain != null">and `domain` = #{domain}</if>
+        </where>
+    </sql>
+    <select id="selectProjectList" resultType="HashMap" parameterType="org.alex.platform.pojo.Project">
+        <include refid="query"/>
+    </select>
+    <select id="selectProject" resultType="org.alex.platform.pojo.Project" parameterType="org.alex.platform.pojo.Project">
+        <include refid="query"/>
+    </select>
+    <insert id="insertProject" parameterType="org.alex.platform.pojo.Project">
+        insert into t_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">`name`,</if>
+            <if test="desc != null">`desc`,</if>
+            <if test="domain != null">`domain`,</if>
+            <if test="createdTime != null">`created_time`,</if>
+            <if test="updateTime != null">`update_time`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="desc != null">#{desc},</if>
+            <if test="domain != null">#{domain},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <update id="updateProject" parameterType="org.alex.platform.pojo.Project">
+        update t_project
+        <set>
+            <if test="name != null">name=#{name},</if>
+            <if test="desc != null">desc=#{desc},</if>
+            <if test="domain != null">domain=#{domain},</if>
+            <if test="createdTime != null">created_time=#{createdTime},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+        </set>
+        where project_id = #{projectId}
+    </update>
+    <delete id="deleteProjectById" parameterType="int">
+        delete from t_project where project_id = #{projectId}
+    </delete>
+
+</mapper>
