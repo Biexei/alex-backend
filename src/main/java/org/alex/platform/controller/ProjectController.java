@@ -3,6 +3,8 @@ package org.alex.platform.controller;
 import org.alex.platform.common.Result;
 import org.alex.platform.pojo.Project;
 import org.alex.platform.service.ProjectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,8 @@ public class ProjectController {
 
     @Autowired
     ProjectService projectService;
+
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectController.class);
 
     /**
      * 查询项目列表
@@ -56,6 +60,7 @@ public class ProjectController {
             projectService.saveProject(project);
         } catch (Exception e) {
             e.printStackTrace();
+            LOG.error(e.getMessage());
             return Result.fail(e.getMessage());
         }
         return Result.success("新增成功");
@@ -72,6 +77,7 @@ public class ProjectController {
             projectService.modifyProject(project);
         } catch (Exception e) {
             e.printStackTrace();
+            LOG.error(e.getMessage());
             return Result.fail(e.getMessage());
         }
         return Result.success("修改成功");

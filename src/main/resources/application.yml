@@ -19,7 +19,6 @@ pagehelper:
   support-methods-arguments: true
 logging:
   file:
-    path: resources/log/
-    name: log.log
+    name: src/main/resources/log/log.log
   level:
     root: info
