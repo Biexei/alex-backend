@@ -1,11 +1,17 @@
 package org.alex.platform.pojo;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Module {
+public class ModuleDO implements Serializable {
     private Integer moduleId;
-    private Project projectId;
+    private Integer projectId;
+    @Size(max = 10, message = "模块名称长度必须小于等于10")
     private String name;
+    @Size(max = 100, message = "模块描述长度必须小于等于100")
     private String desc;
     private Date createdTime;
     private Date updateTime;
@@ -18,11 +24,11 @@ public class Module {
         this.moduleId = moduleId;
     }
 
-    public Project getProjectId() {
+    public Integer getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Project projectId) {
+    public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 
@@ -56,17 +62,5 @@ public class Module {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "module{" +
-                "moduleId=" + moduleId +
-                ", projectId=" + projectId +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                ", createdTime=" + createdTime +
-                ", updateTime=" + updateTime +
-                '}';
     }
 }

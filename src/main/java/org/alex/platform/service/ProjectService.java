@@ -1,13 +1,14 @@
 package org.alex.platform.service;
 
 import com.github.pagehelper.PageInfo;
-import org.alex.platform.pojo.Project;
+import org.alex.platform.exception.BusinessException;
+import org.alex.platform.pojo.ProjectDO;
 
 
 public interface ProjectService {
-    PageInfo<Project> findProjectList(Project project, Integer pageNum, Integer pageSize);
-    Project findProject(Project project);
-    void modifyProject(Project project) throws Exception;
-    void saveProject(Project project) throws Exception;
-    void removeProjectById(Integer projectId);
+    PageInfo<ProjectDO> findProjectList(ProjectDO projectDO, Integer pageNum, Integer pageSize);
+    ProjectDO findProject(ProjectDO projectDO);
+    void modifyProject(ProjectDO projectDO) throws Exception;
+    void saveProject(ProjectDO projectDO) throws Exception;
+    void removeProjectById(Integer projectId) throws BusinessException;
 }

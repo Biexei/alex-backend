@@ -1,7 +1,8 @@
 package org.alex.platform.controller;
 
 import org.alex.platform.common.Result;
-import org.alex.platform.pojo.Project;
+import org.alex.platform.exception.BusinessException;
+import org.alex.platform.pojo.ProjectDO;
 import org.alex.platform.service.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,42 +23,42 @@ public class ProjectController {
 
     /**
      * 查询项目列表
-     * @param project
+     * @param projectDO
      * @param pageNum
      * @param pageSize
      * @return
      */
     @GetMapping("project/list")
-    public Result getProjectList(Project project, Integer pageNum, Integer pageSize){
+    public Result getProjectList(ProjectDO projectDO, Integer pageNum, Integer pageSize){
         Integer num = pageNum==null?1:pageNum;
         Integer size = pageSize==null?10:pageSize;
-        return Result.success(projectService.findProjectList(project, num, size));
+        return Result.success(projectService.findProjectList(projectDO, num, size));
     }
 
     /**
      * 查看项目信息
-     * @param project
+     * @param projectDO
      * @return
      */
     @GetMapping("project/info")
-    public Result getProject(Project project){
-        Integer projectId = project.getProjectId();
-        String projectName = project.getName();
-        Project p = new Project();
+    public Result getProject(ProjectDO projectDO){
+        Integer projectId = projectDO.getProjectId();
+        String projectName = projectDO.getName();
+        ProjectDO p = new ProjectDO();
         p.setProjectId(projectId);
         p.setName(projectName);
-        return Result.success(projectService.findProject(project));
+        return Result.success(projectService.findProject(projectDO));
     }
 
     /**
      * 新增项目
-     * @param project
+     * @param projectDO
      * @return
      */
     @PostMapping("project/save")
-    public Result saveProject(@Validated Project project){
+    public Result saveProject(@Validated ProjectDO projectDO){
         try {
-            projectService.saveProject(project);
+            projectService.saveProject(projectDO);
         } catch (Exception e) {
             e.printStackTrace();
             LOG.error(e.getMessage());
@@ -68,13 +69,13 @@ public class ProjectController {
 
     /**
      * 修改项目
-     * @param project
+     * @param projectDO
      * @return
      */
-    @PostMapping("project/update")
-    public Result modifyProject(@Validated Project project){
+    @PostMapping("project/modify")
+    public Result modifyProject(@Validated ProjectDO projectDO){
         try {
-            projectService.modifyProject(project);
+            projectService.modifyProject(projectDO);
         } catch (Exception e) {
             e.printStackTrace();
             LOG.error(e.getMessage());
@@ -88,8 +89,8 @@ public class ProjectController {
      * @param projectId 项目编号
      * @return
      */
-    @GetMapping("project/delete/{projectId}")
-    public Result deleteProject(@PathVariable Integer projectId){
+    @GetMapping("project/remove/{projectId}")
+    public Result deleteProject(@PathVariable Integer projectId) throws BusinessException {
         projectService.removeProjectById(projectId);
         return Result.success("删除成功");
     }

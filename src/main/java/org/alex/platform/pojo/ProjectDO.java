@@ -5,9 +5,11 @@ import org.hibernate.validator.constraints.URL;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class Project {
+public class ProjectDO implements Serializable {
     private Integer projectId;
     @NotNull
     @Size(min = 3, max = 10, message = "项目名称长度必须为3~10")
@@ -72,7 +74,7 @@ public class Project {
 
     @Override
     public String toString() {
-        return "Project{" +
+        return "ProjectDO{" +
                 "projectId=" + projectId +
                 ", name='" + name + '\'' +
                 ", desc='" + desc + '\'' +

@@ -1,17 +1,17 @@
 package org.alex.platform.mapper;
 
-import org.alex.platform.pojo.User;
+import org.alex.platform.pojo.UserDO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface UserMapper {
-    List<User> selectUserList(User user);
-    void updateUser(User user);
-    void insertUser(User user);
-    User selectUserToLogin(User user);
-    User selectUserById(Integer userId);
-    User selectUserByName(String username);
-    User selectUserByJobNumber(Integer jobNumber);
+    List<UserDO> selectUserList(UserDO userDO);
+    void updateUser(UserDO userDO);
+    void insertUser(UserDO userDO);
+    UserDO selectUserToLogin(UserDO userDO);
+    UserDO selectUserById(Integer userId);
+    UserDO selectUserByName(String username);
+    UserDO selectUserByJobNumber(Integer jobNumber);
 }

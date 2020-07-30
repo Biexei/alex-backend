@@ -5,9 +5,10 @@ package org.alex.platform.pojo;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class UserDO implements Serializable {
     private Integer userId;
     @Size(min = 1, max = 20, message = "帐号名称长度必须为1~20")
     @NotNull(message = "帐号名称不能为空")

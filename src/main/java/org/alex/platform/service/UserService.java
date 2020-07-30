@@ -1,13 +1,13 @@
 package org.alex.platform.service;
 
-import org.alex.platform.pojo.User;
+import org.alex.platform.pojo.UserDO;
 import com.github.pagehelper.PageInfo;
 
 
 public interface UserService {
-    PageInfo<User> findUserList(User user, Integer pageNum, Integer pageSize);
-    void modifyUser(User user);
-    Boolean saveUser(User user);
-    User findUserToLogin(User user);
-    User findUserById(Integer userId);
+    PageInfo<UserDO> findUserList(UserDO userDO, Integer pageNum, Integer pageSize);
+    void modifyUser(UserDO userDO);
+    Boolean saveUser(UserDO userDO);
+    UserDO findUserToLogin(UserDO userDO);
+    UserDO findUserById(Integer userId);
 }

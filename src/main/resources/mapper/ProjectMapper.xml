@@ -3,7 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.alex.platform.mapper.ProjectMapper">
-    <sql id="query">
+
+    <resultMap id="projectDO" type="org.alex.platform.pojo.ProjectDO">
+        <id column="project_id" property="projectId"/>
+        <result column="name" property="name"/>
+        <result column="desc" property="desc"/>
+        <result column="domain" property="domain"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="query_all">
         select `project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`
         from t_project
         <where>
@@ -12,13 +22,22 @@
             <if test="domain != null">and `domain` = #{domain}</if>
         </where>
     </sql>
-    <select id="selectProjectList" resultType="HashMap" parameterType="org.alex.platform.pojo.Project">
-        <include refid="query"/>
+    <sql id="query_one">
+        select `project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`
+        from t_project
+        <where>
+            <if test="projectId != null">`project_id` = #{projectId}</if>
+            <if test="name != null">and `name` = #{name}</if>
+            <if test="domain != null">and `domain` = #{domain}</if>
+        </where>
+    </sql>
+    <select id="selectProjectList" resultType="HashMap" parameterType="org.alex.platform.pojo.ProjectDO">
+        <include refid="query_all"/>
     </select>
-    <select id="selectProject" resultType="org.alex.platform.pojo.Project" parameterType="org.alex.platform.pojo.Project">
-        <include refid="query"/>
+    <select id="selectProject" resultType="org.alex.platform.pojo.ProjectDO" parameterType="org.alex.platform.pojo.ProjectDO">
+        <include refid="query_one"/>
     </select>
-    <insert id="insertProject" parameterType="org.alex.platform.pojo.Project">
+    <insert id="insertProject" parameterType="org.alex.platform.pojo.ProjectDO">
         insert into t_project
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">`name`,</if>
@@ -35,13 +54,12 @@
             <if test="updateTime != null">#{updateTime},</if>
         </trim>
     </insert>
-    <update id="updateProject" parameterType="org.alex.platform.pojo.Project">
+    <update id="updateProject" parameterType="org.alex.platform.pojo.ProjectDO">
         update t_project
         <set>
             <if test="name != null">name=#{name},</if>
             <if test="desc != null">desc=#{desc},</if>
             <if test="domain != null">domain=#{domain},</if>
-            <if test="createdTime != null">created_time=#{createdTime},</if>
             <if test="updateTime != null">update_time=#{updateTime},</if>
         </set>
         where project_id = #{projectId}
