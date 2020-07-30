@@ -36,6 +36,16 @@ public class ProjectController {
     }
 
     /**
+     * 查看项目下所有模块
+     * @param projectId
+     * @return
+     */
+    @GetMapping("project/modules/{projectId}")
+    public Result findModulesById(@PathVariable Integer projectId){
+        return Result.success(projectService.findModulesById(projectId));
+    }
+
+    /**
      * 查看项目信息
      * @param projectDO
      * @return
@@ -94,4 +104,5 @@ public class ProjectController {
         projectService.removeProjectById(projectId);
         return Result.success("删除成功");
     }
+
 }

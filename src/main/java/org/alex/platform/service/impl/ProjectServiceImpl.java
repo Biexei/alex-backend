@@ -7,6 +7,7 @@ import org.alex.platform.mapper.ModuleMapper;
 import org.alex.platform.mapper.ProjectMapper;
 import org.alex.platform.pojo.ModuleDTO;
 import org.alex.platform.pojo.ProjectDO;
+import org.alex.platform.pojo.ProjectVO;
 import org.alex.platform.service.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDO findProject(ProjectDO projectDO) {
         return projectMapper.selectProject(projectDO);
+    }
+
+    @Override
+    public ProjectVO findModulesById(Integer projectId) {
+        return projectMapper.selectModulesById(projectId);
     }
 
     @Override
