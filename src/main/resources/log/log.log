@@ -1,0 +1,1088 @@
+2020-07-30 09:19:50.870  INFO 6280 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 6280 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 09:19:50.884  INFO 6280 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 09:19:51.456  INFO 6280 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 09:19:51.457  INFO 6280 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 09:19:51.483  INFO 6280 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 09:19:51.898  INFO 6280 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 09:19:51.905  INFO 6280 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 09:19:51.905  INFO 6280 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 09:19:51.990  INFO 6280 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 09:19:51.991  INFO 6280 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1070 ms
+2020-07-30 09:19:52.119  INFO 6280 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 09:19:52.221  INFO 6280 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 09:19:52.597  INFO 6280 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 09:19:53.073  INFO 6280 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 09:19:53.075  INFO 6280 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.774 seconds (JVM running for 4.007)
+2020-07-30 09:19:59.502  INFO 6280 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 09:19:59.503  INFO 6280 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 09:19:59.507  INFO 6280 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 09:19:59.583 ERROR 6280 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'projectDO' on field 'domain': rejected value [123]; codes [URL.projectDO.domain,URL.domain,URL.java.lang.String,URL]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain],[Ljavax.validation.constraints.Pattern$Flag;@36973a99,,-1,,.*]; default message [项目域名格式错误]
+2020-07-30 11:16:44.396  INFO 5256 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 5256 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 11:16:44.399  INFO 5256 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 11:16:44.873  INFO 5256 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 11:16:44.875  INFO 5256 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 11:16:44.895  INFO 5256 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 11:16:45.237  INFO 5256 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 11:16:45.244  INFO 5256 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 11:16:45.244  INFO 5256 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 11:16:45.306  INFO 5256 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 11:16:45.306  INFO 5256 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 874 ms
+2020-07-30 11:16:45.400  INFO 5256 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 11:16:45.483  INFO 5256 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 11:16:45.849  INFO 5256 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 11:16:46.172  INFO 5256 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 11:16:46.175  INFO 5256 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.223 seconds (JVM running for 2.763)
+2020-07-30 11:16:51.554  INFO 5256 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 11:16:51.554  INFO 5256 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 11:16:51.558  INFO 5256 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 11:16:57.114 ERROR 5256 --- [http-nio-7777-exec-6] o.a.p.controller.ExceptionController     : Invalid bound statement (not found): org.alex.platform.mapper.ModuleMapper.selectProjectModuleList
+2020-07-30 11:22:06.415  INFO 4596 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 4596 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 11:22:06.417  INFO 4596 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 11:22:06.860  INFO 4596 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 11:22:06.862  INFO 4596 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 11:22:06.883  INFO 4596 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 11:22:07.189  INFO 4596 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 11:22:07.195  INFO 4596 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 11:22:07.195  INFO 4596 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 11:22:07.251  INFO 4596 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 11:22:07.252  INFO 4596 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 803 ms
+2020-07-30 11:22:07.344  INFO 4596 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 11:22:07.425  INFO 4596 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 11:22:07.680  INFO 4596 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 11:22:07.991  INFO 4596 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 11:22:07.993  INFO 4596 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.839 seconds (JVM running for 2.275)
+2020-07-30 11:27:00.129  INFO 8972 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 8972 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 11:27:00.131  INFO 8972 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 11:27:00.566  INFO 8972 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 11:27:00.568  INFO 8972 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 11:27:00.588  INFO 8972 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 11:27:00.893  INFO 8972 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 11:27:00.898  INFO 8972 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 11:27:00.899  INFO 8972 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 11:27:00.955  INFO 8972 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 11:27:00.955  INFO 8972 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 796 ms
+2020-07-30 11:27:01.049  INFO 8972 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 11:27:01.130  INFO 8972 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 11:27:01.364  INFO 8972 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 11:27:01.672  INFO 8972 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 11:27:01.674  INFO 8972 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.807 seconds (JVM running for 2.223)
+2020-07-30 11:27:21.819  INFO 8972 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 11:27:21.819  INFO 8972 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 11:27:21.824  INFO 8972 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2020-07-30 11:27:21.847 ERROR 8972 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : Invalid bound statement (not found): org.alex.platform.mapper.ModuleMapper.selectProjectModuleList
+2020-07-30 11:30:26.300  INFO 9860 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 9860 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 11:30:26.302  INFO 9860 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 11:30:26.729  INFO 9860 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 11:30:26.730  INFO 9860 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 11:30:26.750  INFO 9860 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 11:30:27.055  INFO 9860 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 11:30:27.062  INFO 9860 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 11:30:27.062  INFO 9860 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 11:30:27.118  INFO 9860 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 11:30:27.118  INFO 9860 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 787 ms
+2020-07-30 11:30:27.213  INFO 9860 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 11:30:27.296  INFO 9860 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 11:30:27.538  INFO 9860 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 11:30:27.853  INFO 9860 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 11:30:27.855  INFO 9860 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.817 seconds (JVM running for 2.248)
+2020-07-30 11:30:35.149  INFO 9860 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 11:30:35.150  INFO 9860 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 11:30:35.157  INFO 9860 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2020-07-30 11:30:35.188 ERROR 9860 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : Invalid bound statement (not found): org.alex.platform.mapper.ModuleMapper.selectProjectModuleList
+2020-07-30 11:37:42.687  INFO 4944 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 4944 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 11:37:42.691  INFO 4944 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 11:37:43.221  INFO 4944 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 11:37:43.223  INFO 4944 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 11:37:43.243  INFO 4944 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 11:37:43.545  INFO 4944 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 11:37:43.552  INFO 4944 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 11:37:43.552  INFO 4944 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 11:37:43.610  INFO 4944 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 11:37:43.610  INFO 4944 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 878 ms
+2020-07-30 11:37:43.706  INFO 4944 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 11:37:43.787  INFO 4944 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 11:37:44.027  INFO 4944 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 11:37:44.345  INFO 4944 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 11:37:44.347  INFO 4944 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.013 seconds (JVM running for 2.441)
+2020-07-30 11:37:51.367  INFO 4944 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 11:37:51.367  INFO 4944 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 11:37:51.371  INFO 4944 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 11:37:51.391 ERROR 4944 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : Invalid bound statement (not found): org.alex.platform.mapper.ModuleMapper.selectProjectModuleList
+2020-07-30 11:39:20.672  INFO 14504 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 14504 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 11:39:20.674  INFO 14504 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 11:39:21.098  INFO 14504 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 11:39:21.100  INFO 14504 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 11:39:21.124  INFO 14504 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 11:39:21.431  INFO 14504 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 11:39:21.437  INFO 14504 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 11:39:21.437  INFO 14504 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 11:39:21.494  INFO 14504 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 11:39:21.494  INFO 14504 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 791 ms
+2020-07-30 11:39:21.588  INFO 14504 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 11:39:21.667  INFO 14504 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 11:39:21.902  INFO 14504 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 11:39:22.215  INFO 14504 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 11:39:22.215  INFO 14504 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.805 seconds (JVM running for 2.223)
+2020-07-30 11:39:28.130  INFO 14504 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 11:39:28.131  INFO 14504 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 11:39:28.136  INFO 14504 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 11:39:28.503 ERROR 14504 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : nested exception is org.apache.ibatis.reflection.ReflectionException: Could not set property 'projectId' of 'class org.alex.platform.pojo.ModuleDO' with value 'Project{projectId=2, name='项目名称79', desc='null', domain='null', createdTime=null, updateTime=null, moduleDOS=null}' Cause: java.lang.IllegalArgumentException: argument type mismatch
+2020-07-30 11:39:39.964 ERROR 14504 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : nested exception is org.apache.ibatis.reflection.ReflectionException: Could not set property 'projectId' of 'class org.alex.platform.pojo.ModuleDO' with value 'Project{projectId=2, name='项目名称79', desc='null', domain='null', createdTime=null, updateTime=null, moduleDOS=null}' Cause: java.lang.IllegalArgumentException: argument type mismatch
+2020-07-30 11:40:50.389  INFO 4328 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 4328 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 11:40:50.391  INFO 4328 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 11:40:50.848  INFO 4328 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 11:40:50.849  INFO 4328 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 11:40:50.871  INFO 4328 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 11:40:51.177  INFO 4328 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 11:40:51.183  INFO 4328 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 11:40:51.183  INFO 4328 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 11:40:51.239  INFO 4328 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 11:40:51.239  INFO 4328 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 819 ms
+2020-07-30 11:40:51.338  INFO 4328 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 11:40:51.430  INFO 4328 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 11:40:51.672  INFO 4328 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 11:40:51.984  INFO 4328 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 11:40:51.986  INFO 4328 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.87 seconds (JVM running for 2.296)
+2020-07-30 11:40:54.943  INFO 4328 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 11:40:54.943  INFO 4328 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 11:40:54.947  INFO 4328 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 11:40:55.302 ERROR 4328 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : nested exception is org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'projectId' in 'class org.alex.platform.pojo.ModuleDO'
+2020-07-30 11:41:26.015  INFO 12196 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 12196 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 11:41:26.017  INFO 12196 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 11:41:26.445  INFO 12196 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 11:41:26.447  INFO 12196 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 11:41:26.467  INFO 12196 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 11:41:26.780  INFO 12196 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 11:41:26.787  INFO 12196 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 11:41:26.787  INFO 12196 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 11:41:26.843  INFO 12196 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 11:41:26.843  INFO 12196 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 798 ms
+2020-07-30 11:41:26.935  INFO 12196 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 11:41:27.018  INFO 12196 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 11:41:27.259  INFO 12196 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 11:41:27.565  INFO 12196 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 11:41:27.566  INFO 12196 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.813 seconds (JVM running for 2.262)
+2020-07-30 11:41:33.467  INFO 12196 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 11:41:33.467  INFO 12196 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 11:41:33.471  INFO 12196 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-07-30 11:41:33.827 ERROR 12196 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : nested exception is org.apache.ibatis.reflection.ReflectionException: Could not set property 'projectId' of 'class org.alex.platform.pojo.ModuleDO' with value 'Project{projectId=2, name='项目名称79', desc='null', domain='null', createdTime=null, updateTime=null, moduleDOS=null}' Cause: java.lang.IllegalArgumentException: argument type mismatch
+2020-07-30 11:41:54.368 ERROR 12196 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : nested exception is org.apache.ibatis.reflection.ReflectionException: Could not set property 'projectId' of 'class org.alex.platform.pojo.ModuleDO' with value 'Project{projectId=2, name='项目名称79', desc='null', domain='null', createdTime=null, updateTime=null, moduleDOS=null}' Cause: java.lang.IllegalArgumentException: argument type mismatch
+2020-07-30 11:42:42.477  INFO 7084 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 7084 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 11:42:42.480  INFO 7084 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 11:42:42.905  INFO 7084 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 11:42:42.906  INFO 7084 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 11:42:42.927  INFO 7084 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 11:42:43.231  INFO 7084 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 11:42:43.237  INFO 7084 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 11:42:43.237  INFO 7084 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 11:42:43.294  INFO 7084 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 11:42:43.294  INFO 7084 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 786 ms
+2020-07-30 11:42:43.387  INFO 7084 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 11:42:43.468  INFO 7084 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 11:42:43.705  INFO 7084 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 11:42:44.010  INFO 7084 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 11:42:44.012  INFO 7084 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.792 seconds (JVM running for 2.233)
+2020-07-30 11:42:49.103  INFO 7084 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 11:42:49.104  INFO 7084 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 11:42:49.108  INFO 7084 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 11:44:16.931  INFO 448 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 448 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 11:44:16.933  INFO 448 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 11:44:17.389  INFO 448 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 11:44:17.391  INFO 448 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 11:44:17.412  INFO 448 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 11:44:17.719  INFO 448 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 11:44:17.726  INFO 448 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 11:44:17.726  INFO 448 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 11:44:17.783  INFO 448 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 11:44:17.783  INFO 448 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 821 ms
+2020-07-30 11:44:17.877  INFO 448 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 11:44:17.961  INFO 448 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 11:44:18.195  INFO 448 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 11:44:18.522  INFO 448 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 11:44:18.524  INFO 448 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.864 seconds (JVM running for 2.273)
+2020-07-30 11:44:22.752  INFO 448 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 11:44:22.753  INFO 448 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 11:44:22.757  INFO 448 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 13:53:40.635  INFO 7172 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 7172 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 13:53:40.637  INFO 7172 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 13:53:41.110  INFO 7172 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 13:53:41.112  INFO 7172 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 13:53:41.134  INFO 7172 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 13:53:41.480  INFO 7172 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 13:53:41.488  INFO 7172 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 13:53:41.488  INFO 7172 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 13:53:41.551  INFO 7172 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 13:53:41.551  INFO 7172 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 881 ms
+2020-07-30 13:53:41.664  INFO 7172 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 13:53:41.768  INFO 7172 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 13:53:41.878  WARN 7172 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleController': Unsatisfied dependency expressed through field 'moduleService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleServiceImpl': Unsatisfied dependency expressed through field 'moduleMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleMapper' defined in file [C:\Users\beix\IdeaProjects\platform\target\classes\org\alex\platform\mapper\ModuleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+2020-07-30 13:53:41.879  INFO 7172 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-07-30 13:53:41.881  INFO 7172 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2020-07-30 13:53:41.888  INFO 7172 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-07-30 13:53:41.898 ERROR 7172 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleController': Unsatisfied dependency expressed through field 'moduleService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleServiceImpl': Unsatisfied dependency expressed through field 'moduleMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleMapper' defined in file [C:\Users\beix\IdeaProjects\platform\target\classes\org\alex\platform\mapper\ModuleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:643) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:130) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1422) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:594) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:882) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878) ~[spring-context-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550) ~[spring-context-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141) ~[spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747) [spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397) [spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315) [spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226) [spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215) [spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.alex.platform.PlatformApplication.main(PlatformApplication.java:12) [classes/:na]
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleServiceImpl': Unsatisfied dependency expressed through field 'moduleMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleMapper' defined in file [C:\Users\beix\IdeaProjects\platform\target\classes\org\alex\platform\mapper\ModuleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:643) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:130) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1422) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:594) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1290) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1210) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	... 19 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleMapper' defined in file [C:\Users\beix\IdeaProjects\platform\target\classes\org\alex\platform\mapper\ModuleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireByType(AbstractAutowireCapableBeanFactory.java:1526) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1406) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:594) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1290) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1210) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	... 32 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:656) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:636) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1338) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1177) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1290) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1210) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireByType(AbstractAutowireCapableBeanFactory.java:1511) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	... 43 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:185) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:651) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	... 56 common frames omitted
+Caused by: org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.mybatis.spring.SqlSessionFactoryBean.buildSqlSessionFactory(SqlSessionFactoryBean.java:595) ~[mybatis-spring-2.0.4.jar:2.0.4]
+	at org.mybatis.spring.SqlSessionFactoryBean.afterPropertiesSet(SqlSessionFactoryBean.java:475) ~[mybatis-spring-2.0.4.jar:2.0.4]
+	at org.mybatis.spring.SqlSessionFactoryBean.getObject(SqlSessionFactoryBean.java:615) ~[mybatis-spring-2.0.4.jar:2.0.4]
+	at org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration.sqlSessionFactory(MybatisAutoConfiguration.java:180) ~[mybatis-spring-boot-autoconfigure-2.1.2.jar:2.1.2]
+	at org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration$$EnhancerBySpringCGLIB$$9c70bf1b.CGLIB$sqlSessionFactory$0(<generated>) ~[mybatis-spring-boot-autoconfigure-2.1.2.jar:2.1.2]
+	at org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration$$EnhancerBySpringCGLIB$$9c70bf1b$$FastClassBySpringCGLIB$$c5c421e6.invoke(<generated>) ~[mybatis-spring-boot-autoconfigure-2.1.2.jar:2.1.2]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:244) ~[spring-core-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:331) ~[spring-context-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration$$EnhancerBySpringCGLIB$$9c70bf1b.sqlSessionFactory(<generated>) ~[mybatis-spring-boot-autoconfigure-2.1.2.jar:2.1.2]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_161]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_161]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_161]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_161]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:154) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	... 57 common frames omitted
+Caused by: org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.apache.ibatis.builder.xml.XMLMapperBuilder.configurationElement(XMLMapperBuilder.java:122) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.xml.XMLMapperBuilder.parse(XMLMapperBuilder.java:94) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.mybatis.spring.SqlSessionFactoryBean.buildSqlSessionFactory(SqlSessionFactoryBean.java:593) ~[mybatis-spring-2.0.4.jar:2.0.4]
+	... 70 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.apache.ibatis.session.Configuration$StrictMap.put(Configuration.java:947) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.session.Configuration$StrictMap.put(Configuration.java:903) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.session.Configuration.addMappedStatement(Configuration.java:702) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.MapperBuilderAssistant.addMappedStatement(MapperBuilderAssistant.java:297) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.xml.XMLStatementBuilder.parseStatementNode(XMLStatementBuilder.java:113) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.xml.XMLMapperBuilder.buildStatementFromContext(XMLMapperBuilder.java:137) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.xml.XMLMapperBuilder.buildStatementFromContext(XMLMapperBuilder.java:130) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.xml.XMLMapperBuilder.configurationElement(XMLMapperBuilder.java:120) ~[mybatis-3.5.4.jar:3.5.4]
+	... 72 common frames omitted
+
+2020-07-30 13:56:22.071  INFO 11240 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 11240 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 13:56:22.073  INFO 11240 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 13:56:22.509  INFO 11240 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 13:56:22.510  INFO 11240 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 13:56:22.530  INFO 11240 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 13:56:22.834  INFO 11240 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 13:56:22.840  INFO 11240 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 13:56:22.840  INFO 11240 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 13:56:22.904  INFO 11240 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 13:56:22.904  INFO 11240 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 802 ms
+2020-07-30 13:56:22.998  INFO 11240 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 13:56:23.081  INFO 11240 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 13:56:23.188  WARN 11240 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleController': Unsatisfied dependency expressed through field 'moduleService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleServiceImpl': Unsatisfied dependency expressed through field 'moduleMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleMapper' defined in file [C:\Users\beix\IdeaProjects\platform\target\classes\org\alex\platform\mapper\ModuleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+2020-07-30 13:56:23.188  INFO 11240 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-07-30 13:56:23.190  INFO 11240 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2020-07-30 13:56:23.197  INFO 11240 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-07-30 13:56:23.204 ERROR 11240 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleController': Unsatisfied dependency expressed through field 'moduleService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleServiceImpl': Unsatisfied dependency expressed through field 'moduleMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleMapper' defined in file [C:\Users\beix\IdeaProjects\platform\target\classes\org\alex\platform\mapper\ModuleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:643) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:130) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1422) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:594) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:882) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878) ~[spring-context-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550) ~[spring-context-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141) ~[spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747) [spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397) [spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315) [spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226) [spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215) [spring-boot-2.2.6.RELEASE.jar:2.2.6.RELEASE]
+	at org.alex.platform.PlatformApplication.main(PlatformApplication.java:12) [classes/:na]
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleServiceImpl': Unsatisfied dependency expressed through field 'moduleMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleMapper' defined in file [C:\Users\beix\IdeaProjects\platform\target\classes\org\alex\platform\mapper\ModuleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:643) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:130) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1422) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:594) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1290) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1210) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	... 19 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'moduleMapper' defined in file [C:\Users\beix\IdeaProjects\platform\target\classes\org\alex\platform\mapper\ModuleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireByType(AbstractAutowireCapableBeanFactory.java:1526) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1406) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:594) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1290) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1210) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	... 32 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:656) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:636) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1338) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1177) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1290) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1210) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireByType(AbstractAutowireCapableBeanFactory.java:1511) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	... 43 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:185) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:651) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	... 56 common frames omitted
+Caused by: org.springframework.core.NestedIOException: Failed to parse mapping resource: 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.mybatis.spring.SqlSessionFactoryBean.buildSqlSessionFactory(SqlSessionFactoryBean.java:595) ~[mybatis-spring-2.0.4.jar:2.0.4]
+	at org.mybatis.spring.SqlSessionFactoryBean.afterPropertiesSet(SqlSessionFactoryBean.java:475) ~[mybatis-spring-2.0.4.jar:2.0.4]
+	at org.mybatis.spring.SqlSessionFactoryBean.getObject(SqlSessionFactoryBean.java:615) ~[mybatis-spring-2.0.4.jar:2.0.4]
+	at org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration.sqlSessionFactory(MybatisAutoConfiguration.java:180) ~[mybatis-spring-boot-autoconfigure-2.1.2.jar:2.1.2]
+	at org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration$$EnhancerBySpringCGLIB$$e6f67c14.CGLIB$sqlSessionFactory$1(<generated>) ~[mybatis-spring-boot-autoconfigure-2.1.2.jar:2.1.2]
+	at org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration$$EnhancerBySpringCGLIB$$e6f67c14$$FastClassBySpringCGLIB$$a474289e.invoke(<generated>) ~[mybatis-spring-boot-autoconfigure-2.1.2.jar:2.1.2]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:244) ~[spring-core-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:331) ~[spring-context-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration$$EnhancerBySpringCGLIB$$e6f67c14.sqlSessionFactory(<generated>) ~[mybatis-spring-boot-autoconfigure-2.1.2.jar:2.1.2]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_161]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_161]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_161]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_161]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:154) ~[spring-beans-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	... 57 common frames omitted
+Caused by: org.apache.ibatis.builder.BuilderException: Error parsing Mapper XML. The XML location is 'file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]'. Cause: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.apache.ibatis.builder.xml.XMLMapperBuilder.configurationElement(XMLMapperBuilder.java:122) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.xml.XMLMapperBuilder.parse(XMLMapperBuilder.java:94) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.mybatis.spring.SqlSessionFactoryBean.buildSqlSessionFactory(SqlSessionFactoryBean.java:593) ~[mybatis-spring-2.0.4.jar:2.0.4]
+	... 70 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Mapped Statements collection already contains value for org.alex.platform.mapper.ModuleMapper.selectModuleList. please check file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml] and file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+	at org.apache.ibatis.session.Configuration$StrictMap.put(Configuration.java:947) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.session.Configuration$StrictMap.put(Configuration.java:903) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.session.Configuration.addMappedStatement(Configuration.java:702) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.MapperBuilderAssistant.addMappedStatement(MapperBuilderAssistant.java:297) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.xml.XMLStatementBuilder.parseStatementNode(XMLStatementBuilder.java:113) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.xml.XMLMapperBuilder.buildStatementFromContext(XMLMapperBuilder.java:137) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.xml.XMLMapperBuilder.buildStatementFromContext(XMLMapperBuilder.java:130) ~[mybatis-3.5.4.jar:3.5.4]
+	at org.apache.ibatis.builder.xml.XMLMapperBuilder.configurationElement(XMLMapperBuilder.java:120) ~[mybatis-3.5.4.jar:3.5.4]
+	... 72 common frames omitted
+
+2020-07-30 13:59:03.103  INFO 15704 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 15704 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 13:59:03.105  INFO 15704 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 13:59:03.537  INFO 15704 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 13:59:03.538  INFO 15704 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 13:59:03.559  INFO 15704 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 13:59:03.864  INFO 15704 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 13:59:03.870  INFO 15704 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 13:59:03.870  INFO 15704 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 13:59:03.928  INFO 15704 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 13:59:03.928  INFO 15704 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 789 ms
+2020-07-30 13:59:04.023  INFO 15704 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 13:59:04.105  INFO 15704 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 13:59:04.357  INFO 15704 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 13:59:04.666  INFO 15704 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 13:59:04.668  INFO 15704 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.828 seconds (JVM running for 2.244)
+2020-07-30 13:59:24.979  INFO 15704 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 13:59:24.979  INFO 15704 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 13:59:24.983  INFO 15704 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 13:59:25.007 ERROR 15704 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : null
+2020-07-30 14:00:21.519 ERROR 15704 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : null
+2020-07-30 14:01:49.262  INFO 15060 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 15060 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:01:49.264  INFO 15060 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:01:49.697  INFO 15060 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:01:49.698  INFO 15060 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:01:49.719  INFO 15060 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 14:01:50.030  INFO 15060 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:01:50.036  INFO 15060 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:01:50.037  INFO 15060 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:01:50.094  INFO 15060 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:01:50.095  INFO 15060 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 802 ms
+2020-07-30 14:01:50.190  INFO 15060 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:01:50.272  INFO 15060 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:01:50.508  INFO 15060 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:01:50.816  INFO 15060 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:01:50.818  INFO 15060 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.82 seconds (JVM running for 2.239)
+2020-07-30 14:01:58.166  INFO 15060 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:01:58.166  INFO 15060 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:01:58.170  INFO 15060 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 14:01:58.195 ERROR 15060 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : null
+2020-07-30 14:04:02.738  INFO 9536 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 9536 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:04:02.741  INFO 9536 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:04:03.183  INFO 9536 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:04:03.184  INFO 9536 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:04:03.205  INFO 9536 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:04:03.518  INFO 9536 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:04:03.525  INFO 9536 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:04:03.525  INFO 9536 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:04:03.582  INFO 9536 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:04:03.582  INFO 9536 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 811 ms
+2020-07-30 14:04:03.679  INFO 9536 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:04:03.763  INFO 9536 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:04:04.008  INFO 9536 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:04:04.327  INFO 9536 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:04:04.329  INFO 9536 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.864 seconds (JVM running for 2.291)
+2020-07-30 14:04:07.398  INFO 9536 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:04:07.399  INFO 9536 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:04:07.402  INFO 9536 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-07-30 14:04:07.454 ERROR 9536 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : nested exception is org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'p' in 'class org.alex.platform.pojo.ModuleDTO'
+2020-07-30 14:04:54.029  INFO 8256 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 8256 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:04:54.031  INFO 8256 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:04:54.477  INFO 8256 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:04:54.479  INFO 8256 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:04:54.499  INFO 8256 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:04:54.813  INFO 8256 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:04:54.819  INFO 8256 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:04:54.820  INFO 8256 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:04:54.877  INFO 8256 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:04:54.877  INFO 8256 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 814 ms
+2020-07-30 14:04:54.973  INFO 8256 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:04:55.058  INFO 8256 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:04:55.302  INFO 8256 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:04:55.617  INFO 8256 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:04:55.619  INFO 8256 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.858 seconds (JVM running for 2.289)
+2020-07-30 14:04:59.223  INFO 8256 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:04:59.223  INFO 8256 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:04:59.228  INFO 8256 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 14:04:59.680 ERROR 8256 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+### The error may involve org.alex.platform.mapper.ModuleMapper.selectProjectModuleList-Inline
+### The error occurred while setting parameters
+### SQL: select count(0) from (select p.project_id, p.name, m.module_id, m.name, m.desc, m.created_time, m.update_time         from t_module as m LEFT JOIN t_project as p on m.project_id = p.project_id          WHERE p.project_id=?) tmp_count
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+2020-07-30 14:07:39.438  INFO 4940 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 4940 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:07:39.440  INFO 4940 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:07:39.882  INFO 4940 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:07:39.884  INFO 4940 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:07:39.904  INFO 4940 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 14:07:40.208  INFO 4940 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:07:40.215  INFO 4940 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:07:40.215  INFO 4940 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:07:40.271  INFO 4940 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:07:40.271  INFO 4940 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 799 ms
+2020-07-30 14:07:40.370  INFO 4940 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:07:40.454  INFO 4940 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:07:40.697  INFO 4940 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:07:41.009  INFO 4940 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:07:41.011  INFO 4940 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.828 seconds (JVM running for 2.248)
+2020-07-30 14:07:43.840  INFO 4940 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:07:43.840  INFO 4940 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:07:43.844  INFO 4940 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 14:07:44.248 ERROR 4940 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+### The error may involve org.alex.platform.mapper.ModuleMapper.selectProjectModuleList-Inline
+### The error occurred while setting parameters
+### SQL: select count(0) from (select p.project_id, p.name, m.module_id, m.name, m.desc, m.created_time, m.update_time         from t_module as m LEFT JOIN t_project as p on m.project_id = p.project_id          WHERE p.project_id=?) tmp_count
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+2020-07-30 14:09:29.594  INFO 10640 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 10640 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:09:29.597  INFO 10640 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:09:30.032  INFO 10640 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:09:30.034  INFO 10640 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:09:30.054  INFO 10640 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:09:30.360  INFO 10640 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:09:30.366  INFO 10640 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:09:30.367  INFO 10640 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:09:30.422  INFO 10640 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:09:30.422  INFO 10640 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 797 ms
+2020-07-30 14:09:30.514  INFO 10640 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:09:30.596  INFO 10640 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:09:30.844  INFO 10640 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:09:31.159  INFO 10640 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:09:31.161  INFO 10640 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.832 seconds (JVM running for 2.25)
+2020-07-30 14:09:40.087  INFO 10640 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:09:40.087  INFO 10640 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:09:40.091  INFO 10640 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-07-30 14:09:40.495 ERROR 10640 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+### The error may involve org.alex.platform.mapper.ModuleMapper.selectProjectModuleList-Inline
+### The error occurred while setting parameters
+### SQL: select count(0) from (select p.project_id, p.name, m.module_id, m.name, m.desc, m.created_time, m.update_time         from t_module as m LEFT JOIN t_project as p on m.project_id = p.project_id          WHERE p.project_id=?) tmp_count
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+2020-07-30 14:12:33.758  INFO 11084 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 11084 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:12:33.760  INFO 11084 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:12:34.206  INFO 11084 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:12:34.207  INFO 11084 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:12:34.229  INFO 11084 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:12:34.537  INFO 11084 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:12:34.544  INFO 11084 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:12:34.544  INFO 11084 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:12:34.601  INFO 11084 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:12:34.602  INFO 11084 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 811 ms
+2020-07-30 14:12:34.697  INFO 11084 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:12:34.783  INFO 11084 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:12:35.028  INFO 11084 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:12:35.343  INFO 11084 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:12:35.345  INFO 11084 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.858 seconds (JVM running for 2.317)
+2020-07-30 14:12:40.314  INFO 11084 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:12:40.314  INFO 11084 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:12:40.318  INFO 11084 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 14:12:55.502  INFO 12000 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 12000 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:12:55.504  INFO 12000 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:12:55.936  INFO 12000 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:12:55.937  INFO 12000 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:12:55.958  INFO 12000 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:12:56.268  INFO 12000 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:12:56.275  INFO 12000 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:12:56.275  INFO 12000 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:12:56.332  INFO 12000 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:12:56.332  INFO 12000 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 800 ms
+2020-07-30 14:12:56.428  INFO 12000 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:12:56.512  INFO 12000 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:12:56.751  INFO 12000 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:12:57.061  INFO 12000 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:12:57.063  INFO 12000 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.828 seconds (JVM running for 2.261)
+2020-07-30 14:13:03.659  INFO 12000 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:13:03.659  INFO 12000 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:13:03.663  INFO 12000 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-07-30 14:13:04.072 ERROR 12000 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+### The error may involve org.alex.platform.mapper.ModuleMapper.selectProjectModuleList-Inline
+### The error occurred while setting parameters
+### SQL: select count(0) from (select p.project_id, p.name, m.module_id, m.name, m.desc, m.created_time, m.update_time         from t_module as m LEFT JOIN t_project as p on m.project_id = p.project_id          WHERE p.project_id=?) tmp_count
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Duplicate column name 'name'
+2020-07-30 14:13:58.849  INFO 7764 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 7764 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:13:58.851  INFO 7764 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:13:59.313  INFO 7764 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:13:59.315  INFO 7764 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:13:59.338  INFO 7764 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 14ms. Found 0 Redis repository interfaces.
+2020-07-30 14:13:59.655  INFO 7764 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:13:59.661  INFO 7764 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:13:59.662  INFO 7764 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:13:59.720  INFO 7764 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:13:59.720  INFO 7764 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 840 ms
+2020-07-30 14:13:59.817  INFO 7764 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:13:59.901  INFO 7764 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:14:00.144  INFO 7764 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:14:00.459  INFO 7764 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:14:00.461  INFO 7764 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.885 seconds (JVM running for 2.31)
+2020-07-30 14:14:19.550  INFO 7764 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:14:19.550  INFO 7764 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:14:19.556  INFO 7764 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 14:18:52.897  INFO 2072 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 2072 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:18:52.899  INFO 2072 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:18:53.338  INFO 2072 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:18:53.339  INFO 2072 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:18:53.361  INFO 2072 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:18:53.679  INFO 2072 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:18:53.685  INFO 2072 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:18:53.686  INFO 2072 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:18:53.763  INFO 2072 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:18:53.764  INFO 2072 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 835 ms
+2020-07-30 14:18:53.860  INFO 2072 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:18:53.947  INFO 2072 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:18:54.184  INFO 2072 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:18:54.492  INFO 2072 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:18:54.494  INFO 2072 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.863 seconds (JVM running for 2.281)
+2020-07-30 14:19:01.461  INFO 2072 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:19:01.461  INFO 2072 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:19:01.465  INFO 2072 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 14:19:01.880 ERROR 2072 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : nested exception is org.apache.ibatis.reflection.ReflectionException: Could not set property 'projectId' of 'class org.alex.platform.pojo.ModuleDO' with value 'Project{projectId=2, name='项目名称79', desc='null', domain='null', createdTime=null, updateTime=null, moduleDOS=null}' Cause: java.lang.IllegalArgumentException: argument type mismatch
+2020-07-30 14:20:02.945  INFO 5088 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 5088 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:20:02.947  INFO 5088 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:20:03.389  INFO 5088 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:20:03.391  INFO 5088 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:20:03.412  INFO 5088 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:20:03.740  INFO 5088 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:20:03.747  INFO 5088 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:20:03.748  INFO 5088 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:20:03.811  INFO 5088 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:20:03.812  INFO 5088 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 836 ms
+2020-07-30 14:20:03.918  INFO 5088 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:20:04.010  INFO 5088 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:20:04.254  INFO 5088 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:20:04.568  INFO 5088 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:20:04.570  INFO 5088 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.902 seconds (JVM running for 2.318)
+2020-07-30 14:20:16.915  INFO 5088 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:20:16.916  INFO 5088 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:20:16.919  INFO 5088 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-07-30 14:20:17.310 ERROR 5088 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : nested exception is org.apache.ibatis.reflection.ReflectionException: There is no getter for property named 'projectId' in 'class org.alex.platform.pojo.ModuleDO'
+2020-07-30 14:21:03.321  INFO 4136 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 4136 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:21:03.324  INFO 4136 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:21:03.755  INFO 4136 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data moduleDOS found, entering strict repository configuration mode!
+2020-07-30 14:21:03.756  INFO 4136 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:21:03.777  INFO 4136 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:21:04.085  INFO 4136 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:21:04.091  INFO 4136 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:21:04.091  INFO 4136 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:21:04.146  INFO 4136 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:21:04.147  INFO 4136 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 794 ms
+2020-07-30 14:21:04.241  INFO 4136 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:21:04.324  INFO 4136 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:21:04.563  INFO 4136 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:21:04.872  INFO 4136 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:21:04.873  INFO 4136 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.813 seconds (JVM running for 2.229)
+2020-07-30 14:21:09.727  INFO 4136 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:21:09.728  INFO 4136 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:21:09.732  INFO 4136 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 14:40:50.281  INFO 13800 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 13800 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:40:50.283  INFO 13800 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:40:50.716  INFO 13800 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 14:40:50.717  INFO 13800 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:40:50.739  INFO 13800 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:40:51.049  INFO 13800 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:40:51.056  INFO 13800 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:40:51.056  INFO 13800 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:40:51.113  INFO 13800 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:40:51.114  INFO 13800 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 803 ms
+2020-07-30 14:40:51.210  INFO 13800 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:40:51.292  INFO 13800 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:40:51.532  INFO 13800 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:40:51.844  INFO 13800 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:40:51.847  INFO 13800 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.835 seconds (JVM running for 2.263)
+2020-07-30 14:41:24.451  INFO 13800 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:41:24.452  INFO 13800 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:41:24.455  INFO 13800 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-07-30 14:44:52.838  INFO 15412 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 15412 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:44:52.840  INFO 15412 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:44:53.277  INFO 15412 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 14:44:53.279  INFO 15412 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:44:53.301  INFO 15412 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:44:53.615  INFO 15412 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:44:53.621  INFO 15412 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:44:53.622  INFO 15412 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:44:53.679  INFO 15412 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:44:53.679  INFO 15412 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 810 ms
+2020-07-30 14:44:53.774  INFO 15412 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:44:53.858  INFO 15412 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:44:54.100  INFO 15412 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:44:54.412  INFO 15412 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:44:54.414  INFO 15412 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.84 seconds (JVM running for 2.252)
+2020-07-30 14:45:02.729  INFO 15412 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:45:02.729  INFO 15412 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:45:02.733  INFO 15412 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 14:53:02.926  INFO 3036 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 3036 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:53:02.928  INFO 3036 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:53:03.365  INFO 3036 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 14:53:03.367  INFO 3036 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:53:03.387  INFO 3036 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 14:53:03.695  INFO 3036 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:53:03.701  INFO 3036 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:53:03.702  INFO 3036 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:53:03.759  INFO 3036 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:53:03.759  INFO 3036 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 800 ms
+2020-07-30 14:53:03.853  INFO 3036 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:53:03.940  INFO 3036 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:53:04.183  INFO 3036 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:53:04.499  INFO 3036 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:53:04.501  INFO 3036 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.842 seconds (JVM running for 2.316)
+2020-07-30 14:53:10.697  INFO 3036 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:53:10.697  INFO 3036 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:53:10.701  INFO 3036 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 14:54:31.841  INFO 7412 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 7412 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 14:54:31.843  INFO 7412 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 14:54:32.281  INFO 7412 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 14:54:32.283  INFO 7412 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 14:54:32.303  INFO 7412 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 14:54:32.608  INFO 7412 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 14:54:32.614  INFO 7412 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 14:54:32.614  INFO 7412 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 14:54:32.671  INFO 7412 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 14:54:32.671  INFO 7412 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 799 ms
+2020-07-30 14:54:32.765  INFO 7412 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 14:54:32.847  INFO 7412 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 14:54:33.086  INFO 7412 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 14:54:33.398  INFO 7412 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 14:54:33.400  INFO 7412 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.834 seconds (JVM running for 2.259)
+2020-07-30 14:54:56.484  INFO 7412 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 14:54:56.484  INFO 7412 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 14:54:56.488  INFO 7412 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 15:02:54.207  INFO 15860 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 15860 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:02:54.208  INFO 15860 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:02:54.659  INFO 15860 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:02:54.660  INFO 15860 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:02:54.681  INFO 15860 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 15:02:54.992  INFO 15860 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:02:54.998  INFO 15860 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:02:54.999  INFO 15860 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:02:55.054  INFO 15860 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:02:55.054  INFO 15860 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 817 ms
+2020-07-30 15:02:55.148  INFO 15860 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:02:55.230  INFO 15860 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:02:55.469  INFO 15860 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:02:55.777  INFO 15860 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:02:55.779  INFO 15860 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.841 seconds (JVM running for 2.268)
+2020-07-30 15:03:02.692  INFO 15860 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:03:02.692  INFO 15860 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:03:02.696  INFO 15860 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 15:21:09.028  INFO 10544 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 10544 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:21:09.030  INFO 10544 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:21:09.478  INFO 10544 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:21:09.480  INFO 10544 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:21:09.501  INFO 10544 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 15:21:09.809  INFO 10544 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:21:09.816  INFO 10544 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:21:09.816  INFO 10544 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:21:09.872  INFO 10544 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:21:09.873  INFO 10544 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 814 ms
+2020-07-30 15:21:09.965  INFO 10544 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:21:10.048  INFO 10544 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:21:10.293  INFO 10544 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:21:10.610  INFO 10544 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:21:10.612  INFO 10544 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.867 seconds (JVM running for 2.293)
+2020-07-30 15:23:18.875  INFO 9256 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 9256 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:23:18.877  INFO 9256 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:23:19.317  INFO 9256 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:23:19.318  INFO 9256 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:23:19.340  INFO 9256 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 15:23:19.657  INFO 9256 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:23:19.663  INFO 9256 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:23:19.663  INFO 9256 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:23:19.722  INFO 9256 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:23:19.722  INFO 9256 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 817 ms
+2020-07-30 15:23:19.818  INFO 9256 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:23:19.902  INFO 9256 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:23:20.156  INFO 9256 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:23:20.485  INFO 9256 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:23:20.487  INFO 9256 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.881 seconds (JVM running for 2.307)
+2020-07-30 15:24:29.836  INFO 9796 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 9796 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:24:29.838  INFO 9796 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:24:30.340  INFO 9796 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:24:30.342  INFO 9796 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:24:30.362  INFO 9796 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 15:24:30.683  INFO 9796 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:24:30.689  INFO 9796 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:24:30.690  INFO 9796 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:24:30.747  INFO 9796 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:24:30.747  INFO 9796 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 877 ms
+2020-07-30 15:24:30.842  INFO 9796 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:24:30.925  INFO 9796 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:24:31.165  INFO 9796 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:24:31.483  INFO 9796 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:24:31.485  INFO 9796 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.941 seconds (JVM running for 2.378)
+2020-07-30 15:24:47.895  INFO 9796 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:24:47.896  INFO 9796 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:24:47.901  INFO 9796 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2020-07-30 15:24:47.914 ERROR 9796 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : Request method 'GET' not supported
+2020-07-30 15:25:10.673 ERROR 9796 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : 
+### Error updating database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc,
+            created_time,
+            update_time ) 
+         values ( 4
+ ' at line 4
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+### The error may involve org.alex.platform.mapper.ModuleMapper.insertModule-Inline
+### The error occurred while setting parameters
+### SQL: insert into t_module          ( project_id,             name,             desc,             created_time,             update_time )           values ( ?             ?,             ?,             ?,             ? )
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc,
+            created_time,
+            update_time ) 
+         values ( 4
+ ' at line 4
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc,
+            created_time,
+            update_time ) 
+         values ( 4
+ ' at line 4
+2020-07-30 15:26:07.925  INFO 1080 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 1080 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:26:07.927  INFO 1080 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:26:08.365  INFO 1080 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:26:08.367  INFO 1080 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:26:08.388  INFO 1080 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 15:26:08.700  INFO 1080 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:26:08.707  INFO 1080 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:26:08.707  INFO 1080 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:26:08.763  INFO 1080 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:26:08.763  INFO 1080 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 809 ms
+2020-07-30 15:26:08.859  INFO 1080 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:26:08.941  INFO 1080 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:26:09.181  INFO 1080 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:26:09.493  INFO 1080 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:26:09.495  INFO 1080 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.836 seconds (JVM running for 2.257)
+2020-07-30 15:26:13.642  INFO 1080 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:26:13.642  INFO 1080 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:26:13.647  INFO 1080 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 15:26:14.074 ERROR 1080 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error updating database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''模块名称',
+            '模块描述',
+            '2020-07-30 15:26:13.705' at line 8
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+### The error may involve org.alex.platform.mapper.ModuleMapper.insertModule-Inline
+### The error occurred while setting parameters
+### SQL: insert into t_module          ( project_id,             `name`,             `desc`,             `created_time`,             `update_time` )           values ( ?             ?,             ?,             ?,             ? )
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''模块名称',
+            '模块描述',
+            '2020-07-30 15:26:13.705' at line 8
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''模块名称',
+            '模块描述',
+            '2020-07-30 15:26:13.705' at line 8
+2020-07-30 15:28:15.892  INFO 8280 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 8280 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:28:15.895  INFO 8280 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:28:16.328  INFO 8280 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:28:16.330  INFO 8280 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:28:16.350  INFO 8280 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 15:28:16.652  INFO 8280 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:28:16.658  INFO 8280 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:28:16.659  INFO 8280 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:28:16.715  INFO 8280 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:28:16.715  INFO 8280 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 792 ms
+2020-07-30 15:28:16.810  INFO 8280 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:28:16.890  INFO 8280 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:28:17.128  INFO 8280 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:28:17.435  INFO 8280 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:28:17.437  INFO 8280 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.818 seconds (JVM running for 2.258)
+2020-07-30 15:28:24.435  INFO 8280 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:28:24.435  INFO 8280 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:28:24.438  INFO 8280 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-07-30 15:33:20.215  INFO 15792 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 15792 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:33:20.217  INFO 15792 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:33:20.650  INFO 15792 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:33:20.651  INFO 15792 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:33:20.671  INFO 15792 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 15:33:20.973  INFO 15792 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:33:20.979  INFO 15792 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:33:20.979  INFO 15792 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:33:21.035  INFO 15792 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:33:21.036  INFO 15792 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 791 ms
+2020-07-30 15:33:21.141  INFO 15792 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:33:21.233  INFO 15792 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:33:21.468  INFO 15792 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:33:21.775  INFO 15792 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:33:21.777  INFO 15792 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.838 seconds (JVM running for 2.251)
+2020-07-30 15:33:28.946  INFO 15792 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:33:28.947  INFO 15792 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:33:28.950  INFO 15792 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-07-30 15:33:40.327 ERROR 15792 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : 项目id不存在
+2020-07-30 15:42:30.673  INFO 6892 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 6892 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:42:30.675  INFO 6892 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:42:31.132  INFO 6892 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:42:31.134  INFO 6892 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:42:31.154  INFO 6892 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 15:42:31.459  INFO 6892 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:42:31.465  INFO 6892 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:42:31.466  INFO 6892 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:42:31.522  INFO 6892 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:42:31.522  INFO 6892 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 817 ms
+2020-07-30 15:42:31.617  INFO 6892 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:42:31.701  INFO 6892 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:42:31.944  INFO 6892 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:42:32.261  INFO 6892 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:42:32.263  INFO 6892 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.861 seconds (JVM running for 2.331)
+2020-07-30 15:44:33.536  INFO 6892 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:44:33.537  INFO 6892 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:44:33.541  INFO 6892 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 15:44:33.618 ERROR 6892 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'moduleDO' on field 'projectId': rejected value [null]; codes [NotNull.moduleDO.projectId,NotNull.projectId,NotNull.java.lang.Integer,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [moduleDO.projectId,projectId]; arguments []; default message [projectId]]; default message [不能为null]
+2020-07-30 15:45:09.028  INFO 14152 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 14152 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:45:09.030  INFO 14152 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:45:09.462  INFO 14152 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:45:09.463  INFO 14152 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:45:09.483  INFO 14152 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 15:45:09.789  INFO 14152 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:45:09.795  INFO 14152 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:45:09.795  INFO 14152 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:45:09.852  INFO 14152 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:45:09.852  INFO 14152 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 792 ms
+2020-07-30 15:45:09.946  INFO 14152 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:45:10.028  INFO 14152 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:45:10.263  INFO 14152 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:45:10.572  INFO 14152 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:45:10.574  INFO 14152 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.835 seconds (JVM running for 2.249)
+2020-07-30 15:45:19.776  INFO 14152 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:45:19.776  INFO 14152 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:45:19.780  INFO 14152 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 15:45:20.205 ERROR 14152 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error updating database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc='模块描述-modify',
+            update_time='2020-07-30 15:45:19.837' 
+ ' at line 3
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+### The error may involve org.alex.platform.mapper.ModuleMapper.updateModule-Inline
+### The error occurred while setting parameters
+### SQL: update t_module          SET name=?,             desc=?,             update_time=?          where module_id = ?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc='模块描述-modify',
+            update_time='2020-07-30 15:45:19.837' 
+ ' at line 3
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc='模块描述-modify',
+            update_time='2020-07-30 15:45:19.837' 
+ ' at line 3
+2020-07-30 15:48:40.278  INFO 6316 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 6316 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:48:40.281  INFO 6316 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:48:40.719  INFO 6316 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:48:40.720  INFO 6316 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:48:40.740  INFO 6316 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 15:48:41.049  INFO 6316 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:48:41.055  INFO 6316 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:48:41.056  INFO 6316 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:48:41.113  INFO 6316 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:48:41.113  INFO 6316 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 804 ms
+2020-07-30 15:48:41.207  INFO 6316 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:48:41.289  INFO 6316 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:48:41.534  INFO 6316 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:48:41.855  INFO 6316 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:48:41.857  INFO 6316 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.846 seconds (JVM running for 2.276)
+2020-07-30 15:48:44.962  INFO 6316 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:48:44.962  INFO 6316 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:48:44.966  INFO 6316 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 15:48:45.399 ERROR 6316 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error updating database.  Cause: com.mysql.jdbc.MysqlDataTruncation: Data truncation: Data too long for column 'name' at row 1
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ModuleMapper.xml]
+### The error may involve org.alex.platform.mapper.ModuleMapper.updateModule-Inline
+### The error occurred while setting parameters
+### SQL: update t_module          SET `name`=?,             `desc`=?,             `update_time`=?          where `module_id` = ?
+### Cause: com.mysql.jdbc.MysqlDataTruncation: Data truncation: Data too long for column 'name' at row 1
+; Data truncation: Data too long for column 'name' at row 1; nested exception is com.mysql.jdbc.MysqlDataTruncation: Data truncation: Data too long for column 'name' at row 1
+2020-07-30 15:49:47.707  INFO 1084 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 1084 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:49:47.709  INFO 1084 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:49:48.152  INFO 1084 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:49:48.153  INFO 1084 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:49:48.174  INFO 1084 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 15:49:48.489  INFO 1084 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:49:48.496  INFO 1084 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:49:48.496  INFO 1084 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:49:48.554  INFO 1084 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:49:48.554  INFO 1084 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 817 ms
+2020-07-30 15:49:48.650  INFO 1084 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:49:48.731  INFO 1084 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:49:48.968  INFO 1084 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:49:49.282  INFO 1084 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:49:49.283  INFO 1084 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.843 seconds (JVM running for 2.261)
+2020-07-30 15:49:52.282  INFO 1084 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:49:52.282  INFO 1084 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:49:52.286  INFO 1084 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 15:49:52.346 ERROR 1084 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'moduleDO' on field 'name': rejected value [模块名称-modify]; codes [Size.moduleDO.name,Size.name,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [moduleDO.name,name]; arguments []; default message [name],10,0]; default message [模块名称长度必须小于等于10]
+2020-07-30 15:53:49.829  INFO 7728 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 7728 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:53:49.831  INFO 7728 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:53:50.271  INFO 7728 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:53:50.272  INFO 7728 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:53:50.293  INFO 7728 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 15:53:50.615  INFO 7728 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:53:50.621  INFO 7728 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:53:50.622  INFO 7728 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:53:50.680  INFO 7728 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:53:50.681  INFO 7728 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 820 ms
+2020-07-30 15:53:50.779  INFO 7728 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:53:50.860  INFO 7728 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:53:51.102  INFO 7728 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:53:51.434  INFO 7728 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:53:51.437  INFO 7728 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.885 seconds (JVM running for 2.321)
+2020-07-30 15:54:22.546  INFO 7728 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:54:22.546  INFO 7728 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:54:22.549  INFO 7728 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-07-30 15:54:22.574 ERROR 7728 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : Invalid bound statement (not found): org.alex.platform.mapper.ModuleMapper.deleteModule
+2020-07-30 15:54:50.019  INFO 15112 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 15112 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 15:54:50.022  INFO 15112 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 15:54:50.454  INFO 15112 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 15:54:50.455  INFO 15112 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 15:54:50.476  INFO 15112 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2020-07-30 15:54:50.784  INFO 15112 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 15:54:50.791  INFO 15112 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 15:54:50.791  INFO 15112 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 15:54:50.849  INFO 15112 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 15:54:50.849  INFO 15112 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 798 ms
+2020-07-30 15:54:50.946  INFO 15112 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 15:54:51.049  INFO 15112 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 15:54:51.312  INFO 15112 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 15:54:51.623  INFO 15112 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 15:54:51.625  INFO 15112 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.872 seconds (JVM running for 2.301)
+2020-07-30 15:54:59.086  INFO 15112 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 15:54:59.086  INFO 15112 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 15:54:59.090  INFO 15112 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 16:02:03.795  INFO 4212 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 4212 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-07-30 16:02:03.797  INFO 4212 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-07-30 16:02:04.264  INFO 4212 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-07-30 16:02:04.266  INFO 4212 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-07-30 16:02:04.288  INFO 4212 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
+2020-07-30 16:02:04.599  INFO 4212 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-07-30 16:02:04.606  INFO 4212 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 16:02:04.606  INFO 4212 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-30 16:02:04.663  INFO 4212 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 16:02:04.663  INFO 4212 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 838 ms
+2020-07-30 16:02:04.760  INFO 4212 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-07-30 16:02:04.864  INFO 4212 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-07-30 16:02:05.123  INFO 4212 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 16:02:05.475  INFO 4212 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-07-30 16:02:05.478  INFO 4212 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 1.956 seconds (JVM running for 2.379)
+2020-07-30 16:02:27.307  INFO 4212 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-30 16:02:27.308  INFO 4212 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-30 16:02:27.312  INFO 4212 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-07-30 16:02:27.689 ERROR 4212 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 该项目下已存在模块
