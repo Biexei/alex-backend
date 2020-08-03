@@ -10,7 +10,10 @@ import java.util.List;
 @Repository
 public interface ModuleMapper {
     List<Serializable> selectModuleList(ModuleDTO moduleMto);
+
     void insertModule(ModuleDO moduleDO);
+
     void updateModule(ModuleDO moduleDO);
+
     void deleteModuleById(Integer moduleId);
 }

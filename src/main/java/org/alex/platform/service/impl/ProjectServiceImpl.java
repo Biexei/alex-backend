@@ -29,7 +29,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public PageInfo<ProjectDO> findProjectList(ProjectDO projectDO, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<ProjectDO> projectDOList =  projectMapper.selectProjectList(projectDO);
+        List<ProjectDO> projectDOList = projectMapper.selectProjectList(projectDO);
         return new PageInfo(projectDOList);
     }
 
@@ -48,18 +48,18 @@ public class ProjectServiceImpl implements ProjectService {
         String projectName = projectDO.getName();
         ProjectDO p = new ProjectDO();
         p.setName(projectName);
-        if (findProject(p) != null){
+        if (findProject(p) != null) {
             throw new BusinessException("修改失败，项目名称已存在");
-        } else{
+        } else {
             projectMapper.updateProject(projectDO);
         }
     }
 
     @Override
     public void saveProject(ProjectDO projectDO) throws Exception {
-        if (findProject(projectDO) != null){
+        if (findProject(projectDO) != null) {
             throw new BusinessException("新增失败，项目名称已存在");
-        } else{
+        } else {
             projectMapper.insertProject(projectDO);
         }
     }
@@ -69,9 +69,9 @@ public class ProjectServiceImpl implements ProjectService {
         //若项目下存在模块则不允许删除
         ModuleDTO moduleDTO = new ModuleDTO();
         moduleDTO.setProjectId(projectId);
-        if (moduleMapper.selectModuleList(moduleDTO).isEmpty()){
+        if (moduleMapper.selectModuleList(moduleDTO).isEmpty()) {
             projectMapper.deleteProjectById(projectId);
-        } else{
+        } else {
             LOG.error("该项目下已存在模块");
             throw new BusinessException("该项目下已存在模块");
         }

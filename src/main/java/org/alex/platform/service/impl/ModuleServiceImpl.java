@@ -37,10 +37,10 @@ public class ModuleServiceImpl implements ModuleService {
         ProjectDO project = new ProjectDO();
         project.setProjectId(moduleDO.getProjectId());
         //判断入参projectId是否存在
-        if (projectMapper.selectProject(project) == null){
+        if (projectMapper.selectProject(project) == null) {
             LOG.error("项目id不存在");
             throw new BusinessException("项目id不存在");
-        } else{
+        } else {
             moduleMapper.insertModule(moduleDO);
         }
 

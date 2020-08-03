@@ -19,20 +19,22 @@ public class ModuleController {
 
     /**
      * 根据模块名称、模块id、项目名称、项目id查询模块列表
+     *
      * @param moduleDto 模块名称、模块id、项目名称、项目id
      * @param pageNum
      * @param pageSize
      * @return
      */
     @RequestMapping("/module/list")
-    public Result findProjectModuleList(ModuleDTO moduleDto, Integer pageNum, Integer pageSize){
-        Integer num = pageNum==null?1:pageNum;
-        Integer size = pageNum==null?10:pageSize;
+    public Result findProjectModuleList(ModuleDTO moduleDto, Integer pageNum, Integer pageSize) {
+        Integer num = pageNum == null ? 1 : pageNum;
+        Integer size = pageNum == null ? 10 : pageSize;
         return Result.success(moduleService.findModuleList(moduleDto, num, size));
     }
 
     /**
      * 新增模块
+     *
      * @param moduleDO
      * @return
      * @throws BusinessException
@@ -52,18 +54,19 @@ public class ModuleController {
 
     /**
      * 修改模块信息
+     *
      * @param moduleDO
      * @return
      */
     @PostMapping("/module/modify")
-    public Result modifyModule(@Validated ModuleDO moduleDO){
+    public Result modifyModule(@Validated ModuleDO moduleDO) {
         moduleDO.setUpdateTime(new Date());
         moduleService.modifyModule(moduleDO);
         return Result.success("修改成功");
     }
 
     @GetMapping("/module/remove/{moduleId}")
-    public Result removeModule(@PathVariable Integer moduleId){
+    public Result removeModule(@PathVariable Integer moduleId) {
         moduleService.removeModuleById(moduleId);
         return Result.success("删除成功");
     }

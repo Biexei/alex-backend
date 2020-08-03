@@ -28,10 +28,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean saveUser(UserDO userDO) {
         String username = userDO.getUsername();
-        if (userMapper.selectUserByName(username) != null){
+        if (userMapper.selectUserByName(username) != null) {
             return false;
-        }
-        else{
+        } else {
             userMapper.insertUser(userDO);
             return true;
         }

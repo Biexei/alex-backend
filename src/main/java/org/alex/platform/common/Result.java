@@ -31,7 +31,8 @@ public class Result {
         this.data = data;
     }
 
-    public Result(){}
+    public Result() {
+    }
 
     public Result(Integer code, String msg, Object data) {
         this.code = code;
@@ -39,31 +40,31 @@ public class Result {
         this.data = data;
     }
 
-    public static Result success(Object data){
+    public static Result success(Object data) {
         return new Result(200, "操作成功", data);
     }
 
-    public static Result success(){
+    public static Result success() {
         return new Result(200, "操作成功", new HashMap<>());
     }
 
-    public static Result success(String msg){
+    public static Result success(String msg) {
         return new Result(200, msg, new HashMap<>());
     }
 
-    public static Result success(String msg, Object data){
+    public static Result success(String msg, Object data) {
         return new Result(200, msg, data);
     }
 
-    public static Result fail(){
+    public static Result fail() {
         return new Result(500, "操作失败", new HashMap<>());
     }
 
-    public static Result fail(String msg){
+    public static Result fail(String msg) {
         return new Result(500, msg, new HashMap<>());
     }
 
-    public static Result fail(int code, String msg){
+    public static Result fail(int code, String msg) {
         return new Result(code, msg, new HashMap<>());
     }
 

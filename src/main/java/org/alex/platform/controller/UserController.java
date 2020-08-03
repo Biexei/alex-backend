@@ -26,33 +26,35 @@ public class UserController {
      */
     @GetMapping("/user/list")
     @ResponseBody
-    public Result users(UserDO userDO, Integer pageNum, Integer pageSize){
-        pageNum = pageNum==null?1:pageNum;
-        pageSize = pageSize==null?10:pageSize;
+    public Result users(UserDO userDO, Integer pageNum, Integer pageSize) {
+        pageNum = pageNum == null ? 1 : pageNum;
+        pageSize = pageSize == null ? 10 : pageSize;
         PageInfo pageInfo = userService.findUserList(userDO, pageNum, pageSize);
         return Result.success(pageInfo);
     }
 
     /**
      * 用户信息.getList()
+     *
      * @param userId
      * @return
      */
     @GetMapping("/user/info/{userId}")
     @ResponseBody
-    public Result user(@PathVariable Integer userId){
+    public Result user(@PathVariable Integer userId) {
         UserDO userDOInfo = userService.findUserById(userId);
         return Result.success(userDOInfo);
     }
 
     /**
      * 更新个人信息
+     *
      * @param userDO
      * @return
      */
     @PostMapping("/user/update")
     @ResponseBody
-    public Result userUpdate(@Validated UserDO userDO){
+    public Result userUpdate(@Validated UserDO userDO) {
         userDO.setUpdateTime(new Date());
         userService.modifyUser(userDO);
         return Result.success("更新成功");
@@ -60,6 +62,7 @@ public class UserController {
 
     /**
      * 用户注册
+     *
      * @param userDO
      * @return
      */
@@ -72,31 +75,32 @@ public class UserController {
         Date date = new Date();
         userDO.setCreatedTime(date);
         userDO.setUpdateTime(date);
-        if (username==null || password==null || sex==null){
+        if (username == null || password == null || sex == null) {
             LOG.error("请完善注册信息");
             return Result.fail("请完善注册信息");
-        } else{
-            if(userService.saveUser(userDO)){
+        } else {
+            if (userService.saveUser(userDO)) {
                 return Result.success("注册成功");
-            } else{
+            } else {
                 LOG.error("用户名已存在");
                 return Result.fail("用户名已存在");
             }
         }
     }
+
     @PostMapping("/user/login")
     @ResponseBody
-    public Result login(UserDO userDO){
+    public Result login(UserDO userDO) {
         String username = userDO.getUsername();
         String password = userDO.getPassword();
-        if (null == username || "".equals(username) ||null == password || "".equals(password)){
+        if (null == username || "".equals(username) || null == password || "".equals(password)) {
             LOG.error("帐号名或者密码错误");
             return Result.fail("帐号名或者密码错误");
         }
         UserDO u = new UserDO();
         u.setUsername(username);
         u.setPassword(password);
-        if (userService.findUserToLogin(userDO) != null){
+        if (userService.findUserToLogin(userDO) != null) {
             return Result.success("登录成功");
         } else {
             LOG.error("帐号名或者密码错误");

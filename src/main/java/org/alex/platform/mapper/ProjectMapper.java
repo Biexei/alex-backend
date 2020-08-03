@@ -10,9 +10,14 @@ import java.util.List;
 @Repository
 public interface ProjectMapper {
     List<ProjectDO> selectProjectList(ProjectDO projectDO);
+
     ProjectDO selectProject(ProjectDO projectDO);
+
     ProjectVO selectModulesById(Integer projectId);
+
     void updateProject(ProjectDO projectDO);
+
     void insertProject(ProjectDO projectDO);
+
     void deleteProjectById(Integer projectId);
 }

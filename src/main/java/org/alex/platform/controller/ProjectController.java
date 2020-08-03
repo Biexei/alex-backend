@@ -23,35 +23,38 @@ public class ProjectController {
 
     /**
      * 查询项目列表
+     *
      * @param projectDO
      * @param pageNum
      * @param pageSize
      * @return
      */
     @GetMapping("project/list")
-    public Result getProjectList(ProjectDO projectDO, Integer pageNum, Integer pageSize){
-        Integer num = pageNum==null?1:pageNum;
-        Integer size = pageSize==null?10:pageSize;
+    public Result getProjectList(ProjectDO projectDO, Integer pageNum, Integer pageSize) {
+        Integer num = pageNum == null ? 1 : pageNum;
+        Integer size = pageSize == null ? 10 : pageSize;
         return Result.success(projectService.findProjectList(projectDO, num, size));
     }
 
     /**
      * 查看项目下所有模块
+     *
      * @param projectId
      * @return
      */
     @GetMapping("project/modules/{projectId}")
-    public Result findModulesById(@PathVariable Integer projectId){
+    public Result findModulesById(@PathVariable Integer projectId) {
         return Result.success(projectService.findModulesById(projectId));
     }
 
     /**
      * 查看项目信息
+     *
      * @param projectDO
      * @return
      */
     @GetMapping("project/info")
-    public Result getProject(ProjectDO projectDO){
+    public Result getProject(ProjectDO projectDO) {
         Integer projectId = projectDO.getProjectId();
         String projectName = projectDO.getName();
         ProjectDO p = new ProjectDO();
@@ -62,11 +65,12 @@ public class ProjectController {
 
     /**
      * 新增项目
+     *
      * @param projectDO
      * @return
      */
     @PostMapping("project/save")
-    public Result saveProject(@Validated ProjectDO projectDO){
+    public Result saveProject(@Validated ProjectDO projectDO) {
         try {
             projectService.saveProject(projectDO);
         } catch (Exception e) {
@@ -79,11 +83,12 @@ public class ProjectController {
 
     /**
      * 修改项目
+     *
      * @param projectDO
      * @return
      */
     @PostMapping("project/modify")
-    public Result modifyProject(@Validated ProjectDO projectDO){
+    public Result modifyProject(@Validated ProjectDO projectDO) {
         try {
             projectService.modifyProject(projectDO);
         } catch (Exception e) {
@@ -96,6 +101,7 @@ public class ProjectController {
 
     /**
      * 删除项目
+     *
      * @param projectId 项目编号
      * @return
      */

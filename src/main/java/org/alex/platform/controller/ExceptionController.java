@@ -19,11 +19,11 @@ public class ExceptionController {
 
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    public Result globalException(Exception e){
+    public Result globalException(Exception e) {
         LOG.error(e.getMessage());
         // validate抛出的异常
-        if (e instanceof BindException){
-            BindException be = (BindException)e;
+        if (e instanceof BindException) {
+            BindException be = (BindException) e;
             List<ObjectError> errors = be.getBindingResult().getAllErrors();
             String msg = errors.get(0).getDefaultMessage();
             return Result.fail(405, msg);
