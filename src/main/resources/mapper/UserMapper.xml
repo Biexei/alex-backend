@@ -29,7 +29,6 @@
     <update id="updateUser" parameterType="org.alex.platform.pojo.UserDO">
         update t_user
         <set>
-            <if test="username!=null">username=#{username},</if>
             <if test="password!=null">password=#{password},</if>
             <if test="jobNumber!=null">job_number=#{jobNumber},</if>
             <if test="isEnable!=null">is_enable=#{isEnable},</if>

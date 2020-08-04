@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.InterfaceAssertMapper">
+    <insert id="insertAssert" parameterType="org.alex.platform.pojo.InterfaceAssertDO">
+        insert into `t_interface_assert`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test= "assertName != null">`assert_name`,</if>
+            <if test= "caseId != null">`case_id`,</if>
+            <if test= "type != null">`type`,</if>
+            <if test= "expression != null">`expression`,</if>
+            <if test= "operator != null">`operator`,</if>
+            <if test= "exceptedResult != null">`excepted_result`,</if>
+            <if test= "order != null">`order`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test= "assertName != null">#{assertName},</if>
+            <if test= "caseId != null">#{caseId},</if>
+            <if test= "type != null">#{type},</if>
+            <if test= "expression != null">#{expression},</if>
+            <if test= "operator != null">#{operator},</if>
+            <if test= "exceptedResult != null">#{exceptedResult},</if>
+            <if test= "order != null">#{order},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAssert" parameterType="org.alex.platform.pojo.InterfaceAssertDO">
+        update `t_interface_assert`
+        <set>
+            <if test= "assertName != null">`assert_name` = #{assertName},</if>
+            <if test= "caseId != null">`case_id` = #{caseId},</if>
+            <if test= "type != null">`type` = #{type},</if>
+            <if test= "expression != null">`expression` = #{expression},</if>
+            <if test= "operator != null">`operator` = #{operator},</if>
+            <if test= "exceptedResult != null">`excepted_result` = #{exceptedResult},</if>
+            <if test= "order != null">`order` = #{order},</if>
+        </set>
+        where `assert_id` = #{assertId}
+    </update>
+
+    <delete id="deleteAssertByCaseId" parameterType="Integer">
+        delete from `t_interface_assert` where `case_id` = #{caseId}
+    </delete>
+
+    <delete id="deleteAssertByAssertId" parameterType="Integer">
+        delete from `t_interface_assert` where `assert_id` = #{assertId}
+    </delete>
+
+    <select id="selectAssertList" parameterType="org.alex.platform.pojo.InterfaceAssertDO" resultType="org.alex.platform.pojo.InterfaceAssertDO">
+        select `case_id`, `assert_id`, `assert_name`, `type`, `expression`, `operator`, `excepted_result`, `order`
+        from `t_interface_assert`
+        <where>
+            <if test="assertId != null">and `assert_id` = #{assertId}</if>
+            <if test="caseId != null">and `case_id` = #{caseId}</if>
+            <if test="assertName != null">and `assert_name` like concat('%', #{assertName}, '%') </if>
+            <if test="type != null">and `type` = #{type}</if>
+            <if test="expression != null">and `expression` = #{expression}</if>
+            <if test="operator != null">and `operator` = #{operator}</if>
+            <if test="exceptedResult != null">and `excepted_result` = #{exceptedResult}</if>
+            <if test="order != null">and `order` = #{order}</if>
+        </where>
+    </select>
+</mapper>

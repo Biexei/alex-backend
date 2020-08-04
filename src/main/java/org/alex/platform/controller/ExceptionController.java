@@ -1,6 +1,7 @@
 package org.alex.platform.controller;
 
 import org.alex.platform.common.Result;
+import org.alex.platform.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -27,6 +28,8 @@ public class ExceptionController {
             List<ObjectError> errors = be.getBindingResult().getAllErrors();
             String msg = errors.get(0).getDefaultMessage();
             return Result.fail(405, msg);
+        } else if (e instanceof BusinessException){
+            return Result.fail(501, e.getMessage());
         } else {
             return Result.fail(e.getMessage());
         }

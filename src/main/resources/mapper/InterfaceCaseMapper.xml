@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.InterfaceCaseMapper">
+    <insert id="insertInterfaceCase" parameterType="org.alex.platform.pojo.InterfaceCaseDO" useGeneratedKeys="true" keyProperty="caseId">
+        insert into `t_interface_case`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">`project_id`,</if>
+            <if test="moduleId != null">`module_id`,</if>
+            <if test="url != null">`url`,</if>
+            <if test="method != null">`method`,</if>
+            <if test="desc != null">`desc`,</if>
+            <if test="level != null">`level`,</if>
+            <if test="doc != null">`doc`,</if>
+            <if test="headers != null">`headers`,</if>
+            <if test="params != null">`params`,</if>
+            <if test="data != null">`data`,</if>
+            <if test="json != null">`json`,</if>
+            <if test="creater != null">`creater`,</if>
+            <if test="createdTime != null">`created_time`,</if>
+            <if test="updateTime != null">`update_time`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">#{projectId},</if>
+            <if test="moduleId != null">#{moduleId},</if>
+            <if test="url != null">#{url},</if>
+            <if test="method != null">#{method},</if>
+            <if test="desc != null">#{desc},</if>
+            <if test="level != null">#{level},</if>
+            <if test="doc != null">#{doc},</if>
+            <if test="headers != null">#{headers},</if>
+            <if test="params != null">#{params},</if>
+            <if test="data != null">#{data},</if>
+            <if test="json != null">#{json},</if>
+            <if test="creater != null">#{creater},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateInterfaceCase" parameterType="org.alex.platform.pojo.InterfaceCaseDO">
+        update `t_interface_case`
+        <set>
+            <if test="projectId != null">`project_id` = #{projectId},</if>
+            <if test="moduleId != null">`module_id` = #{moduleId},</if>
+            <if test="url != null">`url` = #{url},</if>
+            <if test="method != null">`method` = #{method},</if>
+            <if test="desc != null">`desc` = #{desc},</if>
+            <if test="level != null">`level` = #{level},</if>
+            <if test="doc != null">`doc` = #{doc},</if>
+            <if test="headers != null">`headers` = #{headers},</if>
+            <if test="params != null">`params` = #{params},</if>
+            <if test="data != null">`data` = #{data},</if>
+            <if test="json != null">`json` = #{json},</if>
+            <if test="creater != null">`creater` = #{creater},</if>
+            <if test="createdTime != null">`created_time` = #{createdTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+        </set>
+        where `case_id` = #{caseId}
+    </update>
+
+    <delete id="removeInterfaceCase" parameterType="Integer">
+        delete from `t_interface_case` where `case_id` = #{caseId}
+    </delete>
+
+    <select id="selectInterfaceCaseList" parameterType="org.alex.platform.pojo.InterfaceCaseListDTO" resultType="org.alex.platform.pojo.InterfaceCaseListVO">
+        select `icase`.`case_id`, `icase`.`project_id` `project_id`, `icase`.`module_id` `module_id`, `project`.`name` `project_name`,
+        `module`.`name` `module_name`,`icase`.`desc`, `icase`.`url`, `icase`.`level`, `icase`.`creater`
+        from `t_interface_case` as `icase`
+        LEFT JOIN `t_interface_assert` as `assert` on `icase`.`case_id` = `assert`.`case_id`
+        LEFT JOIN `t_module` as `module` on `icase`.`module_id` = `module`.`module_id`
+        LEFT JOIN `t_project` as `project` on `icase`.`project_id` = `project`.`project_id`
+        <where>
+            <if test="caseId != null">and `icase`.`case_id` = #{caseId}</if>
+            <if test="projectId != null">and `icase`.`project_id` = #{projectId}</if>
+            <if test="projectName != null">and `project`.`name` like concat('%',#{projectName},'%')</if>
+            <if test="moduleId != null">and `icase`.`module_id` = #{moduleId}</if>
+            <if test="moduleName != null">and `module`.`name` like concat('%',#{moduleName},'%')</if>
+            <if test="desc != null">and `icase`.`desc` like concat('%',#{desc},'%')</if>
+            <if test="url != null">and `icase`.`url` like concat('%',#{url},'%')</if>
+            <if test="level != null">and `icase`.`level` = #{level}</if>
+            <if test="creater != null">and `icase`.`creater` like concat('%',#{creater},'%')</if>
+        </where>
+    </select>
+    
+    <resultMap id="assertVO" type="org.alex.platform.pojo.InterfaceAssertVO">
+        <id column="assert_id" property="assertId"/>
+        <result column="assert_name" property="assertName"/>
+        <result column="type" property="type"/>
+        <result column="expression" property="expression"/>
+        <result column="operator" property="operator"/>
+        <result column="excepted_result" property="exceptedResult"/>
+        <result column="order" property="order"/>
+    </resultMap>
+
+    <resultMap id="interfaceCaseInfo" type="org.alex.platform.pojo.InterfaceCaseInfoVO">
+        <result column="project_id" property="projectId"/>
+        <result column="module_id" property="moduleId"/>
+        <result column="case_id" property="caseId"/>
+        <result column="url" property="url"/>
+        <result column="desc" property="desc"/>
+        <result column="level" property="level"/>
+        <result column="doc" property="doc"/>
+        <result column="headers" property="headers"/>
+        <result column="params" property="params"/>
+        <result column="data" property="data"/>
+        <result column="json" property="json"/>
+        <result column="creater" property="creater"/>
+        <result column="created_time" property="createdTime"/>
+        <collection property="asserts" ofType="org.alex.platform.pojo.InterfaceAssertVO" resultMap="assertVO"/>
+    </resultMap>
+
+    <select id="selectInterfaceCaseByCaseId" resultMap="interfaceCaseInfo" parameterType="Integer">
+        select `icase`.`project_id`, `icase`.`module_id`, `icase`.`case_id`, `icase`.`url`, `icase`.`desc`,
+            `icase`.`level`, `icase`.`doc`, `icase`.`headers`, `icase`.`params`, `icase`.`data`, `icase`.`json`,
+            `icase`.`creater`, `icase`.`created_time`, `assert`.`assert_id`, `assert`.`assert_name`, `assert`.`type`, `assert`.`expression`,
+            `assert`.`operator`, `assert`.`excepted_result`, `assert`.`order`
+        from `t_interface_case` as `icase`
+        left join `t_interface_assert` as `assert` on `icase`.`case_id` = `assert`.`case_id`
+        where `icase`.`case_id` = #{caseId}
+        order by `assert`.`order` desc
+    </select>
+</mapper>
