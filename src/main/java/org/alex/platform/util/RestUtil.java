@@ -1,15 +1,21 @@
 package org.alex.platform.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.exception.BusinessException;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.HashMap;
@@ -23,10 +29,34 @@ public class RestUtil {
 
     private static RestTemplate getInstance() {
         RestTemplate restTemplate = SingleRestTemplate.INSTANCE;
-        // 下三行开启代理
-        //SimpleClientHttpRequestFactory sh = new SimpleClientHttpRequestFactory();
+        SimpleClientHttpRequestFactory sh = new SimpleClientHttpRequestFactory();
+        // 1.设置代理
         //sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)));
-        //restTemplate.setRequestFactory(sh);
+        // 2.设置超时时长
+        sh.setConnectTimeout(10 * 1000);
+        sh.setReadTimeout(10 * 1000);
+        restTemplate.setRequestFactory(sh);
+        // 3.去除code != 200时异常信息
+        restTemplate.setErrorHandler(new ResponseErrorHandler() {
+            @Override
+            public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
+                return false;
+            }
+
+            @Override
+            public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
+
+            }
+        });
+        // 4.配置全局headers
+        restTemplate.getInterceptors().add(new ClientHttpRequestInterceptor() {
+            @Override
+            public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution
+                    clientHttpRequestExecution) throws IOException {
+                httpRequest.getHeaders().add("User-Agent", "self ua");
+                return clientHttpRequestExecution.execute(httpRequest, bytes);
+            }
+        });
         return restTemplate;
     }
 
@@ -197,8 +227,8 @@ public class RestUtil {
      * @param response
      * @return
      */
-    public static Map<String, String> header(ResponseEntity response) {
-        return response.getHeaders().toSingleValueMap();
+    public static JSONObject header(ResponseEntity response) {
+        return JSON.parseObject(JSON.toJSONString(response.getHeaders()));
     }
 
 }
