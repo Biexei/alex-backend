@@ -10,10 +10,122 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2020-07-30 17:05:41
+Date: 2020-08-05 17:06:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for t_interface_assert
+-- ----------------------------
+DROP TABLE IF EXISTS `t_interface_assert`;
+CREATE TABLE `t_interface_assert` (
+  `assert_id` int NOT NULL AUTO_INCREMENT COMMENT '断言编号',
+  `assert_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '断言名称',
+  `case_id` int DEFAULT NULL COMMENT '用例编号',
+  `type` tinyint DEFAULT NULL COMMENT '提取数据类型   0json/1html/2header/3responsecode',
+  `expression` varchar(50) DEFAULT NULL COMMENT '提取表达式',
+  `operator` tinyint DEFAULT NULL COMMENT '操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re',
+  `excepted_result` varchar(1000) DEFAULT NULL COMMENT '预期结果',
+  `order` int DEFAULT NULL COMMENT '排序 执行断言时按照该字段排序',
+  PRIMARY KEY (`assert_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_interface_assert
+-- ----------------------------
+INSERT INTO `t_interface_assert` VALUES ('1', null, '6', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('2', null, '6', '12', '12', '12', '12', '12');
+INSERT INTO `t_interface_assert` VALUES ('5', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('6', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('7', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('8', '1', '19', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('9', '1', '20', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('10', '1', '21', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('11', '1', '22', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('12', '1', '23', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('13', '1', '23', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('14', '1', '28', '1', '1', '1', '1', '1');
+INSERT INTO `t_interface_assert` VALUES ('15', '1', '28', '1', '1', '1', '1', '2');
+INSERT INTO `t_interface_assert` VALUES ('16', '1', '29', '1', '1', '1', '1', '1');
+
+-- ----------------------------
+-- Table structure for t_interface_case
+-- ----------------------------
+DROP TABLE IF EXISTS `t_interface_case`;
+CREATE TABLE `t_interface_case` (
+  `project_id` int DEFAULT NULL COMMENT '项目名称',
+  `module_id` int DEFAULT NULL COMMENT '模块编号',
+  `case_id` int NOT NULL AUTO_INCREMENT COMMENT '用例编号',
+  `url` varchar(200) DEFAULT NULL COMMENT '请求地址',
+  `method` tinyint(1) DEFAULT NULL COMMENT '请求方式  0get,1post,2update,3put,4delete',
+  `desc` varchar(100) DEFAULT NULL COMMENT '用例描述',
+  `level` tinyint DEFAULT NULL COMMENT '用例级别0高，1中，2低',
+  `doc` varchar(200) DEFAULT NULL COMMENT '接口文档地址',
+  `headers` varchar(1000) DEFAULT NULL COMMENT '请求头',
+  `params` varchar(1000) DEFAULT NULL COMMENT '请求参数',
+  `data` varchar(1000) DEFAULT NULL COMMENT '请求formdata',
+  `json` varchar(1000) DEFAULT NULL COMMENT '请求json',
+  `creater` int DEFAULT NULL COMMENT '用例创建人',
+  `created_time` datetime DEFAULT NULL COMMENT '创建日期',
+  `update_time` datetime DEFAULT NULL COMMENT '修改日期',
+  PRIMARY KEY (`case_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_interface_case
+-- ----------------------------
+INSERT INTO `t_interface_case` VALUES ('2', '2', '6', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 11:44:45', '2020-08-04 11:44:45');
+INSERT INTO `t_interface_case` VALUES ('4', '3', '7', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 11:45:04', '2020-08-04 11:45:04');
+INSERT INTO `t_interface_case` VALUES ('4', '4', '8', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 11:45:09', '2020-08-04 11:45:09');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '9', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 14:44:50', '2020-08-04 14:44:50');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '10', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 14:46:25', '2020-08-04 14:46:25');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '11', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 14:51:19', '2020-08-04 14:51:19');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '12', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 14:51:53', '2020-08-04 14:51:53');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '13', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 14:52:12', '2020-08-04 14:52:12');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '14', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 14:52:49', '2020-08-04 14:52:49');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '15', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 15:26:23', '2020-08-04 15:26:23');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '16', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 17:27:08', '2020-08-04 17:27:08');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '17', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 17:28:14', '2020-08-04 17:28:14');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '18', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 17:33:54', '2020-08-04 17:33:54');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '19', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 17:43:31', '2020-08-04 17:43:31');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '20', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 17:46:35', '2020-08-04 17:46:35');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '21', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 17:48:23', '2020-08-04 17:48:23');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '22', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 17:50:17', '2020-08-04 17:50:17');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '23', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 17:50:37', '2020-08-04 17:50:37');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '26', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 18:20:22', '2020-08-04 18:20:22');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '27', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 18:20:33', '2020-08-04 18:20:33');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '28', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 18:26:29', '2020-08-04 18:26:29');
+INSERT INTO `t_interface_case` VALUES ('2', '2', '29', '/u/r/l', '0', '用例描述', '0', '接口文档', '请求头', '请求参数', '请求数据', '请求json', '1', '2020-08-04 18:26:38', '2020-08-04 18:26:38');
+
+-- ----------------------------
+-- Table structure for t_interface_case_execute_log
+-- ----------------------------
+DROP TABLE IF EXISTS `t_interface_case_execute_log`;
+CREATE TABLE `t_interface_case_execute_log` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '用例执行日志id',
+  `case_id` int DEFAULT NULL COMMENT '用例id',
+  `case_desc` varchar(100) DEFAULT NULL COMMENT '用例描述',
+  `request_headers` varchar(1000) DEFAULT NULL COMMENT '请求头',
+  `request_params` varchar(1000) DEFAULT NULL COMMENT '请求参数',
+  `request_data` varchar(1000) DEFAULT NULL COMMENT '请求formdata',
+  `request_json` varchar(1000) DEFAULT NULL,
+  `response_code` int DEFAULT NULL COMMENT '响应状态码',
+  `response_headers` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '响应头',
+  `response_body` text COMMENT '响应正文',
+  `executer` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '执行人',
+  `assert_extract_expression` varchar(50) DEFAULT NULL COMMENT '提取表达时',
+  `assert_operator` tinyint DEFAULT NULL COMMENT '操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re',
+  `assert_excepted_result` varchar(1000) DEFAULT NULL COMMENT '预期结果',
+  `status` tinyint DEFAULT NULL COMMENT '运行结果',
+  `created_time` datetime DEFAULT NULL COMMENT '执行时间',
+  `error_message` varchar(1000) DEFAULT NULL COMMENT '执行失败错误信息',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_interface_case_execute_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_module

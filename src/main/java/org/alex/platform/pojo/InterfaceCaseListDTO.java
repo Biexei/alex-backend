@@ -1,4 +1,6 @@
 package org.alex.platform.pojo;
 
-public class InterfaceCaseListDTO extends InterfaceCaseListVO{
+import java.io.Serializable;
+
+public class InterfaceCaseListDTO extends InterfaceCaseListVO implements Serializable {
 }

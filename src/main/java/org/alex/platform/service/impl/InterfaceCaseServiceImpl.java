@@ -29,6 +29,15 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     public InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException {
         Integer moduleId = interfaceCaseDO.getModuleId();
         Integer projectId = interfaceCaseDO.getProjectId();
+
+
+        String data = interfaceCaseDO.getData();
+        String json = interfaceCaseDO.getJson();
+        //data json 只能任传其一
+        if (data != null && json != null) {
+            throw new BusinessException("data/json只能任传其一");
+        }
+
         ModuleDTO moduleDTO = new ModuleDTO();
         moduleDTO.setModuleId(moduleId);
         moduleDTO.setProjectId(projectId);

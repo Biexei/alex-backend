@@ -1,6 +1,7 @@
 package org.alex.platform;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.service.ProjectService;
 import org.alex.platform.util.RestUtil;
@@ -25,9 +26,22 @@ public class MyTest {
 
     @Test
     public void doTest() throws BusinessException {
-        HashMap map = new HashMap();
-        map.put("name", "项目名称3");
-        map.put("domain", "http://www.baidu.com/");
-        System.out.println(RestUtil.postJson("http://localhost:7777/project/save", null, map).getBody());
+        HashMap<String, String> json = new HashMap();
+        json.put("name", "json");
+        json.put("domain", "json");
+
+        HashMap<String, String> data = new HashMap();
+        json.put("name", "data");
+        json.put("domain", "data");
+
+        HashMap<String, String> headers = new HashMap();
+        headers.put("name", "headers");
+        headers.put("domain", "headers");
+
+        HashMap<String, String> params = new HashMap();
+        params.put("name", "params");
+        params.put("domain", "params");
+
+        System.out.println(RestUtil.post("http://localhost:7777/project/save", headers, params, data).getBody());
     }
 }

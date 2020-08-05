@@ -1,9 +1,10 @@
 package org.alex.platform.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class InterfaceCaseInfoVO {
+public class InterfaceCaseInfoVO implements Serializable {
     private Integer projectId;
     private Integer moduleId;
     private Integer caseId;
