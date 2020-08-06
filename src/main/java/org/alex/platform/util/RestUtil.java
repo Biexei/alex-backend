@@ -20,6 +20,8 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RestUtil {
 
@@ -80,13 +82,44 @@ public class RestUtil {
      * @param params
      * @return
      */
-    public static ResponseEntity get(String url, HashMap<String, String> headers, HashMap<String, String> params) {
+    public static ResponseEntity get(String url, HashMap<String, String> headers, HashMap<String, String> params)
+            throws BusinessException {
         RestTemplate restTemplate = RestUtil.getInstance();
+
         HttpHeaders httpHeaders = new HttpHeaders();
         if (headers != null) {
             httpHeaders.setAll(headers);
         }
-        return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity(params, httpHeaders), String.class);
+
+        // 判断url是否为restful风格，如http://www.baidu.com/name/{name}/{class}
+        Pattern p = Pattern.compile("\\{(\\w)+\\}");
+        Matcher m = p.matcher(url);
+        // 如果未匹配到，则直接通过params方式发送get请求
+        if (m.groupCount() == 0) {
+            MultiValueMap paramsMap = new LinkedMultiValueMap<String, String>();
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                paramsMap.add(entry.getKey(), entry.getValue());
+            }
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(paramsMap);
+            return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, new HttpEntity(httpHeaders), String.class);
+        } else {
+            String urlAfter = url;
+            while (m.find()) {
+                String pathVariable = m.group();
+                // 判断params中是否存在pathVariable
+                if (!params.containsKey(pathVariable.substring(1, pathVariable.length()-1))) {
+                    throw new BusinessException("params未找到该pathVariable");
+                } else {
+                    urlAfter = urlAfter.replace(pathVariable, params.remove(pathVariable.substring(1, pathVariable.length()-1)));
+                }
+            }
+            MultiValueMap paramsMap = new LinkedMultiValueMap<String, String>();
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                paramsMap.add(entry.getKey(), entry.getValue());
+            }
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(urlAfter).queryParams(paramsMap);
+            return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, new HttpEntity(httpHeaders), String.class);
+        }
     }
 
     /**

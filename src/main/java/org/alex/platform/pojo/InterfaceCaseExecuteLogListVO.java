@@ -7,6 +7,10 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private Integer id;
     private Integer caseId;
     private String caseDesc;
+    private Integer projectId;
+    private String projectName;
+    private Integer moduleId;
+    private String moduleName;
     private String responseBody;
     private String executer;
     private Byte status;
@@ -35,6 +39,38 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
 
     public void setCaseDesc(String caseDesc) {
         this.caseDesc = caseDesc;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public Integer getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(Integer moduleId) {
+        this.moduleId = moduleId;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 
     public String getResponseBody() {
@@ -83,6 +119,10 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
                 "id=" + id +
                 ", caseId=" + caseId +
                 ", caseDesc='" + caseDesc + '\'' +
+                ", projectId=" + projectId +
+                ", projectName='" + projectName + '\'' +
+                ", moduleId=" + moduleId +
+                ", moduleName='" + moduleName + '\'' +
                 ", responseBody='" + responseBody + '\'' +
                 ", executer='" + executer + '\'' +
                 ", status=" + status +
