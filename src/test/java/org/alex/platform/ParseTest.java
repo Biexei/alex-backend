@@ -3,20 +3,26 @@ package org.alex.platform;
 import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
+import org.alex.platform.util.AssertUtil;
 import org.alex.platform.util.ParseUtil;
 import org.alex.platform.util.RestUtil;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ParseTest {
     @Test
+    @Ignore
     public void testParseXml() throws ParseException {
         String xml =
                 "<bookstore> \n" +
@@ -50,6 +56,7 @@ public class ParseTest {
     }
 
     @Test()
+    @Ignore
     public void testParaseJson() {
         String json = "\n" +
                 "{\n" +
@@ -89,6 +96,28 @@ public class ParseTest {
                 "    },\n" +
                 "    \"expensive\": 10\n" +
                 "}";
-        System.out.println(ParseUtil.parseJson(json, "$..store"));
+        System.out.println(ParseUtil.parseJson(json, "$..store11"));
     }
+
+    @Test
+    @Ignore
+    public void testGet() throws BusinessException {
+        String url = "http://www.baidu.com/{name}/{class}/";
+        HashMap<String, String> map = new HashMap<>();
+        map.put("class", "126");
+        map.put("sex", "nan");
+        map.put("name", "123");
+        RestUtil.get(url, map, map);
+//        Pattern p = Pattern.compile("\\{(\\w)+\\}");
+//        Matcher m = p.matcher(url);
+//        while (m.find()) {
+//            System.out.println(m.group());
+//        }
+    }
+
+    @Test
+    public void testAssert() throws BusinessException{
+        System.out.println(AssertUtil.asserts("12345a", 0, "12345a"));
+    }
+
 }
