@@ -19,4 +19,6 @@ public interface InterfaceCaseService {
     PageInfo<InterfaceCaseListVO> findInterfaceCaseList(InterfaceCaseListDTO interfaceCaseListDTO, Integer pageNum, Integer pageSize);
 
     InterfaceCaseInfoVO findInterfaceCaseByCaseId(Integer caseId);
+
+    void executeInterfaceCase(Integer interfaceCaseId);
 }

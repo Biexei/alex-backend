@@ -60,5 +60,6 @@
             <if test="exceptedResult != null">and `excepted_result` = #{exceptedResult}</if>
             <if test="order != null">and `order` = #{order}</if>
         </where>
+        order by `order` desc
     </select>
 </mapper>

@@ -2,6 +2,7 @@ package org.alex.platform;
 
 import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.mapper.InterfaceCaseExecuteLogMapper;
+import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogDO;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO;
 import org.junit.Test;
@@ -18,6 +19,10 @@ import java.util.HashMap;
 public class ExecuteLogTest {
     @Autowired
     InterfaceCaseExecuteLogMapper mapper;
+
+    @Autowired
+    InterfaceCaseMapper interfaceCaseMapper;
+
     @Test
     public void testInfo(){
         HashMap map = new HashMap();
@@ -27,6 +32,8 @@ public class ExecuteLogTest {
         logDO.setCaseDesc("case desc");
         logDO.setRequestHeaders(JSONObject.toJSONString(map));
         logDO.setCreatedTime(new Date());
-        mapper.insertExecuteLog(logDO);
+        //mapper.insertExecuteLog(logDO);
+
+        System.out.println(JSONObject.toJSONString(interfaceCaseMapper.selectInterfaceCaseByCaseId(6)));
     }
 }
