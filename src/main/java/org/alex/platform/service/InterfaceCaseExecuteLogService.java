@@ -9,7 +9,7 @@ import org.alex.platform.pojo.InterfaceCaseExecuteLogVO;
 import java.util.List;
 
 public interface InterfaceCaseExecuteLogService {
-    void saveExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
+    InterfaceCaseExecuteLogDO saveExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
     PageInfo<InterfaceCaseExecuteLogListVO> findExecuteList(InterfaceCaseExecuteLogListDTO executeLogListDTO,
                                                             Integer pageNum, Integer pageSize);
     InterfaceCaseExecuteLogVO findExecute(Integer executeId);

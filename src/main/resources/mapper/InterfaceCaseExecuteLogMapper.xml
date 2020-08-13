@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.alex.platform.mapper.InterfaceCaseExecuteLogMapper">
-    <insert id="insertExecuteLog" parameterType="org.alex.platform.pojo.InterfaceCaseExecuteLogDO">
+    <insert id="insertExecuteLog" parameterType="org.alex.platform.pojo.InterfaceCaseExecuteLogDO" useGeneratedKeys="true" keyProperty="id">
         insert into `t_interface_case_execute_log`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="caseId != null">`case_id`,</if>
@@ -16,9 +16,6 @@
             <if test="responseHeaders != null">`response_headers`,</if>
             <if test="responseBody != null">`response_body`,</if>
             <if test="executer != null">`executer`,</if>
-            <if test="assertExtractExpression != null">`assert_extract_expression`,</if>
-            <if test="assertOperator != null">`assert_operator`,</if>
-            <if test="assertExceptedResult != null">`assert_excepted_result`,</if>
             <if test="status != null">`status`,</if>
             <if test="createdTime != null">`created_time`,</if>
             <if test="errorMessage != null">`error_message`,</if>
@@ -34,9 +31,6 @@
             <if test="responseHeaders != null">#{responseHeaders},</if>
             <if test="responseBody != null">#{responseBody},</if>
             <if test="executer != null">#{executer},</if>
-            <if test="assertExtractExpression != null">#{assertExtractExpression},</if>
-            <if test="assertOperator != null">#{assertOperator},</if>
-            <if test="assertExceptedResult != null">#{assertExceptedResult},</if>
             <if test="status != null">#{status},</if>
             <if test="createdTime != null">#{createdTime},</if>
             <if test="errorMessage != null">#{errorMessage},</if>
@@ -65,8 +59,7 @@
     </select>
     <select id="selectExecute" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceCaseExecuteLogVO">
         select `id`,`case_id`,`case_desc`,`request_headers`,`request_params`,`request_data`,`request_json`,
-        `response_code`,`response_headers`,`response_body`,`executer`,`assert_extract_expression`,`assert_operator`,
-        `assert_excepted_result`,`status`,`created_time`,`error_message`
+        `response_code`,`response_headers`,`response_body`,`executer`,`status`,`created_time`,`error_message`
         from `t_interface_case_execute_log`
         where id = #{id}
     </select>

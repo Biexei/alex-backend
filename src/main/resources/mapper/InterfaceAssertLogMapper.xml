@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.InterfaceAssertLogMapper">
+   <insert id="insertInterfaceAssertLog" parameterType="org.alex.platform.pojo.InterfaceAssertLogDO">
+       insert into `t_interface_assert_log`
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="executeLogId != null">`execute_log_id`,</if>
+           <if test="caseId != null">`case_id`,</if>
+           <if test="assertName != null">`assert_name`,</if>
+           <if test="type != null">`type`,</if>
+           <if test="expression != null">`expression`,</if>
+           <if test="operator != null">`operator`,</if>
+           <if test="exceptedResult != null">`excepted_result`,</if>
+           <if test="actualResult != null">`actual_result`,</if>
+           <if test="order != null">`order`,</if>
+           <if test="status != null">`status`,</if>
+       </trim>
+       <trim prefix="values (" suffix=")" suffixOverrides=",">
+           <if test="executeLogId != null">#{executeLogId},</if>
+           <if test="caseId != null">#{caseId},</if>
+           <if test="assertName != null">#{assertName},</if>
+           <if test="type != null">#{type},</if>
+           <if test="expression != null">#{expression},</if>
+           <if test="operator != null">#{operator},</if>
+           <if test="exceptedResult != null">#{exceptedResult},</if>
+           <if test="actualResult != null">#{actualResult},</if>
+           <if test="order != null">#{order},</if>
+           <if test="status != null">#{status},</if>
+       </trim>
+   </insert>
+   <select id="selectInterfaceAssertLogList" resultType="org.alex.platform.pojo.InterfaceAssertLogVO" parameterType="org.alex.platform.pojo.InterfaceAssertLogDO">
+       select `assert_log_id`,`execute_log_id`,`assert_name`,`case_id`,`type`,`expression`,`operator`,
+       `excepted_result`,`order`,`actual_result`,`status`
+       from `t_interface_assert_log`
+       <where>
+           <if test="assertLogId != null">and `assert_log_id` = #{assertLogId},</if>
+           <if test="executeLogId != null">and `execute_log_id` = #{executeLogId},</if>
+           <if test="caseId != null">and `case_id` = #{caseId},</if>
+           <if test="assertName != null">and `assert_name` = #{assertName},</if>
+           <if test="type != null">and `type` = #{type},</if>
+           <if test="expression != null">and `expression` = #{expression},</if>
+           <if test="operator != null">and `operator` = #{operator},</if>
+           <if test="exceptedResult != null">and `excepted_result` = #{exceptedResult},</if>
+           <if test="actualResult != null">and `actual_result` = #{actualResult},</if>
+           <if test="order != null">and `order` = #{order},</if>
+           <if test="status != null">and `status` = #{status},</if>
+       </where>
+   </select>
+</mapper>

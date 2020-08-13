@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface InterfaceCaseExecuteLogMapper {
-    void insertExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
+    Integer insertExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
     List<InterfaceCaseExecuteLogListVO> selectExecuteList(InterfaceCaseExecuteLogListDTO executeLogListDTO);
     InterfaceCaseExecuteLogVO selectExecute(Integer executeId);
 }

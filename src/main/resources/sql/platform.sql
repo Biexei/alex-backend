@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2020-08-05 17:06:07
+Date: 2020-08-13 17:00:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -48,6 +48,29 @@ INSERT INTO `t_interface_assert` VALUES ('13', '1', '23', '1', '1', '1', '1', '1
 INSERT INTO `t_interface_assert` VALUES ('14', '1', '28', '1', '1', '1', '1', '1');
 INSERT INTO `t_interface_assert` VALUES ('15', '1', '28', '1', '1', '1', '1', '2');
 INSERT INTO `t_interface_assert` VALUES ('16', '1', '29', '1', '1', '1', '1', '1');
+
+-- ----------------------------
+-- Table structure for t_interface_assert_log
+-- ----------------------------
+DROP TABLE IF EXISTS `t_interface_assert_log`;
+CREATE TABLE `t_interface_assert_log` (
+  `assert_log_id` int NOT NULL AUTO_INCREMENT COMMENT '断言日志id',
+  `execute_log_id` int DEFAULT NULL COMMENT '执行日志id',
+  `assert_name` varchar(100) DEFAULT NULL COMMENT '断言名称',
+  `case_id` int DEFAULT NULL COMMENT '测试用例编号id',
+  `type` tinyint DEFAULT NULL COMMENT '提取数据类型   0json/1html/2header/3responsecode',
+  `expression` varchar(50) DEFAULT NULL COMMENT '提取表达式',
+  `operator` tinyint DEFAULT NULL COMMENT '操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re',
+  `excepted_result` varchar(1000) DEFAULT NULL COMMENT '预期结果',
+  `order` int DEFAULT NULL COMMENT '排序 执行断言时按照该字段排序',
+  `actual_result` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '实际运行结果',
+  `status` tinyint DEFAULT NULL COMMENT '是否通过 0通过 1失败',
+  PRIMARY KEY (`assert_log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_interface_assert_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_interface_case
@@ -114,18 +137,17 @@ CREATE TABLE `t_interface_case_execute_log` (
   `response_headers` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '响应头',
   `response_body` text COMMENT '响应正文',
   `executer` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '执行人',
-  `assert_extract_expression` varchar(50) DEFAULT NULL COMMENT '提取表达时',
-  `assert_operator` tinyint DEFAULT NULL COMMENT '操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re',
-  `assert_excepted_result` varchar(1000) DEFAULT NULL COMMENT '预期结果',
-  `status` tinyint DEFAULT NULL COMMENT '运行结果',
+  `status` tinyint DEFAULT NULL COMMENT '运行结果 0成功 1失败 2错误',
   `created_time` datetime DEFAULT NULL COMMENT '执行时间',
   `error_message` varchar(1000) DEFAULT NULL COMMENT '执行失败错误信息',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case_execute_log
 -- ----------------------------
+INSERT INTO `t_interface_case_execute_log` VALUES ('1', '6', 'desc', 'headers', 'params', 'data', 'json', '200', 'rheader', 'rbody', 'executer', '1', '2020-08-06 16:47:09', '1');
+INSERT INTO `t_interface_case_execute_log` VALUES ('2', null, 'case desc', '{\"a\":\"1\",\"b\":\"2\"}', null, null, null, null, null, null, null, null, '2020-08-06 16:56:34', null);
 
 -- ----------------------------
 -- Table structure for t_module
@@ -169,6 +191,22 @@ CREATE TABLE `t_project` (
 INSERT INTO `t_project` VALUES ('2', '项目名称79', null, 'http://www.baidu.com/', null, null);
 INSERT INTO `t_project` VALUES ('4', '项目名称1', '123', 'http://www.baidu.com/', '2020-07-29 16:26:54', '2020-07-29 16:26:58');
 INSERT INTO `t_project` VALUES ('6', '项目名称3', null, 'http://www.baidu.com/', null, null);
+
+-- ----------------------------
+-- Table structure for t_setting
+-- ----------------------------
+DROP TABLE IF EXISTS `t_setting`;
+CREATE TABLE `t_setting` (
+  `setting_id` int NOT NULL AUTO_INCREMENT COMMENT '配置编号',
+  `key` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '配置项名称',
+  `value` varchar(50) DEFAULT NULL,
+  `desc` varchar(50) DEFAULT NULL COMMENT '配置项描述',
+  PRIMARY KEY (`setting_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_setting
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_user

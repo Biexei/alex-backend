@@ -15,9 +15,6 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
     private String responseHeaders;
     private String responseBody;
     private String executer;
-    private String assertExtractExpression;
-    private Byte assertOperator;
-    private String assertExceptedResult;
     private Byte status;
     private Date createdTime;
     private String errorMessage;
@@ -110,30 +107,6 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
         this.executer = executer;
     }
 
-    public String getAssertExtractExpression() {
-        return assertExtractExpression;
-    }
-
-    public void setAssertExtractExpression(String assertExtractExpression) {
-        this.assertExtractExpression = assertExtractExpression;
-    }
-
-    public Byte getAssertOperator() {
-        return assertOperator;
-    }
-
-    public void setAssertOperator(Byte assertOperator) {
-        this.assertOperator = assertOperator;
-    }
-
-    public String getAssertExceptedResult() {
-        return assertExceptedResult;
-    }
-
-    public void setAssertExceptedResult(String assertExceptedResult) {
-        this.assertExceptedResult = assertExceptedResult;
-    }
-
     public Byte getStatus() {
         return status;
     }
@@ -156,28 +129,5 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
-    }
-
-    @Override
-    public String toString() {
-        return "InterfaceCaseExecuteLogDO{" +
-                "id=" + id +
-                ", caseId=" + caseId +
-                ", caseDesc='" + caseDesc + '\'' +
-                ", requestHeaders='" + requestHeaders + '\'' +
-                ", requestParams='" + requestParams + '\'' +
-                ", requestData='" + requestData + '\'' +
-                ", requestJson='" + requestJson + '\'' +
-                ", responseCode=" + responseCode +
-                ", responseHeaders='" + responseHeaders + '\'' +
-                ", responseBody='" + responseBody + '\'' +
-                ", executer='" + executer + '\'' +
-                ", assertExtractExpression='" + assertExtractExpression + '\'' +
-                ", assertOperator=" + assertOperator +
-                ", assertExceptedResult='" + assertExceptedResult + '\'' +
-                ", status=" + status +
-                ", createdTime=" + createdTime +
-                ", errorMessage='" + errorMessage + '\'' +
-                '}';
     }
 }

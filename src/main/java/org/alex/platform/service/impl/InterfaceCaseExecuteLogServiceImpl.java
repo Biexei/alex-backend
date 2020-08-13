@@ -17,8 +17,9 @@ public class InterfaceCaseExecuteLogServiceImpl implements InterfaceCaseExecuteL
     InterfaceCaseExecuteLogMapper mapper;
 
     @Override
-    public void saveExecuteLog(InterfaceCaseExecuteLogDO executeLogDO) {
+    public InterfaceCaseExecuteLogDO saveExecuteLog(InterfaceCaseExecuteLogDO executeLogDO) {
         mapper.insertExecuteLog(executeLogDO);
+        return executeLogDO;
     }
 
     @Override

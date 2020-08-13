@@ -3,7 +3,6 @@ package org.alex.platform.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
-import org.alex.platform.mapper.InterfaceAssertMapper;
 import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.mapper.ModuleMapper;
 import org.alex.platform.pojo.*;
@@ -132,9 +131,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         logDo.setResponseBody();
         // 后续加入拦截器后根据token反查
         logDo.setExecuter();
-        logDo.setAssertExtractExpression();
-        logDo.setAssertOperator();
-        logDo.setAssertExceptedResult();
         logDo.setStatus();
         logDo.setCreatedTime(new Date());
         logDo.setErrorMessage();
