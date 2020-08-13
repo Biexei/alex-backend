@@ -1,19 +1,25 @@
 package org.alex.platform.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ParseException;
 import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.mapper.ModuleMapper;
 import org.alex.platform.pojo.*;
-import org.alex.platform.service.InterfaceAssertService;
-import org.alex.platform.service.InterfaceCaseExecuteLogService;
-import org.alex.platform.service.InterfaceCaseService;
-import org.alex.platform.service.ProjectService;
+import org.alex.platform.service.*;
+import org.alex.platform.util.AssertUtil;
+import org.alex.platform.util.ParseUtil;
+import org.alex.platform.util.RestUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -27,9 +33,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     @Autowired
     InterfaceCaseService interfaceCaseService;
     @Autowired
-    InterfaceCaseExecuteLogService logService;
+    InterfaceCaseExecuteLogService executeLogService;
     @Autowired
     ProjectService projectService;
+    @Autowired
+    InterfaceAssertLogService assertLogService;
 
     @Override
     public InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException {
@@ -102,6 +110,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
     @Override
     public void executeInterfaceCase(Integer interfaceCaseId) {
+        String exceptionMessage = null;
+        // 运行结果 0成功 1失败 2错误
+        Byte caseStatus = 1;
+
         // 1.获取case详情
         InterfaceCaseInfoVO interfaceCaseInfoVO = this.findInterfaceCaseByCaseId(interfaceCaseId);
         Integer projectId = interfaceCaseInfoVO.getProjectId();
@@ -116,25 +128,160 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         String json = interfaceCaseInfoVO.getJson();
         String creater = interfaceCaseInfoVO.getCreater();
         Date createdTime = interfaceCaseInfoVO.getCreatedTime();
+        Byte method = interfaceCaseInfoVO.getMethod();
         List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
+
         // 2.执行case
-        // 3.保存日志，先将status设置成1失败，待该日志关联的断言日志都成功后再修改状态为0成功
-        InterfaceCaseExecuteLogDO logDo = new InterfaceCaseExecuteLogDO();
-        logDo.setCaseId(interfaceCaseId);
-        logDo.setCaseDesc(desc);
-        logDo.setRequestHeaders(headers);
-        logDo.setRequestParams(params);
-        logDo.setRequestData(data);
-        logDo.setRequestJson(json);
-        logDo.setResponseCode();
-        logDo.setResponseHeaders();
-        logDo.setResponseBody();
-        // 后续加入拦截器后根据token反查
-        logDo.setExecuter();
-        logDo.setStatus();
-        logDo.setCreatedTime(new Date());
-        logDo.setErrorMessage();
-        logService.saveExecuteLog(logDo);
-        // 4.保存断言日志表，获取运行日志自增id然后在断言日志表中写入断言信息，断言日志都成功后再将日志修改状态为0成功
+        // a.获取请求方式  0get,1post,2update,3put,4delete
+        ResponseEntity responseEntity = null;
+        try {
+            HashMap headersMap = JSONObject.parseObject(headers, HashMap.class);
+            if (method == 0) { //get
+                if (params == null || "".equals(params)) { // 若请求参数为空
+                    responseEntity = RestUtil.get(url, headersMap);
+                } else { // 若请求参数不为空
+                    HashMap paramsMap = JSONObject.parseObject(params, HashMap.class);
+                    responseEntity = RestUtil.get(url, headersMap, paramsMap);
+                }
+            } else if (method == 1) { //post
+                if (StringUtils.isEmpty(json) && StringUtils.isEmpty(data)) {
+                    throw new BusinessException("data/json只能任传其一");
+                }
+                if (StringUtils.isNotEmpty(json) && StringUtils.isNotEmpty(data)) {
+                    throw new BusinessException("data/json只能任传其一");
+                }
+                if (StringUtils.isNotEmpty(params)) {
+                    if (StringUtils.isNotEmpty(data)) {
+                        HashMap paramsMap = JSONObject.parseObject(params, HashMap.class);
+                        HashMap dataMap = JSONObject.parseObject(data, HashMap.class);
+                        responseEntity = RestUtil.post(url, headersMap, paramsMap, dataMap);
+                    } else {
+                        new BusinessException("请求方式为post时，且params不为空时则data不能为空");
+                    }
+                } else {
+                    if (StringUtils.isNotEmpty(data)) { // data为空 json不为空
+                        HashMap dataMap = JSONObject.parseObject(data, HashMap.class);
+                        responseEntity = RestUtil.postData(url, headersMap, dataMap);
+                    } else { // data不为空 json为空
+                        HashMap jsonMap = JSONObject.parseObject(json, HashMap.class);
+                        responseEntity = RestUtil.postJson(url, headersMap, jsonMap);
+                    }
+                }
+            } else if (method == 2) { //update
+                throw new BusinessException("暂不支持update请求方式");
+            } else if (method == 3) { //put
+                throw new BusinessException("暂不支持put请求方式");
+            } else if (method == 4) { //delete
+                throw new BusinessException("暂不支持delete请求方式");
+            } else {
+                throw new BusinessException("不支持的请求方式");
+            }
+        } catch (Exception e) {
+            // 出现异常则追加错误信息，并将case状态设置为2错误
+            caseStatus = 2;
+            exceptionMessage = e.getMessage();
+        }
+
+        Integer responseCode = null;
+        String responseHeaders = null;
+        String responseBody = null;
+        if (responseEntity == null) {
+            ~~补充为空处理
+        } else {
+            // 只有接口调用未出现异常才统计code、header、body
+            if (responseEntity != null) {
+                responseCode = RestUtil.code(responseEntity);
+                responseHeaders = RestUtil.headers(responseEntity);
+                responseBody = RestUtil.body(responseEntity);
+                // 3.保存日志，先将status设置成1失败，待该日志关联的断言日志都成功后再修改状态为0成功
+                InterfaceCaseExecuteLogDO executeLogDO = new InterfaceCaseExecuteLogDO();
+                executeLogDO.setCaseId(interfaceCaseId);
+                executeLogDO.setCaseDesc(desc);
+                executeLogDO.setRequestHeaders(headers);
+                executeLogDO.setRequestParams(params);
+                executeLogDO.setRequestData(data);
+                executeLogDO.setRequestJson(json);
+                executeLogDO.setResponseCode(responseCode);
+                executeLogDO.setResponseHeaders(responseHeaders);
+                executeLogDO.setResponseBody(responseBody);
+                // 后续加入拦截器后根据token反查
+                executeLogDO.setExecuter("后续加入拦截器后根据token反查");
+                executeLogDO.setStatus(caseStatus);
+                executeLogDO.setCreatedTime(new Date());
+                executeLogDO.setErrorMessage(exceptionMessage.toString());
+                InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
+                // 4.保存断言日志表，获取运行日志自增id然后在断言日志表中写入断言信息，断言日志都成功后再将日志修改状态为0成功
+                // 日志自增id
+                int executedLogId = executedLogDO.getId();
+                // 遍历用例关联的断言,并写入断言日志表
+                // 获取每次执行断言的状态
+                List<Byte> statusList = new ArrayList<>();
+                for (InterfaceAssertVO interfaceAssertVO : asserts) {
+                    // 获取断言基本信息
+                    Integer assertId = interfaceAssertVO.getAssertId();
+                    String assertName = interfaceAssertVO.getAssertName();
+                    Byte type = interfaceAssertVO.getType();
+                    String expression = interfaceAssertVO.getExpression();
+                    Byte operator = interfaceAssertVO.getOperator();
+                    String exceptedResult = interfaceAssertVO.getExceptedResult();
+                    Integer order = interfaceAssertVO.getOrder();
+                    // 写入断言日志表
+                    InterfaceAssertLogDO assertLogDO = new InterfaceAssertLogDO();
+                    assertLogDO.setExecuteLogId(executedLogId);
+                    assertLogDO.setCaseId(interfaceCaseId);
+                    assertLogDO.setAssertName(assertName);
+                    assertLogDO.setAssertId(assertId);
+                    assertLogDO.setType(type);
+                    assertLogDO.setExpression(expression);
+                    assertLogDO.setOperator(operator);
+                    assertLogDO.setExceptedResult(exceptedResult);
+                    assertLogDO.setOrder(order);
+                    // 根据type 提取数据类型   0json/1html/2header/3responseCode 来制定断言方案
+                    String actualResult = null;
+                    // 是否通过 0通过 1失败 2错误
+                    Byte assertStatus = 0;
+                    // 断言出错异常信息
+                    String assertErrorMessage = null;
+                    try {
+                        if (type == 0) { // json
+                            actualResult = ParseUtil.parseJson(responseBody, expression);
+                        } else if (type == 1) { // html
+                            actualResult = ParseUtil.parseXml(responseBody, expression);
+                        } else if (type == 2) { // header
+                            actualResult = ParseUtil.parseHttpHeader(responseEntity, expression);
+                        } else if (type == 3) { // responseCode
+                            actualResult = String.valueOf(ParseUtil.parseHttpCode(responseEntity));
+                        }
+                        System.out.println("预期结果为：" + exceptedResult);
+                        System.out.println("操作符为：" + operator);
+                        System.out.println("实际结果为：" + actualResult);
+                        boolean isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
+                        if (isPass) {
+                            assertStatus = 0;
+                        } else {
+                            assertStatus = 1;
+                        }
+                    } catch (ParseException | BusinessException e) {
+                        assertStatus = 2;
+                        assertErrorMessage = e.getMessage();
+                    }
+                    assertLogDO.setActualResult(actualResult);
+                    assertLogDO.setStatus(assertStatus);
+                    // 将每次断言status都加入集合
+                    statusList.add(assertStatus);
+                    assertLogDO.setErrorMessage(assertErrorMessage);
+                    assertLogService.saveInterfaceAssertLog(assertLogDO);
+                }
+                if (statusList.contains(2)) { // 只要出现2，则用例算错误 status = 2
+                    ~~ 将用例执行日志status修改为2
+                } else { // 没有出现2，且没有出现1， 则用例通过 status = 0
+                    if (!statusList.contains(1)) {
+                        ~~ 将用例执行日志status修改为0
+                    } else { // 没有出现2，且没有出现0， 则用例通过 status = 1
+                        ~~ 将用例执行日志status修改为1
+                    }
+                }
+            }
+        }
     }
 }

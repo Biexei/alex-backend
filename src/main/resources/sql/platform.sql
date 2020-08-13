@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
-Source Server Version : 80020
+Source Server         : localhost
+Source Server Version : 80019
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80020
+Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2020-08-13 17:00:33
+Date: 2020-08-13 23:23:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,6 +56,7 @@ DROP TABLE IF EXISTS `t_interface_assert_log`;
 CREATE TABLE `t_interface_assert_log` (
   `assert_log_id` int NOT NULL AUTO_INCREMENT COMMENT '断言日志id',
   `execute_log_id` int DEFAULT NULL COMMENT '执行日志id',
+  `assert_id` int DEFAULT NULL COMMENT '断言id',
   `assert_name` varchar(100) DEFAULT NULL COMMENT '断言名称',
   `case_id` int DEFAULT NULL COMMENT '测试用例编号id',
   `type` tinyint DEFAULT NULL COMMENT '提取数据类型   0json/1html/2header/3responsecode',
@@ -64,13 +65,15 @@ CREATE TABLE `t_interface_assert_log` (
   `excepted_result` varchar(1000) DEFAULT NULL COMMENT '预期结果',
   `order` int DEFAULT NULL COMMENT '排序 执行断言时按照该字段排序',
   `actual_result` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '实际运行结果',
-  `status` tinyint DEFAULT NULL COMMENT '是否通过 0通过 1失败',
+  `status` tinyint DEFAULT NULL COMMENT '是否通过 0通过 1失败 2错误',
+  `error_message` varchar(1000) DEFAULT NULL COMMENT '断言出错异常信息',
   PRIMARY KEY (`assert_log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert_log
 -- ----------------------------
+INSERT INTO `t_interface_assert_log` VALUES ('1', '1', null, '1132', '1', null, null, null, null, null, '123', null, null);
 
 -- ----------------------------
 -- Table structure for t_interface_case
@@ -139,7 +142,7 @@ CREATE TABLE `t_interface_case_execute_log` (
   `executer` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '执行人',
   `status` tinyint DEFAULT NULL COMMENT '运行结果 0成功 1失败 2错误',
   `created_time` datetime DEFAULT NULL COMMENT '执行时间',
-  `error_message` varchar(1000) DEFAULT NULL COMMENT '执行失败错误信息',
+  `error_message` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '执行失败异常错误信息',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 

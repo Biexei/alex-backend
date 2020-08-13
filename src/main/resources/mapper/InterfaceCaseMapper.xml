@@ -66,7 +66,7 @@
 
     <select id="selectInterfaceCaseList" parameterType="org.alex.platform.pojo.InterfaceCaseListDTO" resultType="org.alex.platform.pojo.InterfaceCaseListVO">
         select `icase`.`case_id`, `icase`.`project_id` `project_id`, `icase`.`module_id` `module_id`, `project`.`name` `project_name`,
-        `module`.`name` `module_name`,`icase`.`desc`, `icase`.`url`, `icase`.`level`, `icase`.`creater`
+        `module`.`name` `module_name`,`icase`.`desc`,`icase`.`method`, `icase`.`url`, `icase`.`level`, `icase`.`creater`
         from `t_interface_case` as `icase`
         LEFT JOIN `t_interface_assert` as `assert` on `icase`.`case_id` = `assert`.`case_id`
         LEFT JOIN `t_module` as `module` on `icase`.`module_id` = `module`.`module_id`
@@ -77,6 +77,7 @@
             <if test="projectName != null">and `project`.`name` like concat('%',#{projectName},'%')</if>
             <if test="moduleId != null">and `icase`.`module_id` = #{moduleId}</if>
             <if test="moduleName != null">and `module`.`name` like concat('%',#{moduleName},'%')</if>
+            <if test="method != null">and `icase`.`method` = #{method}</if>
             <if test="desc != null">and `icase`.`desc` like concat('%',#{desc},'%')</if>
             <if test="url != null">and `icase`.`url` like concat('%',#{url},'%')</if>
             <if test="level != null">and `icase`.`level` = #{level}</if>
@@ -112,7 +113,7 @@
     </resultMap>
 
     <select id="selectInterfaceCaseByCaseId" resultMap="interfaceCaseInfo" parameterType="Integer">
-        select `icase`.`project_id`, `icase`.`module_id`, `icase`.`case_id`, `icase`.`url`, `icase`.`desc`,
+        select `icase`.`project_id`, `icase`.`module_id`, `icase`.`case_id`, `icase`.`url`, `icase`.method, `icase`.`desc`,
             `icase`.`level`, `icase`.`doc`, `icase`.`headers`, `icase`.`params`, `icase`.`data`, `icase`.`json`,
             `icase`.`creater`, `icase`.`created_time`, `assert`.`assert_id`, `assert`.`assert_name`, `assert`.`type`, `assert`.`expression`,
             `assert`.`operator`, `assert`.`excepted_result`, `assert`.`order`

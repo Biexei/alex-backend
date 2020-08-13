@@ -9,6 +9,7 @@ public class InterfaceCaseInfoVO implements Serializable {
     private Integer moduleId;
     private Integer caseId;
     private String url;
+    private Byte method;
     private String desc;
     private Byte level;
     private String doc;
@@ -19,6 +20,27 @@ public class InterfaceCaseInfoVO implements Serializable {
     private String creater;
     private Date createdTime;
     private List<InterfaceAssertVO> asserts;
+
+    @Override
+    public String toString() {
+        return "InterfaceCaseInfoVO{" +
+                "projectId=" + projectId +
+                ", moduleId=" + moduleId +
+                ", caseId=" + caseId +
+                ", url='" + url + '\'' +
+                ", method=" + method +
+                ", desc='" + desc + '\'' +
+                ", level=" + level +
+                ", doc='" + doc + '\'' +
+                ", headers='" + headers + '\'' +
+                ", params='" + params + '\'' +
+                ", data='" + data + '\'' +
+                ", json='" + json + '\'' +
+                ", creater='" + creater + '\'' +
+                ", createdTime=" + createdTime +
+                ", asserts=" + asserts +
+                '}';
+    }
 
     public Integer getProjectId() {
         return projectId;
@@ -50,6 +72,14 @@ public class InterfaceCaseInfoVO implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Byte getMethod() {
+        return method;
+    }
+
+    public void setMethod(Byte method) {
+        this.method = method;
     }
 
     public String getDesc() {
@@ -130,25 +160,5 @@ public class InterfaceCaseInfoVO implements Serializable {
 
     public void setAsserts(List<InterfaceAssertVO> asserts) {
         this.asserts = asserts;
-    }
-
-    @Override
-    public String toString() {
-        return "InterfaceCaseInfoVO{" +
-                "projectId=" + projectId +
-                ", moduleId=" + moduleId +
-                ", caseId=" + caseId +
-                ", url='" + url + '\'' +
-                ", desc='" + desc + '\'' +
-                ", level=" + level +
-                ", doc='" + doc + '\'' +
-                ", headers='" + headers + '\'' +
-                ", params='" + params + '\'' +
-                ", data='" + data + '\'' +
-                ", json='" + json + '\'' +
-                ", creater='" + creater + '\'' +
-                ", createdTime=" + createdTime +
-                ", asserts=" + asserts +
-                '}';
     }
 }

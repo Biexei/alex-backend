@@ -8,6 +8,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import java.io.StringReader;
@@ -58,11 +59,16 @@ public class ParseUtil {
      * @throws ParseException
      */
     public static String parseHttpHeader(ResponseEntity entity, String headerName) throws ParseException {
-        Map<String, String> headerMap = entity.getHeaders().toSingleValueMap();
+        HttpHeaders headerMap = entity.getHeaders();
         if (!headerMap.containsKey(headerName)) {
             throw new ParseException("响应头中未找到该元素，请确保header无误");
         }
-        return JSON.toJSONString(entity.getHeaders().get(headerName));
+        // 若header长度为1则返回string to json字符串
+        if (entity.getHeaders().get(headerName).size() == 1) {
+            return JSON.toJSONString(entity.getHeaders().get(headerName).get(0));
+        } else { //若header长度为1则返回array to json字符串
+            return JSON.toJSONString(entity.getHeaders().get(headerName));
+        }
     }
 
     /**

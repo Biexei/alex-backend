@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class InterfaceAssertLogDO implements Serializable {
     private Integer assertLogId;
     private Integer executeLogId;
+    private Integer assertId;
     private Integer caseId;
     private String assertName;
     private Byte type;
@@ -14,6 +15,7 @@ public class InterfaceAssertLogDO implements Serializable {
     private String actualResult;
     private Integer order;
     private Byte status;
+    private String errorMessage;
 
     public Integer getAssertLogId() {
         return assertLogId;
@@ -29,6 +31,14 @@ public class InterfaceAssertLogDO implements Serializable {
 
     public void setExecuteLogId(Integer executeLogId) {
         this.executeLogId = executeLogId;
+    }
+
+    public Integer getAssertId() {
+        return assertId;
+    }
+
+    public void setAssertId(Integer assertId) {
+        this.assertId = assertId;
     }
 
     public Integer getCaseId() {
@@ -103,11 +113,20 @@ public class InterfaceAssertLogDO implements Serializable {
         this.status = status;
     }
 
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
     @Override
     public String toString() {
         return "InterfaceAssertLogDO{" +
                 "assertLogId=" + assertLogId +
                 ", executeLogId=" + executeLogId +
+                ", assertId=" + assertId +
                 ", caseId=" + caseId +
                 ", assertName='" + assertName + '\'' +
                 ", type=" + type +
@@ -117,6 +136,7 @@ public class InterfaceAssertLogDO implements Serializable {
                 ", actualResult='" + actualResult + '\'' +
                 ", order=" + order +
                 ", status=" + status +
+                ", errorMessage='" + errorMessage + '\'' +
                 '}';
     }
 }

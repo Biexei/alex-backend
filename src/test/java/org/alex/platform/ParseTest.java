@@ -50,13 +50,11 @@ public class ParseTest {
     }
 
     @Test
-    @Ignore
     public void testParseHeader() throws Exception {
-        System.out.println(ParseUtil.parseHttpHeader(RestUtil.get("http://www.meidekan.com/"), "Set-Cookie"));
+        System.out.println(ParseUtil.parseHttpHeader(RestUtil.get("http://www.meidekan.com/", null), "Set-Cookie"));
     }
 
     @Test()
-    @Ignore
     public void testParaseJson() {
         String json = "\n" +
                 "{\n" +
@@ -96,6 +94,7 @@ public class ParseTest {
                 "    },\n" +
                 "    \"expensive\": 10\n" +
                 "}";
+        String s = "";
         System.out.println(ParseUtil.parseJson(json, "$..store11"));
     }
 

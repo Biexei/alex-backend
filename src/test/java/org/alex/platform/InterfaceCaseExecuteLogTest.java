@@ -1,6 +1,7 @@
 package org.alex.platform;
 
 import org.alex.platform.pojo.InterfaceAssertLogDO;
+import org.alex.platform.service.InterfaceAssertLogService;
 import org.alex.platform.service.impl.InterfaceAssertLogServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@SpringBootTest
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class InterfaceCaseExecuteLogTest {
     @Autowired
-    InterfaceAssertLogServiceImpl assertLogService;
+    InterfaceAssertLogService assertLogService;
     @Test
     public void doTest(){
         InterfaceAssertLogDO assertLog = new InterfaceAssertLogDO();

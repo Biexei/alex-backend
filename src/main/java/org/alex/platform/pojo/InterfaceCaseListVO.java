@@ -8,10 +8,27 @@ public class InterfaceCaseListVO implements Serializable {
     private String projectName;
     private Integer moduleId;
     private String moduleName;
+    private Byte method;
     private String desc;
     private String url;
     private Byte level;
     private String creater;
+
+    @Override
+    public String toString() {
+        return "InterfaceCaseListVO{" +
+                "caseId=" + caseId +
+                ", projectId=" + projectId +
+                ", projectName='" + projectName + '\'' +
+                ", moduleId=" + moduleId +
+                ", moduleName='" + moduleName + '\'' +
+                ", method=" + method +
+                ", desc='" + desc + '\'' +
+                ", url='" + url + '\'' +
+                ", level=" + level +
+                ", creater='" + creater + '\'' +
+                '}';
+    }
 
     public Integer getCaseId() {
         return caseId;
@@ -53,6 +70,14 @@ public class InterfaceCaseListVO implements Serializable {
         this.moduleName = moduleName;
     }
 
+    public Byte getMethod() {
+        return method;
+    }
+
+    public void setMethod(Byte method) {
+        this.method = method;
+    }
+
     public String getDesc() {
         return desc;
     }
@@ -83,20 +108,5 @@ public class InterfaceCaseListVO implements Serializable {
 
     public void setCreater(String creater) {
         this.creater = creater;
-    }
-
-    @Override
-    public String toString() {
-        return "InterfaceCaseListVO{" +
-                "caseId=" + caseId +
-                ", projectId=" + projectId +
-                ", projectName='" + projectName + '\'' +
-                ", moduleId=" + moduleId +
-                ", moduleName='" + moduleName + '\'' +
-                ", desc='" + desc + '\'' +
-                ", url='" + url + '\'' +
-                ", level=" + level +
-                ", creater='" + creater + '\'' +
-                '}';
     }
 }

@@ -68,9 +68,13 @@ public class RestUtil {
      * @param url
      * @return
      */
-    public static ResponseEntity get(String url) {
-        RestTemplate rt = RestUtil.getInstance();
-        return rt.getForEntity(url, String.class);
+    public static ResponseEntity get(String url, HashMap<String, String> headers) {
+        RestTemplate restTemplate = RestUtil.getInstance();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        if (headers != null) {
+            httpHeaders.setAll(headers);
+        }
+        return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity(httpHeaders), String.class);
     }
 
 
