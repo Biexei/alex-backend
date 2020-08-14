@@ -963,3 +963,25 @@ Caused by: org.springframework.beans.factory.BeanNotOfRequiredTypeException: Bea
 2020-08-14 16:05:07.461  INFO 13912 --- [main] org.alex.platform.InterfaceCaseTest      : Started InterfaceCaseTest in 2.949 seconds (JVM running for 3.706)
 2020-08-14 16:05:09.132  INFO 13912 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
 2020-08-14 16:05:09.135  INFO 13912 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-08-14 16:14:55.883  INFO 14148 --- [main] org.alex.platform.InterfaceCaseTest      : Starting InterfaceCaseTest on DESKTOP-F0JRBO4 with PID 14148 (started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-08-14 16:14:55.884  INFO 14148 --- [main] org.alex.platform.InterfaceCaseTest      : No active profile set, falling back to default profiles: default
+2020-08-14 16:14:56.431  INFO 14148 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-08-14 16:14:56.433  INFO 14148 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-08-14 16:14:56.467  INFO 14148 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 Redis repository interfaces.
+2020-08-14 16:14:57.026  INFO 14148 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-08-14 16:14:57.225  INFO 14148 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-08-14 16:14:57.824  INFO 14148 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-08-14 16:14:58.431  INFO 14148 --- [main] org.alex.platform.InterfaceCaseTest      : Started InterfaceCaseTest in 2.905 seconds (JVM running for 3.614)
+2020-08-14 16:14:59.867  INFO 14148 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-08-14 16:14:59.870  INFO 14148 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-08-14 16:16:04.857  INFO 4600 --- [main] org.alex.platform.InterfaceCaseTest      : Starting InterfaceCaseTest on DESKTOP-F0JRBO4 with PID 4600 (started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-08-14 16:16:04.859  INFO 4600 --- [main] org.alex.platform.InterfaceCaseTest      : No active profile set, falling back to default profiles: default
+2020-08-14 16:16:05.401  INFO 4600 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-08-14 16:16:05.403  INFO 4600 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-08-14 16:16:05.437  INFO 4600 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22ms. Found 0 Redis repository interfaces.
+2020-08-14 16:16:05.939  INFO 4600 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-08-14 16:16:06.117  INFO 4600 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-08-14 16:16:06.699  INFO 4600 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-08-14 16:16:07.314  INFO 4600 --- [main] org.alex.platform.InterfaceCaseTest      : Started InterfaceCaseTest in 2.782 seconds (JVM running for 3.469)
+2020-08-14 16:16:08.261  INFO 4600 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-08-14 16:16:08.264  INFO 4600 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed

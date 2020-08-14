@@ -17,6 +17,6 @@ public class InterfaceCaseTest {
     InterfaceCaseService service;
     @Test
     public void doTest(){
-        service.executeInterfaceCase(6);
+        service.executeInterfaceCase(7);
     }
 }
