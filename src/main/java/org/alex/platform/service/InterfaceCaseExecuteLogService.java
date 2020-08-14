@@ -15,4 +15,5 @@ public interface InterfaceCaseExecuteLogService {
     PageInfo<InterfaceCaseExecuteLogListVO> findExecuteList(InterfaceCaseExecuteLogListDTO executeLogListDTO,
                                                             Integer pageNum, Integer pageSize);
     InterfaceCaseExecuteLogVO findExecute(Integer executeId);
+    void modifyExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
 }

@@ -63,4 +63,23 @@
         from `t_interface_case_execute_log`
         where id = #{id}
     </select>
+    <update id="updateExecuteLog" parameterType="org.alex.platform.pojo.InterfaceCaseExecuteLogDO">
+        update `t_interface_case_execute_log`
+        <set>
+            <if test="caseId != null">`case_id` = #{caseId},</if>
+            <if test="caseDesc != null">`case_desc` = #{caseDesc},</if>
+            <if test="requestHeaders != null">`request_headers` = #{requestHeaders},</if>
+            <if test="requestParams != null">`request_params` = #{requestParams},</if>
+            <if test="requestData != null">`request_data` = #{requestData},</if>
+            <if test="requestJson != null">`request_json` = #{requestJson},</if>
+            <if test="responseCode != null">`response_code` = #{responseCode},</if>
+            <if test="responseHeaders != null">`response_headers` = #{responseHeaders},</if>
+            <if test="responseBody != null">`response_body` = #{responseBody},</if>
+            <if test="executer != null">`executer` = #{executer},</if>
+            <if test="status != null">`status` = #{status},</if>
+            <if test="createdTime != null">`created_time` = #{createdTime},</if>
+            <if test="errorMessage != null">`error_message` = #{errorMessage},</if>
+        </set>
+        where `id` = #{id}
+    </update>
 </mapper>

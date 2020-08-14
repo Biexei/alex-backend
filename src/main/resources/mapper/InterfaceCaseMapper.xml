@@ -101,6 +101,7 @@
         <result column="case_id" property="caseId"/>
         <result column="url" property="url"/>
         <result column="desc" property="desc"/>
+        <result column="method" property="method"/>
         <result column="level" property="level"/>
         <result column="doc" property="doc"/>
         <result column="headers" property="headers"/>

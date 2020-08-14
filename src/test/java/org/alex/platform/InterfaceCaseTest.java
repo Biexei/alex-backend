@@ -1,24 +1,22 @@
 package org.alex.platform;
 
-import com.alibaba.fastjson.JSONObject;
+import org.alex.platform.service.InterfaceCaseService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FastJsonTest {
+public class InterfaceCaseTest {
+    @Autowired
+    InterfaceCaseService service;
     @Test
     public void doTest(){
-        String s1 = "123";
-        HashMap map = new HashMap();
-        map.put("name", "123");
-        map.put("sex", "男");
-        System.out.println(JSONObject.parseObject(s1, ArrayList.class));
+        service.executeInterfaceCase(6);
     }
 }

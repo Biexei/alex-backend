@@ -22,30 +22,61 @@ import java.util.regex.Pattern;
 @SpringBootTest
 public class ParseTest {
     @Test
-    @Ignore
     public void testParseXml() throws ParseException {
-        String xml =
-                "<bookstore> \n" +
-                        "  <book> \n" +
-                        "    <title lang=\"USA\">Harry Potter1</title>  \n" +
-                        "    <author>J K. Rowling1</author>  \n" +
-                        "    <year name=\"1\">20051</year>  \n" +
-                        "    <price>1000</price> \n" +
-                        "  </book>  \n" +
-                        "  <book> \n" +
-                        "    <title lang=\"cn\">Harry Potter2</title>  \n" +
-                        "    <author>J K. Rowling2</author>  \n" +
-                        "    <year name=\"1\">20053</year>  \n" +
-                        "    <price>29.992</price> \n" +
-                        "  </book>  \n" +
-                        "  <book> \n" +
-                        "    <title lang=\"zn\">Harry Potter3</title>  \n" +
-                        "    <author>J K. Rowling3</author>  \n" +
-                        "    <year>20053</year>  \n" +
-                        "    <price>29.993</price> \n" +
-                        "  </book> \n" +
-                        "</bookstore>";
-        String xpath = "//title[@lang='zn']";
+        String xml = "<html>\n" +
+                "<head>\n" +
+                "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n" +
+                "    <meta http-equiv=\"Cache-Control\" content=\"no-transform\" />\n" +
+                "    <meta http-equiv=\"Cache-Control\" content=\"no-siteapp\" />\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\">\n" +
+                "    <link rel=\"stylesheet\" href=\"http://static.meidekan.com/css/404.css\">\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<div class=\"header\">\n" +
+                "    <div class=\"indexwidth\">\n" +
+                "        <a target=\"_blank\" title=\"美德网\" href=\"http://www.meidekan.com/\" class=\"logo\"></a>\n" +
+                "        <div class=\"nav\">\n" +
+                "            <ul>\n" +
+                "                <li><a target=\"_blank\" href=\"/\">首 页</a></li>\n" +
+                "                <li><a target=\"_blank\" href=\"/yuwen/\" title=\"语文\">语文</a></li>\n" +
+                "                <li><a target=\"_blank\" href=\"/meiwen/\" title=\"美文\">美文</a></li>\n" +
+                "                <li><a target=\"_blank\" href=\"/zuowen/\" title=\"作文\">作文</a></li>\n" +
+                "                <li><a target=\"_blank\" href=\"/wenxue/\" title=\"文学\">文学</a></li>\n" +
+                "                <li><a target=\"_blank\" href=\"/gushiwen/\" title=\"古诗文\">古诗文</a></li>\n" +
+                "                <li><a target=\"_blank\" href=\"/shiyongwen/\" title=\"实用文\">实用文</a></li>\n" +
+                "                <li><a target=\"_blank\" href=\"/shiti/\" title=\"试题\">试题</a></li>\n" +
+                "                <li><a target=\"_blank\" href=\"/jiaoan/\" title=\"教案\">教案</a></li>\n" +
+                "                <li><a target=\"_blank\" href=\"/kejian/\" title=\"课件\">课件</a></li>\n" +
+                "                <li><a target=\"_blank\" href=\"/sucai/\" title=\"素材\">素材</a></li>\n" +
+                "            </ul>\n" +
+                "        </div>\n" +
+                "        <div class=\"search\">\n" +
+                "            <form action=\"#\" onsubmit=\"window.open('http'+'://so.meidekan.com/cse/search?s='+this.elements.s.value+'&q='+this.elements.q.value);return false;\" method=\"get\" target=\"_blank\">\n" +
+                "                <input type=\"hidden\" name=\"s\" value=\"17870499895628785359\">\n" +
+                "                <input type=\"text\" name=\"q\" placeholder=\"请输入关键词搜索\" class=\"searchbar\">\n" +
+                "                <input type=\"submit\" value=\"搜索\" class=\"search_results\">\n" +
+                "            </form>\n" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "</div>\n" +
+                "<div class=\"w-index\">\n" +
+                "    <div class=\"pageError\">\n" +
+                "        <div class=\"number\">404<span>Error</span></div>\n" +
+                "        <div class=\"pageError_right\">\n" +
+                "            <p>您所访问的页面找不到了！</p>\n" +
+                "            <span>\n" +
+                "\t\t</span>\n" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "</div>\n" +
+                "<div class=\"footer\">\n" +
+                "    <div class=\"foot_box\">\n" +
+                "        <p>Copyright&copy;2006-2019 <a target=\"_blank\" title=\"美德网\" href=\"http://www.meidekan.com/\">美德网</a> meidekan.com版权所有</p>\n" +
+                "    </div>\n" +
+                "</div>\n" +
+                "</body>\n" +
+                "</html>";
+        String xpath = "//a[@target='_blank']";
         System.out.println(ParseUtil.parseXml(xml, xpath));
     }
 
@@ -95,7 +126,7 @@ public class ParseTest {
                 "    \"expensive\": 10\n" +
                 "}";
         String s = "";
-        System.out.println(ParseUtil.parseJson(json, "$..store11"));
+        System.out.println(ParseUtil.parseJson(json, "$..store"));
     }
 
     @Test

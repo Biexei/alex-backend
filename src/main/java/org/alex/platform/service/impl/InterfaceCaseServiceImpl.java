@@ -112,22 +112,17 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     public void executeInterfaceCase(Integer interfaceCaseId) {
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
-        Byte caseStatus = 1;
+        Byte caseStatus = 0;
 
         // 1.获取case详情
         InterfaceCaseInfoVO interfaceCaseInfoVO = this.findInterfaceCaseByCaseId(interfaceCaseId);
         Integer projectId = interfaceCaseInfoVO.getProjectId();
-        Integer moduleId = interfaceCaseInfoVO.getModuleId();
         String url = projectService.findModulesById(projectId).getDomain() + interfaceCaseInfoVO.getUrl();
         String desc = interfaceCaseInfoVO.getDesc();
-        Byte level = interfaceCaseInfoVO.getLevel();
-        String doc = interfaceCaseInfoVO.getDoc();
         String headers = interfaceCaseInfoVO.getHeaders();
         String params = interfaceCaseInfoVO.getParams();
         String data = interfaceCaseInfoVO.getData();
         String json = interfaceCaseInfoVO.getJson();
-        String creater = interfaceCaseInfoVO.getCreater();
-        Date createdTime = interfaceCaseInfoVO.getCreatedTime();
         Byte method = interfaceCaseInfoVO.getMethod();
         List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
 
@@ -163,8 +158,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         HashMap dataMap = JSONObject.parseObject(data, HashMap.class);
                         responseEntity = RestUtil.postData(url, headersMap, dataMap);
                     } else { // data不为空 json为空
-                        HashMap jsonMap = JSONObject.parseObject(json, HashMap.class);
-                        responseEntity = RestUtil.postJson(url, headersMap, jsonMap);
+                        responseEntity = RestUtil.postJson(url, headersMap, json);
                     }
                 }
             } else if (method == 2) { //update
@@ -179,21 +173,39 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         } catch (Exception e) {
             // 出现异常则追加错误信息，并将case状态设置为2错误
             caseStatus = 2;
+            e.printStackTrace();
             exceptionMessage = e.getMessage();
         }
 
         Integer responseCode = null;
         String responseHeaders = null;
         String responseBody = null;
-        if (responseEntity == null) {
-            ~~补充为空处理
-        } else {
+
+        if (responseEntity == null) { // responseEntity == null, 则请求失败，只保存执行日志
+            // 3.保存日志
+            InterfaceCaseExecuteLogDO executeLogDO = new InterfaceCaseExecuteLogDO();
+            executeLogDO.setCaseId(interfaceCaseId);
+            executeLogDO.setCaseDesc(desc);
+            executeLogDO.setRequestHeaders(headers);
+            executeLogDO.setRequestParams(params);
+            executeLogDO.setRequestData(data);
+            executeLogDO.setRequestJson(json);
+            executeLogDO.setResponseCode(null);
+            executeLogDO.setResponseHeaders(null);
+            executeLogDO.setResponseBody(null);
+            // 后续加入拦截器后根据token反查
+            executeLogDO.setExecuter("根据token反查");
+            executeLogDO.setStatus((byte) 2);
+            executeLogDO.setCreatedTime(new Date());
+            executeLogDO.setErrorMessage(exceptionMessage);
+            executeLogService.saveExecuteLog(executeLogDO);
+        } else { //请求成功记录执行日志和断言日志
             // 只有接口调用未出现异常才统计code、header、body
             if (responseEntity != null) {
                 responseCode = RestUtil.code(responseEntity);
                 responseHeaders = RestUtil.headers(responseEntity);
                 responseBody = RestUtil.body(responseEntity);
-                // 3.保存日志，先将status设置成1失败，待该日志关联的断言日志都成功后再修改状态为0成功
+                // 3.保存日志
                 InterfaceCaseExecuteLogDO executeLogDO = new InterfaceCaseExecuteLogDO();
                 executeLogDO.setCaseId(interfaceCaseId);
                 executeLogDO.setCaseDesc(desc);
@@ -205,10 +217,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 executeLogDO.setResponseHeaders(responseHeaders);
                 executeLogDO.setResponseBody(responseBody);
                 // 后续加入拦截器后根据token反查
-                executeLogDO.setExecuter("后续加入拦截器后根据token反查");
+                executeLogDO.setExecuter("后根据token反查");
                 executeLogDO.setStatus(caseStatus);
                 executeLogDO.setCreatedTime(new Date());
-                executeLogDO.setErrorMessage(exceptionMessage.toString());
                 InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
                 // 4.保存断言日志表，获取运行日志自增id然后在断言日志表中写入断言信息，断言日志都成功后再将日志修改状态为0成功
                 // 日志自增id
@@ -272,15 +283,20 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     assertLogDO.setErrorMessage(assertErrorMessage);
                     assertLogService.saveInterfaceAssertLog(assertLogDO);
                 }
-                if (statusList.contains(2)) { // 只要出现2，则用例算错误 status = 2
-                    ~~ 将用例执行日志status修改为2
+                InterfaceCaseExecuteLogDO updateStatus = new InterfaceCaseExecuteLogDO();
+                // 上一步新增日志的自增id
+                updateStatus.setId(executedLogId);
+                if (statusList.contains((byte)2)) { // 只要出现2，则用例算错误 status = 2
+                    updateStatus.setStatus((byte) 2);
                 } else { // 没有出现2，且没有出现1， 则用例通过 status = 0
-                    if (!statusList.contains(1)) {
-                        ~~ 将用例执行日志status修改为0
+                    if (!statusList.contains((byte)1)) {
+                        updateStatus.setStatus((byte) 0);
                     } else { // 没有出现2，且没有出现0， 则用例通过 status = 1
-                        ~~ 将用例执行日志status修改为1
+                        updateStatus.setStatus((byte) 1);
                     }
                 }
+                // 根据所有断言的执行状态再去修改执行日志状态
+                executeLogService.modifyExecuteLog(updateStatus);
             }
         }
     }

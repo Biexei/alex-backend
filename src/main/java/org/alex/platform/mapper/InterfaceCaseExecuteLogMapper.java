@@ -13,4 +13,5 @@ public interface InterfaceCaseExecuteLogMapper {
     Integer insertExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
     List<InterfaceCaseExecuteLogListVO> selectExecuteList(InterfaceCaseExecuteLogListDTO executeLogListDTO);
     InterfaceCaseExecuteLogVO selectExecute(Integer executeId);
+    void updateExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
 }

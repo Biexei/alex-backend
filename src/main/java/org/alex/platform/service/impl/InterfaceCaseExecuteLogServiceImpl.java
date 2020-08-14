@@ -33,4 +33,9 @@ public class InterfaceCaseExecuteLogServiceImpl implements InterfaceCaseExecuteL
     public InterfaceCaseExecuteLogVO findExecute(Integer executeId) {
         return mapper.selectExecute(executeId);
     }
+
+    @Override
+    public void modifyExecuteLog(InterfaceCaseExecuteLogDO executeLogDO) {
+        mapper.updateExecuteLog(executeLogDO);
+    }
 }

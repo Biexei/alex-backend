@@ -33,7 +33,7 @@ public class RestUtil {
         RestTemplate restTemplate = SingleRestTemplate.INSTANCE;
         SimpleClientHttpRequestFactory sh = new SimpleClientHttpRequestFactory();
         // 1.设置代理
-        //sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)));
+        sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)));
         // 2.设置超时时长
         sh.setConnectTimeout(10 * 1000);
         sh.setReadTimeout(10 * 1000);
@@ -245,7 +245,7 @@ public class RestUtil {
      * @return
      */
     public static String body(ResponseEntity response) {
-        return JSON.toJSONString(response.getBody());
+        return response.getBody().toString();
     }
 
     /**
@@ -255,7 +255,7 @@ public class RestUtil {
      * @return
      */
     public static String headers(ResponseEntity response) {
-        return JSON.toJSONString(response.getHeaders().toSingleValueMap());
+        return JSON.toJSONString(response.getHeaders());
     }
 
     /**

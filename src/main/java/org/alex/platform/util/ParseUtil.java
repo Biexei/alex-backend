@@ -2,12 +2,19 @@ package org.alex.platform.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jayway.jsonpath.JsonPath;
 import org.alex.platform.exception.ParseException;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.TagNode;
+import org.htmlcleaner.XPatherException;
+import org.seimicrawler.xpath.JXDocument;
+import org.seimicrawler.xpath.JXNode;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
@@ -26,19 +33,32 @@ public class ParseUtil {
      * @throws ParseException
      */
     public static String parseXml(String xmlText, String xpath) throws ParseException {
-        List<String> result = new ArrayList<>();
+        // 使用更强大JsoupXpath取代dom4j
         try {
-            Document document = new SAXReader().read(new StringReader(xmlText));
-            List<Node> nodes = document.selectNodes(xpath);
-            for (Node node : nodes) {
-                result.add(node.getText());
+            JXDocument document = JXDocument.create(xmlText);
+            List<JXNode> nodes = document.selN(xpath);
+            List<String> result = new ArrayList();
+            for(JXNode node : nodes) {
+                result.add(node.toString());
             }
-        } catch (DocumentException e) {
-            throw new ParseException("xml格式错误");
+            return JSON.toJSONString(result);
         } catch (Exception e) {
-            throw new ParseException("未找到该元素，请确保xpath无误");
+            throw new ParseException("xml格式错误");
         }
-        return JSON.toJSONString(result);
+
+//        List<String> result = new ArrayList<>();
+//        try {
+//            Document document = new SAXReader().read(new StringReader(xmlText));
+//            List<Node> nodes = document.selectNodes(xpath);
+//            for (Node node : nodes) {
+//                result.add(node.getText());
+//            }
+//        } catch (DocumentException e) {
+//            throw new ParseException("xml格式错误");
+//        } catch (Exception e) {
+//            throw new ParseException("未找到该元素，请确保xpath无误");
+//        }
+//        return JSON.toJSONString(result);
     }
 
     /**
@@ -63,12 +83,7 @@ public class ParseUtil {
         if (!headerMap.containsKey(headerName)) {
             throw new ParseException("响应头中未找到该元素，请确保header无误");
         }
-        // 若header长度为1则返回string to json字符串
-        if (entity.getHeaders().get(headerName).size() == 1) {
-            return JSON.toJSONString(entity.getHeaders().get(headerName).get(0));
-        } else { //若header长度为1则返回array to json字符串
-            return JSON.toJSONString(entity.getHeaders().get(headerName));
-        }
+        return JSON.toJSONString(entity.getHeaders().get(headerName));
     }
 
     /**
