@@ -83,4 +83,10 @@ public class InterfaceCaseController {
     public Result findInterfaceCaseByCaseId(@PathVariable Integer caseId) {
         return Result.success(interfaceCaseService.findInterfaceCaseByCaseId(caseId));
     }
+
+    @GetMapping("/interface/case/execute/{caseId}")
+    public Result executeInterfaceCase(@PathVariable Integer caseId) {
+        interfaceCaseService.executeInterfaceCase(caseId);
+        return Result.success();
+    }
 }
