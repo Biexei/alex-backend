@@ -38,7 +38,7 @@ public class ParseUtil {
             JXDocument document = JXDocument.create(xmlText);
             List<JXNode> nodes = document.selN(xpath);
             List<String> result = new ArrayList();
-            for(JXNode node : nodes) {
+            for (JXNode node : nodes) {
                 result.add(node.toString());
             }
             return JSON.toJSONString(result);
@@ -73,6 +73,7 @@ public class ParseUtil {
 
     /**
      * 解析请求头
+     *
      * @param entity
      * @param headerName
      * @return
@@ -88,6 +89,7 @@ public class ParseUtil {
 
     /**
      * 解析json
+     *
      * @param jsonText
      * @param jsonPath
      * @return

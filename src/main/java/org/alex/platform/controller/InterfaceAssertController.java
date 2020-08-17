@@ -18,6 +18,7 @@ public class InterfaceAssertController {
 
     /**
      * 新增断言
+     *
      * @param interfaceAssertDO
      * @return
      */
@@ -29,6 +30,7 @@ public class InterfaceAssertController {
 
     /**
      * 修改断言
+     *
      * @param interfaceAssertDO
      * @return
      */
@@ -40,6 +42,7 @@ public class InterfaceAssertController {
 
     /**
      * 根据断言编号删除断言
+     *
      * @param assertId
      * @return
      */
@@ -51,6 +54,7 @@ public class InterfaceAssertController {
 
     /**
      * 根据用例编号删除断言
+     *
      * @param caseId
      * @return
      */

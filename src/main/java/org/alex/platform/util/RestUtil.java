@@ -33,7 +33,7 @@ public class RestUtil {
         RestTemplate restTemplate = SingleRestTemplate.INSTANCE;
         SimpleClientHttpRequestFactory sh = new SimpleClientHttpRequestFactory();
         // 1.设置代理
-        sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)));
+        // sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)));
         // 2.设置超时时长
         sh.setConnectTimeout(10 * 1000);
         sh.setReadTimeout(10 * 1000);
@@ -111,10 +111,10 @@ public class RestUtil {
             while (m.find()) {
                 String pathVariable = m.group();
                 // 判断params中是否存在pathVariable
-                if (!params.containsKey(pathVariable.substring(1, pathVariable.length()-1))) {
+                if (!params.containsKey(pathVariable.substring(1, pathVariable.length() - 1))) {
                     throw new BusinessException("params未找到该pathVariable");
                 } else {
-                    urlAfter = urlAfter.replace(pathVariable, params.remove(pathVariable.substring(1, pathVariable.length()-1)));
+                    urlAfter = urlAfter.replace(pathVariable, params.remove(pathVariable.substring(1, pathVariable.length() - 1)));
                 }
             }
             MultiValueMap paramsMap = new LinkedMultiValueMap<String, String>();

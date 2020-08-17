@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface InterfaceAssertLogMapper {
     void insertInterfaceAssertLog(InterfaceAssertLogDO interfaceAssertLogDO);
+
     List<InterfaceAssertLogVO> selectInterfaceAssertLogList(InterfaceAssertLogDTO interfaceAssertLogDTO);
 }

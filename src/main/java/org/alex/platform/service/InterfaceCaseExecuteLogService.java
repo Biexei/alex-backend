@@ -12,8 +12,11 @@ import java.util.List;
 public interface InterfaceCaseExecuteLogService {
     @Transactional
     InterfaceCaseExecuteLogDO saveExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
+
     PageInfo<InterfaceCaseExecuteLogListVO> findExecuteList(InterfaceCaseExecuteLogListDTO executeLogListDTO,
                                                             Integer pageNum, Integer pageSize);
+
     InterfaceCaseExecuteLogVO findExecute(Integer executeId);
+
     void modifyExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
 }

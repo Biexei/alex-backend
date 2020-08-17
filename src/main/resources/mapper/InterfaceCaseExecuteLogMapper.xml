@@ -47,22 +47,59 @@
         LEFT JOIN `t_module` as `module` on `case`.`module_id` = `module`.`module_id`
         <where>
             <if test="projectId != null">and `project`.`project_id` = #{projectId}</if>
-            <if test="projectName != null">and `project_name` like concat('%',#{projectName},'%')</if>
+            <if test="projectName != null">and `project`.`name` like concat('%',#{projectName},'%')</if>
             <if test="moduleId != null">and `module`.`module_id` = #{moduleId}</if>
-            <if test="moduleName != null">and `module_name` like concat('%',#{moduleName},'%')</if>
+            <if test="moduleName != null">and `module`.`name` like concat('%',#{moduleName},'%')</if>
             <if test="caseId != null">and `case`.`case_id` = #{caseId}</if>
             <if test="caseDesc != null">and `case_desc` like concat('%',#{caseDesc},'%')</if>
-            <if test="createdStartTime != null">and `created_time` &gt;= #{createdStartTime}</if>
-            <if test="createdEndTime != null">and `created_time` &lt;= #{createdEndTime}</if>
+            <if test="createdStartTime != null">and `log`.`created_time` &gt;= #{createdStartTime}</if>
+            <if test="createdEndTime != null">and `log`.`created_time` &lt;= #{createdEndTime}</if>
             <if test="status != null">and `log`.`status` = #{status}</if>
         </where>
     </select>
-    <select id="selectExecute" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceCaseExecuteLogVO">
-        select `id`,`case_id`,`case_desc`,`request_headers`,`request_params`,`request_data`,`request_json`,
-        `response_code`,`response_headers`,`response_body`,`executer`,`status`,`created_time`,`error_message`
-        from `t_interface_case_execute_log`
-        where id = #{id}
+
+
+    <resultMap id="assertList" type="org.alex.platform.pojo.InterfaceAssertLogListVO">
+        <result column="assert_name" property="assertName"/>
+        <result column="type" property="type"/>
+        <result column="expression" property="expression"/>
+        <result column="operator" property="operator"/>
+        <result column="excepted_result" property="exceptedResult"/>
+        <result column="order" property="order"/>
+        <result column="actual_result" property="actualResult"/>
+        <result column="assert_status" property="status"/>
+        <result column="assert_error_message" property="assertErrorMessage"/>
+    </resultMap>
+
+    <resultMap id="interfaceCaseExecuteVO" type="org.alex.platform.pojo.InterfaceCaseExecuteLogVO">
+        <id column="id" property="id"/>
+        <result column="case_id" property="caseId"/>
+        <result column="case_desc" property="caseDesc"/>
+        <result column="request_headers" property="requestHeaders"/>
+        <result column="request_params" property="requestParams"/>
+        <result column="request_data" property="requestData"/>
+        <result column="request_json" property="requestJson"/>
+        <result column="response_code" property="responseCode"/>
+        <result column="response_headers" property="responseHeaders"/>
+        <result column="response_body" property="responseBody"/>
+        <result column="executer" property="executer"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="error_message" property="errorMessage"/>
+        <collection property="assertList" resultMap="assertList" ofType="org.alex.platform.pojo.InterfaceAssertLogListVO"/>
+    </resultMap>
+
+    <select id="selectExecute" parameterType="Integer" resultMap="interfaceCaseExecuteVO">
+        select `elog`.`id`, `elog`.`case_id`, `elog`.`case_desc`, `elog`.`request_headers`, `elog`.`request_params`,
+        `elog`.`request_data`, `elog`.`request_json`, `elog`.`response_code`, `elog`.`response_headers`,
+        `elog`.`response_body`, `elog`.`executer`, `elog`.`status`, `elog`.`created_time`, `elog`.`error_message`,
+        `alog`.`assert_name`, `alog`.`type`, `alog`.`expression`, `alog`.`operator`, `alog`.`excepted_result`, `alog`.`order`,
+        `alog`.`actual_result`, `alog`.`status` as `assert_status`, `alog`.`error_message` as `assert_error_message`
+        from `t_interface_case_execute_log` as `elog`
+        left join `t_interface_assert_log` as `alog` on `elog`.id = `alog`.`execute_log_id`
+        where `elog`.`id` = #{executeId}
     </select>
+
     <update id="updateExecuteLog" parameterType="org.alex.platform.pojo.InterfaceCaseExecuteLogDO">
         update `t_interface_case_execute_log`
         <set>
@@ -80,6 +117,6 @@
             <if test="createdTime != null">`created_time` = #{createdTime},</if>
             <if test="errorMessage != null">`error_message` = #{errorMessage},</if>
         </set>
-        where `id` = #{id}
+        where `elog`.`id` = #{id}
     </update>
 </mapper>

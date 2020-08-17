@@ -10,5 +10,6 @@ import java.util.List;
 public interface InterfaceAssertLogService {
     @Transactional
     void saveInterfaceAssertLog(InterfaceAssertLogDO interfaceAssertLogDO);
+
     List<InterfaceAssertLogVO> findInterfaceAssertLogList(InterfaceAssertLogDTO interfaceAssertLogDTO);
 }

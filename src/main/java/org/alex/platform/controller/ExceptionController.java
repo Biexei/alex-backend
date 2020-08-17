@@ -2,6 +2,7 @@ package org.alex.platform.controller;
 
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -18,6 +19,12 @@ public class ExceptionController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExceptionController.class);
 
+    /**
+     * 自定义全局异常处理器
+     *
+     * @param e
+     * @return
+     */
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Result globalException(Exception e) {
@@ -28,8 +35,10 @@ public class ExceptionController {
             List<ObjectError> errors = be.getBindingResult().getAllErrors();
             String msg = errors.get(0).getDefaultMessage();
             return Result.fail(405, msg);
-        } else if (e instanceof BusinessException){
+        } else if (e instanceof BusinessException) {
             return Result.fail(501, e.getMessage());
+        } else if (e instanceof ParseException) {
+            return Result.fail(502, e.getMessage());
         } else {
             return Result.fail(e.getMessage());
         }

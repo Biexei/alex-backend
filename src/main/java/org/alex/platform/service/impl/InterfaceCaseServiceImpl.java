@@ -286,10 +286,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 InterfaceCaseExecuteLogDO updateStatus = new InterfaceCaseExecuteLogDO();
                 // 上一步新增日志的自增id
                 updateStatus.setId(executedLogId);
-                if (statusList.contains((byte)2)) { // 只要出现2，则用例算错误 status = 2
+                if (statusList.contains((byte) 2)) { // 只要出现2，则用例算错误 status = 2
                     updateStatus.setStatus((byte) 2);
                 } else { // 没有出现2，且没有出现1， 则用例通过 status = 0
-                    if (!statusList.contains((byte)1)) {
+                    if (!statusList.contains((byte) 1)) {
                         updateStatus.setStatus((byte) 0);
                     } else { // 没有出现2，且没有出现0， 则用例通过 status = 1
                         updateStatus.setStatus((byte) 1);

@@ -16,7 +16,7 @@ public class MD5Util {
     public static String MD5Encode(String origin, String charsetname) {
         String resultString = null;
         try {
-            resultString = new String(origin);
+            resultString = origin;
             MessageDigest md = MessageDigest.getInstance("MD5");
             if (null == charsetname || "".equals(charsetname)) {
                 resultString = byteArrayToHexString(md.digest(resultString.getBytes()));

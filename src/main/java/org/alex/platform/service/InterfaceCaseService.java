@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface InterfaceCaseService {
     @Transactional
-    InterfaceCaseDO saveInterfaceCase (InterfaceCaseDO interfaceCaseDO) throws BusinessException;
+    InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException;
 
     @Transactional
     void saveInterfaceCaseAndAssert(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;

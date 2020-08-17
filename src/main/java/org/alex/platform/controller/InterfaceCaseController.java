@@ -19,6 +19,7 @@ public class InterfaceCaseController {
 
     /**
      * 插入接口测试用例
+     *
      * @param interfaceCaseDTO
      * @return
      * @throws BusinessException
@@ -84,6 +85,12 @@ public class InterfaceCaseController {
         return Result.success(interfaceCaseService.findInterfaceCaseByCaseId(caseId));
     }
 
+    /**
+     * 执行接口测试用例
+     *
+     * @param caseId
+     * @return
+     */
     @GetMapping("/interface/case/execute/{caseId}")
     public Result executeInterfaceCase(@PathVariable Integer caseId) {
         interfaceCaseService.executeInterfaceCase(caseId);

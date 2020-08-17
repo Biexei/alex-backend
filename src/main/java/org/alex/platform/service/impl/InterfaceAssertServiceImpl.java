@@ -24,7 +24,7 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
         InterfaceAssertDO assertDO = new InterfaceAssertDO();
         assertDO.setOrder(interfaceAssertDO.getOrder());
         assertDO.setCaseId(interfaceAssertDO.getCaseId());
-        if (! interfaceAssertMapper.selectAssertList(assertDO).isEmpty()) {
+        if (!interfaceAssertMapper.selectAssertList(assertDO).isEmpty()) {
             throw new BusinessException("断言排序重复");
         }
         //判断caseId是否存在
