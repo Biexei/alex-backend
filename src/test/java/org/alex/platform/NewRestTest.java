@@ -39,5 +39,6 @@ public class NewRestTest {
         data.put("data1", "data1");
         data.put("data2", "data2");
         String json = "{\"json1\": 1}";
+        System.out.println(RestUtil.header(RestUtil.get("http://www.meidekan.com/", null, null)));
     }
 }

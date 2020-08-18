@@ -1,5 +1,7 @@
 package org.alex.platform.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,7 +12,9 @@ public class InterfaceCaseExecuteLogListDTO implements Serializable {
     private Integer moduleName;
     private Integer caseId;
     private String caseDesc;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdStartTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdEndTime;
     private Byte status;
 

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.InterfaceCaseRelyDataMapper">
+    <insert id="insertIfRelyData" parameterType="org.alex.platform.pojo.InterfaceCaseRelyDataDO">
+        insert into `t_interface_case_rely_data`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="relyCaseId != null">`rely_case_id`,</if>
+            <if test="relyName != null">`rely_name`,</if>
+            <if test="relyDesc != null">`rely_desc`,</if>
+            <if test="contentType != null">`content_type`,</if>
+            <if test="extractExpression != null">`extract_expression`,</if>
+            <if test="createdTime != null">`created_time`,</if>
+            <if test="updateTime != null">`update_time`,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="relyCaseId != null">#{relyCaseId},</if>
+            <if test="relyName != null">#{relyName},</if>
+            <if test="relyDesc != null">#{relyDesc},</if>
+            <if test="contentType != null">#{contentType},</if>
+            <if test="extractExpression != null">#{extractExpression},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <update id="updateIfRelyData" parameterType="org.alex.platform.pojo.InterfaceCaseRelyDataDO">
+        update `t_interface_case_rely_data`
+        <set>
+            <if test="relyCaseId != null">`rely_case_id` = #{relyCaseId},</if>
+            <if test="relyName != null">`rely_name` = #{relyName},</if>
+            <if test="relyDesc != null">`rely_desc` = #{relyDesc},</if>
+            <if test="contentType != null">`content_type` = #{contentType},</if>
+            <if test="extractExpression != null">`extract_expression` = #{extractExpression},</if>
+            <if test="createdTime != null">`created_time` = #{createdTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+        </set>
+        where `rely_id` = #{relyId}
+    </update>
+    <delete id="deleteIfRelyData" parameterType="Integer">
+        delete from `t_interface_case_rely_data`
+        where `rely_id` = #{relyId}
+    </delete>
+    <select id="selectIfRelyData" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceCaseRelyDataVO">
+        select `r`.`rely_id`, `r`.`rely_case_id`, `r`.`rely_name`, `r`.`rely_desc`, `r`.`content_type`,
+        `r`.`extract_expression`, `r`.`created_time`,`r`.`update_time`, `c`.`url` as `case_url`, `c`.`desc` as `case_desc`
+        from `t_interface_case_rely_data` as `r`
+        left join `t_interface_case` as `c` on `r`.`rely_case_id` = `c`.`case_id`
+        where `r`.`rely_id` = #{relyId}
+    </select>
+    <select id="selectIfRelyDataList" parameterType="org.alex.platform.pojo.InterfaceCaseRelyDataDTO" resultType="org.alex.platform.pojo.InterfaceCaseRelyDataVO">
+        select `r`.`rely_id`, `r`.`rely_case_id`, `r`.`rely_name`, `r`.`rely_desc`, `r`.`content_type`,
+        `r`.`extract_expression`, `r`.`created_time`,`r`.`update_time`, `c`.`url` as `case_url`, `c`.`desc` as `case_desc`
+        from `t_interface_case_rely_data` as `r`
+        left join `t_interface_case` as `c` on `r`.`rely_case_id` = `c`.`case_id`
+        <where>
+            <if test="relyId != null">and `r`.`rely_id` = #{relyId}</if>
+            <if test="relyCaseId != null">and `r`.`rely_case_id` = #{relyCaseId}</if>
+            <if test="relyName != null">and `r`.`rely_name` like concat('%',#{relyName},'%')</if>
+            <if test="relyDesc != null">and `r`.`rely_desc` like concat('%',#{relyDesc},'%')</if>
+            <if test="contentType != null">and `r`.`content_type` like concat('%',#{contentType},'%')</if>
+            <if test="extractExpression != null">and `r`.`extract_expression` like concat('%',#{extractExpression},'%')</if>
+            <if test="caseUrl != null">and `c`.`url` like concat('%',#{caseUrl},'%')</if>
+            <if test="caseDesc != null">and `c`.`desc` like concat('%',#{caseDesc},'%')</if>
+            <if test="createdStartTime != null">and `r`.`created_time` &gt;= #{createdStartTime}</if>
+            <if test="createdEndTime != null">and `r`.`created_time` &lt;= #{createdEndTime}</if>
+        </where>
+    </select>
+</mapper>
