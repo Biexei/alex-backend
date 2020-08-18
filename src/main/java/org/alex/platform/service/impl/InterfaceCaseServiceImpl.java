@@ -131,36 +131,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         ResponseEntity responseEntity = null;
         try {
             HashMap headersMap = JSONObject.parseObject(headers, HashMap.class);
+            HashMap paramsMap = JSONObject.parseObject(params, HashMap.class);
             if (method == 0) { //get
-                if (params == null || "".equals(params)) { // 若请求参数为空
-                    responseEntity = RestUtil.get(url, headersMap);
-                } else { // 若请求参数不为空
-                    HashMap paramsMap = JSONObject.parseObject(params, HashMap.class);
-                    responseEntity = RestUtil.get(url, headersMap, paramsMap);
-                }
+                responseEntity = RestUtil.get(url, headersMap, paramsMap);
             } else if (method == 1) { //post
-                if (StringUtils.isEmpty(json) && StringUtils.isEmpty(data)) {
-                    throw new BusinessException("data/json只能任传其一");
-                }
-                if (StringUtils.isNotEmpty(json) && StringUtils.isNotEmpty(data)) {
-                    throw new BusinessException("data/json只能任传其一");
-                }
-                if (StringUtils.isNotEmpty(params)) {
-                    if (StringUtils.isNotEmpty(data)) {
-                        HashMap paramsMap = JSONObject.parseObject(params, HashMap.class);
-                        HashMap dataMap = JSONObject.parseObject(data, HashMap.class);
-                        responseEntity = RestUtil.post(url, headersMap, paramsMap, dataMap);
-                    } else {
-                        new BusinessException("请求方式为post时，且params不为空时则data不能为空");
-                    }
-                } else {
-                    if (StringUtils.isNotEmpty(data)) { // data为空 json不为空
-                        HashMap dataMap = JSONObject.parseObject(data, HashMap.class);
-                        responseEntity = RestUtil.postData(url, headersMap, dataMap);
-                    } else { // data不为空 json为空
-                        responseEntity = RestUtil.postJson(url, headersMap, json);
-                    }
-                }
+                HashMap dataMap = JSONObject.parseObject(data, HashMap.class);
+                responseEntity = RestUtil.post(url, headersMap, paramsMap, dataMap, json);
             } else if (method == 2) { //update
                 throw new BusinessException("暂不支持update请求方式");
             } else if (method == 3) { //put

@@ -15,10 +15,7 @@ import java.util.Map;
 public class FastJsonTest {
     @Test
     public void doTest(){
-        String s1 = "123";
-        HashMap map = new HashMap();
-        map.put("name", "123");
-        map.put("sex", "男");
-        System.out.println(JSONObject.parseObject(s1, ArrayList.class));
+        String s1 = "";
+        System.out.println(JSONObject.parseObject(s1, HashMap.class));
     }
 }

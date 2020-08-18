@@ -80,11 +80,6 @@ public class ParseTest {
         System.out.println(ParseUtil.parseXml(xml, xpath));
     }
 
-    @Test
-    public void testParseHeader() throws Exception {
-        System.out.println(ParseUtil.parseHttpHeader(RestUtil.get("http://www.meidekan.com/", null), "Set-Cookie"));
-    }
-
     @Test()
     public void testParaseJson() {
         String json = "\n" +
@@ -127,22 +122,6 @@ public class ParseTest {
                 "}";
         String s = "";
         System.out.println(ParseUtil.parseJson(json, "$..store.book[0].category"));
-    }
-
-    @Test
-    @Ignore
-    public void testGet() throws BusinessException {
-        String url = "http://www.baidu.com/{name}/{class}/";
-        HashMap<String, String> map = new HashMap<>();
-        map.put("class", "126");
-        map.put("sex", "nan");
-        map.put("name", "123");
-        RestUtil.get(url, map, map);
-//        Pattern p = Pattern.compile("\\{(\\w)+\\}");
-//        Matcher m = p.matcher(url);
-//        while (m.find()) {
-//            System.out.println(m.group());
-//        }
     }
 
     @Test
