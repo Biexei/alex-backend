@@ -3,12 +3,14 @@ package org.alex.platform;
 import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
+import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.util.AssertUtil;
 import org.alex.platform.util.ParseUtil;
 import org.alex.platform.util.RestUtil;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -21,6 +23,8 @@ import java.util.regex.Pattern;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ParseTest {
+    @Autowired
+    InterfaceCaseService interfaceCaseService;
     @Test
     public void testParseXml() throws ParseException {
         String xml = "<html>\n" +
@@ -37,7 +41,7 @@ public class ParseTest {
                 "        <a target=\"_blank\" title=\"美德网\" href=\"http://www.meidekan.com/\" class=\"logo\"></a>\n" +
                 "        <div class=\"nav\">\n" +
                 "            <ul>\n" +
-                "                <li><a target=\"_blank\" href=\"/\">首 页</a></li>\n" +
+                "                <li><a target=\"_blank\" id = \"id\"href=\"/\">首 页</a></li>\n" +
                 "                <li><a target=\"_blank\" href=\"/yuwen/\" title=\"语文\">语文</a></li>\n" +
                 "                <li><a target=\"_blank\" href=\"/meiwen/\" title=\"美文\">美文</a></li>\n" +
                 "                <li><a target=\"_blank\" href=\"/zuowen/\" title=\"作文\">作文</a></li>\n" +
@@ -76,7 +80,7 @@ public class ParseTest {
                 "</div>\n" +
                 "</body>\n" +
                 "</html>";
-        String xpath = "//a[@target='_blank']";
+        String xpath = "//a[@id='id']/text()";
         System.out.println(ParseUtil.parseXml(xml, xpath));
     }
 
@@ -129,4 +133,25 @@ public class ParseTest {
         System.out.println(AssertUtil.asserts("12345a", 0, "12345a"));
     }
 
+    @Test
+    public void testRE () {
+        Pattern p = Pattern.compile("\\$\\{[a-zA-Z]+\\}");
+        Matcher matcher = p.matcher("${name}${sex}");
+        while (matcher.find()) {
+            String findStr = matcher.group();
+            String relyName = findStr.substring(2, findStr.length()-1);
+            System.out.println(relyName);
+        }
+    }
+
+    @Test
+    public void testP() throws ParseException, BusinessException {
+        interfaceCaseService.parseRelyData("asdjhajskd--${cookie[1]}");
+//        String s = "asdjhajskd--cookie[123]";
+//        Pattern pp = Pattern.compile("\\[[0-9]+\\]");
+//        Matcher mm = pp.matcher(s);
+//        while (mm.find()) {
+//            System.out.println(mm.group());
+//        }
+    }
 }

@@ -2,6 +2,7 @@ package org.alex.platform.service;
 
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ParseException;
 import org.alex.platform.pojo.*;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,5 +21,7 @@ public interface InterfaceCaseService {
 
     InterfaceCaseInfoVO findInterfaceCaseByCaseId(Integer caseId);
 
-    void executeInterfaceCase(Integer interfaceCaseId);
+    Integer executeInterfaceCase(Integer interfaceCaseId);
+
+    void parseRelyData(String s) throws BusinessException, ParseException;
 }

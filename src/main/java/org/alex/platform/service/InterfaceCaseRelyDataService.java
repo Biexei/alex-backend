@@ -18,5 +18,8 @@ public interface InterfaceCaseRelyDataService {
 
     InterfaceCaseRelyDataVO findIfRelyData(Integer relyId);
 
+    InterfaceCaseRelyDataVO findIfRelyDataByName(String relyName);
+
     void removeIfRelyData(Integer relyId);
+
 }

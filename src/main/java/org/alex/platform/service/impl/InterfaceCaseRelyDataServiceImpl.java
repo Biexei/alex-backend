@@ -21,20 +21,28 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
 
     @Override
     public void saveIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
-        // 判断caseid是否存在
+        // 判断relyCaseId是否存在
         Integer caseId = ifRelyDataDO.getRelyCaseId();
         if (ifCaseService.findInterfaceCaseByCaseId(caseId) == null) {
             throw new BusinessException("relyCaseId不存在");
+        }
+        // 判断relyName是否已存在
+        if (this.findIfRelyData(ifRelyDataDO.getRelyId()) == null) {
+            throw new BusinessException("relyName已存在");
         }
         ifRelyDataMapper.insertIfRelyData(ifRelyDataDO);
     }
 
     @Override
     public void modifyIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
-        // 判断caseid是否存在
+        // 判断relyCaseId是否存在
         Integer caseId = ifRelyDataDO.getRelyCaseId();
         if (ifCaseService.findInterfaceCaseByCaseId(caseId) == null) {
             throw new BusinessException("relyCaseId不存在");
+        }
+        // 判断relyName是否已存在
+        if (this.findIfRelyData(ifRelyDataDO.getRelyId()) == null) {
+            throw new BusinessException("relyName已存在");
         }
         ifRelyDataMapper.updateIfRelyData(ifRelyDataDO);
     }
@@ -48,7 +56,12 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
 
     @Override
     public InterfaceCaseRelyDataVO findIfRelyData(Integer relyId) {
-        return ifRelyDataMapper.selectIfRelyData(relyId);
+        return ifRelyDataMapper.selectIfRelyDataById(relyId);
+    }
+
+    @Override
+    public InterfaceCaseRelyDataVO findIfRelyDataByName(String relyName) {
+        return ifRelyDataMapper.selectIfRelyDataByName(relyName);
     }
 
     @Override

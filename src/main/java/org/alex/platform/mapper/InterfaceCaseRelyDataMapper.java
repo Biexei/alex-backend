@@ -15,7 +15,9 @@ public interface InterfaceCaseRelyDataMapper {
 
     List<InterfaceCaseRelyDataVO> selectIfRelyDataList(InterfaceCaseRelyDataDTO ifRelyDataDTO);
 
-    InterfaceCaseRelyDataVO selectIfRelyData(Integer relyId);
+    InterfaceCaseRelyDataVO selectIfRelyDataById(Integer relyId);
+
+    InterfaceCaseRelyDataVO selectIfRelyDataByName(String relyName);
 
     void deleteIfRelyData(Integer relyId);
 }

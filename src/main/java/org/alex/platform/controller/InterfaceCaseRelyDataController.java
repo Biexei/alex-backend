@@ -19,6 +19,12 @@ public class InterfaceCaseRelyDataController {
     @Autowired
     InterfaceCaseRelyDataService ifCaseService;
 
+    /**
+     * 新增数据依赖
+     * @param ifRelyDataDO
+     * @return
+     * @throws BusinessException
+     */
     @PostMapping("/interface/rely/save")
     public Result saveIfRelyData(@Validated InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
         Date date = new Date();
@@ -28,6 +34,12 @@ public class InterfaceCaseRelyDataController {
         return Result.success("新增成功");
     }
 
+    /**
+     * 修改数据依赖
+     * @param ifRelyDataDO
+     * @return
+     * @throws BusinessException
+     */
     @PostMapping("/interface/rely/modify")
     public Result modifyIfRelyData(@Validated InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
         ifRelyDataDO.setUpdateTime(new Date());
@@ -35,11 +47,23 @@ public class InterfaceCaseRelyDataController {
         return Result.success("修改成功");
     }
 
+    /**
+     * 获取数据依赖详情
+     * @param relyId
+     * @return
+     */
     @GetMapping("/interface/rely/{relyId}")
     public Result findIfRelyData(@PathVariable Integer relyId) {
         return Result.success(ifCaseService.findIfRelyData(relyId));
     }
 
+    /**
+     * 获取数据依赖列表
+     * @param ifRelyDataDTO
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/interface/rely")
     public Result findIfRelyDataList(InterfaceCaseRelyDataDTO ifRelyDataDTO, Integer pageNum, Integer pageSize) {
         int num = pageNum == null ? 1 : pageNum;
@@ -47,6 +71,11 @@ public class InterfaceCaseRelyDataController {
         return Result.success(ifCaseService.findIfRelyDataList(ifRelyDataDTO, num, size));
     }
 
+    /**
+     * 删除数据依赖
+     * @param relyId
+     * @return
+     */
     @GetMapping("/interface/rely/remove/{relyId}")
     public Result removeIfRelyData(@PathVariable Integer relyId) {
         ifCaseService.removeIfRelyData(relyId);

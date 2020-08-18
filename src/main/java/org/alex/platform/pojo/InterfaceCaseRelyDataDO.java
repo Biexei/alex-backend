@@ -1,26 +1,24 @@
 package org.alex.platform.pojo;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
 
 public class InterfaceCaseRelyDataDO implements Serializable {
     private Integer relyId;
-    @NotNull
+    @NotNull(message = "relyCaseId不能为空")
     private Integer relyCaseId;
     @NotEmpty
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 20, message = "relyName长度必须为[1,20]")
+    @Pattern(regexp = "[a-zA-Z]+", message = "relyName必须为英文")
     private String relyName;
-    @Size(max = 20)
+    @Size(max = 20, message = "relyDesc长度必须为[0,20]")
     private String relyDesc;
-    @Max(3)
-    @NotNull
+    @Max(value = 2, message = "contentType最大不能超过2")
+    @NotNull(message = "contentType不能为空")
     private Byte contentType;
-    @Size(max = 50)
-    @NotEmpty
+    @Size(max = 50, message = "extractExpression长度必须为[0,50]")
+    @NotEmpty(message = "extractExpression不能为空")
     private String extractExpression;
     private Date createdTime;
     private Date updateTime;
