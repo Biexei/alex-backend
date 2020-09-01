@@ -1,9 +1,16 @@
 package org.alex.platform;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.alex.platform.common.RelyMethod;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
-import org.alex.platform.service.InterfaceCaseService;
+import org.alex.platform.mapper.InterfaceCaseMapper;
+import org.alex.platform.mapper.ModuleMapper;
+import org.alex.platform.pojo.InterfaceCaseExecuteLogVO;
+import org.alex.platform.pojo.InterfaceCaseRelyDataDTO;
+import org.alex.platform.pojo.InterfaceCaseRelyDataVO;
+import org.alex.platform.service.*;
 import org.alex.platform.util.AssertUtil;
 import org.alex.platform.util.ParseUtil;
 import org.alex.platform.util.RestUtil;
@@ -12,11 +19,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.json.JsonbTester;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.HashMap;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +34,20 @@ import java.util.regex.Pattern;
 public class ParseTest {
     @Autowired
     InterfaceCaseService interfaceCaseService;
+    @Autowired
+    InterfaceCaseMapper interfaceCaseMapper;
+    @Autowired
+    ModuleMapper moduleMapper;
+    @Autowired
+    InterfaceAssertService interfaceAssertService;
+    @Autowired
+    InterfaceCaseExecuteLogService executeLogService;
+    @Autowired
+    ProjectService projectService;
+    @Autowired
+    InterfaceAssertLogService assertLogService;
+    @Autowired
+    InterfaceCaseRelyDataService ifCaseRelyDataService;
     @Test
     public void testParseXml() throws ParseException {
         String xml = "<html>\n" +
@@ -146,12 +169,18 @@ public class ParseTest {
 
     @Test
     public void testP() throws ParseException, BusinessException {
-        interfaceCaseService.parseRelyData("asdjhajskd--${cookie[1]}");
+        interfaceCaseService.parseRelyData("asdjhajskd--${cookie}");
 //        String s = "asdjhajskd--cookie[123]";
 //        Pattern pp = Pattern.compile("\\[[0-9]+\\]");
 //        Matcher mm = pp.matcher(s);
 //        while (mm.find()) {
 //            System.out.println(mm.group());
 //        }
+    }
+
+    @Test
+    public void testT() throws ParseException, BusinessException {
+        String s = "s123.654asdA1 ${resultcode} ${yesterday(yyyy-MM-dd HH:mm:ss)} ${cookie[1]}";
+        System.out.println(interfaceCaseService.parseRelyData(s));
     }
 }

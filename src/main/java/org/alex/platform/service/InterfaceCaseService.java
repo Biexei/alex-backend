@@ -23,5 +23,5 @@ public interface InterfaceCaseService {
 
     Integer executeInterfaceCase(Integer interfaceCaseId);
 
-    void parseRelyData(String s) throws BusinessException, ParseException;
+    String parseRelyData(String s) throws BusinessException, ParseException;
 }

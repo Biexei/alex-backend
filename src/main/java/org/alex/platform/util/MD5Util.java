@@ -24,6 +24,8 @@ public class MD5Util {
                 resultString = byteArrayToHexString(md.digest(resultString.getBytes(charsetname)));
             }
         } catch (Exception e) {
+            e.printStackTrace();
+            return "";
         }
         return resultString;
     }
