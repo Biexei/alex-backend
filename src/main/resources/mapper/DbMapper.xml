@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.DbMapper">
+    <insert id="insertDb" parameterType="org.alex.platform.pojo.DbDO">
+        insert into `t_db`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">`name`,</if>
+            <if test="type!=null">`type`,</if>
+            <if test="desc!=null">`desc`,</if>
+            <if test="url!=null">`url`,</if>
+            <if test="username!=null">`username`,</if>
+            <if test="password!=null">`password`,</if>
+            <if test="createdTime!=null">`created_time`,</if>
+            <if test="updateTime!=null">`update_time`,</if>
+            <if test="status!=null">`status`,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">#{name},</if>
+            <if test="type!=null">#{type},</if>
+            <if test="desc!=null">#{desc},</if>
+            <if test="url!=null">#{url},</if>
+            <if test="username!=null">#{username},</if>
+            <if test="password!=null">#{password},</if>
+            <if test="createdTime!=null">#{createdTime},</if>
+            <if test="updateTime!=null">#{updateTime},</if>
+            <if test="status!=null">#{status},</if>
+        </trim>
+    </insert>
+    <update id="updateDb" parameterType="org.alex.platform.pojo.DbDO">
+        update `t_db`
+        <set>
+            <if test="name!=null">`name`=#{name},</if>
+            <if test="type!=null">`type`=#{type},</if>
+            <if test="desc!=null">`desc`=#{desc},</if>
+            <if test="url!=null">`url`=#{url},</if>
+            <if test="username!=null">`username`=#{username},</if>
+            <if test="password!=null">`password`=#{password},</if>
+            <if test="createdTime!=null">`created_time`=#{createdTime},</if>
+            <if test="updateTime!=null">`update_time`=#{updateTime},</if>
+            <if test="status!=null">`status`=#{status},</if>
+        </set>
+        where `id` = #{id}
+    </update>
+    <delete id="deleteDbById" parameterType="Integer">
+        delete from `t_db` where `id` = #{id}
+    </delete>
+    <select id="selectDbById" parameterType="Integer" resultType="org.alex.platform.pojo.DbVO">
+        select `id`,`name`,`type`,`desc`,`url`,`username`,`password`,`created_time`,`update_time`,`status`
+        from `t_db` where `id` = #{id}
+    </select>
+    <select id="selectDbByName" parameterType="String" resultType="org.alex.platform.pojo.DbVO">
+        select `id`,`name`,`type`,`desc`,`url`,`username`,`password`,`created_time`,`update_time`,`status`
+        from `t_db` where `name` = #{name}
+    </select>
+    <select id="selectDbList" parameterType="org.alex.platform.pojo.DbDTO" resultType="org.alex.platform.pojo.DbVO">
+        select `id`,`name`,`type`,`desc`,`url`,`username`,`password`,`created_time`,`update_time`,`status`
+        from `t_db`
+        <where>
+            <if test="id!=id">and `id`=#{id}</if>
+            <if test="name!=null">and `name` like concat('%',#{name},'%')</if>
+            <if test="type!=null">and `type`=#{type}</if>
+            <if test="desc!=null">and `desc` like concat('%',#{desc},'%')</if>
+            <if test="url!=null">and `url` like concat('%',#{url},'%')</if>
+            <if test="username!=null">and `username` like concat('%',#{username},'%')</if>
+            <if test="password!=null">and `password` like concat('%',#{password},'%')</if>
+            <if test="createdTime!=null">and `created_time` &gt;= #{createdTime}</if>
+            <if test="updateTime!=null">and `update_time` &lt;= #{updateTime}</if>
+            <if test="status!=null">and `status`=#{status}</if>
+        </where>
+    </select>
+</mapper>

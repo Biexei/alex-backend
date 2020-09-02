@@ -9,10 +9,10 @@ public class InterfaceCaseRelyDataDO implements Serializable {
     @NotNull(message = "relyCaseId不能为空")
     private Integer relyCaseId;
     @NotEmpty
-    @Size(min = 1, max = 20, message = "relyName长度必须为[1,20]")
+    @Size(min = 1, max = 100, message = "relyName长度必须为[1,100]")
     @Pattern(regexp = "[a-zA-Z]+", message = "relyName必须为英文")
     private String relyName;
-    @Size(max = 20, message = "relyDesc长度必须为[0,20]")
+    @Size(max = 100, message = "relyDesc长度必须为[0,100]")
     private String relyDesc;
     @Max(value = 2, message = "contentType最大不能超过2")
     @NotNull(message = "contentType不能为空")

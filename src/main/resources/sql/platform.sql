@@ -10,10 +10,34 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2020-09-01 17:03:05
+Date: 2020-09-02 17:07:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for t_db
+-- ----------------------------
+DROP TABLE IF EXISTS `t_db`;
+CREATE TABLE `t_db` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL COMMENT '名称',
+  `type` tinyint DEFAULT NULL COMMENT '0mysql 1oracle 2SqlServer',
+  `desc` varchar(100) DEFAULT NULL COMMENT '描述',
+  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '连接url',
+  `username` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户名',
+  `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '密码',
+  `created_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `status` tinyint DEFAULT NULL COMMENT '0启动 1禁用',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_db
+-- ----------------------------
+INSERT INTO `t_db` VALUES ('1', 'platform', '0', '自动化平台库', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root', '2020-09-02 15:40:50', '2020-09-02 15:40:50', '1');
 
 -- ----------------------------
 -- Table structure for t_interface_assert
@@ -223,8 +247,8 @@ DROP TABLE IF EXISTS `t_interface_case_rely_data`;
 CREATE TABLE `t_interface_case_rely_data` (
   `rely_id` int NOT NULL AUTO_INCREMENT COMMENT ' 自增主键',
   `rely_case_id` int DEFAULT NULL COMMENT '依赖用例编号',
-  `rely_name` varchar(20) DEFAULT NULL COMMENT '依赖名称,通过${name}引用',
-  `rely_desc` varchar(20) DEFAULT NULL COMMENT '依赖描述',
+  `rely_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '依赖名称,通过${name}引用',
+  `rely_desc` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '依赖描述',
   `content_type` tinyint DEFAULT NULL COMMENT '提取数据类型   0json/1html/2header/',
   `extract_expression` varchar(50) DEFAULT NULL COMMENT '提取表达式',
   `created_time` datetime DEFAULT NULL,
@@ -278,8 +302,47 @@ CREATE TABLE `t_project` (
 -- ----------------------------
 -- Records of t_project
 -- ----------------------------
-INSERT INTO `t_project` VALUES ('2', '项目名称79', 'html测试', 'http://www.meidekan.com/', null, null);
+INSERT INTO `t_project` VALUES ('2', '项目名称719', 'html测试', 'http://www.baidu.com/', null, null);
 INSERT INTO `t_project` VALUES ('4', '项目名称1', 'json测试', 'http://op.juhe.cn/', '2020-07-29 16:26:54', '2020-07-29 16:26:58');
+
+-- ----------------------------
+-- Table structure for t_rely_data
+-- ----------------------------
+DROP TABLE IF EXISTS `t_rely_data`;
+CREATE TABLE `t_rely_data` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '依赖名称',
+  `value` varchar(100) DEFAULT NULL COMMENT '依赖值',
+  `desc` varchar(100) DEFAULT NULL COMMENT '依赖描述',
+  `type` tinyint DEFAULT NULL COMMENT '依赖类型 0固定值 1反射方法 2sql',
+  `datasource_id` int DEFAULT NULL COMMENT '数据源id',
+  `created_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_rely_data
+-- ----------------------------
+INSERT INTO `t_rely_data` VALUES ('1', 'md5', null, 'md5(String s)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('2', 'uuid', null, 'uuid()', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('3', 'base64', null, 'base64(String s)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('4', 'timestamp', null, 'timestamp()', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('5', 'now', null, 'now(String format)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('10', 'yesterday', null, 'yesterday(String format)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('11', 'lastMonth', null, 'lastMonth(String format)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('12', 'nextMonth', null, 'nextMonth(String format)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('13', 'lastYear', null, 'lastYear(String format)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('14', 'nextYear', null, 'nextYear(String format)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('15', 'time', null, 'time(String operator, String amount, String format)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('16', 'randomInt', null, 'randomInt(String length)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('17', 'randomUpper', null, 'randomUpper(String length)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('18', 'randomLower', null, 'randomLower(String length)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('19', 'randomEn', null, 'randomEn(String length)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('20', 'randomIllegal', null, 'randomIllegal(String length)', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('21', 'city', null, '长沙', '0', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58');
+INSERT INTO `t_rely_data` VALUES ('22', 'username', 'select username, password from t_user', '获取用户名', '2', '1', '2020-09-02 11:37:06', '2020-09-02 11:36:58');
 
 -- ----------------------------
 -- Table structure for t_setting

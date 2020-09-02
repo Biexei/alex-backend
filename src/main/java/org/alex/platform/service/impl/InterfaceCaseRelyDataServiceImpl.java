@@ -27,7 +27,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             throw new BusinessException("relyCaseId不存在");
         }
         // 判断relyName是否已存在
-        if (this.findIfRelyData(ifRelyDataDO.getRelyId()) == null) {
+        if (this.findIfRelyDataByName(ifRelyDataDO.getRelyName()) == null) {
             throw new BusinessException("relyName已存在");
         }
         ifRelyDataMapper.insertIfRelyData(ifRelyDataDO);
@@ -41,7 +41,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             throw new BusinessException("relyCaseId不存在");
         }
         // 判断relyName是否已存在
-        if (this.findIfRelyData(ifRelyDataDO.getRelyId()) == null) {
+        if (this.findIfRelyDataByName(ifRelyDataDO.getRelyName()) == null) {
             throw new BusinessException("relyName已存在");
         }
         ifRelyDataMapper.updateIfRelyData(ifRelyDataDO);
