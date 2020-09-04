@@ -1,5 +1,8 @@
 package org.alex.platform;
 
+import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ParseException;
+import org.alex.platform.exception.SqlException;
 import org.alex.platform.service.InterfaceCaseService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +19,7 @@ public class InterfaceCaseTest {
     @Autowired
     InterfaceCaseService service;
     @Test
-    public void doTest(){
+    public void doTest() throws ParseException, BusinessException, SqlException {
         service.executeInterfaceCase(7);
     }
 }

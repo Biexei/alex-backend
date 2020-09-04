@@ -46,4 +46,10 @@ public class DbController {
         dbService.removeDbById(id);
         return Result.success();
     }
+
+    @GetMapping("/db/check/{id}")
+    public Result checkDb(@PathVariable Integer id) {
+        String msg = dbService.dbConnectInfo(id);
+        return Result.success(msg);
+    }
 }

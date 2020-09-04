@@ -6,11 +6,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
+import org.alex.platform.exception.SqlException;
 import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.mapper.ModuleMapper;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.*;
 import org.alex.platform.util.AssertUtil;
+import org.alex.platform.util.JdbcUtil;
 import org.alex.platform.util.ParseUtil;
 import org.alex.platform.util.RestUtil;
 import org.apache.commons.lang.StringUtils;
@@ -44,6 +46,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     InterfaceAssertLogService assertLogService;
     @Autowired
     InterfaceCaseRelyDataService ifCaseRelyDataService;
+    @Autowired
+    RelyDataService relyDataService;
+    @Autowired
+    DbService dbService;
 
     @Override
     public InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException {
@@ -120,7 +126,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * @return 执行日志编号
      */
     @Override
-    public Integer executeInterfaceCase(Integer interfaceCaseId) {
+    public Integer executeInterfaceCase(Integer interfaceCaseId) throws ParseException, BusinessException, SqlException {
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
         Byte caseStatus = 0;
@@ -131,9 +137,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         String url = projectService.findModulesById(projectId).getDomain() + interfaceCaseInfoVO.getUrl();
         String desc = interfaceCaseInfoVO.getDesc();
         String headers = interfaceCaseInfoVO.getHeaders();
+        // 清洗
+        headers = this.parseRelyData(headers);
         String params = interfaceCaseInfoVO.getParams();
+        params = this.parseRelyData(params);
         String data = interfaceCaseInfoVO.getData();
+        data = this.parseRelyData(data);
         String json = interfaceCaseInfoVO.getJson();
+        json = this.parseRelyData(json);
         Byte method = interfaceCaseInfoVO.getMethod();
         List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
 
@@ -222,7 +233,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 Byte type = interfaceAssertVO.getType();
                 String expression = interfaceAssertVO.getExpression();
                 Byte operator = interfaceAssertVO.getOperator();
+                // 清洗断言预期结果
                 String exceptedResult = interfaceAssertVO.getExceptedResult();
+                exceptedResult = this.parseRelyData(exceptedResult);
                 Integer order = interfaceAssertVO.getOrder();
                 // 写入断言日志表
                 InterfaceAssertLogDO assertLogDO = new InterfaceAssertLogDO();
@@ -296,13 +309,13 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * @throws ParseException 解析异常
      * @throws BusinessException 业务异常
      */
-    public String parseRelyData(String s) throws ParseException, BusinessException {
+    public String parseRelyData(String s) throws ParseException, BusinessException, SqlException {
         Pattern p = Pattern.compile("\\$\\{.+?\\}");
         Matcher matcher = p.matcher(s);
         while (matcher.find()) {
             String findStr = matcher.group();
             // 获取relyName
-            String relyName = findStr.substring(2, findStr.length()-1);
+            String relyName = findStr.substring(2, findStr.length() - 1);
             System.out.println("----------------------------");
             System.out.println(relyName);
 // 进入普通依赖数据模式-再进入根据数组下标模式
@@ -313,7 +326,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         relyName.indexOf("]") != relyName.lastIndexOf("]")) {
                     throw new ParseException("数组取值语法错误");
                 }
-                String indexStr = relyName.substring(relyName.indexOf("[")+1, relyName.length()-1);
+                String indexStr = relyName.substring(relyName.indexOf("[") + 1, relyName.length() - 1);
                 try {
                     int index = Integer.parseInt(indexStr);
                     relyName = relyName.substring(0, relyName.indexOf("["));
@@ -328,7 +341,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     // 根据caseId调用相应case
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
                     // 获取case执行结果, 不等于0, 则用例未通过
-                    if (executeLogService.findExecute(executeLogId).getStatus() != 0){
+                    if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
                         throw new BusinessException("relyName关联的前置用例执行失败!");
                     }
                     // 根据executeLogId查询对应的执行记录
@@ -336,7 +349,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     String responseBody = interfaceCaseExecuteLogVO.getResponseBody();
                     String responseHeaders = interfaceCaseExecuteLogVO.getResponseHeaders();
                     // 根据contentType来确定对何字段进行替换, 提取数据类型   0json/1html/2header/
-                    int contentType = (int)interfaceCaseRelyDataVO.getContentType();
+                    int contentType = (int) interfaceCaseRelyDataVO.getContentType();
                     if (contentType != 2) {
                         throw new ParseException("只有依赖数据提取类型为header时才支持指定下标，" +
                                 "否则请自行调整jsonpath/xpath表达式，使提取结果唯一");
@@ -345,14 +358,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     try {
                         if (contentType == 0) { // json
                             ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, expression), ArrayList.class);
-                            s = s.replace(findStr, (String)jsonPathArray.get(0));
+                            s = s.replace(findStr, (String) jsonPathArray.get(0));
                         } else if (contentType == 1) { // html
                             ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
-                            s = s.replace(findStr, (String)xpathArray.get(0));
+                            s = s.replace(findStr, (String) xpathArray.get(0));
                         } else if (contentType == 2) { // headers
                             JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders, HashMap.class).get(expression);
                             try {
-                                s = s.replace(findStr, (String)headerArray.get(index));
+                                s = s.replace(findStr, (String) headerArray.get(index));
                             } catch (Exception e) {
                                 throw new ParseException("数组下标越界");
                             }
@@ -369,7 +382,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     throw new ParseException("数组下标只能为数字");
                 }
 // 进入预置函数模式
-            } else if(relyName.indexOf("(") != -1 && relyName.endsWith(")")) {
+            } else if (relyName.indexOf("(") != -1 && relyName.endsWith(")")) {
                 System.out.println("进入预置函数模式");
                 // 判断出现次数,首次出现和最后一次出现位置不一致，则说明(>1 )>1
                 if (relyName.indexOf("(") != relyName.lastIndexOf("(") ||
@@ -378,8 +391,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 }
                 // 获取方法名称
                 String methodName = relyName.substring(0, relyName.indexOf("("));
+                RelyDataVO relyDataVO = relyDataService.findRelyDataByName(methodName);
+                if (null == relyDataVO) {
+                    throw new ParseException("未找到该依赖方法");
+                }
                 // 获取参数列表, 去除引号空格
-                String[] params = relyName.substring(relyName.indexOf("(")+1, relyName.length()-1)
+                String[] params = relyName.substring(relyName.indexOf("(") + 1, relyName.length() - 1)
                         .replace("\"", "").replaceAll(",\\s+", ",")
                         .replace("'", "").split(",");
                 // 无参方法特殊处理
@@ -394,7 +411,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         paramsList[i] = String.class;
                     }
                     Method method = clazz.getMethod(methodName, paramsList);
-                    s = s.replace(findStr, (String)method.invoke(clazz.newInstance(), params));
+                    s = s.replace(findStr, (String) method.invoke(clazz.newInstance(), params));
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new ParseException("未找到依赖方法或者入参错误");
@@ -406,42 +423,73 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 InterfaceCaseRelyDataDTO interfaceCaseRelyDataDTO = new InterfaceCaseRelyDataDTO();
                 interfaceCaseRelyDataDTO.setRelyName(relyName);
                 InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = ifCaseRelyDataService.findIfRelyDataByName(relyName);
+                // 判断是否在t_interface_case_rely_data
                 if (null == interfaceCaseRelyDataVO) {
-                    throw new ParseException("未找到该依赖数值");
-                }
-                Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
-                // 根据caseId调用相应case
-                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
-                // 获取case执行结果, 不等于0, 则用例未通过
-                if (executeLogService.findExecute(executeLogId).getStatus() != 0){
-                    throw new BusinessException("relyName关联的前置用例执行失败!");
-                }
-                // 根据executeLogId查询对应的执行记录
-                InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
-                String responseBody = interfaceCaseExecuteLogVO.getResponseBody();
-                String responseHeaders = interfaceCaseExecuteLogVO.getResponseHeaders();
-                // 根据contentType来确定对何字段进行替换, 提取数据类型   0json/1html/2header/
-                int contentType = (int)interfaceCaseRelyDataVO.getContentType();
-                String expression = interfaceCaseRelyDataVO.getExtractExpression();
-                try {
-                    if (contentType == 0) { // json
-                        ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, expression), ArrayList.class);
-                        s = s.replace(findStr, (String)jsonPathArray.get(0));
-                    } else if (contentType == 1) { // html
-                        ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
-                        s = s.replace(findStr, (String)xpathArray.get(0));
-                    } else if (contentType == 2) { // headers
-                        JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders,
-                                HashMap.class).get(expression);
-                        s = s.replace(findStr, (String)headerArray.get(0));
+                    RelyDataVO relyDataVO = relyDataService.findRelyDataByName(relyName);
+                    // 判断是否在t_rely_data
+                    if (null == relyDataVO) {
+                        throw new ParseException("未找到该依赖数值");
                     } else {
-                        throw new BusinessException("不支持该contentType");
+                        // 此处不考虑反射函数类型，已经在${xx()}步骤处理
+                        // 依赖类型 0固定值 1反射方法 2sql
+                        int type = relyDataVO.getType();
+                        if (type == 0) {
+                            s = s.replace(findStr, relyDataVO.getValue());
+                        } else if (type == 2) {
+                            Integer datasourceId = relyDataVO.getDatasourceId();
+                            if (null == datasourceId) {
+                                throw new ParseException("sql未找到对应的数据源");
+                            }
+                            DbVO dbVO = dbService.findDbById(datasourceId);
+                            // 0启动 1禁用
+                            int status = dbVO.getStatus();
+                            if (status == 1) {
+                                throw new ParseException("数据源已被禁用");
+                            }
+                            String url = dbVO.getUrl();
+                            String username = dbVO.getUsername();
+                            String password = dbVO.getPassword();
+                            // 支持动态sql
+                            String sql = parseRelyData(relyDataVO.getValue());
+                            String sqlResult = JdbcUtil.selectFirstColumn(url, username, password, sql);
+                            s = s.replace(findStr, sqlResult);
+                        }
                     }
-                } catch (BusinessException e) {
-                    throw new BusinessException("不支持该contentType");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new ParseException(e.getMessage());
+                } else {
+                    Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
+                    // 根据caseId调用相应case
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
+                    // 获取case执行结果, 不等于0, 则用例未通过
+                    if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
+                        throw new BusinessException("relyName关联的前置用例执行失败!");
+                    }
+                    // 根据executeLogId查询对应的执行记录
+                    InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
+                    String responseBody = interfaceCaseExecuteLogVO.getResponseBody();
+                    String responseHeaders = interfaceCaseExecuteLogVO.getResponseHeaders();
+                    // 根据contentType来确定对何字段进行替换, 提取数据类型   0json/1html/2header/
+                    int contentType = (int) interfaceCaseRelyDataVO.getContentType();
+                    String expression = interfaceCaseRelyDataVO.getExtractExpression();
+                    try {
+                        if (contentType == 0) { // json
+                            ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, expression), ArrayList.class);
+                            s = s.replace(findStr, (String) jsonPathArray.get(0));
+                        } else if (contentType == 1) { // html
+                            ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
+                            s = s.replace(findStr, (String) xpathArray.get(0));
+                        } else if (contentType == 2) { // headers
+                            JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders,
+                                    HashMap.class).get(expression);
+                            s = s.replace(findStr, (String) headerArray.get(0));
+                        } else {
+                            throw new BusinessException("不支持该contentType");
+                        }
+                    } catch (BusinessException e) {
+                        throw new BusinessException("不支持该contentType");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ParseException(e.getMessage());
+                    }
                 }
             }
         }

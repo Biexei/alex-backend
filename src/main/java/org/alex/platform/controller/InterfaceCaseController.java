@@ -2,6 +2,8 @@ package org.alex.platform.controller;
 
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ParseException;
+import org.alex.platform.exception.SqlException;
 import org.alex.platform.pojo.InterfaceCaseDO;
 import org.alex.platform.pojo.InterfaceCaseDTO;
 import org.alex.platform.pojo.InterfaceCaseListDTO;
@@ -92,7 +94,7 @@ public class InterfaceCaseController {
      * @return
      */
     @GetMapping("/interface/case/execute/{caseId}")
-    public Result executeInterfaceCase(@PathVariable Integer caseId) {
+    public Result executeInterfaceCase(@PathVariable Integer caseId) throws ParseException, BusinessException, SqlException {
         interfaceCaseService.executeInterfaceCase(caseId);
         return Result.success();
     }

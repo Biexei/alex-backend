@@ -3,6 +3,7 @@ package org.alex.platform.controller;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
+import org.alex.platform.exception.SqlException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -39,8 +40,10 @@ public class ExceptionController {
             return Result.fail(501, e.getMessage());
         } else if (e instanceof ParseException) {
             return Result.fail(502, e.getMessage());
+        } else if (e instanceof SqlException) {
+            return Result.fail(503, e.getMessage());
         } else {
-            return Result.fail(e.getMessage());
+            return Result.fail(500, e.getMessage());
         }
     }
 }

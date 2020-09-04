@@ -15,12 +15,12 @@ public class JDBCTest {
     @Test
     public void testConn(){
         String url = "jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8";
-        String username = "root";
+        String username = "root11";
         String password = "root";
         DruidDataSource ds = new DruidDataSource();
         ds.setUsername(username);
         ds.setFailFast(true);
-        ds.setConnectionErrorRetryAttempts(3);
+        ds.setConnectionErrorRetryAttempts(1);
         ds.setPassword(password);
         ds.setUrl(url);
         JdbcTemplate jdbc = new JdbcTemplate(ds);

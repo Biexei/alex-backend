@@ -18,4 +18,6 @@ public interface DbService {
     DbVO findDbByName(String name);
 
     PageInfo<DbVO> findDbList(DbDTO dbDTO, Integer pageNum, Integer pageSize);
+
+    String dbConnectInfo(Integer dbId);
 }
