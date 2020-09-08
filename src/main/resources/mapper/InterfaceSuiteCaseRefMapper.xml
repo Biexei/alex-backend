@@ -26,15 +26,15 @@
         inner join `t_interface_suite_case_ref` as `ref` on `suite`.`suite_id` = `ref`.`suite_id`
         inner join `t_interface_case` as `case` on `ref`.`case_id` = `case`.`case_id`
         <where>
-            <if test="suiteId!=null">and `suite_id`={suiteId}</if>
-            <if test="suiteName!=null">and `suite_name`={suiteName}</if>
-            <if test="suiteDesc!=null">and `suite_desc`={suiteDesc}</if>
-            <if test="caseId!=null">and `case_id`={caseId}</if>
-            <if test="caseDesc!=null"> and `case_desc` like concat('%',#{caseDesc},'%')</if>
-            <if test="level!=null">and `level`=#{level}</if>
-            <if test="url!=null"> and `url` like concat('%',#{url},'%')</if>
-            <if test="order!=null">and `order`=#{order}</if>
-            <if test="caseStatus!=null">and `case_status`={caseStatus}</if>
+            <if test="suiteId!=null">and `suite`.`suite_id`=#{suiteId}</if>
+            <if test="suiteName!=null">and `suite`.`suite_name`=#{suiteName}</if>
+            <if test="suiteDesc!=null">and `suite`.`desc`=#{suiteDesc}</if>
+            <if test="caseId!=null">and `case`. `case_id`=#{caseId}</if>
+            <if test="caseDesc!=null"> and `case`. `desc` like concat('%',#{caseDesc},'%')</if>
+            <if test="level!=null">and `case`.`level`=#{level}</if>
+            <if test="url!=null"> and `case`.`url` like concat('%',#{url},'%')</if>
+            <if test="order!=null">and `ref`.`order`=#{order}</if>
+            <if test="caseStatus!=null">and `ref`.`case_status`=#{caseStatus}</if>
         </where>
         order by `suite`.`suite_id` desc, `ref`.`order` desc
     </select>

@@ -364,3 +364,188 @@
 2020-09-08 15:24:04.349  INFO 7172 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-09-08 15:24:04.349  INFO 7172 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2020-09-08 15:24:04.353  INFO 7172 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-08 20:39:10.554  INFO 8924 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 8924 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-08 20:39:10.563  INFO 8924 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-08 20:39:12.505  INFO 8924 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-08 20:39:12.508  INFO 8924 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-08 20:39:12.598  INFO 8924 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 54ms. Found 0 Redis repository interfaces.
+2020-09-08 20:39:14.089  INFO 8924 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-08 20:39:14.154  INFO 8924 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-08 20:39:14.155  INFO 8924 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-08 20:39:14.371  INFO 8924 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-08 20:39:14.372  INFO 8924 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 3577 ms
+2020-09-08 20:39:14.665  INFO 8924 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-08 20:39:14.916  INFO 8924 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-08 20:39:16.284  INFO 8924 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-08 20:39:17.377  INFO 8924 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-08 20:39:17.381  INFO 8924 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 8.541 seconds (JVM running for 10.652)
+2020-09-08 20:39:27.241  INFO 8924 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-08 20:39:27.242  INFO 8924 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-08 20:39:27.249  INFO 8924 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2020-09-08 20:39:28.888 ERROR 8924 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '}
+            and `suite_name`={suiteName}
+            and `suite_desc`={suiteDe' at line 7
+### The error may exist in file [C:\Users\10147\IdeaProjects\platform\target\classes\mapper\InterfaceSuiteCaseRefMapper.xml]
+### The error may involve org.alex.platform.mapper.InterfaceSuiteCaseRefMapper.selectSuiteCaseList-Inline
+### The error occurred while setting parameters
+### SQL: select count(0) from (select `suite`.`suite_id`,`suite`.`suite_name`,`suite`.`desc` as `suite_desc`,         `case`. `case_id`,`case`. `desc` as `case_desc`, `case`.`level`, `case`.`url`,         `ref`.`order`, `ref`.`case_status`         from `t_interface_case_suite` as `suite`         inner join `t_interface_suite_case_ref` as `ref` on `suite`.`suite_id` = `ref`.`suite_id`         inner join `t_interface_case` as `case` on `ref`.`case_id` = `case`.`case_id`          WHERE  `suite_id`={suiteId}             and `suite_name`={suiteName}             and `suite_desc`={suiteDesc}             and `case_id`={caseId}              and `case_desc` like concat('%',?,'%')             and `level`=?              and `url` like concat('%',?,'%')             and `order`=?             and `case_status`={caseStatus}          order by `suite`.`suite_id` desc, `ref`.`order` desc) tmp_count
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '}
+            and `suite_name`={suiteName}
+            and `suite_desc`={suiteDe' at line 7
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '}
+            and `suite_name`={suiteName}
+            and `suite_desc`={suiteDe' at line 7
+2020-09-08 20:39:41.394 ERROR 8924 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '}
+            and `suite_name`={suiteName}
+            and `suite_desc`={suiteDe' at line 7
+### The error may exist in file [C:\Users\10147\IdeaProjects\platform\target\classes\mapper\InterfaceSuiteCaseRefMapper.xml]
+### The error may involve org.alex.platform.mapper.InterfaceSuiteCaseRefMapper.selectSuiteCaseList-Inline
+### The error occurred while setting parameters
+### SQL: select count(0) from (select `suite`.`suite_id`,`suite`.`suite_name`,`suite`.`desc` as `suite_desc`,         `case`. `case_id`,`case`. `desc` as `case_desc`, `case`.`level`, `case`.`url`,         `ref`.`order`, `ref`.`case_status`         from `t_interface_case_suite` as `suite`         inner join `t_interface_suite_case_ref` as `ref` on `suite`.`suite_id` = `ref`.`suite_id`         inner join `t_interface_case` as `case` on `ref`.`case_id` = `case`.`case_id`          WHERE  `suite_id`={suiteId}             and `suite_name`={suiteName}             and `suite_desc`={suiteDesc}             and `case_id`={caseId}              and `case_desc` like concat('%',?,'%')             and `level`=?              and `url` like concat('%',?,'%')             and `order`=?             and `case_status`={caseStatus}          order by `suite`.`suite_id` desc, `ref`.`order` desc) tmp_count
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '}
+            and `suite_name`={suiteName}
+            and `suite_desc`={suiteDe' at line 7
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '}
+            and `suite_name`={suiteName}
+            and `suite_desc`={suiteDe' at line 7
+2020-09-08 20:40:54.446  INFO 13080 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 13080 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-08 20:40:54.449  INFO 13080 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-08 20:40:55.267  INFO 13080 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-08 20:40:55.269  INFO 13080 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-08 20:40:55.325  INFO 13080 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 43ms. Found 0 Redis repository interfaces.
+2020-09-08 20:40:55.753  INFO 13080 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-08 20:40:55.769  INFO 13080 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-08 20:40:55.769  INFO 13080 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-08 20:40:55.848  INFO 13080 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-08 20:40:55.848  INFO 13080 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1339 ms
+2020-09-08 20:40:55.971  INFO 13080 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-08 20:40:56.072  INFO 13080 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-08 20:40:56.576  INFO 13080 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-08 20:40:57.015  INFO 13080 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-08 20:40:57.019  INFO 13080 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.021 seconds (JVM running for 3.784)
+2020-09-08 20:41:01.683  INFO 13080 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-08 20:41:01.684  INFO 13080 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-08 20:41:01.691  INFO 13080 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2020-09-08 20:41:02.353 ERROR 13080 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Column 'suite_id' in where clause is ambiguous
+### The error may exist in file [C:\Users\10147\IdeaProjects\platform\target\classes\mapper\InterfaceSuiteCaseRefMapper.xml]
+### The error may involve org.alex.platform.mapper.InterfaceSuiteCaseRefMapper.selectSuiteCaseList-Inline
+### The error occurred while setting parameters
+### SQL: SELECT count(0) FROM `t_interface_case_suite` AS `suite` INNER JOIN `t_interface_suite_case_ref` AS `ref` ON `suite`.`suite_id` = `ref`.`suite_id` INNER JOIN `t_interface_case` AS `case` ON `ref`.`case_id` = `case`.`case_id` WHERE `suite_id` = ? AND `suite_name` = ? AND `suite_desc` = ? AND `case_id` = ? AND `case_desc` LIKE concat('%', ?, '%') AND `level` = ? AND `url` LIKE concat('%', ?, '%') AND `order` = ? AND `case_status` = ?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Column 'suite_id' in where clause is ambiguous
+; Column 'suite_id' in where clause is ambiguous; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Column 'suite_id' in where clause is ambiguous
+2020-09-08 20:43:31.596  INFO 1828 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 1828 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-08 20:43:31.603  INFO 1828 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-08 20:43:32.336  INFO 1828 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-08 20:43:32.338  INFO 1828 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-08 20:43:32.393  INFO 1828 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 42ms. Found 0 Redis repository interfaces.
+2020-09-08 20:43:32.819  INFO 1828 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-08 20:43:32.827  INFO 1828 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-08 20:43:32.827  INFO 1828 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-08 20:43:32.912  INFO 1828 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-08 20:43:32.912  INFO 1828 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1267 ms
+2020-09-08 20:43:33.049  INFO 1828 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-08 20:43:33.152  INFO 1828 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-08 20:43:33.693  INFO 1828 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-08 20:43:34.168  INFO 1828 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-08 20:43:34.171  INFO 1828 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.01 seconds (JVM running for 3.806)
+2020-09-08 20:43:39.157  INFO 1828 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-08 20:43:39.161  INFO 1828 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-08 20:43:39.169  INFO 1828 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2020-09-08 20:43:39.855 ERROR 1828 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'suite_desc' in 'where clause'
+### The error may exist in file [C:\Users\10147\IdeaProjects\platform\target\classes\mapper\InterfaceSuiteCaseRefMapper.xml]
+### The error may involve org.alex.platform.mapper.InterfaceSuiteCaseRefMapper.selectSuiteCaseList-Inline
+### The error occurred while setting parameters
+### SQL: SELECT count(0) FROM `t_interface_case_suite` AS `suite` INNER JOIN `t_interface_suite_case_ref` AS `ref` ON `suite`.`suite_id` = `ref`.`suite_id` INNER JOIN `t_interface_case` AS `case` ON `ref`.`case_id` = `case`.`case_id` WHERE `suite`.`suite_id` = ? AND `suite`.`suite_name` = ? AND `suite_desc` = ? AND `case_id` = ? AND `case_desc` LIKE concat('%', ?, '%') AND `case`.`level` = ? AND `case`.`url` LIKE concat('%', ?, '%') AND `ref`.`order` = ? AND `ref`.`case_status` = ?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'suite_desc' in 'where clause'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'suite_desc' in 'where clause'
+2020-09-08 20:44:27.326  INFO 10316 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 10316 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-08 20:44:27.331  INFO 10316 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-08 20:44:28.291  INFO 10316 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-08 20:44:28.293  INFO 10316 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-08 20:44:28.349  INFO 10316 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 44ms. Found 0 Redis repository interfaces.
+2020-09-08 20:44:28.775  INFO 10316 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-08 20:44:28.783  INFO 10316 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-08 20:44:28.783  INFO 10316 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-08 20:44:28.867  INFO 10316 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-08 20:44:28.867  INFO 10316 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1488 ms
+2020-09-08 20:44:29.001  INFO 10316 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-08 20:44:29.104  INFO 10316 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-08 20:44:29.612  INFO 10316 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-08 20:44:30.048  INFO 10316 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-08 20:44:30.051  INFO 10316 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.152 seconds (JVM running for 3.925)
+2020-09-08 20:44:33.520  INFO 10316 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-08 20:44:33.520  INFO 10316 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-08 20:44:33.526  INFO 10316 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2020-09-08 20:53:46.871  INFO 1156 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 1156 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-08 20:53:46.874  INFO 1156 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-08 20:53:47.759  INFO 1156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-08 20:53:47.762  INFO 1156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-08 20:53:47.818  INFO 1156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 43ms. Found 0 Redis repository interfaces.
+2020-09-08 20:53:48.259  INFO 1156 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-08 20:53:48.267  INFO 1156 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-08 20:53:48.267  INFO 1156 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-08 20:53:48.358  INFO 1156 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-08 20:53:48.358  INFO 1156 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1422 ms
+2020-09-08 20:53:48.513  INFO 1156 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-08 20:53:48.620  INFO 1156 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-08 20:53:49.135  INFO 1156 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-08 20:53:49.705  INFO 1156 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-08 20:53:49.707  INFO 1156 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.25 seconds (JVM running for 4.131)
+2020-09-08 20:54:19.290  INFO 12592 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 12592 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-08 20:54:19.293  INFO 12592 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-08 20:54:20.148  INFO 12592 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-08 20:54:20.150  INFO 12592 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-08 20:54:20.207  INFO 12592 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 44ms. Found 0 Redis repository interfaces.
+2020-09-08 20:54:20.657  INFO 12592 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-08 20:54:20.666  INFO 12592 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-08 20:54:20.667  INFO 12592 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-08 20:54:20.756  INFO 12592 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-08 20:54:20.756  INFO 12592 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1418 ms
+2020-09-08 20:54:20.884  INFO 12592 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-08 20:54:20.982  INFO 12592 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-08 20:54:21.513  INFO 12592 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-08 20:54:21.975  INFO 12592 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-08 20:54:21.977  INFO 12592 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.306 seconds (JVM running for 4.195)
+2020-09-08 20:55:05.324  INFO 12592 --- [http-nio-7777-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-08 20:55:05.325  INFO 12592 --- [http-nio-7777-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-08 20:55:05.330  INFO 12592 --- [http-nio-7777-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2020-09-08 21:03:47.385  INFO 7268 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 7268 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-08 21:03:47.388  INFO 7268 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-08 21:03:48.515  INFO 7268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-08 21:03:48.517  INFO 7268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-08 21:03:48.576  INFO 7268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 46ms. Found 0 Redis repository interfaces.
+2020-09-08 21:03:49.086  INFO 7268 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-08 21:03:49.095  INFO 7268 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-08 21:03:49.095  INFO 7268 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-08 21:03:49.201  INFO 7268 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-08 21:03:49.201  INFO 7268 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1748 ms
+2020-09-08 21:03:49.365  INFO 7268 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-08 21:03:49.469  INFO 7268 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-08 21:03:50.052  INFO 7268 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-08 21:03:50.576  INFO 7268 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-08 21:03:50.579  INFO 7268 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.782 seconds (JVM running for 4.602)
+2020-09-08 21:03:57.168  INFO 7268 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-08 21:03:57.168  INFO 7268 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-08 21:03:57.174  INFO 7268 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2020-09-08 21:27:25.651  INFO 9752 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 9752 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-08 21:27:25.653  INFO 9752 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-08 21:27:26.393  INFO 9752 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-08 21:27:26.395  INFO 9752 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-08 21:27:26.453  INFO 9752 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 44ms. Found 0 Redis repository interfaces.
+2020-09-08 21:27:26.887  INFO 9752 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-08 21:27:26.895  INFO 9752 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-08 21:27:26.895  INFO 9752 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-08 21:27:26.989  INFO 9752 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-08 21:27:26.989  INFO 9752 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1286 ms
+2020-09-08 21:27:27.119  INFO 9752 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-08 21:27:27.222  INFO 9752 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-08 21:27:27.761  INFO 9752 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-08 21:27:28.210  INFO 9752 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-08 21:27:28.213  INFO 9752 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.044 seconds (JVM running for 3.973)
+2020-09-08 21:28:27.835  INFO 9752 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-08 21:28:27.836  INFO 9752 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-08 21:28:27.843  INFO 9752 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms

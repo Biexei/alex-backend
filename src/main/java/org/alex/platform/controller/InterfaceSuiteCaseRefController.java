@@ -1,6 +1,9 @@
 package org.alex.platform.controller;
 
 import org.alex.platform.common.Result;
+import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ParseException;
+import org.alex.platform.exception.SqlException;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefDO;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefDTO;
 import org.alex.platform.service.InterfaceSuiteCaseRefService;
@@ -32,4 +35,11 @@ public class InterfaceSuiteCaseRefController {
         int size = pageSize == null ? 10 : pageSize;
         return Result.success(refService.findSuiteCaseList(interfaceSuiteCaseRefDTO, num, size));
     }
+
+    @GetMapping("/interface/suite/execute/{suiteId}")
+    public Result executeSuiteCase(@PathVariable Integer suiteId) throws ParseException, BusinessException, SqlException {
+        refService.executeSuiteCaseById(suiteId);
+        return Result.success("执行成功");
+    }
+
 }
