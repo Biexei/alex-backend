@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.InterfaceCaseSuiteMapper">
+    <insert id="insertInterfaceCaseSuite" parameterType="org.alex.platform.pojo.InterfaceCaseSuiteDO">
+        insert into `t_interface_case_suite`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="suiteName!=null">`suite_name`,</if>
+            <if test="desc!=null">`desc`,</if>
+            <if test="createdTime!=null">`created_time`,</if>
+            <if test="updateTime!=null">`update_time`,</if>
+            <if test="creator!=null">`creator`,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="suiteName!=null">#{suiteName},</if>
+            <if test="desc!=null">#{desc},</if>
+            <if test="createdTime!=null">#{createdTime},</if>
+            <if test="updateTime!=null">#{updateTime},</if>
+            <if test="creator!=null">#{creator},</if>
+        </trim>
+    </insert>
+    <update id="updateInterfaceCaseSuite" parameterType="org.alex.platform.pojo.InterfaceCaseSuiteDO">
+        update `t_interface_case_suite`
+        <set>
+            <if test="suiteName!=null">`suite_name`=#{suiteName},</if>
+            <if test="desc!=null">`desc`=#{desc},</if>
+            <if test="createdTime!=null">`created_time`=#{createdTime},</if>
+            <if test="updateTime!=null">`update_time`=#{updateTime},</if>
+            <if test="creator!=null">`creator`=#{creator},</if>
+        </set>
+        where `suite_id` = #{suiteId}
+    </update>
+    <delete id="deleteInterfaceCaseSuiteById" parameterType="Integer">
+        delete from `t_interface_case_suite` where `suite_id` = #{suiteId};
+    </delete>
+    <select id="selectInterfaceCaseSuiteById" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceCaseSuiteVO">
+        select `suite_id`,`suite_name`,`desc`,`created_time`,`update_time`,`creator`
+        from `t_interface_case_suite`
+        where `suite_id` = #{suiteId}
+    </select>
+    <select id="selectInterfaceCaseSuite" parameterType="org.alex.platform.pojo.InterfaceCaseSuiteVO" resultType="org.alex.platform.pojo.InterfaceCaseSuiteVO">
+        select `suite_id`,`suite_name`,`desc`,`created_time`,`update_time`,`creator`
+        from `t_interface_case_suite`
+        <where>
+            <if test="suiteId!=null">and `suite_id`=#{suiteId}</if>
+            <if test="suiteName!=null">and `suite_name` like concat('%',#{suiteName},'%')</if>
+            <if test="desc!=null">and `desc` like concat('%',#{desc},'%')</if>
+            <if test="createdTime!=null">and `created_time` &gt;= #{createdTime}</if>
+            <if test="updateTime!=null">and `update_time` &lt;= #{updateTime}</if>
+            <if test="creator!=null">and `creator` like concat('%',#{creator},'%')</if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.InterfaceSuiteCaseRefMapper">
+    <insert id="insertSuiteCase" parameterType="java.util.List">
+        insert into `t_interface_suite_case_ref` (`case_id`, `suite_id`, `case_status`, `order`)
+        values
+        <foreach item="item" collection="list" separator="," index="index">
+            (
+                #{item.caseId},
+                #{item.suiteId},
+                #{item.caseStatus},
+                #{item.order}
+            )
+        </foreach>
+    </insert>
+    <delete id="deleteSuiteCase" parameterType="Integer">
+        delete from `t_interface_suite_case_ref` where `id` = #{id}
+    </delete>
+    <select id="selectSuiteCaseList" parameterType="org.alex.platform.pojo.InterfaceSuiteCaseRefDTO" resultType="org.alex.platform.pojo.InterfaceSuiteCaseRefVO">
+        select `suite`.`suite_id`,`suite`.`suite_name`,`suite`.`desc` as `suite_desc`,
+        `case`. `case_id`,`case`. `desc` as `case_desc`, `case`.`level`, `case`.`url`,
+        `ref`.`order`, `ref`.`case_status`
+        from `t_interface_case_suite` as `suite`
+        inner join `t_interface_suite_case_ref` as `ref` on `suite`.`suite_id` = `ref`.`suite_id`
+        inner join `t_interface_case` as `case` on `ref`.`case_id` = `case`.`case_id`
+        <where>
+            <if test="suiteId!=null">and `suite_id`={suiteId}</if>
+            <if test="suiteName!=null">and `suite_name`={suiteName}</if>
+            <if test="suiteDesc!=null">and `suite_desc`={suiteDesc}</if>
+            <if test="caseId!=null">and `case_id`={caseId}</if>
+            <if test="caseDesc!=null"> and `case_desc` like concat('%',#{caseDesc},'%')</if>
+            <if test="level!=null">and `level`=#{level}</if>
+            <if test="url!=null"> and `url` like concat('%',#{url},'%')</if>
+            <if test="order!=null">and `order`=#{order}</if>
+            <if test="caseStatus!=null">and `case_status`={caseStatus}</if>
+        </where>
+        order by `suite`.`suite_id` desc, `ref`.`order` desc
+    </select>
+</mapper>
