@@ -16,6 +16,7 @@ public class InterfaceCaseSuiteDO implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     private String creator;
+    private Byte executeType;
 
     public Integer getSuiteId() {
         return suiteId;
@@ -23,6 +24,14 @@ public class InterfaceCaseSuiteDO implements Serializable {
 
     public void setSuiteId(Integer suiteId) {
         this.suiteId = suiteId;
+    }
+
+    public Byte getExecuteType() {
+        return executeType;
+    }
+
+    public void setExecuteType(Byte executeType) {
+        this.executeType = executeType;
     }
 
     public String getSuiteName() {

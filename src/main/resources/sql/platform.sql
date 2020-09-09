@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2020-09-09 09:46:29
+Date: 2020-09-09 11:27:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -300,13 +300,14 @@ CREATE TABLE `t_interface_case_suite` (
   `created_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `creator` varchar(20) DEFAULT NULL COMMENT '创建人',
+  `execute_type` tinyint DEFAULT NULL COMMENT '执行方式 0并行1串行',
   PRIMARY KEY (`suite_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case_suite
 -- ----------------------------
-INSERT INTO `t_interface_case_suite` VALUES ('2', '测试套件名称', 'desc', '2020-09-07 14:40:05', '2020-09-07 14:40:05', '创建人');
+INSERT INTO `t_interface_case_suite` VALUES ('2', '测试套件名称', 'desc', '2020-09-07 14:40:05', '2020-09-07 14:40:05', '创建人', '0');
 
 -- ----------------------------
 -- Table structure for t_interface_suite_case_ref

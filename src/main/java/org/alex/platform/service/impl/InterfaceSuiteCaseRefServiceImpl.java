@@ -5,7 +5,9 @@ import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
+import org.alex.platform.mapper.InterfaceCaseSuiteMapper;
 import org.alex.platform.mapper.InterfaceSuiteCaseRefMapper;
+import org.alex.platform.pojo.InterfaceCaseSuiteVO;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefDO;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefDTO;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefVO;
@@ -22,6 +24,8 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
     InterfaceSuiteCaseRefMapper  interfaceSuiteCaseRefMapper;
     @Autowired
     InterfaceCaseService interfaceCaseService;
+    @Autowired
+    InterfaceCaseSuiteMapper interfaceCaseSuiteMapper;
 
     @Override
     public void saveSuiteCase(List<InterfaceSuiteCaseRefDO> interfaceSuiteCaseRefDOList) {
@@ -46,20 +50,24 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         interfaceSuiteCaseRefDTO.setSuiteId(suiteId);
         interfaceSuiteCaseRefDTO.setCaseStatus((byte)0);
         List<InterfaceSuiteCaseRefVO> suiteCaseList = interfaceSuiteCaseRefMapper.selectSuiteCaseList(interfaceSuiteCaseRefDTO);
-        // 并行case
-        suiteCaseList.parallelStream().forEach(suiteCase -> {
-            Integer caseId = suiteCase.getCaseId();
-            try {
+        // 判断测试套件执行方式 0并行1串行
+        InterfaceCaseSuiteVO interfaceCaseSuiteVO = interfaceCaseSuiteMapper.selectInterfaceCaseSuiteById(suiteId);
+        Byte type = interfaceCaseSuiteVO.getExecuteType();
+        if(type == 0) { // 异步
+            suiteCaseList.parallelStream().forEach(suiteCase -> {
+                Integer caseId = suiteCase.getCaseId();
+                try {
+                    interfaceCaseService.executeInterfaceCase(caseId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e.getMessage());
+                }
+            });
+        } else { // 同步
+            for (InterfaceSuiteCaseRefVO suiteCase : suiteCaseList) {
+                Integer caseId = suiteCase.getCaseId();
                 interfaceCaseService.executeInterfaceCase(caseId);
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(e.getMessage());
             }
-        });
-//        for (InterfaceSuiteCaseRefVO suiteCase : suiteCaseList) {
-//            Integer caseId = suiteCase.getCaseId();
-//            // 执行用例
-//            interfaceCaseService.executeInterfaceCase(caseId);
-//        }
+        }
     }
 }

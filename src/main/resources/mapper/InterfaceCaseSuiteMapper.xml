@@ -11,6 +11,7 @@
             <if test="createdTime!=null">`created_time`,</if>
             <if test="updateTime!=null">`update_time`,</if>
             <if test="creator!=null">`creator`,</if>
+            <if test="executeType!=null">`execute_type`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="suiteName!=null">#{suiteName},</if>
@@ -18,6 +19,7 @@
             <if test="createdTime!=null">#{createdTime},</if>
             <if test="updateTime!=null">#{updateTime},</if>
             <if test="creator!=null">#{creator},</if>
+            <if test="executeType!=null">#{executeType},</if>
         </trim>
     </insert>
     <update id="updateInterfaceCaseSuite" parameterType="org.alex.platform.pojo.InterfaceCaseSuiteDO">
@@ -28,6 +30,7 @@
             <if test="createdTime!=null">`created_time`=#{createdTime},</if>
             <if test="updateTime!=null">`update_time`=#{updateTime},</if>
             <if test="creator!=null">`creator`=#{creator},</if>
+            <if test="executeType!=null">`execute_type`=#{executeType},</if>
         </set>
         where `suite_id` = #{suiteId}
     </update>
@@ -35,12 +38,12 @@
         delete from `t_interface_case_suite` where `suite_id` = #{suiteId};
     </delete>
     <select id="selectInterfaceCaseSuiteById" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceCaseSuiteVO">
-        select `suite_id`,`suite_name`,`desc`,`created_time`,`update_time`,`creator`
+        select `suite_id`,`suite_name`,`desc`,`created_time`,`update_time`,`creator`,`execute_type`
         from `t_interface_case_suite`
         where `suite_id` = #{suiteId}
     </select>
     <select id="selectInterfaceCaseSuite" parameterType="org.alex.platform.pojo.InterfaceCaseSuiteVO" resultType="org.alex.platform.pojo.InterfaceCaseSuiteVO">
-        select `suite_id`,`suite_name`,`desc`,`created_time`,`update_time`,`creator`
+        select `suite_id`,`suite_name`,`desc`,`created_time`,`update_time`,`creator`,`execute_type`
         from `t_interface_case_suite`
         <where>
             <if test="suiteId!=null">and `suite_id`=#{suiteId}</if>
@@ -49,6 +52,7 @@
             <if test="createdTime!=null">and `created_time` &gt;= #{createdTime}</if>
             <if test="updateTime!=null">and `update_time` &lt;= #{updateTime}</if>
             <if test="creator!=null">and `creator` like concat('%',#{creator},'%')</if>
+            <if test="executeType!=null">and `execute_type`=#{executeType}</if>
         </where>
     </select>
 </mapper>
