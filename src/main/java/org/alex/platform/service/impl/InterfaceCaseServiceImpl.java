@@ -273,7 +273,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     } else {
                         assertStatus = 1;
                     }
-                } catch (ParseException | BusinessException e) {
+                } catch (Exception e) {
                     assertStatus = 2;
                     assertErrorMessage = e.getMessage();
                 }

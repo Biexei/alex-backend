@@ -5,19 +5,16 @@ import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
-import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.mapper.InterfaceSuiteCaseRefMapper;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefDO;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefDTO;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefVO;
 import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.service.InterfaceSuiteCaseRefService;
-import org.alex.platform.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 @Service
 public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefService {
