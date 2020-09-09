@@ -147,6 +147,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         json = this.parseRelyData(json);
         Byte method = interfaceCaseInfoVO.getMethod();
         List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
+        long runTime = 0;
 
         // 2.执行case
         // a.获取请求方式  0get,1post,2update,3put,4delete
@@ -155,10 +156,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             HashMap headersMap = JSONObject.parseObject(headers, HashMap.class);
             HashMap paramsMap = JSONObject.parseObject(params, HashMap.class);
             if (method == 0) { //get
+                long startTime = System.currentTimeMillis();
                 responseEntity = RestUtil.get(url, headersMap, paramsMap);
+                runTime = System.currentTimeMillis() - startTime;
             } else if (method == 1) { //post
                 HashMap dataMap = JSONObject.parseObject(data, HashMap.class);
+                long startTime = System.currentTimeMillis();
                 responseEntity = RestUtil.post(url, headersMap, paramsMap, dataMap, json);
+                runTime = System.currentTimeMillis() - startTime;
             } else if (method == 2) { //update
                 throw new BusinessException("暂不支持update请求方式");
             } else if (method == 3) { //put
@@ -196,6 +201,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setStatus((byte) 2);
             executeLogDO.setCreatedTime(new Date());
             executeLogDO.setErrorMessage(exceptionMessage);
+            executeLogDO.setRunTime(runTime);
             InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
             // 返回自增id
             return executedLogDO.getId();
@@ -215,6 +221,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setResponseCode(responseCode);
             executeLogDO.setResponseHeaders(responseHeaders);
             executeLogDO.setResponseBody(responseBody);
+            executeLogDO.setRunTime(runTime);
             // 后续加入拦截器后根据token反查
             executeLogDO.setExecuter("后根据token反查");
             executeLogDO.setStatus(caseStatus);
@@ -282,6 +289,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 // 将每次断言status都加入集合
                 statusList.add(assertStatus);
                 assertLogDO.setErrorMessage(assertErrorMessage);
+                assertLogDO.setCreatedTime(new Date());
                 assertLogService.saveInterfaceAssertLog(assertLogDO);
             }
             InterfaceCaseExecuteLogDO updateStatus = new InterfaceCaseExecuteLogDO();

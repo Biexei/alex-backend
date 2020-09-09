@@ -18,6 +18,7 @@
            <if test="order != null">`order`,</if>
            <if test="status != null">`status`,</if>
            <if test="errorMessage != null">`error_message`,</if>
+           <if test="createdTime != null">`created_time`,</if>
        </trim>
        <trim prefix="values (" suffix=")" suffixOverrides=",">
            <if test="executeLogId != null">#{executeLogId},</if>
@@ -32,11 +33,12 @@
            <if test="order != null">#{order},</if>
            <if test="status != null">#{status},</if>
            <if test="errorMessage != null">#{errorMessage},</if>
+           <if test="createdTime != null">#{createdTime},</if>
        </trim>
    </insert>
    <select id="selectInterfaceAssertLogList" resultType="org.alex.platform.pojo.InterfaceAssertLogVO" parameterType="org.alex.platform.pojo.InterfaceAssertLogDO">
        select `assert_log_id`,`execute_log_id`,`assert_name`,`assert_id`,`case_id`,`type`,`expression`,`operator`,
-       `excepted_result`,`order`,`actual_result`,`status`, `error_message`
+       `excepted_result`,`order`,`actual_result`,`status`, `error_message`, `created_time`
        from `t_interface_assert_log`
        <where>
            <if test="assertLogId != null">and `assert_log_id` = #{assertLogId},</if>

@@ -15,6 +15,7 @@
             <if test="responseCode != null">`response_code`,</if>
             <if test="responseHeaders != null">`response_headers`,</if>
             <if test="responseBody != null">`response_body`,</if>
+            <if test="runTime != null">`run_time`,</if>
             <if test="executer != null">`executer`,</if>
             <if test="status != null">`status`,</if>
             <if test="createdTime != null">`created_time`,</if>
@@ -30,6 +31,7 @@
             <if test="responseCode != null">#{responseCode},</if>
             <if test="responseHeaders != null">#{responseHeaders},</if>
             <if test="responseBody != null">#{responseBody},</if>
+            <if test="runTime != null">#{runTime},</if>
             <if test="executer != null">#{executer},</if>
             <if test="status != null">#{status},</if>
             <if test="createdTime != null">#{createdTime},</if>
@@ -40,7 +42,7 @@
             resultType="org.alex.platform.pojo.InterfaceCaseExecuteLogListVO">
         select `log`.`id`, `case`.`case_id`, `case`.`desc` as `case_desc`, `project`.`project_id`,
             `project`.`name` as `project_name`, `module`.`module_id`, `module`.`name` as `module_name`,
-            `log`.`response_body`, `log`.`executer`, `log`.`status`, `log`.`created_time`, `log`.`error_message`
+            `log`.`response_body`, `log`.`executer`, `log`.`run_time`, `log`.`status`, `log`.`created_time`, `log`.`error_message`
         from `t_interface_case_execute_log` as `log`
         LEFT JOIN `t_interface_case` as `case` on `log`.`case_id` = `case`.`case_id`
         LEFT JOIN `t_project` as `project` on `case`.`project_id` = `project`.`project_id`
@@ -112,6 +114,7 @@
             <if test="responseCode != null">`response_code` = #{responseCode},</if>
             <if test="responseHeaders != null">`response_headers` = #{responseHeaders},</if>
             <if test="responseBody != null">`response_body` = #{responseBody},</if>
+            <if test="runTime != null">`run_time` = #{runTime},</if>
             <if test="executer != null">`executer` = #{executer},</if>
             <if test="status != null">`status` = #{status},</if>
             <if test="createdTime != null">`created_time` = #{createdTime},</if>

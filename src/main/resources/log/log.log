@@ -575,3 +575,39 @@
 ### SQL: insert into `t_interface_case_execute_log`          ( `case_id`,             `case_desc`,             `request_headers`,             `request_params`,             `request_data`,             `request_json`,             `response_code`,             `response_headers`,             `response_body`,             `executer`,             `status`,             `created_time` )           values ( ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ? )
 ### Cause: com.mysql.jdbc.MysqlDataTruncation: Data truncation: Data too long for column 'response_headers' at row 1
 ; Data truncation: Data too long for column 'response_headers' at row 1; nested exception is com.mysql.jdbc.MysqlDataTruncation: Data truncation: Data too long for column 'response_headers' at row 1
+2020-09-09 09:37:47.395  INFO 14408 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 14408 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-09 09:37:47.397  INFO 14408 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-09 09:37:47.893  INFO 14408 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-09 09:37:47.895  INFO 14408 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-09 09:37:47.924  INFO 14408 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 Redis repository interfaces.
+2020-09-09 09:37:48.228  INFO 14408 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-09 09:37:48.235  INFO 14408 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-09 09:37:48.235  INFO 14408 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-09 09:37:48.294  INFO 14408 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-09 09:37:48.294  INFO 14408 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 867 ms
+2020-09-09 09:37:48.394  INFO 14408 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-09 09:37:48.469  INFO 14408 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-09 09:37:48.818  INFO 14408 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-09 09:37:49.144  INFO 14408 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-09 09:37:49.146  INFO 14408 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.031 seconds (JVM running for 2.589)
+2020-09-09 09:37:53.289  INFO 14408 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-09 09:37:53.289  INFO 14408 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-09 09:37:53.293  INFO 14408 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-09 09:45:49.414  INFO 8732 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 8732 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-09 09:45:49.416  INFO 8732 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-09 09:45:49.901  INFO 8732 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-09 09:45:49.903  INFO 8732 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-09 09:45:49.934  INFO 8732 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22ms. Found 0 Redis repository interfaces.
+2020-09-09 09:45:50.251  INFO 8732 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-09 09:45:50.257  INFO 8732 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-09 09:45:50.257  INFO 8732 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-09 09:45:50.316  INFO 8732 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-09 09:45:50.316  INFO 8732 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 869 ms
+2020-09-09 09:45:50.416  INFO 8732 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-09 09:45:50.494  INFO 8732 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-09 09:45:50.868  INFO 8732 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-09 09:45:51.202  INFO 8732 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-09 09:45:51.204  INFO 8732 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.074 seconds (JVM running for 2.609)
+2020-09-09 09:46:05.284  INFO 8732 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-09 09:46:05.284  INFO 8732 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-09 09:46:05.288  INFO 8732 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms

@@ -13,6 +13,7 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private String moduleName;
     private String responseBody;
     private String executer;
+    private Long runTime;
     private Byte status;
     private Date createdTime;
     private String errorMessage;
@@ -23,6 +24,14 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Long getRunTime() {
+        return runTime;
+    }
+
+    public void setRunTime(Long runTime) {
+        this.runTime = runTime;
     }
 
     public Integer getCaseId() {

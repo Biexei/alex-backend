@@ -14,6 +14,7 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
     private Integer responseCode;
     private String responseHeaders;
     private String responseBody;
+    private Long runTime;
     private String executer;
     private Byte status;
     private Date createdTime;
@@ -25,6 +26,14 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Long getRunTime() {
+        return runTime;
+    }
+
+    public void setRunTime(Long runTime) {
+        this.runTime = runTime;
     }
 
     public Integer getCaseId() {

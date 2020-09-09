@@ -1,6 +1,7 @@
 package org.alex.platform.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class InterfaceAssertLogDO implements Serializable {
     private Integer assertLogId;
@@ -16,6 +17,15 @@ public class InterfaceAssertLogDO implements Serializable {
     private Integer order;
     private Byte status;
     private String errorMessage;
+    private Date createdTime;
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
 
     public Integer getAssertLogId() {
         return assertLogId;
