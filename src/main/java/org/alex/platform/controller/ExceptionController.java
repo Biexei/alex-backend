@@ -35,13 +35,13 @@ public class ExceptionController {
             BindException be = (BindException) e;
             List<ObjectError> errors = be.getBindingResult().getAllErrors();
             String msg = errors.get(0).getDefaultMessage();
-            return Result.fail(405, msg);
+            return Result.fail(501, msg);
         } else if (e instanceof BusinessException) {
-            return Result.fail(501, e.getMessage());
-        } else if (e instanceof ParseException) {
             return Result.fail(502, e.getMessage());
-        } else if (e instanceof SqlException) {
+        } else if (e instanceof ParseException) {
             return Result.fail(503, e.getMessage());
+        } else if (e instanceof SqlException) {
+            return Result.fail(504, e.getMessage());
         } else {
             return Result.fail(500, e.getMessage());
         }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 
@@ -90,16 +91,14 @@ public class UserController {
 
     @PostMapping("/user/login")
     @ResponseBody
-    public Result login(UserDO userDO) {
-        String username = userDO.getUsername();
-        String password = userDO.getPassword();
+    public Result login(@RequestBody String username, String password) {
         if (null == username || "".equals(username) || null == password || "".equals(password)) {
             LOG.error("帐号名或者密码错误");
             return Result.fail("帐号名或者密码错误");
         }
-        UserDO u = new UserDO();
-        u.setUsername(username);
-        u.setPassword(password);
+        UserDO userDO = new UserDO();
+        userDO.setUsername(username);
+        userDO.setPassword(password);
         if (userService.findUserToLogin(userDO) != null) {
             return Result.success("登录成功");
         } else {
