@@ -3,14 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.alex.platform.mapper.UserMapper">
-    <select id="selectUserList" resultType="HashMap">
-        select user_id, username, job_number, sex, is_enable from t_user
+    <select id="selectUserList" resultType="org.alex.platform.pojo.UserDO">
+        select user_id, username, job_number, sex, is_enable, created_time, real_name from t_user
         <where>
             <if test="userId != null">user_id = #{userId}</if>
             <if test="username != null">and username like concat('%',#{username},'%')</if>
             <if test="jobNumber != null">and job_number = #{jobNumber}</if>
             <if test="sex != null">and sex = #{sex}</if>
             <if test="isEnable != null">and is_enable = #{isEnable}</if>
+            <if test="realName != null">and real_name like concat('%',#{realName},'%')</if>
         </where>
 
     </select>

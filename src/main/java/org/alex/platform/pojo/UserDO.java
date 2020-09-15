@@ -1,6 +1,8 @@
 package org.alex.platform.pojo;
 
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,7 +22,9 @@ public class UserDO implements Serializable {
     private Byte sex;
     @DecimalMax(value = "1", message = "状态必须为0|1")
     private Byte isEnable;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     @Size(max = 10, message = "真实姓名必须为3~20")
     private String realName;

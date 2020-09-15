@@ -91,7 +91,7 @@ public class UserController {
 
     @PostMapping("/user/login")
     @ResponseBody
-    public Result login(@RequestBody String username, String password) {
+    public Result login(String username, String password) {
         if (null == username || "".equals(username) || null == password || "".equals(password)) {
             LOG.error("帐号名或者密码错误");
             return Result.fail("帐号名或者密码错误");
