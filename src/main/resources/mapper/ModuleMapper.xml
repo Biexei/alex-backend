@@ -31,8 +31,19 @@
         <association property="project" javaType="org.alex.platform.pojo.ProjectDO" resultMap="projectDO"/>
     </resultMap>
 
-    <select id="selectModuleList" resultMap="moduleVo" parameterType="org.alex.platform.pojo.ModuleDTO">
-        select p.project_id, p.name, m.module_id, m.name mname, m.desc mdesc, m.created_time mcreatedtime, m.update_time mupdatetime
+<!--    <select id="selectModuleList" resultMap="moduleVo" parameterType="org.alex.platform.pojo.ModuleDTO">-->
+<!--        select p.project_id, p.name, m.module_id, m.name mname, m.desc mdesc, m.created_time mcreatedtime, m.update_time mupdatetime-->
+<!--        from t_module as m LEFT JOIN t_project as p on m.project_id = p.project_id-->
+<!--        <where>-->
+<!--            <if test="projectId !=null">p.project_id=#{projectId}</if>-->
+<!--            <if test="moduleId !=null">and m.module_id=#{moduleId}</if>-->
+<!--            <if test="projectName !=null">and p.name like concat("%", #{projectName}, "%")</if>-->
+<!--            <if test="moduleName !=null">and m.name like concat("%", #{moduleName}, "%")</if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+    <select id="selectModuleList" resultType="org.alex.platform.pojo.ModuleListVO" parameterType="org.alex.platform.pojo.ModuleDTO">
+        select p.project_id, p.name as `project_name`, m.module_id, m.name as `module_name`, m.desc as `desc`, m.created_time `created_time`, m.update_time as `update_time`
         from t_module as m LEFT JOIN t_project as p on m.project_id = p.project_id
         <where>
             <if test="projectId !=null">p.project_id=#{projectId}</if>
@@ -70,7 +81,7 @@
         where `module_id` = #{moduleId}
     </update>
     
-    <delete id="deleteModule" parameterType="Integer">
+    <delete id="deleteModuleById" parameterType="Integer">
         delete from t_module where module_id = #{moduleId}
     </delete>
 </mapper>

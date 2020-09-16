@@ -4,11 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.controller.ModuleController;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.mapper.ModuleMapper;
 import org.alex.platform.mapper.ProjectMapper;
-import org.alex.platform.pojo.ModuleDO;
-import org.alex.platform.pojo.ModuleDTO;
-import org.alex.platform.pojo.ProjectDO;
+import org.alex.platform.pojo.*;
 import org.alex.platform.service.ModuleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +24,8 @@ public class ModuleServiceImpl implements ModuleService {
     ModuleMapper moduleMapper;
     @Autowired
     ProjectMapper projectMapper;
+    @Autowired
+    InterfaceCaseMapper interfaceCaseMapper;
 
     @Override
     public PageInfo<Serializable> findModuleList(ModuleDTO moduleDto, Integer pageNum, Integer pageSize) {
@@ -52,7 +53,14 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public void removeModuleById(Integer moduleId) {
-        moduleMapper.deleteModuleById(moduleId);
+    public void removeModuleById(Integer moduleId) throws BusinessException {
+        // 模块下存在用例则不允许删除
+        InterfaceCaseListDTO listDTO = new InterfaceCaseListDTO();
+        listDTO.setModuleId(moduleId);
+        if (interfaceCaseMapper.selectInterfaceCaseList(listDTO).isEmpty()) {
+            moduleMapper.deleteModuleById(moduleId);
+        } else {
+            throw new BusinessException("该模块下已存在用例");
+        }
     }
 }

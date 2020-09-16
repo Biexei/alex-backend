@@ -14,5 +14,5 @@ public interface ModuleService {
 
     void modifyModule(ModuleDO moduleDO);
 
-    void removeModuleById(Integer moduleId);
+    void removeModuleById(Integer moduleId) throws BusinessException;
 }

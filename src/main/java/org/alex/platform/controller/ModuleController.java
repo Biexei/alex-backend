@@ -44,11 +44,7 @@ public class ModuleController {
         Date date = new Date();
         moduleDO.setCreatedTime(date);
         moduleDO.setUpdateTime(date);
-        try {
-            moduleService.saveModule(moduleDO);
-        } catch (BusinessException e) {
-            e.printStackTrace();
-        }
+        moduleService.saveModule(moduleDO);
         return Result.success("新增成功");
     }
 
@@ -66,7 +62,7 @@ public class ModuleController {
     }
 
     @GetMapping("/module/remove/{moduleId}")
-    public Result removeModule(@PathVariable Integer moduleId) {
+    public Result removeModule(@PathVariable Integer moduleId) throws BusinessException {
         moduleService.removeModuleById(moduleId);
         return Result.success("删除成功");
     }

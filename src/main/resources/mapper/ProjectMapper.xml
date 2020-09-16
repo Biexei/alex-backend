@@ -43,11 +43,7 @@
     <sql id="query_one">
         select `project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`
         from t_project
-        <where>
-            <if test="projectId != null">`project_id` = #{projectId}</if>
-            <if test="name != null">and `name` = #{name}</if>
-            <if test="domain != null">and `domain` = #{domain}</if>
-        </where>
+        where `project_id` = #{projectId}
     </sql>
     <select id="selectProjectList" resultType="HashMap" parameterType="org.alex.platform.pojo.ProjectDO">
         <include refid="query_all"/>
