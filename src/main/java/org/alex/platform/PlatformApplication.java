@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 @MapperScan(basePackages = "org.alex.platform.mapper")
-@ServletComponentScan(basePackages = "org.alex.platform.filter")
 public class PlatformApplication {
 
     public static void main(String[] args) {
