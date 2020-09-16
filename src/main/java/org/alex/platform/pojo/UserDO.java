@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
@@ -17,7 +18,9 @@ public class UserDO implements Serializable {
     @Size(min = 3, max = 20, message = "密码长度必须为3~20")
     @NotNull(message = "密码不能为空")
     private String password;
-    private Integer jobNumber;
+    @Pattern(regexp = "\\d{0,10}$", message = "工号长度必须为0~10数字")
+    private String jobNumber;
+    @NotNull(message = "性别不能为空")
     @DecimalMax(value = "1", message = "性别必须为0|1")
     private Byte sex;
     @DecimalMax(value = "1", message = "状态必须为0|1")
@@ -26,7 +29,7 @@ public class UserDO implements Serializable {
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
-    @Size(max = 10, message = "真实姓名必须为3~20")
+    @Size(max = 20, message = "真实姓名长度必须小于20")
     private String realName;
 
     public Integer getUserId() {
@@ -53,11 +56,11 @@ public class UserDO implements Serializable {
         this.password = password;
     }
 
-    public Integer getJobNumber() {
+    public String getJobNumber() {
         return jobNumber;
     }
 
-    public void setJobNumber(Integer jobNumber) {
+    public void setJobNumber(String jobNumber) {
         this.jobNumber = jobNumber;
     }
 

@@ -45,19 +45,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void modifyProject(ProjectDO projectDO) throws Exception {
-        String projectName = projectDO.getName();
-        ProjectDO p = new ProjectDO();
-        p.setName(projectName);
-        if (findProject(p) != null) {
-            throw new BusinessException("修改失败，项目名称已存在");
-        } else {
-            projectMapper.updateProject(projectDO);
-        }
+        projectMapper.updateProject(projectDO);
     }
 
     @Override
     public void saveProject(ProjectDO projectDO) throws Exception {
-        if (findProject(projectDO) != null) {
+        ProjectDO project = new ProjectDO();
+        project.setName(projectDO.getName());
+        if (findProject(project) != null) {
             throw new BusinessException("新增失败，项目名称已存在");
         } else {
             projectMapper.insertProject(projectDO);

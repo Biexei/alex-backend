@@ -13,6 +13,8 @@ public interface UserMapper {
 
     void insertUser(UserDO userDO);
 
+    void deleteUser(Integer userId);
+
     UserDO selectUserToLogin(UserDO userDO);
 
     UserDO selectUserById(Integer userId);

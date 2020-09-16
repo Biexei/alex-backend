@@ -76,6 +76,7 @@ public class UserController {
         Date date = new Date();
         userDO.setCreatedTime(date);
         userDO.setUpdateTime(date);
+        userDO.setIsEnable((byte) 1);
         if (username == null || password == null || sex == null) {
             LOG.error("请完善注册信息");
             return Result.fail("请完善注册信息");
@@ -105,5 +106,12 @@ public class UserController {
             LOG.error("帐号名或者密码错误");
             return Result.fail("帐号名或者密码错误");
         }
+    }
+
+    @GetMapping("user/remove/{userId}")
+    @ResponseBody
+    public Result removeUser(@PathVariable Integer userId) {
+        userService.removeUserById(userId);
+        return Result.success();
     }
 }

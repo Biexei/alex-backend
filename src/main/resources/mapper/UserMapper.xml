@@ -16,17 +16,20 @@
 
     </select>
     <select id="selectUserToLogin" resultType="org.alex.platform.pojo.UserDO" parameterType="org.alex.platform.pojo.UserDO">
-        select user_id, username, password, job_number,sex, is_enable from t_user where username = #{username} and password = #{password}
+        select user_id, username, password, job_number,sex, is_enable, real_name from t_user where username = #{username} and password = #{password}
     </select>
     <select id="selectUserById" resultType="org.alex.platform.pojo.UserDO" parameterType="Integer">
-        select user_id, username, password, job_number,sex, is_enable from t_user where user_id = #{userId}
+        select user_id, username, password, job_number,sex, is_enable, real_name from t_user where user_id = #{userId}
     </select>
     <select id="selectUserByName" resultType="org.alex.platform.pojo.UserDO" parameterType="String">
-        select user_id, username, password, job_number,sex, is_enable from t_user where username = #{username}
+        select user_id, username, password, job_number,sex, is_enable, real_name from t_user where username = #{username}
     </select>
     <select id="selectUserByJobNumber" resultType="org.alex.platform.pojo.UserDO" parameterType="Integer">
-        select user_id, username, password, job_number,sex, is_enable from t_user where job_number = #{jobNumber}
+        select user_id, username, password, job_number,sex, is_enable, real_name from t_user where job_number = #{jobNumber}
     </select>
+    <delete id="deleteUser" parameterType="Integer">
+        delete from `t_user` where user_id = #{userId}
+    </delete>
     <update id="updateUser" parameterType="org.alex.platform.pojo.UserDO">
         update t_user
         <set>

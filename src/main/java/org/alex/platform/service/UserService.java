@@ -14,4 +14,6 @@ public interface UserService {
     UserDO findUserToLogin(UserDO userDO);
 
     UserDO findUserById(Integer userId);
+
+    void removeUserById(Integer userId);
 }

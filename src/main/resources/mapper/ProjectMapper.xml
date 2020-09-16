@@ -37,7 +37,7 @@
         <where>
             <if test="projectId != null">`project_id` = #{projectId}</if>
             <if test="name != null">and `name` like concat("%", #{name}, "%")</if>
-            <if test="domain != null">and `domain` = #{domain}</if>
+            <if test="domain != null">and `domain` like concat('%',#{domain},'%')</if>
         </where>
     </sql>
     <sql id="query_one">
@@ -75,12 +75,12 @@
     <update id="updateProject" parameterType="org.alex.platform.pojo.ProjectDO">
         update t_project
         <set>
-            <if test="name != null">name=#{name},</if>
-            <if test="desc != null">desc=#{desc},</if>
-            <if test="domain != null">domain=#{domain},</if>
-            <if test="updateTime != null">update_time=#{updateTime},</if>
+            <if test="name != null">`name`=#{name},</if>
+            <if test="desc != null">`desc`=#{desc},</if>
+            <if test="domain != null">`domain`=#{domain},</if>
+            <if test="updateTime != null">`update_time`=#{updateTime},</if>
         </set>
-        where project_id = #{projectId}
+        where `project_id` = #{projectId}
     </update>
     <delete id="deleteProjectById" parameterType="int">
         delete from t_project where project_id = #{projectId}

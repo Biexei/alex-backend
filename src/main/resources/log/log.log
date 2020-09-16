@@ -34,3 +34,417 @@
 2020-09-16 09:13:42.276  INFO 2540 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-09-16 09:13:42.277  INFO 2540 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2020-09-16 09:13:42.282  INFO 2540 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2020-09-16 11:15:19.863 ERROR 2540 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'userDO' on field 'isEnable': rejected value [启用]; codes [typeMismatch.userDO.isEnable,typeMismatch.isEnable,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.isEnable,isEnable]; arguments []; default message [isEnable]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'isEnable'; nested exception is java.lang.NumberFormatException: For input string: "启用"]
+Field error in object 'userDO' on field 'sex': rejected value [女]; codes [typeMismatch.userDO.sex,typeMismatch.sex,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.sex,sex]; arguments []; default message [sex]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'sex'; nested exception is java.lang.NumberFormatException: For input string: "女"]
+2020-09-16 11:25:10.177 ERROR 2540 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'userDO' on field 'isEnable': rejected value [启用]; codes [typeMismatch.userDO.isEnable,typeMismatch.isEnable,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.isEnable,isEnable]; arguments []; default message [isEnable]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'isEnable'; nested exception is java.lang.NumberFormatException: For input string: "启用"]
+Field error in object 'userDO' on field 'sex': rejected value [女]; codes [typeMismatch.userDO.sex,typeMismatch.sex,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.sex,sex]; arguments []; default message [sex]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'sex'; nested exception is java.lang.NumberFormatException: For input string: "女"]
+2020-09-16 11:25:12.777 ERROR 2540 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'userDO' on field 'isEnable': rejected value [启用]; codes [typeMismatch.userDO.isEnable,typeMismatch.isEnable,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.isEnable,isEnable]; arguments []; default message [isEnable]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'isEnable'; nested exception is java.lang.NumberFormatException: For input string: "启用"]
+Field error in object 'userDO' on field 'sex': rejected value [女]; codes [typeMismatch.userDO.sex,typeMismatch.sex,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.sex,sex]; arguments []; default message [sex]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'sex'; nested exception is java.lang.NumberFormatException: For input string: "女"]
+2020-09-16 11:26:18.081 ERROR 2540 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'userDO' on field 'isEnable': rejected value [启用]; codes [typeMismatch.userDO.isEnable,typeMismatch.isEnable,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.isEnable,isEnable]; arguments []; default message [isEnable]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'isEnable'; nested exception is java.lang.NumberFormatException: For input string: "启用"]
+Field error in object 'userDO' on field 'sex': rejected value [女]; codes [typeMismatch.userDO.sex,typeMismatch.sex,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.sex,sex]; arguments []; default message [sex]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'sex'; nested exception is java.lang.NumberFormatException: For input string: "女"]
+2020-09-16 11:38:04.656 ERROR 2540 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'userDO' on field 'isEnable': rejected value [启用]; codes [typeMismatch.userDO.isEnable,typeMismatch.isEnable,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.isEnable,isEnable]; arguments []; default message [isEnable]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'isEnable'; nested exception is java.lang.NumberFormatException: For input string: "启用"]
+Field error in object 'userDO' on field 'sex': rejected value [女]; codes [typeMismatch.userDO.sex,typeMismatch.sex,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.sex,sex]; arguments []; default message [sex]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'sex'; nested exception is java.lang.NumberFormatException: For input string: "女"]
+2020-09-16 11:38:18.338 ERROR 2540 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'userDO' on field 'isEnable': rejected value [启用]; codes [typeMismatch.userDO.isEnable,typeMismatch.isEnable,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.isEnable,isEnable]; arguments []; default message [isEnable]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'isEnable'; nested exception is java.lang.NumberFormatException: For input string: "启用"]
+Field error in object 'userDO' on field 'sex': rejected value [女]; codes [typeMismatch.userDO.sex,typeMismatch.sex,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.sex,sex]; arguments []; default message [sex]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'sex'; nested exception is java.lang.NumberFormatException: For input string: "女"]
+2020-09-16 11:47:08.585 ERROR 2540 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'isEnable': rejected value [禁用]; codes [typeMismatch.userDO.isEnable,typeMismatch.isEnable,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.isEnable,isEnable]; arguments []; default message [isEnable]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'isEnable'; nested exception is java.lang.NumberFormatException: For input string: "禁用"]
+2020-09-16 11:48:05.294 ERROR 2540 --- [http-nio-7777-exec-3] o.a.platform.controller.UserController   : 帐号名或者密码错误
+2020-09-16 11:48:08.307 ERROR 2540 --- [http-nio-7777-exec-7] o.a.platform.controller.UserController   : 帐号名或者密码错误
+2020-09-16 12:33:22.145  INFO 11232 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 11232 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 12:33:22.148  INFO 11232 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 12:33:22.748  INFO 11232 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 12:33:22.749  INFO 11232 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 12:33:22.783  INFO 11232 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-16 12:33:23.175  INFO 11232 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 12:33:23.182  INFO 11232 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 12:33:23.183  INFO 11232 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 12:33:23.251  INFO 11232 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 12:33:23.251  INFO 11232 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1051 ms
+2020-09-16 12:33:23.367  INFO 11232 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 12:33:23.481  INFO 11232 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 12:33:23.982  INFO 11232 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 12:33:24.345  INFO 11232 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 12:33:24.347  INFO 11232 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.615 seconds (JVM running for 3.219)
+2020-09-16 12:33:31.282  INFO 11232 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 12:33:31.283  INFO 11232 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 12:33:31.287  INFO 11232 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-16 12:33:33.448 ERROR 11232 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'realName' in 'field list'
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\UserMapper.xml]
+### The error may involve org.alex.platform.mapper.UserMapper.selectUserById-Inline
+### The error occurred while setting parameters
+### SQL: select user_id, username, password, job_number,sex, is_enable, realName from t_user where user_id = ?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'realName' in 'field list'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'realName' in 'field list'
+2020-09-16 12:33:33.822 ERROR 11232 --- [http-nio-7777-exec-6] o.a.p.controller.ExceptionController     : 
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'realName' in 'field list'
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\UserMapper.xml]
+### The error may involve org.alex.platform.mapper.UserMapper.selectUserById-Inline
+### The error occurred while setting parameters
+### SQL: select user_id, username, password, job_number,sex, is_enable, realName from t_user where user_id = ?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'realName' in 'field list'
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'realName' in 'field list'
+2020-09-16 12:33:50.795  INFO 9236 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 9236 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 12:33:50.797  INFO 9236 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 12:33:51.293  INFO 9236 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 12:33:51.294  INFO 9236 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 12:33:51.325  INFO 9236 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-16 12:33:51.674  INFO 9236 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 12:33:51.683  INFO 9236 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 12:33:51.683  INFO 9236 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 12:33:51.750  INFO 9236 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 12:33:51.751  INFO 9236 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 922 ms
+2020-09-16 12:33:51.863  INFO 9236 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 12:33:51.952  INFO 9236 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 12:33:52.298  INFO 9236 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 12:33:52.641  INFO 9236 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 12:33:52.644  INFO 9236 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.112 seconds (JVM running for 2.546)
+2020-09-16 12:33:56.442  INFO 9236 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 12:33:56.442  INFO 9236 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 12:33:56.446  INFO 9236 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-16 13:45:53.478  INFO 9692 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 9692 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 13:45:53.502  INFO 9692 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 13:45:54.009  INFO 9692 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 13:45:54.011  INFO 9692 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 13:45:54.044  INFO 9692 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22ms. Found 0 Redis repository interfaces.
+2020-09-16 13:45:54.480  INFO 9692 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 13:45:54.488  INFO 9692 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 13:45:54.488  INFO 9692 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 13:45:54.554  INFO 9692 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 13:45:54.554  INFO 9692 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1013 ms
+2020-09-16 13:45:54.653  INFO 9692 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 13:45:54.758  INFO 9692 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 13:45:55.291  INFO 9692 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 13:45:55.622  INFO 9692 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 13:45:55.624  INFO 9692 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.629 seconds (JVM running for 3.207)
+2020-09-16 13:46:16.157  INFO 9692 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 13:46:16.157  INFO 9692 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 13:46:16.162  INFO 9692 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-16 13:59:09.048 ERROR 9692 --- [http-nio-7777-exec-8] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'password': rejected value [1]; codes [Size.userDO.password,Size.password,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.password,password]; arguments []; default message [password],20,3]; default message [密码长度必须为3~20]
+2020-09-16 13:59:25.609 ERROR 9692 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'userDO' on field 'password': rejected value []; codes [Size.userDO.password,Size.password,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.password,password]; arguments []; default message [password],20,3]; default message [密码长度必须为3~20]
+Field error in object 'userDO' on field 'username': rejected value []; codes [Size.userDO.username,Size.username,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.username,username]; arguments []; default message [username],20,1]; default message [帐号名称长度必须为1~20]
+2020-09-16 14:02:55.761 ERROR 9692 --- [http-nio-7777-exec-6] o.a.platform.controller.UserController   : 请完善注册信息
+2020-09-16 14:04:47.105  INFO 8712 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 8712 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 14:04:47.107  INFO 8712 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 14:04:47.656  INFO 8712 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 14:04:47.657  INFO 8712 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 14:04:47.688  INFO 8712 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-16 14:04:48.001  INFO 8712 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 14:04:48.008  INFO 8712 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 14:04:48.008  INFO 8712 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 14:04:48.068  INFO 8712 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 14:04:48.068  INFO 8712 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 929 ms
+2020-09-16 14:04:48.172  INFO 8712 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 14:04:48.252  INFO 8712 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 14:04:48.616  INFO 8712 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 14:04:48.938  INFO 8712 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 14:04:48.940  INFO 8712 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.099 seconds (JVM running for 2.557)
+2020-09-16 14:05:27.956  INFO 12004 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 12004 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 14:05:27.958  INFO 12004 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 14:05:28.459  INFO 12004 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 14:05:28.460  INFO 12004 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 14:05:28.492  INFO 12004 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-16 14:05:28.835  INFO 12004 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 14:05:28.842  INFO 12004 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 14:05:28.843  INFO 12004 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 14:05:28.906  INFO 12004 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 14:05:28.906  INFO 12004 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 915 ms
+2020-09-16 14:05:29.013  INFO 12004 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 14:05:29.090  INFO 12004 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 14:05:29.466  INFO 12004 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 14:05:29.841  INFO 12004 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 14:05:29.843  INFO 12004 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.154 seconds (JVM running for 2.614)
+2020-09-16 14:05:33.616  INFO 12004 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 14:05:33.617  INFO 12004 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 14:05:33.620  INFO 12004 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-09-16 14:06:38.940 ERROR 12004 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'userDO' on field 'sex': rejected value [null]; codes [NotNull.userDO.sex,NotNull.sex,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.sex,sex]; arguments []; default message [sex]]; default message [性别不能为空]
+Field error in object 'userDO' on field 'password': rejected value [null]; codes [NotNull.userDO.password,NotNull.password,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.password,password]; arguments []; default message [password]]; default message [密码不能为空]
+2020-09-16 14:06:42.443 ERROR 12004 --- [http-nio-7777-exec-6] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'password': rejected value [null]; codes [NotNull.userDO.password,NotNull.password,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.password,password]; arguments []; default message [password]]; default message [密码不能为空]
+2020-09-16 14:07:37.010 ERROR 12004 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'username': rejected value [111111111111111111111111111111111111111111111111111]; codes [Size.userDO.username,Size.username,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.username,username]; arguments []; default message [username],20,1]; default message [帐号名称长度必须为1~20]
+2020-09-16 14:07:45.610 ERROR 12004 --- [http-nio-7777-exec-6] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'jobNumber': rejected value [asd]; codes [typeMismatch.userDO.jobNumber,typeMismatch.jobNumber,typeMismatch.java.lang.Integer,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.jobNumber,jobNumber]; arguments []; default message [jobNumber]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Integer' for property 'jobNumber'; nested exception is java.lang.NumberFormatException: For input string: "asd"]
+2020-09-16 14:08:12.250 ERROR 12004 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'jobNumber': rejected value [asd]; codes [typeMismatch.userDO.jobNumber,typeMismatch.jobNumber,typeMismatch.java.lang.Integer,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.jobNumber,jobNumber]; arguments []; default message [jobNumber]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Integer' for property 'jobNumber'; nested exception is java.lang.NumberFormatException: For input string: "asd"]
+2020-09-16 14:08:15.274 ERROR 12004 --- [http-nio-7777-exec-4] o.a.platform.controller.UserController   : 用户名已存在
+2020-09-16 14:08:29.987 ERROR 12004 --- [http-nio-7777-exec-7] o.a.platform.controller.UserController   : 用户名已存在
+2020-09-16 14:16:58.907 ERROR 12004 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'userDO' on field 'jobNumber': rejected value [asd]; codes [typeMismatch.userDO.jobNumber,typeMismatch.jobNumber,typeMismatch.java.lang.Integer,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.jobNumber,jobNumber]; arguments []; default message [jobNumber]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Integer' for property 'jobNumber'; nested exception is java.lang.NumberFormatException: For input string: "asd"]
+Field error in object 'userDO' on field 'sex': rejected value [null]; codes [NotNull.userDO.sex,NotNull.sex,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.sex,sex]; arguments []; default message [sex]]; default message [性别不能为空]
+2020-09-16 14:18:32.530  INFO 1336 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 1336 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 14:18:32.533  INFO 1336 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 14:18:33.097  INFO 1336 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 14:18:33.098  INFO 1336 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 14:18:33.131  INFO 1336 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 23ms. Found 0 Redis repository interfaces.
+2020-09-16 14:18:33.452  INFO 1336 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 14:18:33.458  INFO 1336 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 14:18:33.459  INFO 1336 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 14:18:33.520  INFO 1336 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 14:18:33.522  INFO 1336 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 952 ms
+2020-09-16 14:18:33.623  INFO 1336 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 14:18:33.706  INFO 1336 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 14:18:34.073  INFO 1336 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 14:18:34.400  INFO 1336 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 14:18:34.402  INFO 1336 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.157 seconds (JVM running for 2.653)
+2020-09-16 14:18:41.566  INFO 1336 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 14:18:41.566  INFO 1336 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 14:18:41.570  INFO 1336 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-09-16 14:18:41.661 ERROR 1336 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : HV000030: No validator could be found for constraint 'javax.validation.constraints.Pattern' validating type 'java.lang.Integer'. Check configuration for 'jobNumber'
+2020-09-16 14:52:02.104 ERROR 1336 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : HV000030: No validator could be found for constraint 'javax.validation.constraints.Pattern' validating type 'java.lang.Integer'. Check configuration for 'jobNumber'
+2020-09-16 14:52:21.582  INFO 816 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 816 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 14:52:21.585  INFO 816 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 14:52:22.256  INFO 816 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 14:52:22.258  INFO 816 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 14:52:22.288  INFO 816 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-16 14:52:22.601  INFO 816 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 14:52:22.608  INFO 816 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 14:52:22.608  INFO 816 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 14:52:22.668  INFO 816 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 14:52:22.669  INFO 816 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1050 ms
+2020-09-16 14:52:22.770  INFO 816 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 14:52:22.845  INFO 816 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 14:52:23.198  INFO 816 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 14:52:23.542  INFO 816 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 14:52:23.544  INFO 816 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.25 seconds (JVM running for 2.717)
+2020-09-16 14:52:27.269  INFO 816 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 14:52:27.269  INFO 816 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 14:52:27.273  INFO 816 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-16 14:52:27.354 ERROR 816 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'userDO' on field 'username': rejected value [null]; codes [NotNull.userDO.username,NotNull.username,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.username,username]; arguments []; default message [username]]; default message [帐号名称不能为空]
+Field error in object 'userDO' on field 'sex': rejected value [null]; codes [NotNull.userDO.sex,NotNull.sex,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.sex,sex]; arguments []; default message [sex]]; default message [性别不能为空]
+Field error in object 'userDO' on field 'password': rejected value [null]; codes [NotNull.userDO.password,NotNull.password,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.password,password]; arguments []; default message [password]]; default message [密码不能为空]
+2020-09-16 14:54:41.065 ERROR 816 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'userDO' on field 'username': rejected value [null]; codes [NotNull.userDO.username,NotNull.username,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.username,username]; arguments []; default message [username]]; default message [帐号名称不能为空]
+Field error in object 'userDO' on field 'password': rejected value [null]; codes [NotNull.userDO.password,NotNull.password,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.password,password]; arguments []; default message [password]]; default message [密码不能为空]
+Field error in object 'userDO' on field 'sex': rejected value [null]; codes [NotNull.userDO.sex,NotNull.sex,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.sex,sex]; arguments []; default message [sex]]; default message [性别不能为空]
+2020-09-16 14:59:01.805 ERROR 816 --- [http-nio-7777-exec-9] o.a.platform.controller.UserController   : 用户名已存在
+2020-09-16 15:02:41.915 ERROR 816 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'jobNumber': rejected value [sd]; codes [typeMismatch.userDO.jobNumber,typeMismatch.jobNumber,typeMismatch.java.lang.Integer,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.jobNumber,jobNumber]; arguments []; default message [jobNumber]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Integer' for property 'jobNumber'; nested exception is java.lang.NumberFormatException: For input string: "sd"]
+2020-09-16 15:03:25.178  INFO 4620 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 4620 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 15:03:25.180  INFO 4620 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 15:03:25.646  INFO 4620 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 15:03:25.648  INFO 4620 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 15:03:25.679  INFO 4620 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-16 15:03:26.009  INFO 4620 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 15:03:26.015  INFO 4620 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 15:03:26.015  INFO 4620 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 15:03:26.074  INFO 4620 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 15:03:26.074  INFO 4620 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 862 ms
+2020-09-16 15:03:26.175  INFO 4620 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 15:03:26.250  INFO 4620 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 15:03:26.594  INFO 4620 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 15:03:26.924  INFO 4620 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 15:03:26.927  INFO 4620 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.021 seconds (JVM running for 2.461)
+2020-09-16 15:03:30.515  INFO 4620 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 15:03:30.515  INFO 4620 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 15:03:30.519  INFO 4620 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-16 15:03:30.603 ERROR 4620 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'jobNumber': rejected value [sd]; codes [Pattern.userDO.jobNumber,Pattern.jobNumber,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.jobNumber,jobNumber]; arguments []; default message [jobNumber],[Ljavax.validation.constraints.Pattern$Flag;@56bf8f47,\d{0,10}$]; default message [工号长度必须为0~10数字]
+2020-09-16 15:04:28.417 ERROR 4620 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'jobNumber': rejected value [1asd]; codes [Pattern.userDO.jobNumber,Pattern.jobNumber,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.jobNumber,jobNumber]; arguments []; default message [jobNumber],[Ljavax.validation.constraints.Pattern$Flag;@56bf8f47,\d{0,10}$]; default message [工号长度必须为0~10数字]
+2020-09-16 15:06:29.264 ERROR 4620 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'jobNumber': rejected value [1sdf]; codes [Pattern.userDO.jobNumber,Pattern.jobNumber,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.jobNumber,jobNumber]; arguments []; default message [jobNumber],[Ljavax.validation.constraints.Pattern$Flag;@56bf8f47,\d{0,10}$]; default message [工号长度必须为0~10数字]
+2020-09-16 16:04:05.483  INFO 6104 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 6104 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 16:04:05.485  INFO 6104 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 16:04:05.976  INFO 6104 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 16:04:05.977  INFO 6104 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 16:04:06.007  INFO 6104 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 Redis repository interfaces.
+2020-09-16 16:04:06.392  INFO 6104 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 16:04:06.402  INFO 6104 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 16:04:06.403  INFO 6104 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 16:04:06.528  INFO 6104 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 16:04:06.528  INFO 6104 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1009 ms
+2020-09-16 16:04:06.626  INFO 6104 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 16:04:06.713  INFO 6104 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 16:04:07.197  INFO 6104 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 16:04:07.555  INFO 6104 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 16:04:07.557  INFO 6104 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.582 seconds (JVM running for 3.28)
+2020-09-16 16:04:11.053  INFO 6104 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 16:04:11.054  INFO 6104 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 16:04:11.058  INFO 6104 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-16 16:08:15.700 ERROR 6104 --- [http-nio-7777-exec-6] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'projectDO' on field 'createdTime': rejected value [2020-07-29 08:26:54]; codes [typeMismatch.projectDO.createdTime,typeMismatch.createdTime,typeMismatch.java.util.Date,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.createdTime,createdTime]; arguments []; default message [createdTime]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.util.Date' for property 'createdTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [java.util.Date] for value '2020-07-29 08:26:54'; nested exception is java.lang.IllegalArgumentException]
+Field error in object 'projectDO' on field 'updateTime': rejected value [2020-07-29 08:26:58]; codes [typeMismatch.projectDO.updateTime,typeMismatch.updateTime,typeMismatch.java.util.Date,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.updateTime,updateTime]; arguments []; default message [updateTime]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.util.Date' for property 'updateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [java.util.Date] for value '2020-07-29 08:26:58'; nested exception is java.lang.IllegalArgumentException]
+2020-09-16 16:08:33.877 ERROR 6104 --- [http-nio-7777-exec-8] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'projectDO' on field 'createdTime': rejected value [2020-07-29 08:26:54]; codes [typeMismatch.projectDO.createdTime,typeMismatch.createdTime,typeMismatch.java.util.Date,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.createdTime,createdTime]; arguments []; default message [createdTime]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.util.Date' for property 'createdTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [java.util.Date] for value '2020-07-29 08:26:54'; nested exception is java.lang.IllegalArgumentException]
+Field error in object 'projectDO' on field 'updateTime': rejected value [2020-07-29 08:26:58]; codes [typeMismatch.projectDO.updateTime,typeMismatch.updateTime,typeMismatch.java.util.Date,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.updateTime,updateTime]; arguments []; default message [updateTime]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.util.Date' for property 'updateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [java.util.Date] for value '2020-07-29 08:26:58'; nested exception is java.lang.IllegalArgumentException]
+2020-09-16 16:10:40.737  INFO 232 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 232 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 16:10:40.739  INFO 232 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 16:10:41.230  INFO 232 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 16:10:41.232  INFO 232 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 16:10:41.261  INFO 232 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 Redis repository interfaces.
+2020-09-16 16:10:41.573  INFO 232 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 16:10:41.579  INFO 232 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 16:10:41.580  INFO 232 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 16:10:41.641  INFO 232 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 16:10:41.641  INFO 232 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 864 ms
+2020-09-16 16:10:41.748  INFO 232 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 16:10:41.838  INFO 232 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 16:10:42.193  INFO 232 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 16:10:42.515  INFO 232 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 16:10:42.518  INFO 232 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.067 seconds (JVM running for 2.507)
+2020-09-16 16:10:47.315  INFO 232 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 16:10:47.316  INFO 232 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 16:10:47.319  INFO 232 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-09-16 16:10:47.755 ERROR 232 --- [http-nio-7777-exec-1] o.a.p.controller.ProjectController       : 修改失败，项目名称已存在
+2020-09-16 16:13:03.554  INFO 13984 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 13984 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 16:13:03.557  INFO 13984 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 16:13:04.030  INFO 13984 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 16:13:04.031  INFO 13984 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 16:13:04.061  INFO 13984 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-16 16:13:04.370  INFO 13984 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 16:13:04.377  INFO 13984 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 16:13:04.377  INFO 13984 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 16:13:04.436  INFO 13984 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 16:13:04.437  INFO 13984 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 849 ms
+2020-09-16 16:13:04.537  INFO 13984 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 16:13:04.615  INFO 13984 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 16:13:04.962  INFO 13984 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 16:13:05.285  INFO 13984 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 16:13:05.287  INFO 13984 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.003 seconds (JVM running for 2.435)
+2020-09-16 16:13:10.479  INFO 13984 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 16:13:10.480  INFO 13984 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 16:13:10.484  INFO 13984 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-16 16:13:10.969 ERROR 13984 --- [http-nio-7777-exec-1] o.a.p.controller.ProjectController       : 
+### Error updating database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc='json测试1',
+            domain='http://op.juhe.cn/',
+            update_' at line 3
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ProjectMapper.xml]
+### The error may involve org.alex.platform.mapper.ProjectMapper.updateProject-Inline
+### The error occurred while setting parameters
+### SQL: update t_project          SET name=?,             desc=?,             domain=?,             update_time=?          where project_id = ?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc='json测试1',
+            domain='http://op.juhe.cn/',
+            update_' at line 3
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc='json测试1',
+            domain='http://op.juhe.cn/',
+            update_' at line 3
+2020-09-16 16:14:46.861  INFO 17484 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 17484 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 16:14:46.863  INFO 17484 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 16:14:47.352  INFO 17484 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 16:14:47.353  INFO 17484 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 16:14:47.382  INFO 17484 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 Redis repository interfaces.
+2020-09-16 16:14:47.695  INFO 17484 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 16:14:47.701  INFO 17484 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 16:14:47.702  INFO 17484 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 16:14:47.762  INFO 17484 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 16:14:47.762  INFO 17484 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 864 ms
+2020-09-16 16:14:47.863  INFO 17484 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 16:14:47.939  INFO 17484 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 16:14:48.291  INFO 17484 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 16:14:48.616  INFO 17484 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 16:14:48.618  INFO 17484 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.036 seconds (JVM running for 2.477)
+2020-09-16 16:14:53.208  INFO 17484 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 16:14:53.208  INFO 17484 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 16:14:53.212  INFO 17484 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-09-16 16:16:24.345 ERROR 17484 --- [http-nio-7777-exec-3] o.a.p.service.impl.ProjectServiceImpl    : 该项目下已存在模块
+2020-09-16 16:16:24.347 ERROR 17484 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : 该项目下已存在模块
+2020-09-16 16:16:27.207 ERROR 17484 --- [http-nio-7777-exec-4] o.a.p.service.impl.ProjectServiceImpl    : 该项目下已存在模块
+2020-09-16 16:16:27.208 ERROR 17484 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : 该项目下已存在模块
+2020-09-16 16:17:15.007 ERROR 17484 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'projectDO' on field 'name': rejected value [null]; codes [NotNull.projectDO.name,NotNull.name,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.name,name]; arguments []; default message [name]]; default message [不能为null]
+Field error in object 'projectDO' on field 'domain': rejected value [null]; codes [NotNull.projectDO.domain,NotNull.domain,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain]]; default message [不能为null]
+Field error in object 'projectDO' on field 'domain': rejected value [null]; codes [NotBlank.projectDO.domain,NotBlank.domain,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain]]; default message [不能为空]
+2020-09-16 16:18:21.691  INFO 8404 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 8404 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 16:18:21.694  INFO 8404 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 16:18:22.196  INFO 8404 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 16:18:22.197  INFO 8404 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 16:18:22.227  INFO 8404 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-16 16:18:22.573  INFO 8404 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 16:18:22.581  INFO 8404 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 16:18:22.581  INFO 8404 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 16:18:22.643  INFO 8404 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 16:18:22.643  INFO 8404 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 919 ms
+2020-09-16 16:18:22.750  INFO 8404 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 16:18:22.827  INFO 8404 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 16:18:23.183  INFO 8404 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 16:18:23.539  INFO 8404 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 16:18:23.541  INFO 8404 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.122 seconds (JVM running for 2.558)
+2020-09-16 16:18:26.336  INFO 8404 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 16:18:26.336  INFO 8404 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 16:18:26.340  INFO 8404 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-16 16:18:39.684 ERROR 8404 --- [http-nio-7777-exec-9] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'projectDO' on field 'name': rejected value [null]; codes [NotNull.projectDO.name,NotNull.name,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.name,name]; arguments []; default message [name]]; default message [项目名称不能为空]
+Field error in object 'projectDO' on field 'domain': rejected value [null]; codes [NotNull.projectDO.domain,NotNull.domain,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain]]; default message [项目域名不能为空]
+2020-09-16 16:18:48.547 ERROR 8404 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'projectDO' on field 'name': rejected value [null]; codes [NotNull.projectDO.name,NotNull.name,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.name,name]; arguments []; default message [name]]; default message [项目名称不能为空]
+Field error in object 'projectDO' on field 'domain': rejected value [null]; codes [NotNull.projectDO.domain,NotNull.domain,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain]]; default message [项目域名不能为空]
+2020-09-16 16:19:56.230 ERROR 8404 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'projectDO' on field 'domain': rejected value [http://localhost:7778/#/projectList]; codes [Size.projectDO.domain,Size.domain,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain],30,0]; default message [项目域名长度必须小于等于30]
+2020-09-16 16:20:08.124 ERROR 8404 --- [http-nio-7777-exec-8] o.a.p.controller.ProjectController       : 
+### Error updating database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '项目名称' for key 't_project.name'
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ProjectMapper.xml]
+### The error may involve org.alex.platform.mapper.ProjectMapper.insertProject-Inline
+### The error occurred while setting parameters
+### SQL: insert into t_project          ( `name`,             `desc`,             `domain` )           values ( ?,             ?,             ? )
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '项目名称' for key 't_project.name'
+; Duplicate entry '项目名称' for key 't_project.name'; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '项目名称' for key 't_project.name'
+2020-09-16 16:21:30.102 ERROR 8404 --- [http-nio-7777-exec-4] o.a.p.controller.ProjectController       : 
+### Error updating database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '项目名称' for key 't_project.name'
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\ProjectMapper.xml]
+### The error may involve org.alex.platform.mapper.ProjectMapper.insertProject-Inline
+### The error occurred while setting parameters
+### SQL: insert into t_project          ( `name`,             `desc`,             `domain` )           values ( ?,             ?,             ? )
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '项目名称' for key 't_project.name'
+; Duplicate entry '项目名称' for key 't_project.name'; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '项目名称' for key 't_project.name'
+2020-09-16 16:22:26.139  INFO 3252 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 3252 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 16:22:26.141  INFO 3252 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 16:22:26.627  INFO 3252 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 16:22:26.629  INFO 3252 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 16:22:26.660  INFO 3252 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-16 16:22:26.968  INFO 3252 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 16:22:26.974  INFO 3252 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 16:22:26.974  INFO 3252 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 16:22:27.037  INFO 3252 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 16:22:27.037  INFO 3252 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 861 ms
+2020-09-16 16:22:27.138  INFO 3252 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 16:22:27.211  INFO 3252 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 16:22:27.555  INFO 3252 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 16:22:27.882  INFO 3252 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 16:22:27.884  INFO 3252 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.027 seconds (JVM running for 2.528)
+2020-09-16 16:22:29.870  INFO 3252 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 16:22:29.871  INFO 3252 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 16:22:29.874  INFO 3252 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-09-16 16:22:30.311 ERROR 3252 --- [http-nio-7777-exec-1] o.a.p.controller.ProjectController       : 新增失败，项目名称已存在
+2020-09-16 16:22:44.681 ERROR 3252 --- [http-nio-7777-exec-2] o.a.p.controller.ProjectController       : 新增失败，项目名称已存在
+2020-09-16 16:24:02.954 ERROR 3252 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'projectDO' on field 'name': rejected value [1]; codes [Size.projectDO.name,Size.name,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.name,name]; arguments []; default message [name],10,3]; default message [项目名称长度必须为3~10]
+Field error in object 'projectDO' on field 'domain': rejected value [1]; codes [URL.projectDO.domain,URL.domain,URL.java.lang.String,URL]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain],[Ljavax.validation.constraints.Pattern$Flag;@1971e846,,-1,,.*]; default message [项目域名格式错误]
+2020-09-16 16:24:25.981  INFO 11776 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 11776 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-16 16:24:25.983  INFO 11776 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-16 16:24:26.467  INFO 11776 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-16 16:24:26.468  INFO 11776 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-16 16:24:26.498  INFO 11776 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 Redis repository interfaces.
+2020-09-16 16:24:26.810  INFO 11776 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-16 16:24:26.815  INFO 11776 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-16 16:24:26.815  INFO 11776 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-16 16:24:26.873  INFO 11776 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-16 16:24:26.874  INFO 11776 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 854 ms
+2020-09-16 16:24:26.973  INFO 11776 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-16 16:24:27.049  INFO 11776 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-16 16:24:27.396  INFO 11776 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-16 16:24:27.719  INFO 11776 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-16 16:24:27.721  INFO 11776 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.023 seconds (JVM running for 2.464)
+2020-09-16 16:24:29.648  INFO 11776 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-16 16:24:29.649  INFO 11776 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-16 16:24:29.654  INFO 11776 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2020-09-16 16:24:29.754 ERROR 11776 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'projectDO' on field 'domain': rejected value [1]; codes [URL.projectDO.domain,URL.domain,URL.java.lang.String,URL]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain],[Ljavax.validation.constraints.Pattern$Flag;@202a2e7e,,-1,,.*]; default message [项目域名格式错误]
+2020-09-16 16:24:36.299 ERROR 11776 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'projectDO' on field 'domain': rejected value [www.baidu.com]; codes [URL.projectDO.domain,URL.domain,URL.java.lang.String,URL]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain],[Ljavax.validation.constraints.Pattern$Flag;@202a2e7e,,-1,,.*]; default message [项目域名格式错误]
+2020-09-16 16:24:58.652 ERROR 11776 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'projectDO' on field 'domain': rejected value [1]; codes [URL.projectDO.domain,URL.domain,URL.java.lang.String,URL]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain],[Ljavax.validation.constraints.Pattern$Flag;@202a2e7e,,-1,,.*]; default message [项目域名格式错误]
+2020-09-16 16:31:28.661 ERROR 11776 --- [http-nio-7777-exec-8] o.a.p.service.impl.ProjectServiceImpl    : 该项目下已存在模块
+2020-09-16 16:31:28.662 ERROR 11776 --- [http-nio-7777-exec-8] o.a.p.controller.ExceptionController     : 该项目下已存在模块
+2020-09-16 16:31:31.630 ERROR 11776 --- [http-nio-7777-exec-2] o.a.p.service.impl.ProjectServiceImpl    : 该项目下已存在模块
+2020-09-16 16:31:31.630 ERROR 11776 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : 该项目下已存在模块
