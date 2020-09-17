@@ -2,6 +2,8 @@ package org.alex.platform.service;
 
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ParseException;
+import org.alex.platform.exception.SqlException;
 import org.alex.platform.pojo.InterfaceCaseRelyDataDO;
 import org.alex.platform.pojo.InterfaceCaseRelyDataDTO;
 import org.alex.platform.pojo.InterfaceCaseRelyDataVO;
@@ -21,5 +23,7 @@ public interface InterfaceCaseRelyDataService {
     InterfaceCaseRelyDataVO findIfRelyDataByName(String relyName);
 
     void removeIfRelyData(Integer relyId);
+
+    String checkRelyResult(Integer relyId) throws ParseException, SqlException, BusinessException;
 
 }

@@ -2,6 +2,8 @@ package org.alex.platform.controller;
 
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ParseException;
+import org.alex.platform.exception.SqlException;
 import org.alex.platform.pojo.InterfaceCaseRelyDataDO;
 import org.alex.platform.pojo.InterfaceCaseRelyDataDTO;
 import org.alex.platform.service.InterfaceCaseRelyDataService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.HashMap;
 
 @RestController
 public class InterfaceCaseRelyDataController {
@@ -80,5 +83,21 @@ public class InterfaceCaseRelyDataController {
     public Result removeIfRelyData(@PathVariable Integer relyId) {
         ifCaseService.removeIfRelyData(relyId);
         return Result.success("删除成功");
+    }
+
+    /**
+     * 预检
+     * @param relyId
+     * @return
+     * @throws ParseException
+     * @throws BusinessException
+     * @throws SqlException
+     */
+    @GetMapping("/interface/rely/check/{relyId}")
+    public Result checkIfRelyData(@PathVariable Integer relyId) throws ParseException, BusinessException, SqlException {
+        String result = ifCaseService.checkRelyResult(relyId);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("result", result);
+        return Result.success(hashMap);
     }
 }

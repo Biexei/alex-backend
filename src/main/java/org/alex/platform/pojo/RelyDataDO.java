@@ -11,17 +11,17 @@ import java.util.Date;
 
 public class RelyDataDO implements Serializable {
     private Integer id;
-    @NotEmpty(message = "name不允许为空")
-    @Size(min = 1, max = 100, message = "name长度必须为[1,100]")
-    @Pattern(regexp = "[a-zA-Z]+", message = "name必须为英文")
+    @NotEmpty(message = "依赖名称不允许为空")
+    @Size(min = 1, max = 100, message = "依赖名称长度必须为[1,100]")
+    @Pattern(regexp = "[a-zA-Z]+", message = "依赖名称必须为英文")
     private String name;
-    @NotEmpty(message = "value不允许为空")
-    @Size(min = 1, max = 100, message = "value长度必须为[1,100]")
+    @NotEmpty(message = "固定值/方法声明/SQL不允许为空")
+    @Size(min = 1, max = 100, message = "固定值/方法声明/SQL长度必须为[1,100]")
     private String value;
-    @NotEmpty(message = "desc不允许为空")
-    @Size(min = 1, max = 100, message = "desc长度必须为[1,100]")
+    @NotEmpty(message = "依赖描述不允许为空")
+    @Size(min = 1, max = 100, message = "依赖描述长度必须为[1,100]")
     private String desc;
-    @NotNull(message = "type不允许为空")
+    @NotNull(message = "类型不允许为空")
     private Byte type;
     private Integer datasourceId;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

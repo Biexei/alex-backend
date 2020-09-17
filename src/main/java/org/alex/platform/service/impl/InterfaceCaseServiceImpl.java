@@ -366,12 +366,21 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     try {
                         if (contentType == 0) { // json
                             ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, expression), ArrayList.class);
+                            if (jsonPathArray.isEmpty()) {
+                                throw new ParseException(expression + "提取内容为空");
+                            }
                             s = s.replace(findStr, (String) jsonPathArray.get(0));
                         } else if (contentType == 1) { // html
                             ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
+                            if (xpathArray.isEmpty()) {
+                                throw new ParseException(expression + "提取内容为空");
+                            }
                             s = s.replace(findStr, (String) xpathArray.get(0));
                         } else if (contentType == 2) { // headers
                             JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders, HashMap.class).get(expression);
+                            if (null == headerArray) {
+                                throw new ParseException("未找到请求头:" + expression);
+                            }
                             try {
                                 s = s.replace(findStr, (String) headerArray.get(index));
                             } catch (Exception e) {
@@ -481,14 +490,24 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     try {
                         if (contentType == 0) { // json
                             ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, expression), ArrayList.class);
+                            if (jsonPathArray.isEmpty()) {
+                                throw new ParseException(expression + "提取内容为空");
+                            }
                             s = s.replace(findStr, (String) jsonPathArray.get(0));
                         } else if (contentType == 1) { // html
                             ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
+                            if (xpathArray.isEmpty()) {
+                                throw new ParseException(expression + "提取内容为空");
+                            }
                             s = s.replace(findStr, (String) xpathArray.get(0));
                         } else if (contentType == 2) { // headers
                             JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders,
                                     HashMap.class).get(expression);
-                            s = s.replace(findStr, (String) headerArray.get(0));
+                            if (headerArray == null) {
+                                throw new ParseException("未找到请求头:" + expression);
+                            } else {
+                                s = s.replace(findStr, (String) headerArray.get(0));
+                            }
                         } else {
                             throw new BusinessException("不支持该contentType");
                         }
