@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.mapper.InterfaceCaseRelyDataMapper;
+import org.alex.platform.mapper.RelyDataMapper;
 import org.alex.platform.pojo.InterfaceCaseRelyDataDO;
 import org.alex.platform.pojo.InterfaceCaseRelyDataDTO;
 import org.alex.platform.pojo.InterfaceCaseRelyDataVO;
@@ -18,6 +19,8 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
     InterfaceCaseRelyDataMapper ifRelyDataMapper;
     @Autowired
     InterfaceCaseService ifCaseService;
+    @Autowired
+    RelyDataMapper relyDataMapper;
 
     @Override
     public void saveIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
@@ -27,8 +30,12 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             throw new BusinessException("relyCaseId不存在");
         }
         // 判断relyName是否已存在
-        if (this.findIfRelyDataByName(ifRelyDataDO.getRelyName()) == null) {
-            throw new BusinessException("relyName已存在");
+        String relyName = ifRelyDataDO.getRelyName();
+        if (relyDataMapper.selectRelyDataByName(relyName) != null){
+            throw new BusinessException("依赖名称已存在与其它依赖");
+        }
+        if (this.findIfRelyDataByName(relyName) != null) {
+            throw new BusinessException("依赖名称已存在与接口依赖");
         }
         ifRelyDataMapper.insertIfRelyData(ifRelyDataDO);
     }
@@ -41,8 +48,9 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             throw new BusinessException("relyCaseId不存在");
         }
         // 判断relyName是否已存在
-        if (this.findIfRelyDataByName(ifRelyDataDO.getRelyName()) == null) {
-            throw new BusinessException("relyName已存在");
+        String relyName = ifRelyDataDO.getRelyName();
+        if (relyDataMapper.selectRelyDataByName(relyName) != null){
+            throw new BusinessException("依赖名称已存在与其它依赖");
         }
         ifRelyDataMapper.updateIfRelyData(ifRelyDataDO);
     }

@@ -40,7 +40,7 @@ public class ModuleServiceImpl implements ModuleService {
         //判断入参projectId是否存在
         if (projectMapper.selectProject(project) == null) {
             LOG.error("项目id不存在");
-            throw new BusinessException("项目id不存在");
+            throw new BusinessException("请选择项目名称");
         } else {
             moduleMapper.insertModule(moduleDO);
         }

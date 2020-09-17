@@ -11,7 +11,7 @@ public interface DbService {
 
     void modifyDb(DbDO dbDO) throws BusinessException;
 
-    void removeDbById(Integer dbId);
+    void removeDbById(Integer dbId) throws BusinessException;
 
     DbVO findDbById(Integer id);
 

@@ -30,19 +30,19 @@ public class DbController {
     }
 
     @GetMapping("/db/{id}")
-    public Result selectDbById(@PathVariable Integer id) {
+    public Result findDbById(@PathVariable Integer id) {
         return Result.success(dbService.findDbById(id));
     }
 
     @GetMapping("/db")
-    public Result selectDbList(DbDTO dbDTO, Integer pageNum, Integer pageSize) {
+    public Result findDbList(DbDTO dbDTO, Integer pageNum, Integer pageSize) {
         int num = pageNum == null ? 1 : pageNum;
         int size = pageSize == null ? 10 : pageSize;
         return Result.success(dbService.findDbList(dbDTO, num, size));
     }
 
     @GetMapping("/db/remove/{id}")
-    public Result removeDb(@PathVariable Integer id) {
+    public Result removeDb(@PathVariable Integer id) throws BusinessException {
         dbService.removeDbById(id);
         return Result.success();
     }

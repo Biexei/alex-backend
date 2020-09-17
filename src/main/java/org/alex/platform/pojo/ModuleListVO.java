@@ -2,31 +2,19 @@ package org.alex.platform.pojo;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ModuleDO implements Serializable {
-    private Integer moduleId;
+public class ModuleListVO implements Serializable {
     private Integer projectId;
-    @Size(max = 10, message = "模块名称长度必须小于等于10")
-    private String name;
-    @Size(max = 100, message = "模块描述长度必须小于等于100")
+    private String projectName;
+    private Integer moduleId;
+    private String moduleName;
     private String desc;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
-
-    public Integer getModuleId() {
-        return moduleId;
-    }
-
-    public void setModuleId(Integer moduleId) {
-        this.moduleId = moduleId;
-    }
 
     public Integer getProjectId() {
         return projectId;
@@ -36,12 +24,28 @@ public class ModuleDO implements Serializable {
         this.projectId = projectId;
     }
 
-    public String getName() {
-        return name;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public Integer getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(Integer moduleId) {
+        this.moduleId = moduleId;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 
     public String getDesc() {

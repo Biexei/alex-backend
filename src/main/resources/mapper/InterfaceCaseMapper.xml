@@ -68,7 +68,7 @@
         select `icase`.`case_id`, `icase`.`project_id` `project_id`, `icase`.`module_id` `module_id`, `project`.`name` `project_name`,
         `module`.`name` `module_name`,`icase`.`desc`,`icase`.`method`, `icase`.`url`, `icase`.`level`, `icase`.`creater`
         from `t_interface_case` as `icase`
-        LEFT JOIN `t_interface_assert` as `assert` on `icase`.`case_id` = `assert`.`case_id`
+--         LEFT JOIN `t_interface_assert` as `assert` on `icase`.`case_id` = `assert`.`case_id`
         LEFT JOIN `t_module` as `module` on `icase`.`module_id` = `module`.`module_id`
         LEFT JOIN `t_project` as `project` on `icase`.`project_id` = `project`.`project_id`
         <where>

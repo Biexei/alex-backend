@@ -10,26 +10,26 @@ import java.util.Date;
 
 public class DbDO implements Serializable {
     private Integer id;
-    @NotEmpty(message = "数据库名称不能为空")
-    @Size(min = 1, max = 20, message = "数据库名称长度必须为[1,20]")
+    @NotEmpty(message = "名称不能为空")
+    @Size(min = 1, max = 20, message = "名称长度必须为[1,20]")
     private String name;
-    @NotNull(message = "数据库类型不能为空")
+    @NotNull(message = "类型不能为空")
     private Byte type;
     private String desc;
-    @NotEmpty(message = "数据库连接url不能为空")
-    @Size(min = 1, max = 100, message = "数据库连接url长度必须为[1,100]")
+    @NotEmpty(message = "URL不能为空")
+    @Size(min = 1, max = 100, message = "URL长度必须为[1,100]")
     private String url;
-    @NotEmpty(message = "数据库连接用户名不能为空")
-    @Size(min = 1, max = 100, message = "数据库连接用户名长度必须为[1,100]")
+    @NotEmpty(message = "帐号不能为空")
+    @Size(min = 1, max = 100, message = "帐号长度必须为[1,100]")
     private String username;
-    @NotEmpty(message = "数据库连接密码不能为空")
-    @Size(min = 1, max = 100, message = "数据库连接密码长度必须为[1,100]")
+    @NotEmpty(message = "密码不能为空")
+    @Size(min = 1, max = 100, message = "密码长度必须为[1,100]")
     private String password;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
-    @NotNull(message = "数据库连接状态不能为空")
+    @NotNull(message = "状态不能为空")
     private Byte status;
 
     public Integer getId() {

@@ -4,9 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.mapper.DbMapper;
+import org.alex.platform.mapper.RelyDataMapper;
 import org.alex.platform.pojo.DbDO;
 import org.alex.platform.pojo.DbDTO;
 import org.alex.platform.pojo.DbVO;
+import org.alex.platform.pojo.RelyDataDTO;
 import org.alex.platform.service.DbService;
 import org.alex.platform.util.JdbcUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import java.util.Date;
 public class DbServiceImpl implements DbService {
     @Autowired
     DbMapper dbMapper;
+    @Autowired
+    RelyDataMapper relyDataMapper;
 
     @Override
     public void saveDb(DbDO dbDO) throws BusinessException {
@@ -38,7 +42,12 @@ public class DbServiceImpl implements DbService {
     }
 
     @Override
-    public void removeDbById(Integer dbId) {
+    public void removeDbById(Integer dbId) throws BusinessException {
+        RelyDataDTO relyDataDTO = new RelyDataDTO();
+        relyDataDTO.setDatasourceId(dbId);
+        if (!relyDataMapper.selectRelyDataList(relyDataDTO).isEmpty()) {
+            throw new BusinessException("请先删除数据中心相关依赖");
+        }
         dbMapper.deleteDbById(dbId);
     }
 
