@@ -1,5 +1,7 @@
 package org.alex.platform.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.alex.platform.mapper.InterfaceAssertLogMapper;
 import org.alex.platform.pojo.InterfaceAssertLogDO;
 import org.alex.platform.pojo.InterfaceAssertLogDTO;
@@ -21,7 +23,9 @@ public class InterfaceAssertLogServiceImpl implements InterfaceAssertLogService 
     }
 
     @Override
-    public List<InterfaceAssertLogVO> findInterfaceAssertLogList(InterfaceAssertLogDTO interfaceAssertLogDTO) {
-        return mapper.selectInterfaceAssertLogList(interfaceAssertLogDTO);
+    public PageInfo<InterfaceAssertLogVO> findInterfaceAssertLogList(InterfaceAssertLogDTO interfaceAssertLogDTO,
+                                                                     Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        return new PageInfo<>(mapper.selectInterfaceAssertLogList(interfaceAssertLogDTO));
     }
 }

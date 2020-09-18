@@ -41,19 +41,22 @@
        `excepted_result`,`order`,`actual_result`,`status`, `error_message`, `created_time`
        from `t_interface_assert_log`
        <where>
-           <if test="assertLogId != null">and `assert_log_id` = #{assertLogId},</if>
-           <if test="executeLogId != null">and `execute_log_id` = #{executeLogId},</if>
-           <if test="caseId != null">and `case_id` = #{caseId},</if>
-           <if test="assertName != null">and `assert_name` like concat('%',#{assertName},'%'),</if>
-           <if test="assertId != null">and `assert_id` = #{assertId},</if>
-           <if test="type != null">and `type` = #{type},</if>
-           <if test="expression != null">and `expression` = #{expression},</if>
-           <if test="operator != null">and `operator` = #{operator},</if>
-           <if test="exceptedResult != null">and `excepted_result` = #{exceptedResult},</if>
-           <if test="actualResult != null">and `actual_result` = #{actualResult},</if>
-           <if test="order != null">and `order` = #{order},</if>
-           <if test="status != null">and `status` = #{status},</if>
-           <if test="errorMessage != null">and `error_message` like concat('%',#{errorMessage},'%'),</if>
+           <if test="assertLogId != null">and `assert_log_id` = #{assertLogId}</if>
+           <if test="executeLogId != null">and `execute_log_id` = #{executeLogId}</if>
+           <if test="caseId != null">and `case_id` = #{caseId}</if>
+           <if test="assertName != null">and `assert_name` like concat('%',#{assertName},'%')</if>
+           <if test="assertId != null">and `assert_id` = #{assertId}</if>
+           <if test="type != null">and `type` = #{type}</if>
+           <if test="expression != null">and `expression` = #{expression}</if>
+           <if test="operator != null">and `operator` = #{operator}</if>
+           <if test="exceptedResult != null">and `excepted_result` = #{exceptedResult}</if>
+           <if test="actualResult != null">and `actual_result` = #{actualResult}</if>
+           <if test="order != null">and `order` = #{order}</if>
+           <if test="status != null">and `status` = #{status}</if>
+           <if test="errorMessage != null">and `error_message` like concat('%',#{errorMessage},'%')</if>
+           <if test="createdStartTime != null">and `created_time` &gt;= #{createdStartTime}</if>
+           <if test="createdEndTime != null">and `created_time` &lt;= #{createdEndTime}</if>
        </where>
+       order by `assert_log_id` desc
    </select>
 </mapper>

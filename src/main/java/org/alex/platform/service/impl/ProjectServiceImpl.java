@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,6 +32,11 @@ public class ProjectServiceImpl implements ProjectService {
         PageHelper.startPage(pageNum, pageSize);
         List<ProjectDO> projectDOList = projectMapper.selectProjectList(projectDO);
         return new PageInfo(projectDOList);
+    }
+
+    @Override
+    public List<ProjectDO> findAllProject(ProjectDO projectDO) {
+        return projectMapper.selectProjectList(projectDO);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.alex.platform.service;
 
+import com.github.pagehelper.PageInfo;
 import org.alex.platform.pojo.InterfaceAssertLogDO;
 import org.alex.platform.pojo.InterfaceAssertLogDTO;
 import org.alex.platform.pojo.InterfaceAssertLogVO;
@@ -11,5 +12,6 @@ public interface InterfaceAssertLogService {
     @Transactional
     void saveInterfaceAssertLog(InterfaceAssertLogDO interfaceAssertLogDO);
 
-    List<InterfaceAssertLogVO> findInterfaceAssertLogList(InterfaceAssertLogDTO interfaceAssertLogDTO);
+    PageInfo<InterfaceAssertLogVO> findInterfaceAssertLogList(InterfaceAssertLogDTO interfaceAssertLogDTO,
+                                                              Integer pageNum, Integer pageSize);
 }

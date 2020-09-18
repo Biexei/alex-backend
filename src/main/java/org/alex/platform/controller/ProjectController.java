@@ -37,6 +37,16 @@ public class ProjectController {
     }
 
     /**
+     * 获取所有项目信息
+     * @param projectDO
+     * @return
+     */
+    @GetMapping("project/all")
+    public Result getAllProject(ProjectDO projectDO) {
+        return Result.success(projectService.findAllProject(projectDO));
+    }
+
+    /**
      * 查看项目下所有模块
      *
      * @param projectId
