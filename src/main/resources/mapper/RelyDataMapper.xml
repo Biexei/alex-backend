@@ -24,16 +24,30 @@
            <if test="updateTime!=null">#{updateTime},</if>
        </trim>
     </insert>
+<!--    <update id="updateRelyData" parameterType="org.alex.platform.pojo.RelyDataDO">-->
+<!--        update `t_rely_data`-->
+<!--        <set>-->
+<!--            <if test="name!=null">`name`=#{name},</if>-->
+<!--            <if test="value!=null">`value`=#{value},</if>-->
+<!--            <if test="desc!=null">`desc`=#{desc},</if>-->
+<!--            <if test="type!=null">`type`=#{type},</if>-->
+<!--            <if test="datasourceId!=null">`datasource_id`=#{datasourceId},</if>-->
+<!--            <if test="createdTime!=null">`created_time`=#{createdTime},</if>-->
+<!--            <if test="updateTime!=null">`update_time`=#{updateTime},</if>-->
+<!--        </set>-->
+<!--        where `id` = #{id}-->
+<!--    </update>-->
+<!--    修复切换类型时，数据库不更新切换后的字段-->
     <update id="updateRelyData" parameterType="org.alex.platform.pojo.RelyDataDO">
         update `t_rely_data`
         <set>
-            <if test="name!=null">`name`=#{name},</if>
-            <if test="value!=null">`value`=#{value},</if>
-            <if test="desc!=null">`desc`=#{desc},</if>
-            <if test="type!=null">`type`=#{type},</if>
-            <if test="datasourceId!=null">`datasource_id`=#{datasourceId},</if>
-            <if test="createdTime!=null">`created_time`=#{createdTime},</if>
-            <if test="updateTime!=null">`update_time`=#{updateTime},</if>
+            `name`=#{name},
+            `value`=#{value},
+            `desc`=#{desc},
+            `type`=#{type},
+            `datasource_id`=#{datasourceId},
+            `created_time`=#{createdTime},
+            `update_time`=#{updateTime},
         </set>
         where `id` = #{id}
     </update>
@@ -72,6 +86,6 @@
         </where>
     </select>
     <delete id="deleteRelyDataById" parameterType="Integer">
-        delete from `t_t_rely_data` where id = #{id}
+        delete from `t_rely_data` where id = #{id}
     </delete>
 </mapper>

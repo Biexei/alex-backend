@@ -19,5 +19,5 @@ public interface RelyDataService {
 
     PageInfo<RelyDataVO> findRelyDataList(RelyDataDTO relyDataDTO, Integer pageNum, Integer pageSize);
 
-    void removeRelyDataById(Integer id);
+    void removeRelyDataById(Integer id) throws BusinessException;
 }

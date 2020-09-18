@@ -42,7 +42,7 @@ public class RelyDataController {
     }
 
     @GetMapping("/rely/remove/{id}")
-    public Result removeRelyData(@PathVariable Integer id) {
+    public Result removeRelyData(@PathVariable Integer id) throws BusinessException {
         relyDataService.removeRelyDataById(id);
         return Result.success("删除成功");
     }

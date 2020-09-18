@@ -1929,3 +1929,362 @@ Field error in object 'interfaceCaseRelyDataDO' on field 'relyName': rejected va
 2020-09-17 20:58:34.641  INFO 3880 --- [http-nio-7777-exec-2] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
  Note: further occurrences of this error will be logged at DEBUG level.
 2020-09-17 21:31:44.520  INFO 3880 --- [http-nio-7777-exec-9] com.alibaba.druid.pool.DruidDataSource   : {dataSource-2} inited
+2020-09-18 09:15:22.587  INFO 17064 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 17064 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-18 09:15:22.589  INFO 17064 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-18 09:15:23.172  INFO 17064 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-18 09:15:23.174  INFO 17064 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-18 09:15:23.207  INFO 17064 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-18 09:15:23.591  INFO 17064 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-18 09:15:23.599  INFO 17064 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-18 09:15:23.599  INFO 17064 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-18 09:15:23.667  INFO 17064 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-18 09:15:23.668  INFO 17064 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1034 ms
+2020-09-18 09:15:23.790  INFO 17064 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-18 09:15:23.891  INFO 17064 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-18 09:15:24.398  INFO 17064 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-18 09:15:24.786  INFO 17064 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-18 09:15:24.788  INFO 17064 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.679 seconds (JVM running for 3.464)
+2020-09-18 09:15:57.080  INFO 17064 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-18 09:15:57.080  INFO 17064 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-18 09:15:57.085  INFO 17064 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2020-09-18 09:16:10.223  INFO 17064 --- [http-nio-7777-exec-4] com.alibaba.druid.pool.DruidDataSource   : {dataSource-2} inited
+2020-09-18 09:16:22.438  INFO 17064 --- [http-nio-7777-exec-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-3} inited
+2020-09-18 09:16:22.462 ERROR 17064 --- [Druid-ConnectionPool-Create-1666303584] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8, errorCode 1045, state 28000
+
+java.sql.SQLException: Access denied for user 'root1'@'localhost' (using password: YES)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3978) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3914) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:871) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.proceedHandshakeWithPluggableAuthentication(MysqlIO.java:1714) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:1224) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2199) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2230) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2025) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:778) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:1.8.0_161]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[na:1.8.0_161]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[na:1.8.0_161]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[na:1.8.0_161]
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:386) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:330) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:156) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.filter.FilterAdapter.connection_connect(FilterAdapter.java:786) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:150) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1560) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1623) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2468) ~[druid-1.1.10.jar:1.1.10]
+
+2020-09-18 09:16:22.473 ERROR 17064 --- [Druid-ConnectionPool-Create-1666303584] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8, errorCode 1045, state 28000
+
+java.sql.SQLException: Access denied for user 'root1'@'localhost' (using password: YES)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3978) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3914) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:871) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.proceedHandshakeWithPluggableAuthentication(MysqlIO.java:1714) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:1224) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2199) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2230) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2025) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:778) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:1.8.0_161]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[na:1.8.0_161]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[na:1.8.0_161]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[na:1.8.0_161]
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:386) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:330) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:156) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.filter.FilterAdapter.connection_connect(FilterAdapter.java:786) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:150) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1560) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1623) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2468) ~[druid-1.1.10.jar:1.1.10]
+
+2020-09-18 09:16:22.482 ERROR 17064 --- [Druid-ConnectionPool-Create-1666303584] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8, errorCode 1045, state 28000
+
+java.sql.SQLException: Access denied for user 'root1'@'localhost' (using password: YES)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3978) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3914) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:871) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.proceedHandshakeWithPluggableAuthentication(MysqlIO.java:1714) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:1224) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2199) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2230) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2025) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:778) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:1.8.0_161]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[na:1.8.0_161]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[na:1.8.0_161]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[na:1.8.0_161]
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:386) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:330) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:156) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.filter.FilterAdapter.connection_connect(FilterAdapter.java:786) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:150) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1560) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1623) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2468) ~[druid-1.1.10.jar:1.1.10]
+
+2020-09-18 09:16:22.492 ERROR 17064 --- [Druid-ConnectionPool-Create-1666303584] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8, errorCode 1045, state 28000
+
+java.sql.SQLException: Access denied for user 'root1'@'localhost' (using password: YES)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3978) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3914) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:871) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.proceedHandshakeWithPluggableAuthentication(MysqlIO.java:1714) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:1224) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2199) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2230) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2025) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:778) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:1.8.0_161]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[na:1.8.0_161]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[na:1.8.0_161]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[na:1.8.0_161]
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:386) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:330) ~[mysql-connector-java-5.1.47.jar:5.1.47]
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:156) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.filter.FilterAdapter.connection_connect(FilterAdapter.java:786) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.filter.FilterChainImpl.connection_connect(FilterChainImpl.java:150) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1560) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1623) ~[druid-1.1.10.jar:1.1.10]
+	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2468) ~[druid-1.1.10.jar:1.1.10]
+
+2020-09-18 09:16:22.518  INFO 17064 --- [http-nio-7777-exec-3] com.alibaba.druid.pool.DruidDataSource   : {dataSource-3} closed
+2020-09-18 09:35:11.353 ERROR 17064 --- [http-nio-7777-exec-8] o.a.p.controller.ExceptionController     : 
+### Error updating database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'platform.t_t_rely_data' doesn't exist
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\RelyDataMapper.xml]
+### The error may involve org.alex.platform.mapper.RelyDataMapper.deleteRelyDataById-Inline
+### The error occurred while setting parameters
+### SQL: delete from `t_t_rely_data` where id = ?
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'platform.t_t_rely_data' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'platform.t_t_rely_data' doesn't exist
+2020-09-18 09:36:11.451  INFO 2844 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 2844 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-18 09:36:11.453  INFO 2844 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-18 09:36:11.992  INFO 2844 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-18 09:36:11.994  INFO 2844 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-18 09:36:12.025  INFO 2844 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-18 09:36:12.378  INFO 2844 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-18 09:36:12.388  INFO 2844 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-18 09:36:12.388  INFO 2844 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-18 09:36:12.452  INFO 2844 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-18 09:36:12.452  INFO 2844 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 960 ms
+2020-09-18 09:36:12.555  INFO 2844 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-18 09:36:12.646  INFO 2844 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-18 09:36:13.147  INFO 2844 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-18 09:36:13.514  INFO 2844 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-18 09:36:13.516  INFO 2844 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.507 seconds (JVM running for 3.153)
+2020-09-18 09:36:21.712  INFO 2844 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-18 09:36:21.713  INFO 2844 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-18 09:36:21.717  INFO 2844 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-18 09:36:22.257 ERROR 2844 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 预置方法不允许删除
+2020-09-18 10:13:24.338 ERROR 2844 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : 预置方法不允许删除
+2020-09-18 10:13:26.393 ERROR 2844 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 预置方法不允许删除
+2020-09-18 10:18:44.177 ERROR 2844 --- [http-nio-7777-exec-9] o.a.p.controller.ExceptionController     : 预置方法不允许删除
+2020-09-18 11:38:55.209  INFO 2844 --- [http-nio-7777-exec-8] com.alibaba.druid.pool.DruidDataSource   : {dataSource-2} inited
+2020-09-18 11:48:49.350 ERROR 2844 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'relyDataDO' on field 'name': rejected value [固定值测试]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@1999a0c0,[a-zA-Z]+]; default message [依赖名称必须为英文]
+2020-09-18 11:54:43.990  INFO 9556 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 9556 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-18 11:54:43.992  INFO 9556 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-18 11:54:44.540  INFO 9556 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-18 11:54:44.542  INFO 9556 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-18 11:54:44.574  INFO 9556 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22ms. Found 0 Redis repository interfaces.
+2020-09-18 11:54:44.937  INFO 9556 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-18 11:54:44.944  INFO 9556 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-18 11:54:44.944  INFO 9556 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-18 11:54:45.059  INFO 9556 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-18 11:54:45.059  INFO 9556 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1031 ms
+2020-09-18 11:54:45.173  INFO 9556 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-18 11:54:45.261  INFO 9556 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-18 11:54:45.724  INFO 9556 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-18 11:54:46.056  INFO 9556 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-18 11:54:46.058  INFO 9556 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.461 seconds (JVM running for 3.07)
+2020-09-18 11:54:56.872  INFO 9556 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-18 11:54:56.873  INFO 9556 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-18 11:54:56.876  INFO 9556 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-09-18 11:56:04.200 ERROR 9556 --- [http-nio-7777-exec-9] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 4 errors
+Field error in object 'relyDataDO' on field 'name': rejected value [null]; codes [NotEmpty.relyDataDO.name,NotEmpty.name,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name]]; default message [依赖名称不允许为空]
+Field error in object 'relyDataDO' on field 'desc': rejected value [null]; codes [NotEmpty.relyDataDO.desc,NotEmpty.desc,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.desc,desc]; arguments []; default message [desc]]; default message [依赖描述不允许为空]
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+2020-09-18 11:56:09.708 ERROR 9556 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 4 errors
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+Field error in object 'relyDataDO' on field 'desc': rejected value [null]; codes [NotEmpty.relyDataDO.desc,NotEmpty.desc,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.desc,desc]; arguments []; default message [desc]]; default message [依赖描述不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [1]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+2020-09-18 11:56:13.930 ERROR 9556 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [1]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+Field error in object 'relyDataDO' on field 'desc': rejected value [null]; codes [NotEmpty.relyDataDO.desc,NotEmpty.desc,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.desc,desc]; arguments []; default message [desc]]; default message [依赖描述不允许为空]
+2020-09-18 11:57:18.141 ERROR 9556 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 2 errors
+Field error in object 'relyDataDO' on field 'desc': rejected value []; codes [NotEmpty.relyDataDO.desc,NotEmpty.desc,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.desc,desc]; arguments []; default message [desc]]; default message [依赖描述不允许为空]
+Field error in object 'relyDataDO' on field 'desc': rejected value []; codes [Size.relyDataDO.desc,Size.desc,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.desc,desc]; arguments []; default message [desc],100,1]; default message [依赖描述长度必须为[1,100]]
+2020-09-18 11:58:24.003 ERROR 9556 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+2020-09-18 11:58:33.907 ERROR 9556 --- [http-nio-7777-exec-8] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+2020-09-18 11:58:34.122 ERROR 9556 --- [http-nio-7777-exec-9] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+2020-09-18 11:58:34.418 ERROR 9556 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+2020-09-18 11:58:34.706 ERROR 9556 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+2020-09-18 11:58:34.906 ERROR 9556 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+2020-09-18 11:58:35.114 ERROR 9556 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+2020-09-18 11:58:35.298 ERROR 9556 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+2020-09-18 11:58:35.523 ERROR 9556 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+2020-09-18 11:58:35.723 ERROR 9556 --- [http-nio-7777-exec-6] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+2020-09-18 11:58:35.915 ERROR 9556 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 3 errors
+Field error in object 'relyDataDO' on field 'type': rejected value [null]; codes [NotNull.relyDataDO.type,NotNull.type,NotNull.java.lang.Byte,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.type,type]; arguments []; default message [type]]; default message [类型不允许为空]
+Field error in object 'relyDataDO' on field 'name': rejected value [123]; codes [Pattern.relyDataDO.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.name,name]; arguments []; default message [name],[Ljavax.validation.constraints.Pattern$Flag;@768edd94,[a-zA-Z]+]; default message [依赖名称必须为英文]
+Field error in object 'relyDataDO' on field 'value': rejected value [null]; codes [NotEmpty.relyDataDO.value,NotEmpty.value,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [relyDataDO.value,value]; arguments []; default message [value]]; default message [固定值/方法声明/SQL不允许为空]
+2020-09-18 12:01:58.940 ERROR 9556 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : relyName关联的前置用例执行失败!
+2020-09-18 12:02:10.081 ERROR 9556 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : relyName关联的前置用例执行失败!
+2020-09-18 12:02:55.514 ERROR 9556 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : relyName关联的前置用例执行失败!
+2020-09-18 12:03:35.975 ERROR 9556 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : $..resultcode提取内容为空
+2020-09-18 12:03:45.923 ERROR 9556 --- [http-nio-7777-exec-6] o.a.p.controller.ExceptionController     : $..resultcode提取内容为空
+2020-09-18 12:04:08.025 ERROR 9556 --- [http-nio-7777-exec-9] o.a.p.controller.ExceptionController     : $..resultcode提取内容为空
+2020-09-18 12:04:38.903 ERROR 9556 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : $..resultcode提取内容为空
+2020-09-18 12:05:43.822 ERROR 9556 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : $..resultcode提取内容为空
+2020-09-18 12:25:44.004 ERROR 9556 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : 
+### Error updating database.  Cause: java.sql.SQLException: Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\InterfaceCaseExecuteLogMapper.xml]
+### The error may involve org.alex.platform.mapper.InterfaceCaseExecuteLogMapper.insertExecuteLog-Inline
+### The error occurred while setting parameters
+### SQL: insert into `t_interface_case_execute_log`          ( `case_id`,             `case_desc`,             `request_headers`,             `request_params`,             `request_data`,             `request_json`,             `response_code`,             `response_headers`,             `response_body`,             `run_time`,             `executer`,             `status`,             `created_time` )           values ( ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ? )
+### Cause: java.sql.SQLException: Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1
+; uncategorized SQLException; SQL state [HY000]; error code [1366]; Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1; nested exception is java.sql.SQLException: Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1
+2020-09-18 12:26:08.981 ERROR 9556 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : 
+### Error updating database.  Cause: java.sql.SQLException: Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\InterfaceCaseExecuteLogMapper.xml]
+### The error may involve org.alex.platform.mapper.InterfaceCaseExecuteLogMapper.insertExecuteLog-Inline
+### The error occurred while setting parameters
+### SQL: insert into `t_interface_case_execute_log`          ( `case_id`,             `case_desc`,             `request_headers`,             `request_params`,             `request_data`,             `request_json`,             `response_code`,             `response_headers`,             `response_body`,             `run_time`,             `executer`,             `status`,             `created_time` )           values ( ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ? )
+### Cause: java.sql.SQLException: Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1
+; uncategorized SQLException; SQL state [HY000]; error code [1366]; Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1; nested exception is java.sql.SQLException: Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1
+2020-09-18 12:28:21.699 ERROR 9556 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : 
+### Error updating database.  Cause: java.sql.SQLException: Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1
+### The error may exist in file [C:\Users\beix\IdeaProjects\platform\target\classes\mapper\InterfaceCaseExecuteLogMapper.xml]
+### The error may involve org.alex.platform.mapper.InterfaceCaseExecuteLogMapper.insertExecuteLog-Inline
+### The error occurred while setting parameters
+### SQL: insert into `t_interface_case_execute_log`          ( `case_id`,             `case_desc`,             `request_headers`,             `request_params`,             `request_data`,             `request_json`,             `response_code`,             `response_headers`,             `response_body`,             `run_time`,             `executer`,             `status`,             `created_time` )           values ( ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ? )
+### Cause: java.sql.SQLException: Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1
+; uncategorized SQLException; SQL state [HY000]; error code [1366]; Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1; nested exception is java.sql.SQLException: Incorrect string value: '\xF0\x9F\x92\x9A</...' for column 'response_body' at row 1
+2020-09-18 12:30:21.600 ERROR 9556 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : relyName关联的前置用例执行失败!
+2020-09-18 12:52:26.330 ERROR 9556 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'userDO' on field 'password': rejected value [1]; codes [Size.userDO.password,Size.password,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userDO.password,password]; arguments []; default message [password],20,3]; default message [密码长度必须为3~20]
+2020-09-18 13:58:42.127 ERROR 9556 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : Request method 'POST' not supported
+2020-09-18 13:59:25.400  INFO 16232 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 16232 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-18 13:59:25.402  INFO 16232 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-18 13:59:25.932  INFO 16232 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-18 13:59:25.933  INFO 16232 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-18 13:59:25.965  INFO 16232 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2020-09-18 13:59:26.347  INFO 16232 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-18 13:59:26.354  INFO 16232 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-18 13:59:26.354  INFO 16232 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-18 13:59:26.460  INFO 16232 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-18 13:59:26.460  INFO 16232 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1021 ms
+2020-09-18 13:59:26.574  INFO 16232 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-18 13:59:26.664  INFO 16232 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-18 13:59:27.167  INFO 16232 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-18 13:59:27.524  INFO 16232 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-18 13:59:27.527  INFO 16232 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.527 seconds (JVM running for 3.144)
+2020-09-18 13:59:34.660  INFO 16232 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-18 13:59:34.661  INFO 16232 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-18 13:59:34.665  INFO 16232 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-18 13:59:34.700 ERROR 16232 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : Request method 'POST' not supported
+2020-09-18 14:00:19.101 ERROR 16232 --- [http-nio-7777-exec-6] o.a.p.controller.ExceptionController     : Request method 'POST' not supported
+2020-09-18 14:17:34.377 ERROR 16232 --- [http-nio-7777-exec-8] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'interfaceCaseExecuteLogListDTO' on field 'status': rejected value [失败]; codes [typeMismatch.interfaceCaseExecuteLogListDTO.status,typeMismatch.status,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [interfaceCaseExecuteLogListDTO.status,status]; arguments []; default message [status]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'status'; nested exception is java.lang.NumberFormatException: For input string: "失败"]
+2020-09-18 14:17:37.183 ERROR 16232 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'interfaceCaseExecuteLogListDTO' on field 'status': rejected value [成功]; codes [typeMismatch.interfaceCaseExecuteLogListDTO.status,typeMismatch.status,typeMismatch.java.lang.Byte,typeMismatch]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [interfaceCaseExecuteLogListDTO.status,status]; arguments []; default message [status]]; default message [Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Byte' for property 'status'; nested exception is java.lang.NumberFormatException: For input string: "成功"]
+2020-09-18 15:28:35.564  INFO 2152 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 2152 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-18 15:28:35.566  INFO 2152 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-18 15:28:36.064  INFO 2152 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-18 15:28:36.066  INFO 2152 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-18 15:28:36.100  INFO 2152 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 23ms. Found 0 Redis repository interfaces.
+2020-09-18 15:28:36.480  INFO 2152 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-18 15:28:36.488  INFO 2152 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-18 15:28:36.488  INFO 2152 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-18 15:28:36.624  INFO 2152 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-18 15:28:36.625  INFO 2152 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1026 ms
+2020-09-18 15:28:36.738  INFO 2152 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-18 15:28:36.819  INFO 2152 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-18 15:28:37.280  INFO 2152 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-18 15:28:37.667  INFO 2152 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-18 15:28:37.669  INFO 2152 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.575 seconds (JVM running for 3.19)
+2020-09-18 15:28:47.655  INFO 2152 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-18 15:28:47.655  INFO 2152 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-18 15:28:47.658  INFO 2152 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2020-09-18 15:44:48.141  INFO 16608 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 16608 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-18 15:44:48.143  INFO 16608 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-18 15:44:48.633  INFO 16608 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-18 15:44:48.635  INFO 16608 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-18 15:44:48.664  INFO 16608 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 Redis repository interfaces.
+2020-09-18 15:44:48.978  INFO 16608 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-18 15:44:48.985  INFO 16608 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-18 15:44:48.985  INFO 16608 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-18 15:44:49.044  INFO 16608 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-18 15:44:49.044  INFO 16608 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 865 ms
+2020-09-18 15:44:49.145  INFO 16608 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-18 15:44:49.219  INFO 16608 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-18 15:44:49.565  INFO 16608 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-18 15:44:49.888  INFO 16608 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-18 15:44:49.890  INFO 16608 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.021 seconds (JVM running for 2.466)
+2020-09-18 15:45:03.439  INFO 16608 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-18 15:45:03.440  INFO 16608 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-18 15:45:03.444  INFO 16608 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2020-09-18 15:47:41.717  INFO 17756 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-F0JRBO4 with PID 17756 (C:\Users\beix\IdeaProjects\platform\target\classes started by beix in C:\Users\beix\IdeaProjects\platform)
+2020-09-18 15:47:41.719  INFO 17756 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-18 15:47:42.239  INFO 17756 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-18 15:47:42.240  INFO 17756 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-18 15:47:42.277  INFO 17756 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 24ms. Found 0 Redis repository interfaces.
+2020-09-18 15:47:42.603  INFO 17756 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-18 15:47:42.610  INFO 17756 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-18 15:47:42.610  INFO 17756 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-18 15:47:42.671  INFO 17756 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-18 15:47:42.672  INFO 17756 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 917 ms
+2020-09-18 15:47:42.774  INFO 17756 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-18 15:47:42.853  INFO 17756 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-18 15:47:43.213  INFO 17756 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-18 15:47:43.541  INFO 17756 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-18 15:47:43.543  INFO 17756 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.105 seconds (JVM running for 2.546)
+2020-09-18 15:48:05.935  INFO 17756 --- [http-nio-7777-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-18 15:48:05.935  INFO 17756 --- [http-nio-7777-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-18 15:48:05.939  INFO 17756 --- [http-nio-7777-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms

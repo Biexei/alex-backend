@@ -68,7 +68,12 @@ public class RelyDataServiceImpl implements RelyDataService {
     }
 
     @Override
-    public void removeRelyDataById(Integer id) {
+    public void removeRelyDataById(Integer id) throws BusinessException {
+        RelyDataVO relyDataVO = relyDataMapper.selectRelyDataById(id);
+        // 依赖类型 0固定值 1反射方法 2sql 反射方法不允许删除
+        if (relyDataVO.getType() == 1) {
+            throw new BusinessException("预置方法不允许删除");
+        }
         relyDataMapper.deleteRelyDataById(id);
     }
 }
