@@ -8,6 +8,8 @@ import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
 import org.alex.platform.mapper.InterfaceCaseMapper;
+import org.alex.platform.mapper.InterfaceCaseRelyDataMapper;
+import org.alex.platform.mapper.InterfaceSuiteCaseRefMapper;
 import org.alex.platform.mapper.ModuleMapper;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.*;
@@ -50,6 +52,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     RelyDataService relyDataService;
     @Autowired
     DbService dbService;
+    @Autowired
+    InterfaceCaseRelyDataMapper interfaceCaseRelyDataMapper;
+    @Autowired
+    InterfaceSuiteCaseRefMapper interfaceSuiteCaseRefMapper;
 
     @Override
     public InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException {
@@ -105,8 +111,37 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     }
 
     @Override
-    public void removeInterfaceCase(Integer interfaceCaseId) {
-        interfaceCaseMapper.removeInterfaceCase(interfaceCaseId);
+    public void removeInterfaceCase(Integer interfaceCaseId) throws BusinessException {
+        boolean inIfRelyData = true;
+        boolean inCaseRef = true;
+        String errorMsg = "";
+
+        // 检查是否存在于t_interface_case_rely_data
+        InterfaceCaseRelyDataDTO interfaceCaseRelyDataDTO = new InterfaceCaseRelyDataDTO();
+        interfaceCaseRelyDataDTO.setRelyCaseId(interfaceCaseId);
+
+        // 检查是否存在于t_interface_suite_case_ref
+        InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO = new InterfaceSuiteCaseRefDTO();
+        interfaceSuiteCaseRefDTO.setCaseId(interfaceCaseId);
+
+        if (interfaceCaseRelyDataMapper.selectIfRelyDataList(interfaceCaseRelyDataDTO).isEmpty()) {
+            inIfRelyData = false;
+        } else {
+            errorMsg = errorMsg + "该用例已存在与数据中心-接口依赖 ";
+        }
+        // 检查是否存在于t_interface_suite_case_ref
+        if (interfaceSuiteCaseRefMapper.selectSuiteCaseList(interfaceSuiteCaseRefDTO).isEmpty()) {
+            inCaseRef = false;
+        } else {
+            errorMsg = errorMsg + "该用例已存在与接口测试-测试套件";
+        }
+        if (!inIfRelyData && !inCaseRef) {
+            interfaceCaseMapper.removeInterfaceCase(interfaceCaseId);
+            // 删除于之相关的断言
+            interfaceAssertService.removeAssertByCaseId(interfaceCaseId);
+        } else {
+            throw new BusinessException(errorMsg);
+        }
     }
 
     @Override

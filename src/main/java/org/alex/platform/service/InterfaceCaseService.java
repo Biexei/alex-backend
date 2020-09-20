@@ -16,7 +16,7 @@ public interface InterfaceCaseService {
 
     void modifyInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException;
 
-    void removeInterfaceCase(Integer interfaceCaseId);
+    void removeInterfaceCase(Integer interfaceCaseId) throws BusinessException;
 
     PageInfo<InterfaceCaseListVO> findInterfaceCaseList(InterfaceCaseListDTO interfaceCaseListDTO, Integer pageNum, Integer pageSize);
 

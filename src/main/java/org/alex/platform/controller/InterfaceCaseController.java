@@ -7,6 +7,7 @@ import org.alex.platform.exception.SqlException;
 import org.alex.platform.pojo.InterfaceCaseDO;
 import org.alex.platform.pojo.InterfaceCaseDTO;
 import org.alex.platform.pojo.InterfaceCaseListDTO;
+import org.alex.platform.service.InterfaceCaseExecuteLogService;
 import org.alex.platform.service.InterfaceCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +19,8 @@ import java.util.Date;
 public class InterfaceCaseController {
     @Autowired
     InterfaceCaseService interfaceCaseService;
+    @Autowired
+    InterfaceCaseExecuteLogService executeLogService;
 
     /**
      * 插入接口测试用例
@@ -56,7 +59,7 @@ public class InterfaceCaseController {
      * @return
      */
     @GetMapping("/interface/case/remove/{interfaceCaseId}")
-    public Result removeInterfaceCase(@PathVariable Integer interfaceCaseId) {
+    public Result removeInterfaceCase(@PathVariable Integer interfaceCaseId) throws BusinessException {
         interfaceCaseService.removeInterfaceCase(interfaceCaseId);
         return Result.success("删除成功");
     }
@@ -95,7 +98,14 @@ public class InterfaceCaseController {
      */
     @GetMapping("/interface/case/execute/{caseId}")
     public Result executeInterfaceCase(@PathVariable Integer caseId) throws ParseException, BusinessException, SqlException {
-        interfaceCaseService.executeInterfaceCase(caseId);
-        return Result.success();
+        Integer executeLog = interfaceCaseService.executeInterfaceCase(caseId);
+        Byte status = executeLogService.findExecute(executeLog).getStatus();
+        if (status == 0) {
+            return Result.success("测试用例执行成功");
+        } else if (status == 1) {
+            return Result.fail("测试用例执行失败");
+        } else {
+            return Result.fail("测试用例执行错误");
+        }
     }
 }

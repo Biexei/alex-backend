@@ -88,3 +88,128 @@
 2020-09-20 13:45:12.567  INFO 12020 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-09-20 13:45:12.568  INFO 12020 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2020-09-20 13:45:12.576  INFO 12020 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
+2020-09-20 13:58:39.448  INFO 12020 --- [http-nio-7777-exec-2] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-09-20 14:04:43.026  INFO 13500 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 13500 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-20 14:04:43.029  INFO 13500 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-20 14:04:44.054  INFO 13500 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-20 14:04:44.056  INFO 13500 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-20 14:04:44.116  INFO 13500 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 47ms. Found 0 Redis repository interfaces.
+2020-09-20 14:04:44.596  INFO 13500 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-20 14:04:44.604  INFO 13500 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-20 14:04:44.605  INFO 13500 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-20 14:04:44.709  INFO 13500 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-20 14:04:44.710  INFO 13500 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1616 ms
+2020-09-20 14:04:44.860  INFO 13500 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-20 14:04:44.970  INFO 13500 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-20 14:04:45.538  INFO 13500 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-20 14:04:46.017  INFO 13500 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-20 14:04:46.019  INFO 13500 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.608 seconds (JVM running for 4.523)
+2020-09-20 14:04:50.598  INFO 13500 --- [http-nio-7777-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-09-20 14:04:50.603  INFO 13500 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-20 14:04:50.604  INFO 13500 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-20 14:04:50.611  INFO 13500 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2020-09-20 15:01:03.136  INFO 10028 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 10028 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-20 15:01:03.140  INFO 10028 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-20 15:01:03.902  INFO 10028 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-20 15:01:03.903  INFO 10028 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-20 15:01:03.959  INFO 10028 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 43ms. Found 0 Redis repository interfaces.
+2020-09-20 15:01:04.398  INFO 10028 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-20 15:01:04.407  INFO 10028 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-20 15:01:04.407  INFO 10028 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-20 15:01:04.500  INFO 10028 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-20 15:01:04.500  INFO 10028 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1312 ms
+2020-09-20 15:01:04.627  INFO 10028 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-20 15:01:04.730  INFO 10028 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-20 15:01:05.233  INFO 10028 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-20 15:01:05.689  INFO 10028 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-20 15:01:05.692  INFO 10028 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 2.992 seconds (JVM running for 3.82)
+2020-09-20 15:01:09.740  INFO 10028 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-20 15:01:09.740  INFO 10028 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-20 15:01:09.745  INFO 10028 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2020-09-20 15:19:33.032  INFO 12832 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 12832 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-20 15:19:33.034  INFO 12832 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-20 15:19:33.983  INFO 12832 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-20 15:19:33.986  INFO 12832 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-20 15:19:34.041  INFO 12832 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 43ms. Found 0 Redis repository interfaces.
+2020-09-20 15:19:34.498  INFO 12832 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-20 15:19:34.507  INFO 12832 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-20 15:19:34.507  INFO 12832 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-20 15:19:34.598  INFO 12832 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-20 15:19:34.598  INFO 12832 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1494 ms
+2020-09-20 15:19:34.795  INFO 12832 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-20 15:19:34.904  INFO 12832 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-20 15:19:35.528  INFO 12832 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-20 15:19:36.072  INFO 12832 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-20 15:19:36.075  INFO 12832 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.511 seconds (JVM running for 4.44)
+2020-09-20 15:21:21.456  INFO 12832 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-20 15:21:21.456  INFO 12832 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-20 15:21:21.467  INFO 12832 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 10 ms
+2020-09-20 15:31:43.975  INFO 7564 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 7564 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-20 15:31:43.978  INFO 7564 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-20 15:31:44.754  INFO 7564 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-20 15:31:44.756  INFO 7564 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-20 15:31:44.824  INFO 7564 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 53ms. Found 0 Redis repository interfaces.
+2020-09-20 15:31:45.292  INFO 7564 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-20 15:31:45.301  INFO 7564 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-20 15:31:45.301  INFO 7564 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-20 15:31:45.403  INFO 7564 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-20 15:31:45.404  INFO 7564 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1372 ms
+2020-09-20 15:31:45.534  INFO 7564 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-20 15:31:45.634  INFO 7564 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-20 15:31:46.172  INFO 7564 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-20 15:31:46.627  INFO 7564 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-20 15:31:46.630  INFO 7564 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.087 seconds (JVM running for 3.92)
+2020-09-20 15:31:53.817  INFO 7564 --- [http-nio-7777-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-20 15:31:53.818  INFO 7564 --- [http-nio-7777-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-20 15:31:53.825  INFO 7564 --- [http-nio-7777-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2020-09-20 15:31:56.942 ERROR 7564 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : 该用例已存在与接口测试-测试套件
+2020-09-20 15:32:00.140 ERROR 7564 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : 该用例已存在与数据中心-接口依赖 
+2020-09-20 15:49:36.645  INFO 7564 --- [http-nio-7777-exec-4] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-09-20 21:36:23.812 ERROR 7564 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:05:18.335 ERROR 7564 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:09:05.320 ERROR 7564 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:09:14.934 ERROR 7564 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:09:24.350 ERROR 7564 --- [http-nio-7777-exec-6] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:09:30.829 ERROR 7564 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:23:29.301 ERROR 7564 --- [http-nio-7777-exec-8] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:23:50.380 ERROR 7564 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:25:17.958 ERROR 7564 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:25:48.358 ERROR 7564 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:27:51.270 ERROR 7564 --- [http-nio-7777-exec-8] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:28:13.685 ERROR 7564 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:28:29.966 ERROR 7564 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:28:43.102 ERROR 7564 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:29:35.965 ERROR 7564 --- [http-nio-7777-exec-3] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:29:43.271 ERROR 7564 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:30:04.247 ERROR 7564 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:30:23.287 ERROR 7564 --- [http-nio-7777-exec-6] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:30:43.391 ERROR 7564 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:34:25.854 ERROR 7564 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:52:03.505 ERROR 7564 --- [http-nio-7777-exec-6] o.a.platform.controller.UserController   : 帐号名或者密码错误
+2020-09-20 22:52:12.612 ERROR 7564 --- [http-nio-7777-exec-9] o.a.platform.controller.UserController   : 帐号名或者密码错误
+2020-09-20 22:54:20.412 ERROR 7564 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : org.springframework.validation.BeanPropertyBindingResult: 1 errors
+Field error in object 'projectDO' on field 'domain': rejected value [http://localhost:7778/#/projectList]; codes [Size.projectDO.domain,Size.domain,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [projectDO.domain,domain]; arguments []; default message [domain],30,0]; default message [项目域名长度必须小于等于30]
+2020-09-20 22:56:10.098 ERROR 7564 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 22:57:05.879 ERROR 7564 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 23:02:01.778 ERROR 7564 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 23:04:00.032 ERROR 7564 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 23:07:37.584 ERROR 7564 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 23:09:39.807 ERROR 7564 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 23:11:17.433 ERROR 7564 --- [http-nio-7777-exec-5] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 23:13:02.655 ERROR 7564 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 23:14:00.865 ERROR 7564 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 23:15:15.821 ERROR 7564 --- [http-nio-7777-exec-7] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 23:17:47.070 ERROR 7564 --- [http-nio-7777-exec-4] o.a.p.controller.ExceptionController     : Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+2020-09-20 23:19:52.372 ERROR 7564 --- [http-nio-7777-exec-9] o.a.p.controller.ExceptionController     : JSON parse error: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token
+ at [Source: (PushbackInputStream); line: 1, column: 159] (through reference chain: org.alex.platform.pojo.InterfaceCaseDTO["params"])
+2020-09-20 23:20:21.977 ERROR 7564 --- [http-nio-7777-exec-8] o.a.p.controller.ExceptionController     : JSON parse error: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token
+ at [Source: (PushbackInputStream); line: 1, column: 159] (through reference chain: org.alex.platform.pojo.InterfaceCaseDTO["params"])
+2020-09-20 23:21:36.817 ERROR 7564 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : JSON parse error: Unrecognized token 'moduleId': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false'); nested exception is com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'moduleId': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (PushbackInputStream); line: 1, column: 10]
+2020-09-20 23:22:09.183 ERROR 7564 --- [http-nio-7777-exec-9] o.a.p.controller.ExceptionController     : JSON parse error: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token
+ at [Source: (PushbackInputStream); line: 1, column: 159] (through reference chain: org.alex.platform.pojo.InterfaceCaseDTO["params"])
+2020-09-20 23:22:28.380 ERROR 7564 --- [http-nio-7777-exec-10] o.a.p.controller.ExceptionController     : JSON parse error: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token
+ at [Source: (PushbackInputStream); line: 1, column: 159] (through reference chain: org.alex.platform.pojo.InterfaceCaseDTO["params"])

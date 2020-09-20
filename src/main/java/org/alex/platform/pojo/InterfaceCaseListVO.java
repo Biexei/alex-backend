@@ -1,6 +1,9 @@
 package org.alex.platform.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class InterfaceCaseListVO implements Serializable {
     private Integer caseId;
@@ -13,21 +16,15 @@ public class InterfaceCaseListVO implements Serializable {
     private String url;
     private Byte level;
     private String creater;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createdTime;
 
-    @Override
-    public String toString() {
-        return "InterfaceCaseListVO{" +
-                "caseId=" + caseId +
-                ", projectId=" + projectId +
-                ", projectName='" + projectName + '\'' +
-                ", moduleId=" + moduleId +
-                ", moduleName='" + moduleName + '\'' +
-                ", method=" + method +
-                ", desc='" + desc + '\'' +
-                ", url='" + url + '\'' +
-                ", level=" + level +
-                ", creater='" + creater + '\'' +
-                '}';
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     public Integer getCaseId() {
