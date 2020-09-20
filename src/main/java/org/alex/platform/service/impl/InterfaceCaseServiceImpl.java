@@ -134,6 +134,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         // 1.获取case详情
         InterfaceCaseInfoVO interfaceCaseInfoVO = this.findInterfaceCaseByCaseId(interfaceCaseId);
         Integer projectId = interfaceCaseInfoVO.getProjectId();
+        // 查询项目domain
         String url = projectService.findModulesById(projectId).getDomain() + interfaceCaseInfoVO.getUrl();
         String desc = interfaceCaseInfoVO.getDesc();
         String headers = interfaceCaseInfoVO.getHeaders();
@@ -202,6 +203,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setCreatedTime(new Date());
             executeLogDO.setErrorMessage(exceptionMessage);
             executeLogDO.setRunTime(runTime);
+            executeLogDO.setCaseUrl(url);
             InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
             // 返回自增id
             return executedLogDO.getId();
@@ -226,6 +228,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setExecuter("后根据token反查");
             executeLogDO.setStatus(caseStatus);
             executeLogDO.setCreatedTime(new Date());
+            executeLogDO.setCaseUrl(url);
             InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
             // 4.保存断言日志表，获取运行日志自增id然后在断言日志表中写入断言信息，断言日志都成功后再将日志修改状态为0成功
             // 日志自增id

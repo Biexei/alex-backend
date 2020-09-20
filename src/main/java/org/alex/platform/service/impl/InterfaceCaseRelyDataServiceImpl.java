@@ -9,13 +9,11 @@ import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
 import org.alex.platform.mapper.InterfaceCaseRelyDataMapper;
 import org.alex.platform.mapper.RelyDataMapper;
-import org.alex.platform.pojo.InterfaceCaseExecuteLogVO;
-import org.alex.platform.pojo.InterfaceCaseRelyDataDO;
-import org.alex.platform.pojo.InterfaceCaseRelyDataDTO;
-import org.alex.platform.pojo.InterfaceCaseRelyDataVO;
+import org.alex.platform.pojo.*;
 import org.alex.platform.service.InterfaceCaseExecuteLogService;
 import org.alex.platform.service.InterfaceCaseRelyDataService;
 import org.alex.platform.service.InterfaceCaseService;
+import org.alex.platform.service.ProjectService;
 import org.alex.platform.util.ParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +35,8 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
     InterfaceCaseService interfaceCaseService;
     @Autowired
     InterfaceCaseExecuteLogService executeLogService;
+    @Autowired
+    ProjectService projectService;
 
     @Override
     public void saveIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
@@ -75,7 +75,20 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
     public PageInfo<InterfaceCaseRelyDataVO> findIfRelyDataList(InterfaceCaseRelyDataDTO ifRelyDataDTO,
                                                                 Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo(ifRelyDataMapper.selectIfRelyDataList(ifRelyDataDTO));
+        ArrayList<InterfaceCaseRelyDataVO> list = new ArrayList<>();
+        for (InterfaceCaseRelyDataVO interfaceCaseRelyDataVO: ifRelyDataMapper.selectIfRelyDataList(ifRelyDataDTO)) {
+            // 查询项目编号
+            Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
+            Integer projectId = interfaceCaseService.findInterfaceCaseByCaseId(caseId).getProjectId();
+            // 查询项目URL
+            ProjectDO projectDO = new ProjectDO();
+            projectDO.setProjectId(projectId);
+            String domain = projectService.findProject(projectDO).getDomain();
+            String url = interfaceCaseRelyDataVO.getCaseUrl();
+            interfaceCaseRelyDataVO.setCaseUrl(domain + url);
+            list.add(interfaceCaseRelyDataVO);
+        }
+        return new PageInfo(list);
     }
 
     @Override

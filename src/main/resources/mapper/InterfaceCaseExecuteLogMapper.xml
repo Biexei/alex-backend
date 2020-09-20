@@ -20,6 +20,7 @@
             <if test="status != null">`status`,</if>
             <if test="createdTime != null">`created_time`,</if>
             <if test="errorMessage != null">`error_message`,</if>
+            <if test="caseUrl != null">`case_url`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="caseId != null">#{caseId},</if>
@@ -36,6 +37,7 @@
             <if test="status != null">#{status},</if>
             <if test="createdTime != null">#{createdTime},</if>
             <if test="errorMessage != null">#{errorMessage},</if>
+            <if test="caseUrl != null">#{caseUrl},</if>
         </trim>
     </insert>
     <select id="selectExecuteList" parameterType="org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO"
@@ -90,11 +92,12 @@
         <result column="status" property="status"/>
         <result column="created_time" property="createdTime"/>
         <result column="error_message" property="errorMessage"/>
+        <result column="case_url" property="caseUrl"/>
         <collection property="assertList" resultMap="assertList" ofType="org.alex.platform.pojo.InterfaceAssertLogListVO"/>
     </resultMap>
 
     <select id="selectExecute" parameterType="Integer" resultMap="interfaceCaseExecuteVO">
-        select `elog`.`id`, `elog`.`case_id`, `elog`.`case_desc`, `elog`.`request_headers`, `elog`.`request_params`,
+        select `elog`.`id`, `elog`.`case_id`, `elog`.`case_url`, `elog`.`case_desc`, `elog`.`request_headers`, `elog`.`request_params`,
         `elog`.`request_data`, `elog`.`request_json`, `elog`.`response_code`, `elog`.`response_headers`,
         `elog`.`response_body`, `elog`.`executer`, `elog`.`status`, `elog`.`created_time`, `elog`.`error_message`,
         `alog`.`assert_name`, `alog`.`type`, `alog`.`expression`, `alog`.`operator`, `alog`.`excepted_result`, `alog`.`order`,
@@ -109,6 +112,7 @@
         <set>
             <if test="caseId != null">`case_id` = #{caseId},</if>
             <if test="caseDesc != null">`case_desc` = #{caseDesc},</if>
+            <if test="caseUrl != null">`case_url` = #{caseUrl},</if>
             <if test="requestHeaders != null">`request_headers` = #{requestHeaders},</if>
             <if test="requestParams != null">`request_params` = #{requestParams},</if>
             <if test="requestData != null">`request_data` = #{requestData},</if>

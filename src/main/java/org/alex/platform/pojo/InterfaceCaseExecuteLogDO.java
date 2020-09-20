@@ -6,6 +6,7 @@ import java.util.Date;
 public class InterfaceCaseExecuteLogDO implements Serializable {
     private Integer id;
     private Integer caseId;
+    private String caseUrl;
     private String caseDesc;
     private String requestHeaders;
     private String requestParams;
@@ -19,6 +20,14 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
     private Byte status;
     private Date createdTime;
     private String errorMessage;
+
+    public String getCaseUrl() {
+        return caseUrl;
+    }
+
+    public void setCaseUrl(String caseUrl) {
+        this.caseUrl = caseUrl;
+    }
 
     public Integer getId() {
         return id;
