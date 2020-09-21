@@ -149,9 +149,9 @@ public class RestUtil {
             httpHeaders.setAll(headers);
         }
         // 2.data和json不能同时存在、不能同时不存在
-        if (StringUtils.isEmpty(json) && data == null) {
-            throw new BusinessException("data/json只能任传其一");
-        }
+//        if (StringUtils.isEmpty(json) && data == null) {
+//            throw new BusinessException("data/json只能任传其一");
+//        }
         if (StringUtils.isNotEmpty(json) && data != null) {
             throw new BusinessException("data/json只能任传其一");
         }
