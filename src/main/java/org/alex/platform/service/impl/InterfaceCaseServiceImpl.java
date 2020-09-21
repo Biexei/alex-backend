@@ -172,15 +172,23 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         // 查询项目domain
         String url = projectService.findModulesById(projectId).getDomain() + interfaceCaseInfoVO.getUrl();
         String desc = interfaceCaseInfoVO.getDesc();
-        String headers = interfaceCaseInfoVO.getHeaders();
         // 清洗
-        headers = this.parseRelyData(headers);
+        String headers = interfaceCaseInfoVO.getHeaders();
+        if (null != headers) {
+            headers = this.parseRelyData(headers);
+        }
         String params = interfaceCaseInfoVO.getParams();
-        params = this.parseRelyData(params);
+        if (null != params) {
+            params = this.parseRelyData(params);
+        }
         String data = interfaceCaseInfoVO.getData();
-        data = this.parseRelyData(data);
+        if (null != data) {
+            data = this.parseRelyData(data);
+        }
         String json = interfaceCaseInfoVO.getJson();
-        json = this.parseRelyData(json);
+        if (null != json) {
+            json = this.parseRelyData(json);
+        }
         Byte method = interfaceCaseInfoVO.getMethod();
         List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
         long runTime = 0;
@@ -280,7 +288,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 Byte operator = interfaceAssertVO.getOperator();
                 // 清洗断言预期结果
                 String exceptedResult = interfaceAssertVO.getExceptedResult();
-                exceptedResult = this.parseRelyData(exceptedResult);
+                if (null != exceptedResult) {
+                    exceptedResult = this.parseRelyData(exceptedResult);
+                }
                 Integer order = interfaceAssertVO.getOrder();
                 // 写入断言日志表
                 InterfaceAssertLogDO assertLogDO = new InterfaceAssertLogDO();
@@ -505,7 +515,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             String username = dbVO.getUsername();
                             String password = dbVO.getPassword();
                             // 支持动态sql
-                            String sql = parseRelyData(relyDataVO.getValue());
+                            String sql = relyDataVO.getValue();
+                            if (relyDataVO.getValue() != null ){
+                                sql = parseRelyData(sql);
+                            }
                             String sqlResult = JdbcUtil.selectFirstColumn(url, username, password, sql);
                             s = s.replace(findStr, sqlResult);
                         }

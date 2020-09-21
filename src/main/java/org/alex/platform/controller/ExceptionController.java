@@ -29,6 +29,7 @@ public class ExceptionController {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Result globalException(Exception e) {
+        e.printStackTrace();
         LOG.error(e.getMessage());
         // validate抛出的异常
         if (e instanceof BindException) {
