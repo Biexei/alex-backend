@@ -14,7 +14,8 @@ public interface InterfaceCaseService {
     @Transactional
     void saveInterfaceCaseAndAssert(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;
 
-    void modifyInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException;
+    @Transactional
+    void modifyInterfaceCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;
 
     void removeInterfaceCase(Integer interfaceCaseId) throws BusinessException;
 

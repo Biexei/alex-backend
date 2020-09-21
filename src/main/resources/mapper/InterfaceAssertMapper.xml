@@ -28,13 +28,13 @@
     <update id="updateAssert" parameterType="org.alex.platform.pojo.InterfaceAssertDO">
         update `t_interface_assert`
         <set>
-            <if test= "assertName != null">`assert_name` = #{assertName},</if>
-            <if test= "caseId != null">`case_id` = #{caseId},</if>
-            <if test= "type != null">`type` = #{type},</if>
-            <if test= "expression != null">`expression` = #{expression},</if>
-            <if test= "operator != null">`operator` = #{operator},</if>
-            <if test= "exceptedResult != null">`excepted_result` = #{exceptedResult},</if>
-            <if test= "order != null">`order` = #{order},</if>
+            `assert_name` = #{assertName},
+            `case_id` = #{caseId},
+            `type` = #{type},
+            `expression` = #{expression},
+            `operator` = #{operator},
+            `excepted_result` = #{exceptedResult},
+            `order` = #{order},
         </set>
         where `assert_id` = #{assertId}
     </update>
@@ -61,5 +61,9 @@
             <if test="order != null">and `order` = #{order}</if>
         </where>
         order by `order` desc
+    </select>
+    <select id="selectAllAssertId" resultType="Integer" parameterType="Integer">
+        select `assert_id` from `t_interface_assert`
+        where `case_id` = #{caseId}
     </select>
 </mapper>

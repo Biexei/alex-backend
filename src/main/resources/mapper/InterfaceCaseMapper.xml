@@ -44,16 +44,16 @@
         <set>
             <if test="projectId != null">`project_id` = #{projectId},</if>
             <if test="moduleId != null">`module_id` = #{moduleId},</if>
-            <if test="url != null">`url` = #{url},</if>
-            <if test="method != null">`method` = #{method},</if>
-            <if test="desc != null">`desc` = #{desc},</if>
-            <if test="level != null">`level` = #{level},</if>
-            <if test="doc != null">`doc` = #{doc},</if>
-            <if test="headers != null">`headers` = #{headers},</if>
-            <if test="params != null">`params` = #{params},</if>
-            <if test="data != null">`data` = #{data},</if>
-            <if test="json != null">`json` = #{json},</if>
-            <if test="creater != null">`creater` = #{creater},</if>
+            `url` = #{url},
+            `method` = #{method},
+            `desc` = #{desc},
+            `level` = #{level},
+            `doc` = #{doc},
+            `headers` = #{headers},
+            `params` = #{params},
+            `data` = #{data},
+            `json` = #{json},
+            `creater` = #{creater},
             <if test="createdTime != null">`created_time` = #{createdTime},</if>
             <if test="updateTime != null">`update_time` = #{updateTime},</if>
         </set>
@@ -123,6 +123,6 @@
         from `t_interface_case` as `icase`
         left join `t_interface_assert` as `assert` on `icase`.`case_id` = `assert`.`case_id`
         where `icase`.`case_id` = #{caseId}
-        order by `assert`.`order` desc
+        order by `assert`.`order` asc
     </select>
 </mapper>

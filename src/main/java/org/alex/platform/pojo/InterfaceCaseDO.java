@@ -1,5 +1,7 @@
 package org.alex.platform.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -37,7 +39,9 @@ public class InterfaceCaseDO implements Serializable {
     @Size(min = 1, max = 20, message = "帐号名称长度必须为1~20")
     @NotNull(message = "创建者不能为空")
     private String creater;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     public Integer getModuleId() {

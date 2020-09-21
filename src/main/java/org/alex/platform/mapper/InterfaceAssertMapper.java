@@ -17,4 +17,6 @@ public interface InterfaceAssertMapper {
     void deleteAssertByAssertId(Integer assertId);
 
     List<InterfaceAssertDO> selectAssertList(InterfaceAssertDO assertDO);
+
+    List<Integer> selectAllAssertId(Integer caseId);
 }

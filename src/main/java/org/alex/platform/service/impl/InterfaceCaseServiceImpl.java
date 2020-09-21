@@ -7,10 +7,7 @@ import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
-import org.alex.platform.mapper.InterfaceCaseMapper;
-import org.alex.platform.mapper.InterfaceCaseRelyDataMapper;
-import org.alex.platform.mapper.InterfaceSuiteCaseRefMapper;
-import org.alex.platform.mapper.ModuleMapper;
+import org.alex.platform.mapper.*;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.*;
 import org.alex.platform.util.AssertUtil;
@@ -56,6 +53,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     InterfaceCaseRelyDataMapper interfaceCaseRelyDataMapper;
     @Autowired
     InterfaceSuiteCaseRefMapper interfaceSuiteCaseRefMapper;
+    @Autowired
+    InterfaceAssertMapper interfaceAssertMapper;
 
     @Override
     public InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException {
@@ -97,7 +96,23 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     }
 
     @Override
-    public void modifyInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException {
+    public void modifyInterfaceCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
+        InterfaceCaseDO interfaceCaseDO = new InterfaceCaseDO();
+        interfaceCaseDO.setModuleId(interfaceCaseDTO.getModuleId());
+        interfaceCaseDO.setProjectId(interfaceCaseDTO.getProjectId());
+        interfaceCaseDO.setCaseId(interfaceCaseDTO.getCaseId());
+        interfaceCaseDO.setUrl(interfaceCaseDTO.getUrl());
+        interfaceCaseDO.setMethod(interfaceCaseDTO.getMethod());
+        interfaceCaseDO.setDesc(interfaceCaseDTO.getDesc());
+        interfaceCaseDO.setLevel(interfaceCaseDTO.getLevel());
+        interfaceCaseDO.setDoc(interfaceCaseDTO.getDoc());
+        interfaceCaseDO.setHeaders(interfaceCaseDTO.getHeaders());
+        interfaceCaseDO.setParams(interfaceCaseDTO.getParams());
+        interfaceCaseDO.setData(interfaceCaseDTO.getData());
+        interfaceCaseDO.setJson(interfaceCaseDTO.getJson());
+        interfaceCaseDO.setCreater(interfaceCaseDTO.getCreater());
+        interfaceCaseDO.setUpdateTime(interfaceCaseDTO.getUpdateTime());
+
         Integer moduleId = interfaceCaseDO.getModuleId();
         Integer projectId = interfaceCaseDO.getProjectId();
         ModuleDTO moduleDTO = new ModuleDTO();
@@ -107,7 +122,30 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         if (moduleMapper.selectModuleList(moduleDTO).isEmpty()) {
             throw new BusinessException("模块编号/项目编号不存在");
         }
+        // 修改用例表
         interfaceCaseMapper.updateInterfaceCase(interfaceCaseDO);
+        List<InterfaceAssertDO> asserts = interfaceCaseDTO.getAsserts();
+        List<Integer> allAssertId = interfaceAssertMapper.selectAllAssertId(interfaceCaseDTO.getCaseId());
+        for(InterfaceAssertDO assertDO : asserts) {
+            // 修改断言表  修改存在的
+            assertDO.setCaseId(interfaceCaseDTO.getCaseId());
+            interfaceAssertService.modifyAssert(assertDO);
+            // 新增没有传assertId的
+            if(assertDO.getAssertId() == null) {
+                interfaceAssertService.saveAssert(assertDO);
+            } else {
+                // 删除不存在的
+                // 查询该用例已有的断言
+                for (int i = 0; i < allAssertId.size(); i++) {
+                    if (allAssertId.get(i) == assertDO.getAssertId()) {
+                        allAssertId.remove(i);
+                    }
+                }
+            }
+        }
+        for (Integer assertId:allAssertId){
+            interfaceAssertService.removeAssertByAssertId(assertId);
+        }
     }
 
     @Override

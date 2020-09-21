@@ -41,14 +41,14 @@ public class InterfaceCaseController {
     /**
      * 修改接口测试用例
      *
-     * @param interfaceCaseDO
+     * @param interfaceCaseDTO
      * @return
      * @throws BusinessException
      */
     @PostMapping("/interface/case/modify")
-    public Result modifyInterfaceCase(@Validated InterfaceCaseDO interfaceCaseDO) throws BusinessException {
-        interfaceCaseDO.setUpdateTime(new Date());
-        interfaceCaseService.modifyInterfaceCase(interfaceCaseDO);
+    public Result modifyInterfaceCase(@RequestBody @Validated InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
+        interfaceCaseDTO.setUpdateTime(new Date());
+        interfaceCaseService.modifyInterfaceCase(interfaceCaseDTO);
         return Result.success("修改成功");
     }
 
