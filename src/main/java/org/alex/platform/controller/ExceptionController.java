@@ -1,18 +1,19 @@
 package org.alex.platform.controller;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindException;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
@@ -31,8 +32,14 @@ public class ExceptionController {
     public Result globalException(Exception e) {
         e.printStackTrace();
         LOG.error(e.getMessage());
-        // validate抛出的异常
-        if (e instanceof BindException) {
+        // json请求验证-requestBody
+        if (e instanceof MethodArgumentNotValidException) {
+            BindingResult bindingResult = ((MethodArgumentNotValidException) e).getBindingResult();
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            String msg = errors.get(0).getDefaultMessage();
+            return Result.fail(501, msg);
+        // 表单请求验证
+        } else if (e instanceof BindException) {
             BindException be = (BindException) e;
             List<ObjectError> errors = be.getBindingResult().getAllErrors();
             String msg = errors.get(0).getDefaultMessage();
