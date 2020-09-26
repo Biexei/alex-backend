@@ -5,11 +5,11 @@ import java.io.Serializable;
 
 public class InterfaceSuiteCaseRefDO implements Serializable {
     private Integer id;
-    @NotNull
+    @NotNull(message = "用例编号不能为空")
     private Integer caseId;
-    @NotNull
+    @NotNull(message = "套件编号不能为空")
     private Integer suiteId;
-    @NotNull
+    @NotNull(message = "用例状态不能为空")
     private Byte caseStatus;
     private Integer order;
 

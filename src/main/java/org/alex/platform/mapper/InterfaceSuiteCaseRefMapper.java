@@ -5,6 +5,7 @@ import org.alex.platform.pojo.InterfaceSuiteCaseRefDTO;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefVO;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -14,6 +15,8 @@ public interface InterfaceSuiteCaseRefMapper {
     void modifySuiteCase(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO);
 
     void deleteSuiteCase(Integer incrementKey);
+
+    void deleteSuiteCaseByObject(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO);
 
     List<InterfaceSuiteCaseRefVO> selectSuiteCaseList(InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO);
 }

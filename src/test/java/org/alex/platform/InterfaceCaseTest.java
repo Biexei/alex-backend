@@ -19,7 +19,8 @@ public class InterfaceCaseTest {
     @Autowired
     InterfaceCaseService service;
     @Test
-    public void doTest() throws ParseException, BusinessException, SqlException {
-        service.executeInterfaceCase(7);
+    public void doTest() {
+        Integer integer = new Integer(123);
+        System.out.println(integer.toString());
     }
 }

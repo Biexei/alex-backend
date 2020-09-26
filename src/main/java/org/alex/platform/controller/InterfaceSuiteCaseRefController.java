@@ -10,6 +10,7 @@ import org.alex.platform.service.InterfaceSuiteCaseRefService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -35,11 +36,22 @@ public class InterfaceSuiteCaseRefController {
         return Result.success("删除成功");
     }
 
+    @PostMapping("/interface/suite/case/remove")
+    public Result removeSuiteCaseByObject(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO) {
+        refService.removeSuiteCaseByObject(interfaceSuiteCaseRefDO);
+        return Result.success("删除成功");
+    }
+
     @GetMapping("/interface/suite/case")
     public Result findSuiteCaseList(InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO, Integer pageNum, Integer pageSize) {
         int num = pageNum == null ? 1 : pageNum;
         int size = pageSize == null ? 10 : pageSize;
         return Result.success(refService.findSuiteCaseList(interfaceSuiteCaseRefDTO, num, size));
+    }
+
+    @GetMapping("/interface/suite/case/all")
+    public Result findAllSuiteCase(InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO) {
+        return Result.success(refService.findAllSuiteCase(interfaceSuiteCaseRefDTO));
     }
 
     @GetMapping("/interface/suite/execute/{suiteId}")

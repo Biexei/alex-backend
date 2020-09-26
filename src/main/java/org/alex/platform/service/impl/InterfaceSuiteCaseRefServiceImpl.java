@@ -16,6 +16,8 @@ import org.alex.platform.service.InterfaceSuiteCaseRefService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -29,7 +31,22 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
 
     @Override
     public void saveSuiteCase(List<InterfaceSuiteCaseRefDO> interfaceSuiteCaseRefDOList) {
-        interfaceSuiteCaseRefMapper.insertSuiteCase(interfaceSuiteCaseRefDOList);
+        List<InterfaceSuiteCaseRefDO> list = new ArrayList<>();
+        for (InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO:
+                interfaceSuiteCaseRefDOList) {
+            Integer caseId = interfaceSuiteCaseRefDO.getCaseId();
+            Integer suiteId = interfaceSuiteCaseRefDO.getSuiteId();
+            InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO = new InterfaceSuiteCaseRefDTO();
+            interfaceSuiteCaseRefDTO.setCaseId(caseId);
+            interfaceSuiteCaseRefDTO.setSuiteId(suiteId);
+            List<InterfaceSuiteCaseRefVO> refVOList = interfaceSuiteCaseRefMapper.selectSuiteCaseList(interfaceSuiteCaseRefDTO);
+            if (refVOList.isEmpty()) {
+                list.add(interfaceSuiteCaseRefDO);
+            }
+        }
+        if (!list.isEmpty()) {
+            interfaceSuiteCaseRefMapper.insertSuiteCase(list);
+        }
     }
 
     @Override
@@ -43,9 +60,19 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
     }
 
     @Override
+    public void removeSuiteCaseByObject(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO) {
+        interfaceSuiteCaseRefMapper.deleteSuiteCaseByObject(interfaceSuiteCaseRefDO);
+    }
+
+    @Override
     public PageInfo<InterfaceSuiteCaseRefVO> findSuiteCaseList(InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo<>(interfaceSuiteCaseRefMapper.selectSuiteCaseList(interfaceSuiteCaseRefDTO));
+    }
+
+    @Override
+    public List<InterfaceSuiteCaseRefVO> findAllSuiteCase(InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO) {
+        return interfaceSuiteCaseRefMapper.selectSuiteCaseList(interfaceSuiteCaseRefDTO);
     }
 
     @Override

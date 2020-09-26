@@ -28,6 +28,9 @@
     <delete id="deleteSuiteCase" parameterType="Integer">
         delete from `t_interface_suite_case_ref` where `id` = #{id}
     </delete>
+    <delete id="deleteSuiteCaseByObject" parameterType="org.alex.platform.pojo.InterfaceSuiteCaseRefDTO">
+        delete from `t_interface_suite_case_ref` where `suite_id` = #{suiteId} and `case_id` = #{caseId}
+    </delete>
     <select id="selectSuiteCaseList" parameterType="org.alex.platform.pojo.InterfaceSuiteCaseRefDTO" resultType="org.alex.platform.pojo.InterfaceSuiteCaseRefVO">
         select `ref`.`id`,`suite`.`suite_id`,`suite`.`suite_name`,`suite`.`desc` as `suite_desc`,
         `case`. `case_id`,`case`. `desc` as `case_desc`, `case`.`level`, `case`.`url`,

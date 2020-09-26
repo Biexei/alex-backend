@@ -155,13 +155,13 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                         if (jsonPathArray.isEmpty()) {
                             throw new ParseException(expression + "提取内容为空");
                         }
-                        return  (String) jsonPathArray.get(0);
+                        return jsonPathArray.get(0).toString();
                     } else if (contentType == 1) { // html
                         ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
                         if (xpathArray.isEmpty()) {
                             throw new ParseException(expression + "提取内容为空");
                         }
-                        return  (String) xpathArray.get(0);
+                        return xpathArray.get(0).toString();
                     } else if (contentType == 2) { // headers
                         JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders, HashMap.class).get(expression);
                         if (null == headerArray) {
@@ -204,20 +204,20 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                     if (jsonPathArray.isEmpty()) {
                         throw new ParseException(expression + "提取内容为空");
                     }
-                    return (String) jsonPathArray.get(0);
+                    return jsonPathArray.get(0).toString();
                 } else if (contentType == 1) { // html
                     ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
                     if (xpathArray.isEmpty()) {
                         throw new ParseException(expression + "提取内容为空");
                     }
-                    return (String) xpathArray.get(0);
+                    return xpathArray.get(0).toString();
                 } else if (contentType == 2) { // headers
                     JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders,
                             HashMap.class).get(expression);
                     if (headerArray == null) {
                         throw new ParseException("未找到请求头:" + expression);
                     } else {
-                        return (String) headerArray.get(0);
+                        return headerArray.get(0).toString();
                     }
                 } else {
                     throw new BusinessException("不支持该contentType");

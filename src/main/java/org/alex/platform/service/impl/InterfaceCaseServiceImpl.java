@@ -113,6 +113,26 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         interfaceCaseDO.setCreater(interfaceCaseDTO.getCreater());
         interfaceCaseDO.setUpdateTime(interfaceCaseDTO.getUpdateTime());
 
+        // 编辑的时候如果注入依赖为接口依赖，并且依赖接口为当前接口，应该禁止，避免造成死循环
+        String checkStr = interfaceCaseDO.getHeaders() + " "
+                + interfaceCaseDO.getParams() + " "
+                + interfaceCaseDO.getData() + " "
+                + interfaceCaseDO.getJson() + " ";
+        Pattern p = Pattern.compile("\\$\\{.+?\\}");
+        Matcher matcher = p.matcher(checkStr);
+        while (matcher.find()) {
+            String findStr = matcher.group();
+            // 获取relyName
+            String relyName = findStr.substring(2, findStr.length() - 1);
+            InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName);
+            if (null != interfaceCaseRelyDataVO) {
+                Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
+                if (interfaceCaseDO.getCaseId() == caseId) {
+                    throw new BusinessException("接口依赖的用例不能为当前用例");
+                }
+            }
+        }
+
         Integer moduleId = interfaceCaseDO.getModuleId();
         Integer projectId = interfaceCaseDO.getProjectId();
         ModuleDTO moduleDTO = new ModuleDTO();
@@ -127,6 +147,22 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         List<InterfaceAssertDO> asserts = interfaceCaseDTO.getAsserts();
         List<Integer> allAssertId = interfaceAssertMapper.selectAllAssertId(interfaceCaseDTO.getCaseId());
         for(InterfaceAssertDO assertDO : asserts) {
+            // 编辑的时候如果注入依赖为接口依赖，并且依赖接口为当前接口，应该禁止，避免造成死循环
+            Pattern pp = Pattern.compile("\\$\\{.+?\\}");
+            Matcher mm = pp.matcher(assertDO.getExceptedResult());
+            while (mm.find()) {
+                String findStr = mm.group();
+                // 获取relyName
+                String relyName = findStr.substring(2, findStr.length() - 1);
+                InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName);
+                if (null != interfaceCaseRelyDataVO) {
+                    Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
+                    if (interfaceCaseDO.getCaseId() == caseId) {
+                        throw new BusinessException("接口依赖的用例不能为当前用例");
+                    }
+                }
+            }
+
             // 修改断言表  修改存在的
             assertDO.setCaseId(interfaceCaseDTO.getCaseId());
             interfaceAssertService.modifyAssert(assertDO);
@@ -455,20 +491,20 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             if (jsonPathArray.isEmpty()) {
                                 throw new ParseException(expression + "提取内容为空");
                             }
-                            s = s.replace(findStr, (String) jsonPathArray.get(0));
+                            s = s.replace(findStr, jsonPathArray.get(0).toString());
                         } else if (contentType == 1) { // html
                             ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
                             if (xpathArray.isEmpty()) {
                                 throw new ParseException(expression + "提取内容为空");
                             }
-                            s = s.replace(findStr, (String) xpathArray.get(0));
+                            s = s.replace(findStr, xpathArray.get(0).toString());
                         } else if (contentType == 2) { // headers
                             JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders, HashMap.class).get(expression);
                             if (null == headerArray) {
                                 throw new ParseException("未找到请求头:" + expression);
                             }
                             try {
-                                s = s.replace(findStr, (String) headerArray.get(index));
+                                s = s.replace(findStr, headerArray.get(index).toString());
                             } catch (Exception e) {
                                 throw new ParseException("数组下标越界");
                             }
@@ -582,20 +618,20 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             if (jsonPathArray.isEmpty()) {
                                 throw new ParseException(expression + "提取内容为空");
                             }
-                            s = s.replace(findStr, (String) jsonPathArray.get(0));
+                            s = s.replace(findStr, jsonPathArray.get(0).toString());
                         } else if (contentType == 1) { // html
                             ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
                             if (xpathArray.isEmpty()) {
                                 throw new ParseException(expression + "提取内容为空");
                             }
-                            s = s.replace(findStr, (String) xpathArray.get(0));
+                            s = s.replace(findStr, xpathArray.get(0).toString());
                         } else if (contentType == 2) { // headers
                             JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders,
                                     HashMap.class).get(expression);
                             if (headerArray == null) {
                                 throw new ParseException("未找到请求头:" + expression);
                             } else {
-                                s = s.replace(findStr, (String) headerArray.get(0));
+                                s = s.replace(findStr, headerArray.get(0).toString());
                             }
                         } else {
                             throw new BusinessException("不支持该contentType");
