@@ -15,17 +15,28 @@
             )
         </foreach>
     </insert>
+    <update id="modifySuiteCase" parameterType="org.alex.platform.pojo.InterfaceSuiteCaseRefDO">
+        update `t_interface_suite_case_ref`
+        <set>
+            <if test="caseId!=null">`case_id` = #{caseId},</if>
+            <if test="suiteId!=null">`suite_id` = #{suiteId},</if>
+            <if test="caseStatus!=null">`case_status` = #{caseStatus},</if>
+            <if test="order!=null">`order` = #{order},</if>
+        </set>
+        where `id` =  #{id}
+    </update>
     <delete id="deleteSuiteCase" parameterType="Integer">
         delete from `t_interface_suite_case_ref` where `id` = #{id}
     </delete>
     <select id="selectSuiteCaseList" parameterType="org.alex.platform.pojo.InterfaceSuiteCaseRefDTO" resultType="org.alex.platform.pojo.InterfaceSuiteCaseRefVO">
-        select `suite`.`suite_id`,`suite`.`suite_name`,`suite`.`desc` as `suite_desc`,
+        select `ref`.`id`,`suite`.`suite_id`,`suite`.`suite_name`,`suite`.`desc` as `suite_desc`,
         `case`. `case_id`,`case`. `desc` as `case_desc`, `case`.`level`, `case`.`url`,
         `ref`.`order`, `ref`.`case_status`
         from `t_interface_case_suite` as `suite`
         inner join `t_interface_suite_case_ref` as `ref` on `suite`.`suite_id` = `ref`.`suite_id`
         inner join `t_interface_case` as `case` on `ref`.`case_id` = `case`.`case_id`
         <where>
+            <if test="id!=null">and `ref`.`id`=#{id}</if>
             <if test="suiteId!=null">and `suite`.`suite_id`=#{suiteId}</if>
             <if test="suiteName!=null">and `suite`.`suite_name`=#{suiteName}</if>
             <if test="suiteDesc!=null">and `suite`.`desc`=#{suiteDesc}</if>

@@ -3,12 +3,13 @@ package org.alex.platform.pojo;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 public class InterfaceCaseSuiteDO implements Serializable {
     private Integer suiteId;
-    @NotEmpty(message = "测试套件名称不允许为空")
+    @NotEmpty(message = "名称不允许为空")
     private String suiteName;
     private String desc;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -16,6 +17,7 @@ public class InterfaceCaseSuiteDO implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     private String creator;
+    @NotNull(message = "执行方式不允许为空")
     private Byte executeType;
 
     public Integer getSuiteId() {

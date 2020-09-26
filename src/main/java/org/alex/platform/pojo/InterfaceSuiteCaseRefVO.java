@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class InterfaceSuiteCaseRefVO implements Serializable {
+    private Integer id;
     private Integer suiteId;
     private String suiteName;
     private String suiteDesc;
@@ -13,6 +14,14 @@ public class InterfaceSuiteCaseRefVO implements Serializable {
     private String url;
     private Integer order;
     private Byte caseStatus;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getSuiteId() {
         return suiteId;

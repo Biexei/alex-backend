@@ -33,6 +33,11 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
     }
 
     @Override
+    public void modifySuiteCase(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO) {
+        interfaceSuiteCaseRefMapper.modifySuiteCase(interfaceSuiteCaseRefDO);
+    }
+
+    @Override
     public void removeSuiteCase(Integer incrementKey) {
         interfaceSuiteCaseRefMapper.deleteSuiteCase(incrementKey);
     }

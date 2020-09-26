@@ -23,6 +23,12 @@ public class InterfaceSuiteCaseRefController {
         return Result.success("新增成功");
     }
 
+    @PostMapping("/interface/suite/case/modify")
+    public Result modifySuiteCase(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO) {
+        refService.modifySuiteCase(interfaceSuiteCaseRefDO);
+        return Result.success("修改成功");
+    }
+
     @GetMapping("/interface/suite/case/remove/{id}")
     public Result removeSuiteCase(@PathVariable Integer id) {
         refService.removeSuiteCase(id);
