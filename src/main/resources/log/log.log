@@ -144,3 +144,22 @@ Field error in object 'interfaceCaseRelyDataDO' on field 'relyName': rejected va
 2020-09-27 20:00:23.536  INFO 13568 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-09-27 20:00:23.537  INFO 13568 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2020-09-27 20:00:23.542  INFO 13568 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2020-09-27 20:18:46.661  INFO 5224 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 5224 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-09-27 20:18:46.665  INFO 5224 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-09-27 20:18:47.428  INFO 5224 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-27 20:18:47.430  INFO 5224 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-27 20:18:47.489  INFO 5224 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 46ms. Found 0 Redis repository interfaces.
+2020-09-27 20:18:47.943  INFO 5224 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-09-27 20:18:47.952  INFO 5224 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-27 20:18:47.952  INFO 5224 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-09-27 20:18:48.040  INFO 5224 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-27 20:18:48.041  INFO 5224 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1325 ms
+2020-09-27 20:18:48.180  INFO 5224 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-09-27 20:18:48.281  INFO 5224 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-09-27 20:18:48.808  INFO 5224 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-27 20:18:49.316  INFO 5224 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-09-27 20:18:49.319  INFO 5224 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.096 seconds (JVM running for 3.935)
+2020-09-27 20:19:03.077  INFO 5224 --- [http-nio-7777-exec-9] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-27 20:19:03.078  INFO 5224 --- [http-nio-7777-exec-9] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-09-27 20:19:03.083  INFO 5224 --- [http-nio-7777-exec-9] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2020-09-27 20:19:09.867  INFO 5224 --- [http-nio-7777-exec-7] com.alibaba.druid.pool.DruidDataSource   : {dataSource-2} inited

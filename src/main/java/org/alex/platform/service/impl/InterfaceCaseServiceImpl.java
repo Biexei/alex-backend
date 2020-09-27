@@ -498,10 +498,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     String responseHeaders = interfaceCaseExecuteLogVO.getResponseHeaders();
                     // 根据contentType来确定对何字段进行替换, 提取数据类型   0json/1html/2header/
                     int contentType = (int) interfaceCaseRelyDataVO.getContentType();
-                    if (contentType != 2) {
-                        throw new ParseException("只有依赖数据提取类型为header时才支持指定下标，" +
-                                "否则请自行调整jsonpath/xpath表达式，使提取结果唯一");
-                    }
+                    // 2020.09.27 xpath/jsonPath也支持下标
+//                    if (contentType != 2) {
+//                        throw new ParseException("只有依赖数据提取类型为header时才支持指定下标，" +
+//                                "否则请自行调整jsonpath/xpath表达式，使提取结果唯一");
+//                    }
                     String expression = interfaceCaseRelyDataVO.getExtractExpression();
                     try {
                         if (contentType == 0) { // json
@@ -509,13 +510,21 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             if (jsonPathArray.isEmpty()) {
                                 throw new ParseException(expression + "提取内容为空");
                             }
-                            s = s.replace(findStr, jsonPathArray.get(0).toString());
+                            try {
+                                s = s.replace(findStr, jsonPathArray.get(index).toString());
+                            } catch (Exception e) {
+                                throw new ParseException(relyName + " 数组下标越界");
+                            }
                         } else if (contentType == 1) { // html
                             ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
                             if (xpathArray.isEmpty()) {
                                 throw new ParseException(expression + "提取内容为空");
                             }
-                            s = s.replace(findStr, xpathArray.get(0).toString());
+                            try {
+                                s = s.replace(findStr, xpathArray.get(index).toString());
+                            } catch (Exception e) {
+                                throw new ParseException(relyName + " 数组下标越界");
+                            }
                         } else if (contentType == 2) { // headers
                             JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders, HashMap.class).get(expression);
                             if (null == headerArray) {
@@ -524,7 +533,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             try {
                                 s = s.replace(findStr, headerArray.get(index).toString());
                             } catch (Exception e) {
-                                throw new ParseException("数组下标越界");
+                                throw new ParseException(expression + " 数组下标越界");
                             }
                         } else {
                             throw new BusinessException("不支持该contentType");
