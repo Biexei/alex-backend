@@ -246,23 +246,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         // 查询项目domain
         String url = projectService.findModulesById(projectId).getDomain() + interfaceCaseInfoVO.getUrl();
         String desc = interfaceCaseInfoVO.getDesc();
-        // 清洗
         String headers = interfaceCaseInfoVO.getHeaders();
-        if (null != headers) {
-            headers = this.parseRelyData(headers);
-        }
         String params = interfaceCaseInfoVO.getParams();
-        if (null != params) {
-            params = this.parseRelyData(params);
-        }
         String data = interfaceCaseInfoVO.getData();
-        if (null != data) {
-            data = this.parseRelyData(data);
-        }
         String json = interfaceCaseInfoVO.getJson();
-        if (null != json) {
-            json = this.parseRelyData(json);
-        }
         Byte method = interfaceCaseInfoVO.getMethod();
         List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
         long runTime = 0;
@@ -271,6 +258,20 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         // a.获取请求方式  0get,1post,2update,3put,4delete
         ResponseEntity responseEntity = null;
         try {
+            // 清洗
+            if (null != headers) {
+                headers = this.parseRelyData(headers);
+            }
+            if (null != params) {
+                params = this.parseRelyData(params);
+            }
+            if (null != data) {
+                data = this.parseRelyData(data);
+            }
+            if (null != json) {
+                json = this.parseRelyData(json);
+            }
+
             HashMap headersMap = JSONObject.parseObject(headers, HashMap.class);
             HashMap paramsMap = JSONObject.parseObject(params, HashMap.class);
             if (method == 0) { //get
@@ -355,16 +356,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             List<Byte> statusList = new ArrayList<>();
             for (InterfaceAssertVO interfaceAssertVO : asserts) {
                 // 获取断言基本信息
+                // 是否通过 0通过 1失败 2错误
+                Byte assertStatus = 0;
+                String assertErrorMessage = null;
                 Integer assertId = interfaceAssertVO.getAssertId();
                 String assertName = interfaceAssertVO.getAssertName();
                 Byte type = interfaceAssertVO.getType();
                 String expression = interfaceAssertVO.getExpression();
                 Byte operator = interfaceAssertVO.getOperator();
-                // 清洗断言预期结果
-                String exceptedResult = interfaceAssertVO.getExceptedResult();
-                if (null != exceptedResult) {
-                    exceptedResult = this.parseRelyData(exceptedResult);
-                }
                 Integer order = interfaceAssertVO.getOrder();
                 // 写入断言日志表
                 InterfaceAssertLogDO assertLogDO = new InterfaceAssertLogDO();
@@ -375,14 +374,33 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 assertLogDO.setType(type);
                 assertLogDO.setExpression(expression);
                 assertLogDO.setOperator(operator);
+                // 清洗断言预期结果
+                String exceptedResult = interfaceAssertVO.getExceptedResult();
+                if (null != exceptedResult) {
+                    try {
+                        exceptedResult = this.parseRelyData(exceptedResult);
+                    } catch (ParseException | BusinessException | SqlException e) {
+                        assertErrorMessage = e.getMessage();
+                        assertStatus = 2;
+                        assertLogDO.setExceptedResult(exceptedResult);
+                        assertLogDO.setOrder(order);
+                        assertLogDO.setActualResult(null);
+                        assertLogDO.setStatus(assertStatus);
+                        // 将每次断言status都加入集合
+                        statusList.add(assertStatus);
+                        assertLogDO.setErrorMessage(assertErrorMessage);
+                        assertLogDO.setCreatedTime(new Date());
+                        assertLogService.saveInterfaceAssertLog(assertLogDO);
+                        continue;
+                    }
+                }
+
+
                 assertLogDO.setExceptedResult(exceptedResult);
                 assertLogDO.setOrder(order);
                 // 根据type 提取数据类型   0json/1html/2header/3responseCode 来制定断言方案
                 String actualResult = null;
-                // 是否通过 0通过 1失败 2错误
-                Byte assertStatus = 0;
                 // 断言出错异常信息
-                String assertErrorMessage = null;
                 try {
                     if (type == 0) { // json
                         actualResult = ParseUtil.parseJson(responseBody, expression);

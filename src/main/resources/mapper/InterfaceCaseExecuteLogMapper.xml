@@ -73,7 +73,7 @@
         <result column="order" property="order"/>
         <result column="actual_result" property="actualResult"/>
         <result column="assert_status" property="status"/>
-        <result column="assert_error_message" property="assertErrorMessage"/>
+        <result column="assert_error_message" property="errorMessage"/>
     </resultMap>
 
     <resultMap id="interfaceCaseExecuteVO" type="org.alex.platform.pojo.InterfaceCaseExecuteLogVO">
