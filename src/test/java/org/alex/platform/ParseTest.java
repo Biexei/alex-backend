@@ -162,8 +162,8 @@ public class ParseTest {
 
     @Test
     public void testRE () {
-        Pattern p = Pattern.compile("\\$\\{[a-zA-Z]+\\}");
-        Matcher matcher = p.matcher("${name}${sex}");
+        Pattern p = Pattern.compile("#\\{.+?\\}");
+        Matcher matcher = p.matcher("[${selectProjectIdByName(\"#{$..data.name}\", \"#{$..data.desc}\")}]");
         while (matcher.find()) {
             String findStr = matcher.group();
             String relyName = findStr.substring(2, findStr.length()-1);

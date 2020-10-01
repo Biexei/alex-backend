@@ -7,6 +7,7 @@ import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.validation.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -32,8 +33,10 @@ public class ExceptionController {
     public Result globalException(Exception e) {
         e.printStackTrace();
         LOG.error(e.getMessage());
+        if (e instanceof DataAccessException) {
+            return Result.fail(504, "数据库异常，仅支持查询语句");
+        } else if (e instanceof MethodArgumentNotValidException) {
         // json请求验证-requestBody
-        if (e instanceof MethodArgumentNotValidException) {
             BindingResult bindingResult = ((MethodArgumentNotValidException) e).getBindingResult();
             List<ObjectError> errors = bindingResult.getAllErrors();
             String msg = errors.get(0).getDefaultMessage();

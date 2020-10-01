@@ -111,14 +111,18 @@ public class JdbcUtil {
         try {
             resultStr = "";
             JdbcTemplate jdbcTemplate = getInstance(url, username, password);
-            Map result = jdbcTemplate.queryForList(sql).get(0);
+            List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+            if (list.isEmpty()) {
+                throw new SqlException("查询结果为空");
+            }
+            Map result = list.get(0);
             for (Object key : result.keySet()) {
                 resultStr = result.get(key).toString();
                 break;
             }
         } catch (DataAccessException e) {
             e.printStackTrace();
-            throw new SqlException("数据库连接异常/SQL语句错误/非查询语句");
+            throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
         }
         return resultStr;
     }
@@ -132,16 +136,52 @@ public class JdbcUtil {
     public static String selectFirstColumn(JdbcTemplate jdbcTemplate, String sql) throws SqlException {
         String resultStr = "";
         try {
-            Map result = jdbcTemplate.queryForList(sql).get(0);
+            List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+            if (list.isEmpty()) {
+                throw new SqlException("查询结果为空");
+            }
+            Map result = list.get(0);
             for (Object key : result.keySet()) {
                 resultStr = result.get(key).toString();
                 break;
             }
         } catch (DataAccessException e) {
             e.printStackTrace();
-            throw new SqlException("数据库连接异常/SQL语句错误/非查询语句");
+            throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
         }
         return resultStr;
     }
+
+    /**
+     * 查询首行首列，带参数
+     * @param url 数据库url
+     * @param username 连接用户名
+     * @param password 连接密码
+     * @param sql sql预计
+     * @param params 参数
+     * @return 查询结果
+     * @throws SqlException 数据库异常
+     */
+    public static String selectFirstColumn(String url, String username, String password, String sql, String[] params) throws SqlException {
+        String resultStr = "";
+        try {
+            resultStr = "";
+            JdbcTemplate jdbcTemplate = getInstance(url, username, password);
+            List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+            if (list.isEmpty()) {
+                throw new SqlException("查询结果为空");
+            }
+            Map result = list.get(0);
+            for (Object key : result.keySet()) {
+                resultStr = result.get(key).toString();
+                break;
+            }
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
+        }
+        return resultStr;
+    }
+
 
 }

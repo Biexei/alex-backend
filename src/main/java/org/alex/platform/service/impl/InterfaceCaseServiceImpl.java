@@ -1,5 +1,6 @@
 package org.alex.platform.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -378,6 +379,25 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 String exceptedResult = interfaceAssertVO.getExceptedResult();
                 if (null != exceptedResult) {
                     try {
+                        // 清洗#{}
+                        Pattern p = Pattern.compile("\\$\\{.+\\}");
+                        Matcher m = p.matcher(exceptedResult);
+                        while (m.find()) {
+                            String findStr = m.group();
+                            Pattern pp = Pattern.compile("#\\{.+?\\}");
+                            Matcher mm = pp.matcher(findStr);
+                            while(mm.find()) {
+                                // #{xx}
+                                String group = mm.group();
+                                String jsonPath = group.substring(2, group.length() - 1);
+                                ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, jsonPath), ArrayList.class);
+                                if (jsonPathArray.isEmpty()) {
+                                    throw new ParseException(jsonPath + "提取内容为空");
+                                }
+                                exceptedResult = exceptedResult.replace(group, jsonPathArray.get(0).toString());
+                            }
+                        }
+                        // 清洗${}
                         exceptedResult = this.parseRelyData(exceptedResult);
                     } catch (ParseException | BusinessException | SqlException e) {
                         assertErrorMessage = e.getMessage();
@@ -467,7 +487,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             System.out.println("----------------------------");
             System.out.println(relyName);
 // 进入普通依赖数据模式-再进入根据数组下标模式
-            if (relyName.indexOf("[") != -1 && relyName.endsWith("]")) {
+            if (Pattern.matches("[a-zA-Z]+\\[[0-9]+\\]", relyName)) {
+                // if (relyName.indexOf("[") != -1 && relyName.endsWith("]")) {
                 System.out.println("进入普通依赖数据模式-再进入根据数组下标模式");
                 // 判断出现次数,首次出现和最后一次出现位置不一致，则说明[>1 ]>1
                 if (relyName.indexOf("[") != relyName.lastIndexOf("[") ||
@@ -548,7 +569,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     throw new ParseException("数组下标只能为数字");
                 }
 // 进入预置函数模式
-            } else if (relyName.indexOf("(") != -1 && relyName.endsWith(")")) {
+            } else if (Pattern.matches("\\w+\\((,?|(\\\".+\\\")?|\\s?)+\\)$", relyName)) {
+            // } else if (relyName.indexOf("(") != -1 && relyName.endsWith(")")) {
                 System.out.println("进入预置函数模式");
                 // 判断出现次数,首次出现和最后一次出现位置不一致，则说明(>1 )>1
                 if (relyName.indexOf("(") != relyName.lastIndexOf("(") ||
@@ -557,31 +579,60 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 }
                 // 获取方法名称
                 String methodName = relyName.substring(0, relyName.indexOf("("));
+                // 获取参数列表, 去除引号空格
+                String[] params = relyName.substring(relyName.indexOf("(") + 1, relyName.length() - 1)
+                        .replaceAll(",\\s+", ",").split(",");
                 RelyDataVO relyDataVO = relyDataService.findRelyDataByName(methodName);
                 if (null == relyDataVO) {
                     throw new ParseException("未找到该依赖方法");
                 }
-                // 获取参数列表, 去除引号空格
-                String[] params = relyName.substring(relyName.indexOf("(") + 1, relyName.length() - 1)
-                        .replace("\"", "").replaceAll(",\\s+", ",")
-                        .replace("'", "").split(",");
-                // 无参方法特殊处理
-                if (params.length == 1 && "".equals(params[0])) {
-                    params = new String[0];
-                }
-                // 反射执行对应方法
-                try {
-                    Class<?> clazz = Class.forName("org.alex.platform.common.RelyMethod");
-                    Class[] paramsList = new Class[params.length];
-                    for (int i = 0; i < params.length; i++) {
-                        paramsList[i] = String.class;
+                if (relyDataVO.getType() == 1) { //反射方法
+                    // 无参方法特殊处理
+                    if (params.length == 1 && "".equals(params[0])) {
+                        params = new String[0];
                     }
-                    Method method = clazz.getMethod(methodName, paramsList);
-                    s = s.replace(findStr, (String) method.invoke(clazz.newInstance(), params));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new ParseException("未找到依赖方法或者入参错误");
+                    // 反射执行对应方法
+                    try {
+                        Class<?> clazz = Class.forName("org.alex.platform.common.RelyMethod");
+                        Class[] paramsList = new Class[params.length];
+                        for (int i = 0; i < params.length; i++) {
+                            paramsList[i] = String.class;
+                            // 去除收尾空格
+                            params[i] = params[i].substring(1, params[i].length()-1);
+                        }
+                        Method method = clazz.getMethod(methodName, paramsList);
+                        s = s.replace(findStr, (String) method.invoke(clazz.newInstance(), params));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ParseException("未找到依赖方法或者入参错误");
+                    }
+                } else if (relyDataVO.getType() == 2) { //sql
+                    for (int i = 0; i < params.length; i++) {
+                        // 去除收尾空格
+                        params[i] = params[i].substring(1, params[i].length()-1);
+                    }
+                    Integer datasourceId = relyDataVO.getDatasourceId();
+                    if (null == datasourceId) {
+                        throw new ParseException("sql未找到对应的数据源");
+                    }
+                    DbVO dbVO = dbService.findDbById(datasourceId);
+                    // 0启动 1禁用
+                    int status = dbVO.getStatus();
+                    if (status == 1) {
+                        throw new ParseException("数据源已被禁用");
+                    }
+                    String url = dbVO.getUrl();
+                    String username = dbVO.getUsername();
+                    String password = dbVO.getPassword();
+                    // 支持动态sql
+                    String sql = relyDataVO.getValue();
+                    if (relyDataVO.getValue() != null ){
+                        sql = parseRelyData(sql);
+                    }
+                    String sqlResult = JdbcUtil.selectFirstColumn(url, username, password, sql, params);
+                    s = s.replace(findStr, sqlResult);
                 }
+
 // 进入普通依赖数据模式
             } else {
                 System.out.println("进入普通依赖数据模式");
