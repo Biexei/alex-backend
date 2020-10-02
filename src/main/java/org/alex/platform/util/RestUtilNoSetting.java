@@ -3,36 +3,27 @@ package org.alex.platform.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.exception.BusinessException;
-import org.alex.platform.mapper.HttpSettingMapper;
-import org.alex.platform.pojo.HttpSettingDTO;
-import org.alex.platform.pojo.HttpSettingVO;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
-public class RestUtil {
-    @Autowired
-    HttpSettingMapper httpSettingMapper;
-    private static RestUtil restUtil;
+public class RestUtilNoSetting {
 
     private static class SingleRestTemplate {
         private static final RestTemplate INSTANCE = new RestTemplate();
@@ -42,15 +33,6 @@ public class RestUtil {
         RestTemplate restTemplate = SingleRestTemplate.INSTANCE;
         SimpleClientHttpRequestFactory sh = new SimpleClientHttpRequestFactory();
         // 1.设置代理
-        List<HttpSettingVO> proxy = getProxy();
-        if (!proxy.isEmpty()) {
-            for (HttpSettingVO httpSettingVO : proxy) {
-                String[] domain = httpSettingVO.getValue().split(":");
-                String host = domain[0];
-                int port = Integer.parseInt(domain[1]);
-                sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port)));
-            }
-        }
         // sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)));
         // 2.设置超时时长
         sh.setConnectTimeout(10 * 1000);
@@ -69,18 +51,13 @@ public class RestUtil {
             }
         });
         // 4.配置全局headers
-        restTemplate.getInterceptors().add((httpRequest, bytes, clientHttpRequestExecution) -> {
-            HttpHeaders headers = httpRequest.getHeaders();
-            // 1.设置请求头
-            List<HttpSettingVO> header = getHeader();
-            if (!header.isEmpty()) {
-                for (HttpSettingVO httpSettingVO : header) {
-                    headers.remove(httpSettingVO.getName());
-                    headers.add(httpSettingVO.getName(), httpSettingVO.getValue());
-                }
+        restTemplate.getInterceptors().add(new ClientHttpRequestInterceptor() {
+            @Override
+            public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution
+                    clientHttpRequestExecution) throws IOException {
+                httpRequest.getHeaders().add("User-Agent", "self ua");
+                return clientHttpRequestExecution.execute(httpRequest, bytes);
             }
-            // headers.add("User-Agent", "self ua");
-            return clientHttpRequestExecution.execute(httpRequest, bytes);
         });
         return restTemplate;
     }
@@ -158,7 +135,7 @@ public class RestUtil {
      * @throws BusinessException 业务异常
      */
     public static ResponseEntity post(String url, HashMap<String, String> headers, HashMap<String, String> params,
-                               HashMap<String, String> data, String json) throws BusinessException {
+                                      HashMap<String, String> data, String json) throws BusinessException {
 
         RestTemplate restTemplate = RestUtil.getInstance();
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -300,26 +277,6 @@ public class RestUtil {
      */
     public static JSONObject header(ResponseEntity response) {
         return JSON.parseObject(JSON.toJSONString(response.getHeaders()));
-    }
-
-    @PostConstruct
-    public void init() {
-        restUtil = this;
-        restUtil.httpSettingMapper = this.httpSettingMapper;
-    }
-
-    public static List<HttpSettingVO> getProxy() {
-        HttpSettingDTO httpSettingDTO = new HttpSettingDTO();
-        httpSettingDTO.setStatus((byte)0);
-        httpSettingDTO.setType((byte)0);
-        return restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO);
-    }
-
-    public static List<HttpSettingVO> getHeader() {
-        HttpSettingDTO httpSettingDTO1 = new HttpSettingDTO();
-        httpSettingDTO1.setStatus((byte)0);
-        httpSettingDTO1.setType((byte)1);
-        return restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO1);
     }
 
 }

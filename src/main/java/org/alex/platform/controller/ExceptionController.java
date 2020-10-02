@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,8 @@ public class ExceptionController {
             List<ObjectError> errors = bindingResult.getAllErrors();
             String msg = errors.get(0).getDefaultMessage();
             return Result.fail(501, msg);
+        } else if (e instanceof ResourceAccessException) {
+            return Result.fail(502, "代理服务器未开启" + e.getMessage());
         // 表单请求验证
         } else if (e instanceof BindException) {
             BindException be = (BindException) e;
