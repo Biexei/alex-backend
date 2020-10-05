@@ -34,16 +34,22 @@ public class HttpSettingController {
 
     @PostMapping("setting/save")
     public Result saveHttpSetting(@Validated HttpSettingDO httpSettingDO) throws BusinessException {
+        httpSettingDO.setStatus((byte) 0);
         // 校验代理服务器格式
         if (httpSettingDO.getType() == 0) {
+            httpSettingDO.setStatus((byte) 1);
             String domain = httpSettingDO.getValue();
             if (!Pattern.matches("[a-zA-z]+:(\\d+)$", domain)) {
                 throw new BusinessException("代理服务器格式错误");
             }
+        } else if (httpSettingDO.getType() == 2) { // 邮箱
+            String email = httpSettingDO.getValue();
+            if (!Pattern.matches("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?", email)) {
+                throw new BusinessException("邮箱格式错误");
+            }
         }
 
         Date date = new Date();
-        httpSettingDO.setStatus((byte) 1);
         httpSettingDO.setCreatedTime(date);
         httpSettingDO.setUpdateTime(date);
         httpSettingService.saveHttpSetting(httpSettingDO);
@@ -57,7 +63,13 @@ public class HttpSettingController {
             if (!Pattern.matches("[a-zA-z]+:(\\d+)$", domain)) {
                 throw new BusinessException("代理服务器格式错误");
             }
+        } else if (httpSettingDO.getType() == 2) { // 邮箱
+            String email = httpSettingDO.getValue();
+            if (!Pattern.matches("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?", email)) {
+                throw new BusinessException("邮箱格式错误");
+            }
         }
+
         Date date = new Date();
         httpSettingDO.setUpdateTime(date);
         httpSettingService.modifyHttpSetting(httpSettingDO);
@@ -68,5 +80,10 @@ public class HttpSettingController {
     public Result removeHttpSettingById(@PathVariable Integer settingId) {
         httpSettingService.removeHttpSetting(settingId);
         return Result.success("删除成功");
+    }
+
+    @GetMapping("setting/email/all")
+    public Result findAllEmail() {
+        return Result.success(httpSettingService.findAllEmail());
     }
 }

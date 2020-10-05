@@ -10,6 +10,9 @@ import org.alex.platform.service.HttpSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 @Service
 public class HttpSettingServiceImpl implements HttpSettingService {
     @Autowired
@@ -47,5 +50,10 @@ public class HttpSettingServiceImpl implements HttpSettingService {
     @Override
     public void removeHttpSetting(Integer settingId) {
         httpSettingMapper.deleteHttpSetting(settingId);
+    }
+
+    @Override
+    public ArrayList<HashMap> findAllEmail() {
+        return httpSettingMapper.selectAllEmail();
     }
 }

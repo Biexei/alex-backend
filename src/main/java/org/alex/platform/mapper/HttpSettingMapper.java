@@ -5,6 +5,8 @@ import org.alex.platform.pojo.HttpSettingDTO;
 import org.alex.platform.pojo.HttpSettingVO;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -20,4 +22,6 @@ public interface HttpSettingMapper {
     void deleteHttpSetting(Integer settingId);
 
     void closeOtherProxy(Integer settingId);
+
+    ArrayList<HashMap> selectAllEmail();
 }

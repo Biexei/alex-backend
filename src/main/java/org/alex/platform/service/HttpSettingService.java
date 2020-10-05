@@ -5,6 +5,8 @@ import org.alex.platform.pojo.HttpSettingDO;
 import org.alex.platform.pojo.HttpSettingDTO;
 import org.alex.platform.pojo.HttpSettingVO;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface HttpSettingService {
@@ -17,4 +19,7 @@ public interface HttpSettingService {
     void modifyHttpSetting(HttpSettingDO httpSettingDO);
 
     void removeHttpSetting(Integer settingId);
+
+    ArrayList<HashMap> findAllEmail();
+
 }

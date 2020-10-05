@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.TaskMapper">
+    <resultMap id="taskMap" type="org.alex.platform.pojo.TaskVO">
+        <id column="task_id" property="taskId"/>
+        <result column="desc" property="desc"/>
+        <result column="cron" property="cron"/>
+        <result column="next_time" property="nextTime"/>
+        <result column="suite_type" property="suiteType"/>
+        <result column="suite_id" property="suiteId"/>
+        <result column="suite_name" property="suiteName"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <collection property="emailList" ofType="org.alex.platform.pojo.EmailVO">
+            <result column="email_id" property="emailId"/>
+            <result column="ref_id" property="refId"/>
+            <result column="email_address" property="emailAddress"/>
+        </collection>
+    </resultMap>
+    <select id="selectTaskList" parameterType="org.alex.platform.pojo.TaskDTO" resultMap="taskMap">
+        select `task`.`task_id`, `task`.`desc`, `cron`, `next_time`, `suite_type`,
+        `task`.`suite_id`, `suite_name`, `ref`.`email_id`, `setting`.`value` as `email_address`,
+        `task`.`created_time`, `task`.`update_time`, `task`.`status`, `ref`.`id` as `ref_id`
+        from `t_task` as `task`
+        left join `t_interface_case_suite` as `suite` on `task`.`suite_id` = `suite`.`suite_id`
+        left join `t_task_email_ref` as `ref` on `task`.`task_id` = `ref`.`task_id`
+        left join `t_http_setting` as `setting` on `ref`.`email_id` = `setting`.`setting_id`
+        <where>
+            `setting`.`type` = 2
+            <if test="desc!=null">and `task`.`desc` like concat('%',#{desc},'%')</if>
+            <if test="suiteName!=null">and `suite_name` like concat('%',#{suiteName},'%')</if>
+            <if test="emailAddress!=null">and `setting`.`value` like concat('%',#{emailAddress},'%')</if>
+            <if test="status!=null">and `task`.`status`=#{status}</if>
+        </where>
+    </select>
+    <select id="selectTaskById" parameterType="Integer" resultMap="taskMap">
+        select `task`.`task_id`, `task`.`desc`, `cron`, `next_time`, `suite_type`,
+        `task`.`suite_id`, `suite_name`, `ref`.`email_id`, `setting`.`value` as `email_address`,
+        `task`.`created_time`, `task`.`update_time`, `task`.`status`, `ref`.`id` as `ref_id`
+        from `t_task` as `task`
+        left join `t_interface_case_suite` as `suite` on `task`.`suite_id` = `suite`.`suite_id`
+        left join `t_task_email_ref` as `ref` on `task`.`task_id` = `ref`.`task_id`
+        left join `t_http_setting` as `setting` on `ref`.`email_id` = `setting`.`setting_id`
+        where `setting`.`type` = 2 and `task`.`task_id` = #{taskId}
+    </select>
+    <insert id="insertTask" parameterType="org.alex.platform.pojo.TaskDO" useGeneratedKeys="true" keyProperty="taskId">
+        insert into `t_task`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="desc!=null">`desc`,</if>
+            <if test="cron!=null">`cron`,</if>
+            <if test="createdTime!=null">`created_time`,</if>
+            <if test="updateTime!=null!=null">`update_time`,</if>
+            <if test="suiteType!=null">`suite_type`,</if>
+            <if test="suiteId!=null">`suite_id`,</if>
+            <if test="status!=null">`status`,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="desc!=null">#{desc},</if>
+            <if test="cron!=null">#{cron},</if>
+            <if test="createdTime!=null">#{createdTime},</if>
+            <if test="updateTime!=null!=null">#{updateTime},</if>
+            <if test="suiteType!=null">#{suiteType},</if>
+            <if test="suiteId!=null">#{suiteId},</if>
+            <if test="status!=null">#{status},</if>
+        </trim>
+    </insert>
+    <update id="updateTask" parameterType="org.alex.platform.pojo.TaskDO">
+        update `t_task`
+        <set>
+            `desc`=#{desc},
+            `cron`=#{cron},
+            <if test="nextTime!=null">`next_time`=#{nextTime},</if>
+            `created_time`=#{createdTime},
+            `update_time`=#{updateTime},
+            `suite_type`=#{suiteType},
+            `suite_id`=#{suiteId},
+            `status`=#{status},
+        </set>
+        where `task_id`=#{taskId}
+    </update>
+    <delete id="deleteTask" parameterType="Integer">
+        delete from `t_task` where `task_id` = #{taskId}
+    </delete>
+</mapper>
