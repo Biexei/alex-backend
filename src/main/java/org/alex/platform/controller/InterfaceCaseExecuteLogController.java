@@ -4,7 +4,6 @@ import org.alex.platform.common.Result;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO;
 import org.alex.platform.service.InterfaceCaseExecuteLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +16,8 @@ public class InterfaceCaseExecuteLogController {
     /**
      * 获取接口执行日志详情
      *
-     * @param executeId
-     * @return
+     * @param executeId 执行编号
+     * @return Result
      */
     @GetMapping("/interface/log/{executeId}")
     public Result findInterfaceCaseExecuteLog(@PathVariable Integer executeId) {
@@ -28,10 +27,10 @@ public class InterfaceCaseExecuteLogController {
     /**
      * 获取接口执行日志列表
      *
-     * @param executeLogListDTO
-     * @param pageNum
-     * @param pageSize
-     * @return
+     * @param executeLogListDTO executeLogListDTO
+     * @param pageNum           pageNum
+     * @param pageSize          pageSize
+     * @return Result
      */
     @GetMapping("/interface/log/list")
     public Result findInterfaceCaseExecuteLogList(InterfaceCaseExecuteLogListDTO executeLogListDTO, Integer pageNum,

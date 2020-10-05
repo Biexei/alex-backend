@@ -20,17 +20,34 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     TaskEmailRefService taskEmailRefService;
 
+    /**
+     * 查看定时任务列表
+     * @param taskDTO taskDTO
+     * @param pageNum pageNum
+     * @param pageSize pageSize
+     * @return PageInfo<TaskVO>
+     */
     @Override
     public PageInfo<TaskVO> findTaskList(TaskDTO taskDTO, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo<>(taskMapper.selectTaskList(taskDTO));
     }
 
+    /**
+     * 查看定时任务详情
+     * @param taskId 编号
+     * @return TaskVO
+     */
     @Override
     public TaskVO findTaskById(Integer taskId) {
         return taskMapper.selectTaskById(taskId);
     }
 
+    /**
+     * 新增定时任务
+     * @param taskDO taskDO
+     * @return TaskDO
+     */
     @Override
     public TaskDO saveTask(TaskDO taskDO) {
         // 插入主表
@@ -38,6 +55,10 @@ public class TaskServiceImpl implements TaskService {
         return taskDO;
     }
 
+    /**
+     * 新增定时任务主表和附表
+     * @param taskRefDO taskRefDO
+     */
     @Override
     public void saveTaskAndRef(TaskRefDO taskRefDO) {
         TaskDO taskDO = new TaskDO();
@@ -65,6 +86,10 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    /**
+     * 修改定时任务主表和附表
+     * @param taskRefDO taskRefDO
+     */
     @Override
     public void modifyTaskAndRef(TaskRefDO taskRefDO) {
         TaskDO taskDO = new TaskDO();
@@ -95,6 +120,10 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    /**
+     * 删除定时任务主表和附表
+     * @param taskId 编号
+     */
     @Override
     public void removeTask(Integer taskId) {
         // 删除主表

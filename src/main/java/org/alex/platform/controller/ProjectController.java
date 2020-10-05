@@ -24,10 +24,10 @@ public class ProjectController {
     /**
      * 查询项目列表
      *
-     * @param projectDO
-     * @param pageNum
-     * @param pageSize
-     * @return
+     * @param projectDO projectDO
+     * @param pageNum   pageNum
+     * @param pageSize  pageSize
+     * @return Result
      */
     @GetMapping("project/list")
     public Result getProjectList(ProjectDO projectDO, Integer pageNum, Integer pageSize) {
@@ -38,8 +38,9 @@ public class ProjectController {
 
     /**
      * 获取所有项目信息
-     * @param projectDO
-     * @return
+     *
+     * @param projectDO projectDO
+     * @return Result
      */
     @GetMapping("project/all")
     public Result getAllProject(ProjectDO projectDO) {
@@ -49,8 +50,8 @@ public class ProjectController {
     /**
      * 查看项目下所有模块
      *
-     * @param projectId
-     * @return
+     * @param projectId 项目编号
+     * @return Result
      */
     @GetMapping("project/modules/{projectId}")
     public Result findModulesById(@PathVariable Integer projectId) {
@@ -60,8 +61,8 @@ public class ProjectController {
     /**
      * 查看项目信息
      *
-     * @param projectDO
-     * @return
+     * @param projectDO projectDO
+     * @return Result
      */
     @GetMapping("project/info")
     public Result getProject(ProjectDO projectDO) {
@@ -76,8 +77,8 @@ public class ProjectController {
     /**
      * 新增项目
      *
-     * @param projectDO
-     * @return
+     * @param projectDO projectDO
+     * @return Result
      */
     @PostMapping("project/save")
     public Result saveProject(@Validated ProjectDO projectDO) {
@@ -94,8 +95,8 @@ public class ProjectController {
     /**
      * 修改项目
      *
-     * @param projectDO
-     * @return
+     * @param projectDO projectDO
+     * @return Result
      */
     @PostMapping("project/modify")
     public Result modifyProject(@Validated ProjectDO projectDO) {
@@ -113,7 +114,7 @@ public class ProjectController {
      * 删除项目
      *
      * @param projectId 项目编号
-     * @return
+     * @return Result
      */
     @GetMapping("project/remove/{projectId}")
     public Result deleteProject(@PathVariable Integer projectId) throws BusinessException {

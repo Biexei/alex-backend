@@ -2,9 +2,18 @@ package org.alex.platform.pojo;
 
 public class TaskDTO {
     private String desc;
+    private Integer suiteId;
     private String suiteName;
     private String emailAddress;
     private Byte status;
+
+    public Integer getSuiteId() {
+        return suiteId;
+    }
+
+    public void setSuiteId(Integer suiteId) {
+        this.suiteId = suiteId;
+    }
 
     public Byte getStatus() {
         return status;

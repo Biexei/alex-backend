@@ -19,5 +19,7 @@ public interface RelyDataMapper {
 
     List<RelyDataVO> selectRelyDataList(RelyDataDTO relyDataDTO);
 
+    List<RelyDataVO> checkName(RelyDataDO relyDataDO);
+
     void deleteRelyDataById(Integer id);
 }

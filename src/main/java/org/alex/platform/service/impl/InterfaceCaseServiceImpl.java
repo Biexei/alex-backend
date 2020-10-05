@@ -57,6 +57,13 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     @Autowired
     InterfaceAssertMapper interfaceAssertMapper;
 
+    /**
+     * 新增接口测试用例
+     *
+     * @param interfaceCaseDO interfaceCaseDO
+     * @return InterfaceCaseDO
+     * @throws BusinessException BusinessException
+     */
     @Override
     public InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException {
         Integer moduleId = interfaceCaseDO.getModuleId();
@@ -82,6 +89,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         }
     }
 
+    /**
+     * 新增接口测试用例及断言
+     *
+     * @param interfaceCaseDTO interfaceCaseDTO
+     * @throws BusinessException BusinessException
+     */
     @Override
     public void saveInterfaceCaseAndAssert(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
         //插入用例详情表，获取自增用例编号
@@ -96,6 +109,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         }
     }
 
+    /**
+     * 修改接口测试用例
+     *
+     * @param interfaceCaseDTO interfaceCaseDTO
+     * @throws BusinessException BusinessException
+     */
     @Override
     public void modifyInterfaceCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
         InterfaceCaseDO interfaceCaseDO = new InterfaceCaseDO();
@@ -127,7 +146,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             String relyName = findStr.substring(2, findStr.length() - 1);
             InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName);
             if (null != interfaceCaseRelyDataVO) {
-                Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
+                int caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                 if (interfaceCaseDO.getCaseId() == caseId) {
                     throw new BusinessException("接口依赖的用例不能为当前用例");
                 }
@@ -147,7 +166,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         interfaceCaseMapper.updateInterfaceCase(interfaceCaseDO);
         List<InterfaceAssertDO> asserts = interfaceCaseDTO.getAsserts();
         List<Integer> allAssertId = interfaceAssertMapper.selectAllAssertId(interfaceCaseDTO.getCaseId());
-        for(InterfaceAssertDO assertDO : asserts) {
+        for (InterfaceAssertDO assertDO : asserts) {
             // 编辑的时候如果注入依赖为接口依赖，并且依赖接口为当前接口，应该禁止，避免造成死循环
             Pattern pp = Pattern.compile("\\$\\{.+?\\}");
             Matcher mm = pp.matcher(assertDO.getExceptedResult());
@@ -157,7 +176,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 String relyName = findStr.substring(2, findStr.length() - 1);
                 InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName);
                 if (null != interfaceCaseRelyDataVO) {
-                    Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
+                    int caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     if (interfaceCaseDO.getCaseId() == caseId) {
                         throw new BusinessException("接口依赖的用例不能为当前用例");
                     }
@@ -168,7 +187,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             assertDO.setCaseId(interfaceCaseDTO.getCaseId());
             interfaceAssertService.modifyAssert(assertDO);
             // 新增没有传assertId的
-            if(assertDO.getAssertId() == null) {
+            if (assertDO.getAssertId() == null) {
                 interfaceAssertService.saveAssert(assertDO);
             } else {
                 // 删除不存在的
@@ -180,11 +199,17 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 }
             }
         }
-        for (Integer assertId:allAssertId){
+        for (Integer assertId : allAssertId) {
             interfaceAssertService.removeAssertByAssertId(assertId);
         }
     }
 
+    /**
+     * 删除接口测试用例
+     *
+     * @param interfaceCaseId interfaceCaseId
+     * @throws BusinessException BusinessException
+     */
     @Override
     public void removeInterfaceCase(Integer interfaceCaseId) throws BusinessException {
         boolean inIfRelyData = true;
@@ -219,12 +244,26 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         }
     }
 
+    /**
+     * 获取接口测试用例列表
+     *
+     * @param interfaceCaseListDTO interfaceCaseListDTO
+     * @param pageNum              pageNum
+     * @param pageSize             pageSize
+     * @return PageInfo<InterfaceCaseListVO>
+     */
     @Override
     public PageInfo<InterfaceCaseListVO> findInterfaceCaseList(InterfaceCaseListDTO interfaceCaseListDTO, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo(interfaceCaseMapper.selectInterfaceCaseList(interfaceCaseListDTO));
     }
 
+    /**
+     * 获取接口测试用例详情
+     *
+     * @param caseId 用例编号
+     * @return InterfaceCaseInfoVO
+     */
     @Override
     public InterfaceCaseInfoVO findInterfaceCaseByCaseId(Integer caseId) {
         return interfaceCaseMapper.selectInterfaceCaseByCaseId(caseId);
@@ -232,6 +271,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
     /**
      * 执行指定用例编号
+     *
      * @param interfaceCaseId 需要执行的用例编号
      * @return 执行日志编号
      */
@@ -239,7 +279,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     public Integer executeInterfaceCase(Integer interfaceCaseId) throws ParseException, BusinessException, SqlException {
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
-        Byte caseStatus = 0;
+        byte caseStatus = 0;
 
         // 1.获取case详情
         InterfaceCaseInfoVO interfaceCaseInfoVO = this.findInterfaceCaseByCaseId(interfaceCaseId);
@@ -386,7 +426,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             String findStr = m.group();
                             Pattern pp = Pattern.compile("#\\{.+?\\}");
                             Matcher mm = pp.matcher(findStr);
-                            while(mm.find()) {
+                            while (mm.find()) {
                                 // #{xx}
                                 String group = mm.group();
                                 String jsonPath = group.substring(2, group.length() - 1);
@@ -472,9 +512,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
     /**
      * 字符解析
+     *
      * @param s 入参字符串
      * @return 解析后的字符串
-     * @throws ParseException 解析异常
+     * @throws ParseException    解析异常
      * @throws BusinessException 业务异常
      */
     public String parseRelyData(String s) throws ParseException, BusinessException, SqlException {
@@ -511,7 +552,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
                     // 获取case执行结果, 不等于0, 则用例未通过
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
-                        throw new BusinessException("relyName关联的前置用例执行失败!");
+                        throw new BusinessException("前置用例执行未通过");
                     }
                     // 根据executeLogId查询对应的执行记录
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
@@ -570,7 +611,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 }
 // 进入预置函数模式
             } else if (Pattern.matches("\\w+\\((,?|(\\\".+\\\")?|\\s?)+\\)$", relyName)) {
-            // } else if (relyName.indexOf("(") != -1 && relyName.endsWith(")")) {
+                // } else if (relyName.indexOf("(") != -1 && relyName.endsWith(")")) {
                 System.out.println("进入预置函数模式");
                 // 判断出现次数,首次出现和最后一次出现位置不一致，则说明(>1 )>1
                 if (relyName.indexOf("(") != relyName.lastIndexOf("(") ||
@@ -598,7 +639,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         for (int i = 0; i < params.length; i++) {
                             paramsList[i] = String.class;
                             // 去除收尾空格
-                            params[i] = params[i].substring(1, params[i].length()-1);
+                            params[i] = params[i].substring(1, params[i].length() - 1);
                         }
                         Method method = clazz.getMethod(methodName, paramsList);
                         s = s.replace(findStr, (String) method.invoke(clazz.newInstance(), params));
@@ -609,7 +650,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 } else if (relyDataVO.getType() == 2) { //sql
                     for (int i = 0; i < params.length; i++) {
                         // 去除收尾空格
-                        params[i] = params[i].substring(1, params[i].length()-1);
+                        params[i] = params[i].substring(1, params[i].length() - 1);
                     }
                     Integer datasourceId = relyDataVO.getDatasourceId();
                     if (null == datasourceId) {
@@ -626,7 +667,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     String password = dbVO.getPassword();
                     // 支持动态sql
                     String sql = relyDataVO.getValue();
-                    if (relyDataVO.getValue() != null ){
+                    if (relyDataVO.getValue() != null) {
                         sql = parseRelyData(sql);
                     }
                     String sqlResult = JdbcUtil.selectFirstColumn(url, username, password, sql, params);
@@ -668,7 +709,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             String password = dbVO.getPassword();
                             // 支持动态sql
                             String sql = relyDataVO.getValue();
-                            if (relyDataVO.getValue() != null ){
+                            if (relyDataVO.getValue() != null) {
                                 sql = parseRelyData(sql);
                             }
                             String sqlResult = JdbcUtil.selectFirstColumn(url, username, password, sql);
@@ -681,7 +722,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
                     // 获取case执行结果, 不等于0, 则用例未通过
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
-                        throw new BusinessException("relyName关联的前置用例执行失败!");
+                        throw new BusinessException("前置用例执行未通过");
                     }
                     // 根据executeLogId查询对应的执行记录
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
@@ -712,10 +753,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 s = s.replace(findStr, headerArray.get(0).toString());
                             }
                         } else {
-                            throw new BusinessException("不支持该contentType");
+                            throw new BusinessException("不支持该种取值方式");
                         }
                     } catch (BusinessException e) {
-                        throw new BusinessException("不支持该contentType");
+                        throw new BusinessException("不支持该种取值方式");
                     } catch (Exception e) {
                         e.printStackTrace();
                         throw new ParseException(e.getMessage());

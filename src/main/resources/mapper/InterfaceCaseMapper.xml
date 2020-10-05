@@ -85,6 +85,7 @@
             <if test="createdStartTime != null">and `icase`.`created_time` &gt;= #{createdStartTime}</if>
             <if test="createdEndTime != null">and `icase`.`created_time` &lt;= #{createdEndTime}</if>
         </where>
+        order by `icase`.`case_id` desc
     </select>
     
     <resultMap id="assertVO" type="org.alex.platform.pojo.InterfaceAssertVO">

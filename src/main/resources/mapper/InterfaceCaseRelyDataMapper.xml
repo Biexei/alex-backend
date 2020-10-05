@@ -57,6 +57,14 @@
         where `r`.`rely_name` = #{relyName}
     </select>
 
+    <select id="checkRelyName" parameterType="org.alex.platform.pojo.InterfaceCaseRelyDataDO" resultType="org.alex.platform.pojo.InterfaceCaseRelyDataVO">
+        select `r`.`rely_id`, `r`.`rely_case_id`, `r`.`rely_name`, `r`.`rely_desc`, `r`.`content_type`,
+        `r`.`extract_expression`, `r`.`created_time`,`r`.`update_time`, `c`.`url` as `case_url`, `c`.`desc` as `case_desc`
+        from `t_interface_case_rely_data` as `r`
+        left join `t_interface_case` as `c` on `r`.`rely_case_id` = `c`.`case_id`
+        where `r`.`rely_name` = #{relyName} and `r`.`rely_id` != #{relyId}
+    </select>
+
     <select id="selectIfRelyDataList" parameterType="org.alex.platform.pojo.InterfaceCaseRelyDataDTO" resultType="org.alex.platform.pojo.InterfaceCaseRelyDataVO">
         select `r`.`rely_id`, `r`.`rely_case_id`, `r`.`rely_name`, `r`.`rely_desc`, `r`.`content_type`,
         `r`.`extract_expression`, `r`.`created_time`,`r`.`update_time`, `c`.`url` as `case_url`, `c`.`desc` as `case_desc`

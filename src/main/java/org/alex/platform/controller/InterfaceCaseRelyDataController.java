@@ -24,9 +24,10 @@ public class InterfaceCaseRelyDataController {
 
     /**
      * 新增数据依赖
-     * @param ifRelyDataDO
-     * @return
-     * @throws BusinessException
+     *
+     * @param ifRelyDataDO ifRelyDataDO
+     * @return Result
+     * @throws BusinessException BusinessException
      */
     @PostMapping("/interface/rely/save")
     public Result saveIfRelyData(@Validated InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
@@ -39,9 +40,10 @@ public class InterfaceCaseRelyDataController {
 
     /**
      * 修改数据依赖
-     * @param ifRelyDataDO
-     * @return
-     * @throws BusinessException
+     *
+     * @param ifRelyDataDO ifRelyDataDO
+     * @return Result
+     * @throws BusinessException BusinessException
      */
     @PostMapping("/interface/rely/modify")
     public Result modifyIfRelyData(@Validated InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
@@ -52,8 +54,9 @@ public class InterfaceCaseRelyDataController {
 
     /**
      * 获取数据依赖详情
-     * @param relyId
-     * @return
+     *
+     * @param relyId 依赖编号
+     * @return Result
      */
     @GetMapping("/interface/rely/{relyId}")
     public Result findIfRelyData(@PathVariable Integer relyId) {
@@ -62,10 +65,11 @@ public class InterfaceCaseRelyDataController {
 
     /**
      * 获取数据依赖列表
-     * @param ifRelyDataDTO
-     * @param pageNum
-     * @param pageSize
-     * @return
+     *
+     * @param ifRelyDataDTO ifRelyDataDTO
+     * @param pageNum       pageNum
+     * @param pageSize      pageSize
+     * @return Result
      */
     @GetMapping("/interface/rely")
     public Result findIfRelyDataList(InterfaceCaseRelyDataDTO ifRelyDataDTO, Integer pageNum, Integer pageSize) {
@@ -76,8 +80,9 @@ public class InterfaceCaseRelyDataController {
 
     /**
      * 删除数据依赖
-     * @param relyId
-     * @return
+     *
+     * @param relyId 依赖编号
+     * @return Result
      */
     @GetMapping("/interface/rely/remove/{relyId}")
     public Result removeIfRelyData(@PathVariable Integer relyId) {
@@ -87,11 +92,12 @@ public class InterfaceCaseRelyDataController {
 
     /**
      * 预检
-     * @param relyId
-     * @return
-     * @throws ParseException
-     * @throws BusinessException
-     * @throws SqlException
+     *
+     * @param relyId 依赖编号
+     * @return Result
+     * @throws ParseException    ParseException
+     * @throws BusinessException BusinessException
+     * @throws SqlException      SqlException
      */
     @GetMapping("/interface/rely/check/{relyId}")
     public Result checkIfRelyData(@PathVariable Integer relyId) throws ParseException, BusinessException, SqlException {

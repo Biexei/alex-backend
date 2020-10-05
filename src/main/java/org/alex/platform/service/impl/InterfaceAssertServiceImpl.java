@@ -17,6 +17,12 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
     @Autowired
     InterfaceCaseMapper interfaceCaseMapper;
 
+    /**
+     * 新增断言
+     *
+     * @param interfaceAssertDO interfaceAssertDO
+     * @throws BusinessException 断言排序重复/用例编号不存在检查
+     */
     @Override
     public void saveAssert(InterfaceAssertDO interfaceAssertDO) throws BusinessException {
         Integer caseId = interfaceAssertDO.getCaseId();
@@ -34,22 +40,41 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
         interfaceAssertMapper.insertAssert(interfaceAssertDO);
     }
 
+    /**
+     * 修改断言
+     *
+     * @param interfaceAssertDO interfaceAssertDO
+     * @throws BusinessException 断言排序重复/用例编号不存在检查
+     */
     @Override
     public void modifyAssert(InterfaceAssertDO interfaceAssertDO) throws BusinessException {
         //判断caseId是否存在
         Integer caseId = interfaceAssertDO.getCaseId();
         if (interfaceCaseMapper.selectInterfaceCaseByCaseId(caseId) == null) {
             throw new BusinessException("用例编号不存在");
-        } else {
-            interfaceAssertMapper.updateAssert(interfaceAssertDO);
         }
+        //判断排序重复
+        if (!interfaceAssertMapper.checkAssertType(interfaceAssertDO).isEmpty()) {
+            throw new BusinessException("断言排序重复");
+        }
+        interfaceAssertMapper.updateAssert(interfaceAssertDO);
     }
 
+    /**
+     * 删除测试用例所有的断言
+     *
+     * @param caseId 测试用例编号
+     */
     @Override
     public void removeAssertByCaseId(Integer caseId) {
         interfaceAssertMapper.deleteAssertByCaseId(caseId);
     }
 
+    /**
+     * 根据编号删除断言
+     *
+     * @param assertId 断言编号
+     */
     @Override
     public void removeAssertByAssertId(Integer assertId) {
         interfaceAssertMapper.deleteAssertByAssertId(assertId);

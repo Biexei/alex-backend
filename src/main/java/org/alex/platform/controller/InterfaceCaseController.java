@@ -4,7 +4,6 @@ import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
-import org.alex.platform.pojo.InterfaceCaseDO;
 import org.alex.platform.pojo.InterfaceCaseDTO;
 import org.alex.platform.pojo.InterfaceCaseListDTO;
 import org.alex.platform.service.InterfaceCaseExecuteLogService;
@@ -25,9 +24,9 @@ public class InterfaceCaseController {
     /**
      * 插入接口测试用例
      *
-     * @param interfaceCaseDTO
-     * @return
-     * @throws BusinessException
+     * @param interfaceCaseDTO interfaceCaseDTO
+     * @return Result
+     * @throws BusinessException 字段校验
      */
     @PostMapping("/interface/case/save")
     public Result saveInterfaceCase(@RequestBody @Validated InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
@@ -41,9 +40,9 @@ public class InterfaceCaseController {
     /**
      * 修改接口测试用例
      *
-     * @param interfaceCaseDTO
-     * @return
-     * @throws BusinessException
+     * @param interfaceCaseDTO interfaceCaseDTO
+     * @return Result
+     * @throws BusinessException 字段校验
      */
     @PostMapping("/interface/case/modify")
     public Result modifyInterfaceCase(@RequestBody @Validated InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
@@ -55,8 +54,8 @@ public class InterfaceCaseController {
     /**
      * 删除接口测试用例
      *
-     * @param interfaceCaseId
-     * @return
+     * @param interfaceCaseId 测试用例编号
+     * @return Result
      */
     @GetMapping("/interface/case/remove/{interfaceCaseId}")
     public Result removeInterfaceCase(@PathVariable Integer interfaceCaseId) throws BusinessException {
@@ -67,10 +66,10 @@ public class InterfaceCaseController {
     /**
      * 获取接口测试用例列表
      *
-     * @param interfaceCaseListDTO
-     * @param pageNum
-     * @param pageSize
-     * @return
+     * @param interfaceCaseListDTO interfaceCaseListDTO
+     * @param pageNum              pageNum
+     * @param pageSize             pageSize
+     * @return Result
      */
     @GetMapping("/interface/case/list")
     public Result listInterfaceCase(InterfaceCaseListDTO interfaceCaseListDTO, Integer pageNum, Integer pageSize) {
@@ -82,8 +81,8 @@ public class InterfaceCaseController {
     /**
      * 查看接口测试用例详情
      *
-     * @param caseId
-     * @return
+     * @param caseId 用例编号
+     * @return Result
      */
     @GetMapping("/interface/case/info/{caseId}")
     public Result findInterfaceCaseByCaseId(@PathVariable Integer caseId) {
@@ -93,8 +92,8 @@ public class InterfaceCaseController {
     /**
      * 执行接口测试用例
      *
-     * @param caseId
-     * @return
+     * @param caseId 接口用例编号
+     * @return Result
      */
     @GetMapping("/interface/case/execute/{caseId}")
     public Result executeInterfaceCase(@PathVariable Integer caseId) throws ParseException, BusinessException, SqlException {

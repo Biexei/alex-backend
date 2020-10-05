@@ -54,6 +54,10 @@
         select `id`,`name`,`type`,`desc`,`url`,`username`,`password`,`created_time`,`update_time`,`status`
         from `t_db` where `name` = #{name}
     </select>
+    <select id="checkDbName" parameterType="org.alex.platform.pojo.DbDO" resultType="org.alex.platform.pojo.DbVO">
+        select `id`,`name`,`type`,`desc`,`url`,`username`,`password`,`created_time`,`update_time`,`status`
+        from `t_db` where `name` = #{name} and `id` != #{id}
+    </select>
     <select id="selectDbList" parameterType="org.alex.platform.pojo.DbDTO" resultType="org.alex.platform.pojo.DbVO">
         select `id`,`name`,`type`,`desc`,`url`,`username`,`password`,`created_time`,`update_time`,`status`
         from `t_db`

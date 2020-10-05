@@ -38,16 +38,22 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
     @Autowired
     ProjectService projectService;
 
+    /**
+     * 新增接口依赖
+     *
+     * @param ifRelyDataDO ifRelyDataDO
+     * @throws BusinessException 用例编号不存在/依赖名称已存在与其它依赖/依赖名称已存在与接口依赖检查
+     */
     @Override
     public void saveIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
         // 判断relyCaseId是否存在
         Integer caseId = ifRelyDataDO.getRelyCaseId();
         if (ifCaseService.findInterfaceCaseByCaseId(caseId) == null) {
-            throw new BusinessException("relyCaseId不存在");
+            throw new BusinessException("用例编号不存在");
         }
         // 判断relyName是否已存在
         String relyName = ifRelyDataDO.getRelyName();
-        if (relyDataMapper.selectRelyDataByName(relyName) != null){
+        if (relyDataMapper.selectRelyDataByName(relyName) != null) {
             throw new BusinessException("依赖名称已存在与其它依赖");
         }
         if (this.findIfRelyDataByName(relyName) != null) {
@@ -56,27 +62,44 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
         ifRelyDataMapper.insertIfRelyData(ifRelyDataDO);
     }
 
+    /**
+     * 修改接口依赖
+     *
+     * @param ifRelyDataDO ifRelyDataDO
+     * @throws BusinessException 用例编号不存在/依赖名称已存在与其它依赖/依赖名称已存在与接口依赖检查
+     */
     @Override
     public void modifyIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
         // 判断relyCaseId是否存在
         Integer caseId = ifRelyDataDO.getRelyCaseId();
         if (ifCaseService.findInterfaceCaseByCaseId(caseId) == null) {
-            throw new BusinessException("relyCaseId不存在");
+            throw new BusinessException("用例编号不存在");
         }
         // 判断relyName是否已存在
         String relyName = ifRelyDataDO.getRelyName();
-        if (relyDataMapper.selectRelyDataByName(relyName) != null){
+        if (relyDataMapper.selectRelyDataByName(relyName) != null) {
             throw new BusinessException("依赖名称已存在与其它依赖");
+        }
+        if (!ifRelyDataMapper.checkRelyName(ifRelyDataDO).isEmpty()) {
+            throw new BusinessException("依赖名称已存在与接口依赖");
         }
         ifRelyDataMapper.updateIfRelyData(ifRelyDataDO);
     }
 
+    /**
+     * 查看接口依赖列表
+     *
+     * @param ifRelyDataDTO ifRelyDataDTO
+     * @param pageNum       pageNum
+     * @param pageSize      pageSize
+     * @return PageInfo<InterfaceCaseRelyDataVO>
+     */
     @Override
     public PageInfo<InterfaceCaseRelyDataVO> findIfRelyDataList(InterfaceCaseRelyDataDTO ifRelyDataDTO,
                                                                 Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         ArrayList<InterfaceCaseRelyDataVO> list = new ArrayList<>();
-        for (InterfaceCaseRelyDataVO interfaceCaseRelyDataVO: ifRelyDataMapper.selectIfRelyDataList(ifRelyDataDTO)) {
+        for (InterfaceCaseRelyDataVO interfaceCaseRelyDataVO : ifRelyDataMapper.selectIfRelyDataList(ifRelyDataDTO)) {
             // 查询项目编号
             Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
             Integer projectId = interfaceCaseService.findInterfaceCaseByCaseId(caseId).getProjectId();
@@ -91,21 +114,47 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
         return new PageInfo(list);
     }
 
+    /**
+     * 获取接口依赖详情
+     *
+     * @param relyId 依赖编号
+     * @return InterfaceCaseRelyDataVO
+     */
     @Override
     public InterfaceCaseRelyDataVO findIfRelyData(Integer relyId) {
         return ifRelyDataMapper.selectIfRelyDataById(relyId);
     }
 
+    /**
+     * 根据依赖名称查询
+     *
+     * @param relyName 依赖名称
+     * @return InterfaceCaseRelyDataVO
+     */
     @Override
     public InterfaceCaseRelyDataVO findIfRelyDataByName(String relyName) {
         return ifRelyDataMapper.selectIfRelyDataByName(relyName);
     }
 
+    /**
+     * 删除接口依赖
+     *
+     * @param relyId 依赖编号
+     */
     @Override
     public void removeIfRelyData(Integer relyId) {
         ifRelyDataMapper.deleteIfRelyData(relyId);
     }
 
+    /**
+     * 执行接口依赖
+     *
+     * @param relyId 依赖编号
+     * @return 执行结果
+     * @throws ParseException    ParseException
+     * @throws SqlException      SqlException
+     * @throws BusinessException BusinessException
+     */
     @Override
     public String checkRelyResult(Integer relyId) throws ParseException, SqlException, BusinessException {
         InterfaceCaseRelyDataVO interfaceCaseRelyData = ifCaseRelyDataService.findIfRelyData(relyId);
@@ -136,7 +185,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                 Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
                 // 获取case执行结果, 不等于0, 则用例未通过
                 if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
-                    throw new BusinessException("relyName关联的前置用例执行失败!");
+                    throw new BusinessException("前置用例执行未通过");
                 }
                 // 根据executeLogId查询对应的执行记录
                 InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
@@ -168,15 +217,15 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                             throw new ParseException("未找到请求头:" + expression);
                         }
                         try {
-                            return  (String) headerArray.get(index);
+                            return (String) headerArray.get(index);
                         } catch (Exception e) {
                             throw new ParseException("数组下标越界");
                         }
                     } else {
-                        throw new BusinessException("不支持该contentType");
+                        throw new BusinessException("不支持该种取值方式");
                     }
                 } catch (BusinessException e) {
-                    throw new BusinessException("不支持该contentType");
+                    throw new BusinessException("不支持该种取值方式");
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new ParseException(e.getMessage());
@@ -189,7 +238,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
             // 获取case执行结果, 不等于0, 则用例未通过
             if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
-                throw new BusinessException("relyName关联的前置用例执行失败!");
+                throw new BusinessException("前置用例执行未通过");
             }
             // 根据executeLogId查询对应的执行记录
             InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
@@ -220,10 +269,10 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                         return headerArray.get(0).toString();
                     }
                 } else {
-                    throw new BusinessException("不支持该contentType");
+                    throw new BusinessException("不支持该种取值方式");
                 }
             } catch (BusinessException e) {
-                throw new BusinessException("不支持该contentType");
+                throw new BusinessException("不支持该种取值方式");
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new ParseException(e.getMessage());

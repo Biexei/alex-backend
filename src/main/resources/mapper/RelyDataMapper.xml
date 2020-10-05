@@ -88,4 +88,9 @@
     <delete id="deleteRelyDataById" parameterType="Integer">
         delete from `t_rely_data` where id = #{id}
     </delete>
+    <select id="checkName" parameterType="org.alex.platform.pojo.RelyDataDO" resultType="org.alex.platform.pojo.RelyDataVO">
+        select `rd`.`id`,`rd`.`name`,`rd`.`value`,`rd`.`desc`,`rd`.`type`,`rd`.`datasource_id`,`rd`.`created_time`,`rd`.`update_time`
+        from `t_rely_data` as `rd`
+        where `rd`.`id`!=#{id} and `rd`.`name`=#{name}
+    </select>
 </mapper>

@@ -13,6 +13,15 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private JavaMailSender javaMailSender;
     private static final String FROM = "biexei@163.com";
+
+    /**
+     * 发送邮件
+     *
+     * @param subject 标题
+     * @param text    内容
+     * @param to      收件地址
+     * @throws BusinessException BusinessException
+     */
     public void send(String subject, String text, String... to) throws BusinessException {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(FROM);

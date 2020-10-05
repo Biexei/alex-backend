@@ -23,6 +23,12 @@
         <collection property="modules" ofType="org.alex.platform.pojo.ModuleDO" resultMap="moduleDO"/>
     </resultMap>
 
+    <select id="checkName" resultType="org.alex.platform.pojo.ProjectDO" parameterType="org.alex.platform.pojo.ProjectDO">
+        select `project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`
+        from t_project
+        where `project_id`!=#{projectId} and `name`=#{name}
+    </select>
+
     <select id="selectModulesById" resultMap="projectVO" parameterType="Integer">
         select p.project_id, p.name, p.desc, p.domain, p.created_time, p.update_time, m.module_id, m.name mname, m.desc mdesc, m.created_time mcreated_time, m.update_time mupdate_time
         from t_project as p LEFT JOIN t_module as m on m.project_id = p.project_id

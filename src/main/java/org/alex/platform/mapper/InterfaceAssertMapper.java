@@ -18,5 +18,7 @@ public interface InterfaceAssertMapper {
 
     List<InterfaceAssertDO> selectAssertList(InterfaceAssertDO assertDO);
 
+    List<InterfaceAssertDO> checkAssertType(InterfaceAssertDO assertDO);
+
     List<Integer> selectAllAssertId(Integer caseId);
 }

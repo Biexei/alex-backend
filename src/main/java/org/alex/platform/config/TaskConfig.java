@@ -29,12 +29,17 @@ public class TaskConfig implements SchedulingConfigurer {
     @Autowired
     MailService mailService;
 
+    /**
+     * 定时任务
+     *
+     * @param scheduledTaskRegistrar SpringBoot
+     */
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
         TaskDTO taskDTO = new TaskDTO();
         List<TaskVO> taskList = taskMapper.selectTaskList(taskDTO);
         for (TaskVO taskVO : taskList) {
-            if (taskVO.getStatus() == 0){
+            if (taskVO.getStatus() == 0) {
                 scheduledTaskRegistrar.addTriggerTask(
                         // 执行内容
                         () -> {

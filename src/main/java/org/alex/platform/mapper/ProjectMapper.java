@@ -11,6 +11,8 @@ import java.util.List;
 public interface ProjectMapper {
     List<ProjectDO> selectProjectList(ProjectDO projectDO);
 
+    List<ProjectDO> checkName(ProjectDO projectDO);
+
     ProjectDO selectProject(ProjectDO projectDO);
 
     ProjectVO selectModulesById(Integer projectId);

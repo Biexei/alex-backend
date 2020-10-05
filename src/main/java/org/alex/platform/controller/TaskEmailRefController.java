@@ -14,12 +14,22 @@ public class TaskEmailRefController {
     @Autowired
     TaskEmailRefService taskEmailRefService;
 
+    /**
+     * 定时任务收件人新增
+     * @param taskEmailRefDO taskEmailRefDO
+     * @return Result
+     */
     @PostMapping("/task/ref/save")
     public Result saveTaskEmailRef(TaskEmailRefDO taskEmailRefDO) {
         taskEmailRefService.saveTaskEmailRef(taskEmailRefDO);
         return Result.success("新增成功");
     }
 
+    /**
+     * 定时任务收件人删除
+     * @param taskEmailRefDTO taskEmailRefDTO
+     * @return Result
+     */
     @GetMapping("/task/ref/remove")
     public Result removeTaskEmailRef(TaskEmailRefDTO taskEmailRefDTO) {
         taskEmailRefService.removeTaskEmailRef(taskEmailRefDTO);

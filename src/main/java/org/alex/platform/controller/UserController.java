@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 
@@ -24,6 +23,11 @@ public class UserController {
 
     /**
      * 获取用户列表
+     *
+     * @param userDO   userDO
+     * @param pageNum  pageNum
+     * @param pageSize pageSize
+     * @return Result
      */
     @GetMapping("/user/list")
     @ResponseBody
@@ -35,10 +39,10 @@ public class UserController {
     }
 
     /**
-     * 用户信息.getList()
+     * 用户信息详情
      *
-     * @param userId
-     * @return
+     * @param userId 用户编号
+     * @return Result
      */
     @GetMapping("/user/info/{userId}")
     @ResponseBody
@@ -50,8 +54,8 @@ public class UserController {
     /**
      * 更新个人信息
      *
-     * @param userDO
-     * @return
+     * @param userDO userDO
+     * @return Result
      */
     @PostMapping("/user/update")
     @ResponseBody
@@ -64,8 +68,8 @@ public class UserController {
     /**
      * 用户注册
      *
-     * @param userDO
-     * @return
+     * @param userDO userDO
+     * @return Result
      */
     @PostMapping("/user/register")
     @ResponseBody
@@ -90,6 +94,13 @@ public class UserController {
         }
     }
 
+    /**
+     * 用户登录
+     *
+     * @param username 账号
+     * @param password 密码
+     * @return Result
+     */
     @PostMapping("/user/login")
     @ResponseBody
     public Result login(String username, String password) {
@@ -108,6 +119,12 @@ public class UserController {
         }
     }
 
+    /**
+     * 删除用户
+     *
+     * @param userId 用户编号
+     * @return Result
+     */
     @GetMapping("user/remove/{userId}")
     @ResponseBody
     public Result removeUser(@PathVariable Integer userId) {

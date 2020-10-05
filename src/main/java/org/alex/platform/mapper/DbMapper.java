@@ -20,4 +20,6 @@ public interface DbMapper {
     DbVO selectDbByName(String name);
 
     List<DbVO> selectDbList(DbDTO dbDTO);
+
+    List<DbVO> checkDbName(DbDO dbDO);
 }

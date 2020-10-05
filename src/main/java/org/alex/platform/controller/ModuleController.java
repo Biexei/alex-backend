@@ -22,7 +22,7 @@ public class ModuleController {
      *
      * @param moduleDto 模块名称、模块id、项目名称、项目id
      * @param pageNum
-     * @param pageSize
+     * @param pageSize  pageSize
      * @return
      */
     @RequestMapping("/module/list")
@@ -35,9 +35,9 @@ public class ModuleController {
     /**
      * 新增模块
      *
-     * @param moduleDO
-     * @return
-     * @throws BusinessException
+     * @param moduleDO moduleDO
+     * @return Result
+     * @throws BusinessException BusinessException
      */
     @RequestMapping(path = "/module/save", method = RequestMethod.POST)
     public Result saveModule(@Validated ModuleDO moduleDO) throws BusinessException {
@@ -51,8 +51,8 @@ public class ModuleController {
     /**
      * 修改模块信息
      *
-     * @param moduleDO
-     * @return
+     * @param moduleDO moduleDO
+     * @return Result
      */
     @PostMapping("/module/modify")
     public Result modifyModule(@Validated ModuleDO moduleDO) {
@@ -61,6 +61,13 @@ public class ModuleController {
         return Result.success("修改成功");
     }
 
+    /**
+     * 删除模块
+     *
+     * @param moduleId 模块编号
+     * @return Result
+     * @throws BusinessException BusinessException
+     */
     @GetMapping("/module/remove/{moduleId}")
     public Result removeModule(@PathVariable Integer moduleId) throws BusinessException {
         moduleService.removeModuleById(moduleId);

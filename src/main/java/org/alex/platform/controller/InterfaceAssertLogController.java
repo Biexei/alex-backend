@@ -12,6 +12,13 @@ public class InterfaceAssertLogController {
     @Autowired
     InterfaceAssertLogService interfaceAssertLogService;
 
+    /**
+     * 查看断言日志列表
+     * @param interfaceAssertLogDTO interfaceAssertLogDTO
+     * @param pageNum pageNum
+     * @param pageSize pageSize
+     * @return Result
+     */
     @GetMapping("/interface/assert/log")
     public Result listInterfaceAssertLog(InterfaceAssertLogDTO interfaceAssertLogDTO, Integer pageNum, Integer pageSize) {
         int num = pageNum == null ? 1 : pageNum;

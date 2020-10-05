@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,6 +26,13 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     ModuleMapper moduleMapper;
 
+    /**
+     * 查询项目列表
+     * @param projectDO projectDO
+     * @param pageNum pageNum
+     * @param pageSize pageSize
+     * @return PageInfo<ProjectDO>
+     */
     @Override
     public PageInfo<ProjectDO> findProjectList(ProjectDO projectDO, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
@@ -34,23 +40,45 @@ public class ProjectServiceImpl implements ProjectService {
         return new PageInfo(projectDOList);
     }
 
+    /**
+     * 查询所有项目（不分页）
+     * @param projectDO projectDO
+     * @return List<ProjectDO>
+     */
     @Override
     public List<ProjectDO> findAllProject(ProjectDO projectDO) {
         return projectMapper.selectProjectList(projectDO);
     }
 
+    /**
+     * 查看项目详情
+     * @param projectDO projectDO
+     * @return ProjectDO
+     */
     @Override
     public ProjectDO findProject(ProjectDO projectDO) {
         return projectMapper.selectProject(projectDO);
     }
 
+    /**
+     * 查看项目下所有模块
+     * @param projectId 项目编号
+     * @return ProjectVO
+     */
     @Override
     public ProjectVO findModulesById(Integer projectId) {
         return projectMapper.selectModulesById(projectId);
     }
 
+    /**
+     * 修改项目信息
+     * @param projectDO projectDO
+     */
     @Override
-    public void modifyProject(ProjectDO projectDO) throws Exception {
+    public void modifyProject(ProjectDO projectDO) throws BusinessException {
+        if (!projectMapper.checkName(projectDO).isEmpty()) {
+            throw new BusinessException("项目名称已存在");
+        }
         projectMapper.updateProject(projectDO);
     }
 
@@ -59,7 +87,7 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectDO project = new ProjectDO();
         project.setName(projectDO.getName());
         if (findProject(project) != null) {
-            throw new BusinessException("新增失败，项目名称已存在");
+            throw new BusinessException("项目名称已存在");
         } else {
             projectMapper.insertProject(projectDO);
         }

@@ -7,6 +7,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
     private static final String[] HEADER = {"GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS", "FETCH"};
+
+    /**
+     * CORS跨域解决方案
+     *
+     * @param registry SpringBoot
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry

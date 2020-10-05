@@ -15,16 +15,29 @@ public class TaskEmailRefServiceImpl implements TaskEmailRefService {
     @Autowired
     TaskEmailRefMapper taskEmailRefMapper;
 
+    /**
+     * 查看定时任务所有收件人
+     * @param taskEmailRefDTO taskEmailRefDTO
+     * @return ArrayList<TaskEmailRefVO>
+     */
     @Override
     public ArrayList<TaskEmailRefVO> findTaskEmailRefList(TaskEmailRefDTO taskEmailRefDTO) {
         return taskEmailRefMapper.selectTaskEmailRefList(taskEmailRefDTO);
     }
 
+    /**
+     * 定时任务新增收件人
+     * @param taskEmailRefDO taskEmailRefDO
+     */
     @Override
     public void saveTaskEmailRef(TaskEmailRefDO taskEmailRefDO) {
         taskEmailRefMapper.insertTaskEmailRef(taskEmailRefDO);
     }
 
+    /**
+     * 删除定时任务的收件人
+     * @param taskEmailRefDTO taskEmailRefDTO
+     */
     @Override
     public void removeTaskEmailRef(TaskEmailRefDTO taskEmailRefDTO) {
         taskEmailRefMapper.deleteTaskEmailRef(taskEmailRefDTO);

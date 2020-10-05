@@ -1,6 +1,5 @@
 package org.alex.platform.controller;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.ResourceAccessException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
@@ -26,8 +24,8 @@ public class ExceptionController {
     /**
      * 自定义全局异常处理器
      *
-     * @param e
-     * @return
+     * @param e e
+     * @return Result
      */
     @ResponseBody
     @ExceptionHandler(Exception.class)
@@ -35,17 +33,15 @@ public class ExceptionController {
         e.printStackTrace();
         LOG.error(e.getMessage());
         if (e instanceof DataAccessException) {
-            return Result.fail(504, "数据库异常，仅支持查询语句");
-        } else if (e instanceof MethodArgumentNotValidException) {
-        // json请求验证-requestBody
+            return Result.fail(504, "数据库异常");
+        } else if (e instanceof MethodArgumentNotValidException) { // json请求验证-requestBody
             BindingResult bindingResult = ((MethodArgumentNotValidException) e).getBindingResult();
             List<ObjectError> errors = bindingResult.getAllErrors();
             String msg = errors.get(0).getDefaultMessage();
             return Result.fail(501, msg);
         } else if (e instanceof ResourceAccessException) {
             return Result.fail(502, "代理服务器未开启" + e.getMessage());
-        // 表单请求验证
-        } else if (e instanceof BindException) {
+        } else if (e instanceof BindException) { // 表单请求验证
             BindException be = (BindException) e;
             List<ObjectError> errors = be.getBindingResult().getAllErrors();
             String msg = errors.get(0).getDefaultMessage();

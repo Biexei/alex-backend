@@ -47,6 +47,7 @@
         delete from `t_interface_assert` where `assert_id` = #{assertId}
     </delete>
 
+
     <select id="selectAssertList" parameterType="org.alex.platform.pojo.InterfaceAssertDO" resultType="org.alex.platform.pojo.InterfaceAssertDO">
         select `case_id`, `assert_id`, `assert_name`, `type`, `expression`, `operator`, `excepted_result`, `order`
         from `t_interface_assert`
@@ -65,5 +66,10 @@
     <select id="selectAllAssertId" resultType="Integer" parameterType="Integer">
         select `assert_id` from `t_interface_assert`
         where `case_id` = #{caseId}
+    </select>
+    <select id="checkAssertType" parameterType="org.alex.platform.pojo.InterfaceAssertDO" resultType="org.alex.platform.pojo.InterfaceAssertDO">
+        select `case_id`, `assert_id`, `assert_name`, `type`, `expression`, `operator`, `excepted_result`, `order`
+        from `t_interface_assert`
+        where `assert_id`!=#{assertId} and `case_id`=#{caseId} and `order`=#{order}
     </select>
 </mapper>

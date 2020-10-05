@@ -17,11 +17,24 @@ public class InterfaceAssertLogServiceImpl implements InterfaceAssertLogService 
     @Autowired
     InterfaceAssertLogMapper mapper;
 
+    /**
+     * 新增断言日志
+     *
+     * @param interfaceAssertLogDO interfaceAssertLogDO
+     */
     @Override
     public void saveInterfaceAssertLog(InterfaceAssertLogDO interfaceAssertLogDO) {
         mapper.insertInterfaceAssertLog(interfaceAssertLogDO);
     }
 
+    /**
+     * 获取断言日志列表
+     *
+     * @param interfaceAssertLogDTO interfaceAssertLogDTO
+     * @param pageNum               pageNum
+     * @param pageSize              pageSize
+     * @return PageInfo<InterfaceAssertLogVO>
+     */
     @Override
     public PageInfo<InterfaceAssertLogVO> findInterfaceAssertLogList(InterfaceAssertLogDTO interfaceAssertLogDTO,
                                                                      Integer pageNum, Integer pageSize) {

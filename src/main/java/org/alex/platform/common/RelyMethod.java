@@ -14,6 +14,7 @@ import java.util.UUID;
 public class RelyMethod {
     /**
      * md5
+     *
      * @param s 原文
      * @return md5加密后结果
      */
@@ -23,6 +24,7 @@ public class RelyMethod {
 
     /**
      * 返回uuid
+     *
      * @return 返回uuid
      */
     public String uuid() {
@@ -31,6 +33,7 @@ public class RelyMethod {
 
     /**
      * 返回base64编码后结果
+     *
      * @param s 原文
      * @return 返回base64编码后结果
      */
@@ -45,6 +48,7 @@ public class RelyMethod {
 
     /**
      * 获取当前时间戳
+     *
      * @return 返回当前时间戳
      */
     public String timestamp() {
@@ -53,6 +57,7 @@ public class RelyMethod {
 
     /**
      * 返回当前时间
+     *
      * @param format 时间格式
      * @return 返回当前时间
      */
@@ -63,6 +68,7 @@ public class RelyMethod {
 
     /**
      * 返回当前时间昨天
+     *
      * @param format 时间格式
      * @return 返回当前时间昨天
      */
@@ -73,6 +79,7 @@ public class RelyMethod {
 
     /**
      * 返回当前时间上个月
+     *
      * @param format 时间格式
      * @return 返回当前时间上个月
      */
@@ -83,6 +90,7 @@ public class RelyMethod {
 
     /**
      * 返回当前时间下个月
+     *
      * @param format 时间格式
      * @return 返回当前时间下个月
      */
@@ -93,6 +101,7 @@ public class RelyMethod {
 
     /**
      * 返回当前时间去年
+     *
      * @param format 时间格式
      * @return 返回当前时间去年
      */
@@ -103,6 +112,7 @@ public class RelyMethod {
 
     /**
      * 返回当前时间明年
+     *
      * @param format 时间格式
      * @return 返回当前时间明年
      */
@@ -113,9 +123,10 @@ public class RelyMethod {
 
     /**
      * 返回指定日期的时间
+     *
      * @param operator 年月日时分秒
-     * @param amount 数量
-     * @param format 时间格式
+     * @param amount   数量
+     * @param format   时间格式
      * @return 返回指定日期的时间
      */
     public String time(String operator, String amount, String format) {
@@ -145,6 +156,7 @@ public class RelyMethod {
 
     /**
      * 返回整形随机数
+     *
      * @param length 长度
      * @return 返回整形随机数
      */
@@ -163,6 +175,7 @@ public class RelyMethod {
 
     /**
      * 返回大写随机数
+     *
      * @param length 长度
      * @return 返回大写随机数
      */
@@ -181,6 +194,7 @@ public class RelyMethod {
 
     /**
      * 返回小写随机数
+     *
      * @param length 长度
      * @return 返回小写随机数
      */
@@ -199,6 +213,7 @@ public class RelyMethod {
 
     /**
      * 返回英文随机数
+     *
      * @param length 长度
      * @return 返回英文随机数
      */
@@ -223,6 +238,7 @@ public class RelyMethod {
 
     /**
      * 返回英文随机数
+     *
      * @param length 长度
      * @return 返回英文随机数
      */

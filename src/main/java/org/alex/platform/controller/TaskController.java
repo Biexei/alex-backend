@@ -2,7 +2,6 @@ package org.alex.platform.controller;
 
 import com.alibaba.fastjson.JSON;
 import org.alex.platform.common.Result;
-import org.alex.platform.pojo.TaskDO;
 import org.alex.platform.pojo.TaskDTO;
 import org.alex.platform.pojo.TaskRefDO;
 import org.alex.platform.service.TaskService;
@@ -17,6 +16,14 @@ public class TaskController {
     @Autowired
     TaskService taskService;
 
+    /**
+     * 获取定时任务列表
+     *
+     * @param taskDTO  taskDTO
+     * @param pageNum  pageNum
+     * @param pageSize pageSize
+     * @return Result
+     */
     @GetMapping("/task/list")
     public Result findTaskList(TaskDTO taskDTO, Integer pageNum, Integer pageSize) {
         int num = pageNum == null ? 1 : pageNum;
@@ -24,11 +31,23 @@ public class TaskController {
         return Result.success(taskService.findTaskList(taskDTO, num, size));
     }
 
+    /**
+     * 获取定时任务详情
+     *
+     * @param taskId 任务编号
+     * @return Result
+     */
     @GetMapping("/task/{taskId}")
-    public Result findTaskById(@PathVariable  Integer taskId) {
+    public Result findTaskById(@PathVariable Integer taskId) {
         return Result.success(taskService.findTaskById(taskId));
     }
 
+    /**
+     * 新增定时任务
+     *
+     * @param taskRefDO taskRefDO
+     * @return Result
+     */
     @PostMapping("/task/save")
     public Result saveTaskAndRef(@RequestBody @Validated TaskRefDO taskRefDO) {
         Date date = new Date();
@@ -39,6 +58,12 @@ public class TaskController {
         return Result.success("新增成功");
     }
 
+    /**
+     * 修改定时任务
+     *
+     * @param taskRefDO taskRefDO
+     * @return Result
+     */
     @PostMapping("/task/modify")
     public Result modifyTask(@RequestBody @Validated TaskRefDO taskRefDO) {
         taskRefDO.setUpdateTime(new Date());
@@ -47,8 +72,14 @@ public class TaskController {
         return Result.success("修改成功");
     }
 
+    /**
+     * 删除定时任务
+     *
+     * @param taskId 任务编号
+     * @return Result
+     */
     @GetMapping("/task/remove/{taskId}")
-    public Result removeTask(@PathVariable  Integer taskId) {
+    public Result removeTask(@PathVariable Integer taskId) {
         taskService.removeTask(taskId);
         return Result.success("删除成功");
     }

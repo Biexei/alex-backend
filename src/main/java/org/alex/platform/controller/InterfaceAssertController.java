@@ -19,8 +19,8 @@ public class InterfaceAssertController {
     /**
      * 新增断言
      *
-     * @param interfaceAssertDO
-     * @return
+     * @param interfaceAssertDO interfaceAssertDO
+     * @return Result
      */
     @PostMapping("/interface/assert/save")
     public Result saveAssert(@Validated InterfaceAssertDO interfaceAssertDO) throws BusinessException {
@@ -31,8 +31,8 @@ public class InterfaceAssertController {
     /**
      * 修改断言
      *
-     * @param interfaceAssertDO
-     * @return
+     * @param interfaceAssertDO interfaceAssertDO
+     * @return Result
      */
     @PostMapping("/interface/assert/modify")
     public Result modifyAssert(@Validated InterfaceAssertDO interfaceAssertDO) throws BusinessException {
@@ -43,8 +43,8 @@ public class InterfaceAssertController {
     /**
      * 根据断言编号删除断言
      *
-     * @param assertId
-     * @return
+     * @param assertId 断言编号
+     * @return Result
      */
     @GetMapping("/interface/assert/remove/{assertId}")
     public Result removeAssertByAssertId(@PathVariable Integer assertId) {
@@ -55,8 +55,8 @@ public class InterfaceAssertController {
     /**
      * 根据用例编号删除断言
      *
-     * @param caseId
-     * @return
+     * @param caseId 断言编号
+     * @return Result
      */
     @GetMapping("/interface/assert/remove/caseId/{caseId}")
     public Result removeAssertByCaseId(@PathVariable Integer caseId) {

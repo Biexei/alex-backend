@@ -27,19 +27,33 @@ public class ModuleServiceImpl implements ModuleService {
     @Autowired
     InterfaceCaseMapper interfaceCaseMapper;
 
+    /**
+     * 查看模块列表
+     *
+     * @param moduleDto moduleDto
+     * @param pageNum   pageNum
+     * @param pageSize  pageSize
+     * @return
+     */
     @Override
     public PageInfo<Serializable> findModuleList(ModuleDTO moduleDto, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo(moduleMapper.selectModuleList(moduleDto));
     }
 
+    /**
+     * 新增模块
+     *
+     * @param moduleDO moduleDO
+     * @throws BusinessException BusinessException
+     */
     @Override
     public void saveModule(ModuleDO moduleDO) throws BusinessException {
         ProjectDO project = new ProjectDO();
         project.setProjectId(moduleDO.getProjectId());
         //判断入参projectId是否存在
         if (projectMapper.selectProject(project) == null) {
-            LOG.error("项目id不存在");
+            LOG.error("项目编号不存在");
             throw new BusinessException("请选择项目名称");
         } else {
             moduleMapper.insertModule(moduleDO);
@@ -47,11 +61,22 @@ public class ModuleServiceImpl implements ModuleService {
 
     }
 
+    /**
+     * 修改模块
+     *
+     * @param moduleDO moduleDO
+     */
     @Override
     public void modifyModule(ModuleDO moduleDO) {
         moduleMapper.updateModule(moduleDO);
     }
 
+    /**
+     * 删除模块
+     *
+     * @param moduleId 模块编号
+     * @throws BusinessException BusinessException
+     */
     @Override
     public void removeModuleById(Integer moduleId) throws BusinessException {
         // 模块下存在用例则不允许删除
