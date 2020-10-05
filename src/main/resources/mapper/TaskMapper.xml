@@ -14,37 +14,32 @@
         <result column="created_time" property="createdTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="status" property="status"/>
-        <collection property="emailList" ofType="org.alex.platform.pojo.EmailVO">
-            <result column="email_id" property="emailId"/>
-            <result column="ref_id" property="refId"/>
-            <result column="email_address" property="emailAddress"/>
+        <collection property="emailList" ofType="String">
+            <result column="email_address"/>
         </collection>
     </resultMap>
     <select id="selectTaskList" parameterType="org.alex.platform.pojo.TaskDTO" resultMap="taskMap">
         select `task`.`task_id`, `task`.`desc`, `cron`, `next_time`, `suite_type`,
-        `task`.`suite_id`, `suite_name`, `ref`.`email_id`, `setting`.`value` as `email_address`,
+        `task`.`suite_id`, `suite_name`, `ref`.`email_address`,
         `task`.`created_time`, `task`.`update_time`, `task`.`status`, `ref`.`id` as `ref_id`
         from `t_task` as `task`
         left join `t_interface_case_suite` as `suite` on `task`.`suite_id` = `suite`.`suite_id`
         left join `t_task_email_ref` as `ref` on `task`.`task_id` = `ref`.`task_id`
-        left join `t_http_setting` as `setting` on `ref`.`email_id` = `setting`.`setting_id`
         <where>
-            `setting`.`type` = 2
             <if test="desc!=null">and `task`.`desc` like concat('%',#{desc},'%')</if>
             <if test="suiteName!=null">and `suite_name` like concat('%',#{suiteName},'%')</if>
-            <if test="emailAddress!=null">and `setting`.`value` like concat('%',#{emailAddress},'%')</if>
+            <if test="emailAddress!=null">and `ref`.`email_address` like concat('%',#{emailAddress},'%')</if>
             <if test="status!=null">and `task`.`status`=#{status}</if>
         </where>
     </select>
     <select id="selectTaskById" parameterType="Integer" resultMap="taskMap">
         select `task`.`task_id`, `task`.`desc`, `cron`, `next_time`, `suite_type`,
-        `task`.`suite_id`, `suite_name`, `ref`.`email_id`, `setting`.`value` as `email_address`,
+        `task`.`suite_id`, `suite_name`, `ref`.`email_address`,
         `task`.`created_time`, `task`.`update_time`, `task`.`status`, `ref`.`id` as `ref_id`
         from `t_task` as `task`
         left join `t_interface_case_suite` as `suite` on `task`.`suite_id` = `suite`.`suite_id`
         left join `t_task_email_ref` as `ref` on `task`.`task_id` = `ref`.`task_id`
-        left join `t_http_setting` as `setting` on `ref`.`email_id` = `setting`.`setting_id`
-        where `setting`.`type` = 2 and `task`.`task_id` = #{taskId}
+        where `task`.`task_id` = #{taskId}
     </select>
     <insert id="insertTask" parameterType="org.alex.platform.pojo.TaskDO" useGeneratedKeys="true" keyProperty="taskId">
         insert into `t_task`
@@ -78,6 +73,14 @@
             `suite_type`=#{suiteType},
             `suite_id`=#{suiteId},
             `status`=#{status},
+        </set>
+        where `task_id`=#{taskId}
+    </update>
+    <update id="updateTaskNextTime" parameterType="org.alex.platform.pojo.TaskDO">
+        update `t_task`
+        <set>
+            `next_time`=#{nextTime},
+            `update_time`=#{updateTime},
         </set>
         where `task_id`=#{taskId}
     </update>

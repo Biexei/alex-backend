@@ -20,6 +20,6 @@ public interface HttpSettingService {
 
     void removeHttpSetting(Integer settingId);
 
-    ArrayList<HashMap> findAllEmail();
+    ArrayList<String> findAllEmail();
 
 }

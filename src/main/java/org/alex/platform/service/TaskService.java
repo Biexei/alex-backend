@@ -17,7 +17,8 @@ public interface TaskService {
     @Transactional
     void saveTaskAndRef(TaskRefDO taskRefDO);
 
-    void modifyTask(TaskDO TaskDO);
+    @Transactional
+    void modifyTaskAndRef(TaskRefDO taskRefDO);
 
     @Transactional
     void removeTask(Integer taskId);

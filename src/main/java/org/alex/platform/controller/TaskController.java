@@ -1,5 +1,6 @@
 package org.alex.platform.controller;
 
+import com.alibaba.fastjson.JSON;
 import org.alex.platform.common.Result;
 import org.alex.platform.pojo.TaskDO;
 import org.alex.platform.pojo.TaskDTO;
@@ -39,9 +40,10 @@ public class TaskController {
     }
 
     @PostMapping("/task/modify")
-    public Result modifyTask(@Validated TaskDO taskDO) {
-        taskDO.setUpdateTime(new Date());
-        taskService.modifyTask(taskDO);
+    public Result modifyTask(@RequestBody @Validated TaskRefDO taskRefDO) {
+        taskRefDO.setUpdateTime(new Date());
+        System.out.println(JSON.toJSONString(taskRefDO));
+        taskService.modifyTaskAndRef(taskRefDO);
         return Result.success("修改成功");
     }
 

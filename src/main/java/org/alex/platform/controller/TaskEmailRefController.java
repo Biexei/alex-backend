@@ -22,7 +22,6 @@ public class TaskEmailRefController {
 
     @GetMapping("/task/ref/remove")
     public Result removeTaskEmailRef(TaskEmailRefDTO taskEmailRefDTO) {
-        taskEmailRefDTO.setEmailId(null);
         taskEmailRefService.removeTaskEmailRef(taskEmailRefDTO);
         return Result.success("删除成功");
     }

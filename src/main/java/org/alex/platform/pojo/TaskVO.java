@@ -12,7 +12,7 @@ public class TaskVO {
     private Integer suiteId;
     private String suiteName;
     private Byte status;
-    private List<EmailVO> emailList;
+    private List<String> emailList;
     private Date createdTime;
     private Date updateTime;
 
@@ -80,11 +80,11 @@ public class TaskVO {
         this.suiteName = suiteName;
     }
 
-    public List<EmailVO> getEmailList() {
+    public List<String> getEmailList() {
         return emailList;
     }
 
-    public void setEmailList(List<EmailVO> emailList) {
+    public void setEmailList(List<String> emailList) {
         this.emailList = emailList;
     }
 

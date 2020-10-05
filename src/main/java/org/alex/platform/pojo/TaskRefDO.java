@@ -3,13 +3,13 @@ package org.alex.platform.pojo;
 import java.util.ArrayList;
 
 public class TaskRefDO extends TaskDO{
-    private ArrayList<Integer> emailId;
+    private ArrayList<String> emailList;
 
-    public ArrayList<Integer> getEmailId() {
-        return emailId;
+    public ArrayList<String> getEmailList() {
+        return emailList;
     }
 
-    public void setEmailId(ArrayList<Integer> emailId) {
-        this.emailId = emailId;
+    public void setEmailList(ArrayList<String> emailList) {
+        this.emailList = emailList;
     }
 }

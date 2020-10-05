@@ -53,7 +53,7 @@ public class HttpSettingServiceImpl implements HttpSettingService {
     }
 
     @Override
-    public ArrayList<HashMap> findAllEmail() {
+    public ArrayList<String> findAllEmail() {
         return httpSettingMapper.selectAllEmail();
     }
 }

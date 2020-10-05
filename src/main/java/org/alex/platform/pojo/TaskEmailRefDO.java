@@ -3,7 +3,7 @@ package org.alex.platform.pojo;
 public class TaskEmailRefDO {
     private Integer id;
     private Integer taskId;
-    private Integer emailId;
+    private String emailAddress;
 
     public Integer getId() {
         return id;
@@ -21,11 +21,11 @@ public class TaskEmailRefDO {
         this.taskId = taskId;
     }
 
-    public Integer getEmailId() {
-        return emailId;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setEmailId(Integer emailId) {
-        this.emailId = emailId;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

@@ -9,18 +9,18 @@
         <where>
             <if test="id!=null">and `id`=#{id}</if>
             <if test="taskId!=null">and `task_id`=#{taskId}</if>
-            <if test="emailId!=null">and `email_id`=#{emailId}</if>
+            <if test="emailAddress!=null">and `email_address`=#{emailAddress}</if>
         </where>
     </select>
     <insert id="insertTaskEmailRef" parameterType="org.alex.platform.pojo.TaskEmailRefDO">
-        insert into `t_task_email_ref` (`task_id`, `email_id`) value (#{taskId}, #{emailId})
+        insert into `t_task_email_ref` (`task_id`, `email_address`) value (#{taskId}, #{emailAddress})
     </insert>
     <delete id="deleteTaskEmailRef" parameterType="org.alex.platform.pojo.TaskEmailRefDTO">
         delete from `t_task_email_ref`
         <where>
             <if test="id!=null">and `id`=#{id}</if>
             <if test="taskId!=null">and `task_id`=#{taskId}</if>
-            <if test="emailId!=null">and `email_id`=#{emailId}</if>
+            <if test="emailAddress!=null">and `email_address`=#{emailAddress}</if>
         </where>
     </delete>
 </mapper>

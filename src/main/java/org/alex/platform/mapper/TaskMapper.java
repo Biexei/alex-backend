@@ -17,5 +17,7 @@ public interface TaskMapper {
 
     void updateTask(TaskDO taskDO);
 
+    void updateTaskNextTime(TaskDO taskDO);
+
     void deleteTask(Integer taskId);
 }

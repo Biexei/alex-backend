@@ -23,5 +23,5 @@ public interface HttpSettingMapper {
 
     void closeOtherProxy(Integer settingId);
 
-    ArrayList<HashMap> selectAllEmail();
+    ArrayList<String> selectAllEmail();
 }

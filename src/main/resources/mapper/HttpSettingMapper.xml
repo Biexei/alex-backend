@@ -9,8 +9,8 @@
         where `setting_id` = #{settingId}
     </select>
 
-    <select id="selectAllEmail" resultType="java.util.HashMap">
-        select `setting_id` as `emailId`, `value` as `emailAddress`
+    <select id="selectAllEmail" resultType="String">
+        select DISTINCT `value` as `emailAddress`
         from `t_http_setting`
         where `status` = 0  and `type` = 2
     </select>
