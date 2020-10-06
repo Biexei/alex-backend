@@ -7,6 +7,7 @@
         select user_id, username, job_number, sex, is_enable, created_time, real_name from t_user
         <where>
             <if test="userId != null">user_id = #{userId}</if>
+            <if test="roleId != null">role_id = #{roleId}</if>
             <if test="username != null">and username like concat('%',#{username},'%')</if>
             <if test="jobNumber != null">and job_number = #{jobNumber}</if>
             <if test="sex != null">and sex = #{sex}</if>
@@ -16,16 +17,16 @@
 
     </select>
     <select id="selectUserToLogin" resultType="org.alex.platform.pojo.UserDO" parameterType="org.alex.platform.pojo.UserDO">
-        select user_id, username, password, job_number,sex, is_enable, real_name from t_user where username = #{username} and password = #{password}
+        select user_id, username, password, job_number,sex, is_enable, real_name, role_id from t_user where username = #{username} and password = #{password}
     </select>
     <select id="selectUserById" resultType="org.alex.platform.pojo.UserDO" parameterType="Integer">
-        select user_id, username, password, job_number,sex, is_enable, real_name from t_user where user_id = #{userId}
+        select user_id, username, password, job_number,sex, is_enable, real_name, role_id from t_user where user_id = #{userId}
     </select>
     <select id="selectUserByName" resultType="org.alex.platform.pojo.UserDO" parameterType="String">
-        select user_id, username, password, job_number,sex, is_enable, real_name from t_user where username = #{username}
+        select user_id, username, password, job_number,sex, is_enable, real_name, role_id from t_user where username = #{username}
     </select>
     <select id="selectUserByJobNumber" resultType="org.alex.platform.pojo.UserDO" parameterType="Integer">
-        select user_id, username, password, job_number,sex, is_enable, real_name from t_user where job_number = #{jobNumber}
+        select user_id, username, password, job_number,sex, is_enable, real_name, role_id from t_user where job_number = #{jobNumber}
     </select>
     <delete id="deleteUser" parameterType="Integer">
         delete from `t_user` where user_id = #{userId}
@@ -72,6 +73,7 @@
             <if test="realName != null">
                 real_name,
             </if>
+            role_id,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -101,6 +103,7 @@
             <if test="realName != null">
                 #{realName},
             </if>
+            #{roleId},
         </trim>
     </insert>
 

@@ -1,10 +1,8 @@
 package org.alex.platform.controller;
 
 import org.alex.platform.common.LoginUserInfo;
-import org.alex.platform.common.RelyMethod;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
-import org.alex.platform.mapper.UserMapper;
 import org.alex.platform.pojo.UserDO;
 import org.alex.platform.service.UserService;
 import com.github.pagehelper.PageInfo;
@@ -71,7 +69,12 @@ public class UserController {
      */
     @PostMapping("/user/update")
     @ResponseBody
-    public Result userUpdate(@Validated UserDO userDO) {
+    public Result userUpdate(@Validated UserDO userDO) throws BusinessException {
+        Integer userId = userDO.getUserId();
+        UserDO user = userService.findUserById(userId);
+        if (user.getRoleId() == 0) {
+            throw new BusinessException("超级管理员禁止修改");
+        }
         userDO.setUpdateTime(new Date());
         userService.modifyUser(userDO);
         return Result.success("更新成功");
@@ -93,6 +96,7 @@ public class UserController {
         userDO.setCreatedTime(date);
         userDO.setUpdateTime(date);
         userDO.setIsEnable((byte) 1);
+        userDO.setRoleId(2);
         if (username == null || password == null || sex == null) {
             LOG.error("请完善注册信息");
             return Result.fail("请完善注册信息");
@@ -152,7 +156,11 @@ public class UserController {
      */
     @GetMapping("user/remove/{userId}")
     @ResponseBody
-    public Result removeUser(@PathVariable Integer userId) {
+    public Result removeUser(@PathVariable Integer userId) throws BusinessException {
+        UserDO user = userService.findUserById(userId);
+        if (user.getRoleId() == 0) {
+            throw new BusinessException("超级管理员禁止删除");
+        }
         userService.removeUserById(userId);
         return Result.success();
     }

@@ -31,6 +31,15 @@ public class UserDO implements Serializable {
     private Date updateTime;
     @Size(max = 20, message = "真实姓名长度必须小于20")
     private String realName;
+    private Integer roleId;
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -106,16 +115,17 @@ public class UserDO implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDO{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", jobNumber=" + jobNumber +
+                ", jobNumber='" + jobNumber + '\'' +
                 ", sex=" + sex +
                 ", isEnable=" + isEnable +
                 ", createdTime=" + createdTime +
                 ", updateTime=" + updateTime +
                 ", realName='" + realName + '\'' +
+                ", roleId=" + roleId +
                 '}';
     }
 }
