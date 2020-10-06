@@ -1,9 +1,13 @@
 package org.alex.platform.controller;
 
+import org.alex.platform.common.RelyMethod;
 import org.alex.platform.common.Result;
+import org.alex.platform.exception.BusinessException;
+import org.alex.platform.mapper.UserMapper;
 import org.alex.platform.pojo.UserDO;
 import org.alex.platform.service.UserService;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.util.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.UUID;
 
 
 @RestController
@@ -18,6 +24,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    RedisUtil redisUtil;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
@@ -111,8 +119,21 @@ public class UserController {
         UserDO userDO = new UserDO();
         userDO.setUsername(username);
         userDO.setPassword(password);
-        if (userService.findUserToLogin(userDO) != null) {
-            return Result.success("登录成功");
+        UserDO userInfo = userService.findUserToLogin(userDO);
+        if (userInfo != null) {
+            String token = UUID.randomUUID().toString();
+            HashMap<String, Object> userMap = new HashMap<>();
+            userMap.put("token", token);
+            userMap.put("userId", userInfo.getUserId());
+            userMap.put("username", userInfo.getUsername());
+            userMap.put("realName", userInfo.getRealName());
+            userMap.put("isEnable", userInfo.getIsEnable());
+            try {
+                redisUtil.set(token, userMap, 60*30);
+            } catch (BusinessException e) {
+                e.getMessage();
+            }
+            return Result.success("登录成功", userMap);
         } else {
             LOG.error("帐号名或者密码错误");
             return Result.fail("帐号名或者密码错误");

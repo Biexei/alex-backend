@@ -166,7 +166,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
      * @throws BusinessException BusinessException
      */
     @Override
-    public String checkRelyResult(Integer relyId) throws ParseException, SqlException, BusinessException {
+    public String checkRelyResult(Integer relyId, String executor) throws ParseException, SqlException, BusinessException {
         LOG.info("------------------------------执行接口预检操作------------------------------");
         InterfaceCaseRelyDataVO interfaceCaseRelyData = ifCaseRelyDataService.findIfRelyData(relyId);
         if (null == interfaceCaseRelyData) {
@@ -199,7 +199,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                 }
                 // 根据caseId调用相应case
                 LOG.info("根据caseId调用相应case，caseId={}", caseId);
-                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
+                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor);
                 LOG.info("调用成功，executeLogId={}", executeLogId);
                 // 获取case执行结果, 不等于0, 则用例未通过
                 if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
@@ -270,7 +270,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             LOG.info("------------------------------进入无下标取值模式------------------------------");
             // 根据caseId调用相应case
             LOG.info("根据caseId调用相应case，caseId={}", caseId);
-            Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
+            Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor);
             LOG.info("调用成功，executeLogId={}", executeLogId);
             // 获取case执行结果, 不等于0, 则用例未通过
             if (executeLogService.findExecute(executeLogId).getStatus() != 0) {

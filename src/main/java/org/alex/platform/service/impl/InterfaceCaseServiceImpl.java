@@ -280,7 +280,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * @return 执行日志编号
      */
     @Override
-    public Integer executeInterfaceCase(Integer interfaceCaseId) throws ParseException, BusinessException, SqlException {
+    public Integer executeInterfaceCase(Integer interfaceCaseId, String executor) throws ParseException, BusinessException, SqlException {
         LOG.info("---------------------------------开始执行测试用例：caseId={}---------------------------------", interfaceCaseId);
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
@@ -374,7 +374,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setResponseHeaders(null);
             executeLogDO.setResponseBody(null);
             // 后续加入拦截器后根据token反查
-            executeLogDO.setExecuter("根据token反查");
+            executeLogDO.setExecuter(executor);
             executeLogDO.setStatus((byte) 2);
             executeLogDO.setCreatedTime(new Date());
             executeLogDO.setErrorMessage(exceptionMessage);
@@ -403,7 +403,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setResponseBody(responseBody);
             executeLogDO.setRunTime(runTime);
             // 后续加入拦截器后根据token反查
-            executeLogDO.setExecuter("后根据token反查");
+            executeLogDO.setExecuter(executor);
             executeLogDO.setStatus(caseStatus);
             executeLogDO.setCreatedTime(new Date());
             executeLogDO.setCaseUrl(url);
@@ -595,7 +595,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     LOG.info("获取到的用例编号={}", caseId);
                     // 根据caseId调用相应case
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度");
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
                     // 获取case执行结果, 不等于0, 则用例未通过
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
@@ -790,7 +790,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 sql = parseRelyData(sql);
                                 LOG.info("解析SQL完成，解析后SQL={}", sql);
                             }
-                            LOG.info("SQL执行参数，SQL={}, params={}", sql);
+                            LOG.info("SQL执行参数，SQL={}", sql);
                             String sqlResult = JdbcUtil.selectFirstColumn(url, username, password, sql);
                             s = s.replace(findStr, sqlResult);
                         }
@@ -798,7 +798,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 } else {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     // 根据caseId调用相应case
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度");
                     // 获取case执行结果, 不等于0, 则用例未通过
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
                         LOG.warn("前置用例执行未通过");

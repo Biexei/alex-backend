@@ -24,6 +24,6 @@ public interface InterfaceCaseRelyDataService {
 
     void removeIfRelyData(Integer relyId);
 
-    String checkRelyResult(Integer relyId) throws ParseException, SqlException, BusinessException;
+    String checkRelyResult(Integer relyId, String executor) throws ParseException, SqlException, BusinessException;
 
 }

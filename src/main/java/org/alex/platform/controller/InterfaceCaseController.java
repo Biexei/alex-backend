@@ -1,5 +1,8 @@
 package org.alex.platform.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
@@ -12,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 
 @RestController
 public class InterfaceCaseController {
@@ -20,6 +25,8 @@ public class InterfaceCaseController {
     InterfaceCaseService interfaceCaseService;
     @Autowired
     InterfaceCaseExecuteLogService executeLogService;
+    @Autowired
+    LoginUserInfo loginUserInfo;
 
     /**
      * 插入接口测试用例
@@ -96,8 +103,15 @@ public class InterfaceCaseController {
      * @return Result
      */
     @GetMapping("/interface/case/execute/{caseId}")
-    public Result executeInterfaceCase(@PathVariable Integer caseId) throws ParseException, BusinessException, SqlException {
-        Integer executeLog = interfaceCaseService.executeInterfaceCase(caseId);
+    public Result executeInterfaceCase(@PathVariable Integer caseId, HttpServletRequest request) throws ParseException, BusinessException, SqlException {
+        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
+        String executor = null;
+        try {
+            executor = map.get("realName").toString();
+        } catch (Exception e) {
+            executor = "";
+        }
+        Integer executeLog = interfaceCaseService.executeInterfaceCase(caseId, executor);
         Byte status = executeLogService.findExecute(executeLog).getStatus();
         if (status == 0) {
             return Result.success("测试用例执行成功");

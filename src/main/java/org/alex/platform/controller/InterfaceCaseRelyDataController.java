@@ -1,5 +1,6 @@
 package org.alex.platform.controller;
 
+import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -21,6 +23,8 @@ import java.util.HashMap;
 public class InterfaceCaseRelyDataController {
     @Autowired
     InterfaceCaseRelyDataService ifCaseService;
+    @Autowired
+    LoginUserInfo loginUserInfo;
 
     /**
      * 新增数据依赖
@@ -100,8 +104,15 @@ public class InterfaceCaseRelyDataController {
      * @throws SqlException      SqlException
      */
     @GetMapping("/interface/rely/check/{relyId}")
-    public Result checkIfRelyData(@PathVariable Integer relyId) throws ParseException, BusinessException, SqlException {
-        String result = ifCaseService.checkRelyResult(relyId);
+    public Result checkIfRelyData(@PathVariable Integer relyId, HttpServletRequest request) throws ParseException, BusinessException, SqlException {
+        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
+        String executor = null;
+        try {
+            executor = map.get("realName").toString();
+        } catch (Exception e) {
+            executor = "";
+        }
+        String result = ifCaseService.checkRelyResult(relyId, executor);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("result", result);
         return Result.success(hashMap);

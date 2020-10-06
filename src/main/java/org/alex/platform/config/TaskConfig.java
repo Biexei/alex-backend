@@ -52,7 +52,7 @@ public class TaskConfig implements SchedulingConfigurer {
                             List<String> emailList = taskVO.getEmailList();
                             // 执行测试套件
                             try {
-                                interfaceSuiteCaseRefService.executeSuiteCaseById(suiteId);
+                                interfaceSuiteCaseRefService.executeSuiteCaseById(suiteId, "定时任务");
                                 LOG.info("定时任务测试套件执行完毕，suiteId={}", suiteId);
                             } catch (ParseException | BusinessException | SqlException e) {
                                 e.printStackTrace();

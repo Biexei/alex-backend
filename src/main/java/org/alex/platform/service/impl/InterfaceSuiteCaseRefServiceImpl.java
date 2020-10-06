@@ -122,7 +122,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
      * @throws SqlException      SqlException
      */
     @Override
-    public void executeSuiteCaseById(Integer suiteId) throws ParseException, BusinessException, SqlException {
+    public void executeSuiteCaseById(Integer suiteId, String executor) throws ParseException, BusinessException, SqlException {
         // 获取测试套件下所有测试用例 筛选已启用的
         InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO = new InterfaceSuiteCaseRefDTO();
         interfaceSuiteCaseRefDTO.setSuiteId(suiteId);
@@ -136,7 +136,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             suiteCaseList.parallelStream().forEach(suiteCase -> {
                 Integer caseId = suiteCase.getCaseId();
                 try {
-                    interfaceCaseService.executeInterfaceCase(caseId);
+                    interfaceCaseService.executeInterfaceCase(caseId, executor);
                 } catch (Exception e) {
                     LOG.error("并行执行测试套件出现异常，errorMsg={}", ExceptionUtil.msg(e));
                     throw new RuntimeException(e.getMessage());
@@ -147,7 +147,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             LOG.info("-----------------------开始串行执行测试套件，suiteId={}-----------------------", suiteId);
             for (InterfaceSuiteCaseRefVO suiteCase : suiteCaseList) {
                 Integer caseId = suiteCase.getCaseId();
-                interfaceCaseService.executeInterfaceCase(caseId);
+                interfaceCaseService.executeInterfaceCase(caseId, executor);
             }
             LOG.info("-----------------------测试套件执行完成-----------------------");
         }

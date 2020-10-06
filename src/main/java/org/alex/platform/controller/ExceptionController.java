@@ -2,6 +2,7 @@ package org.alex.platform.controller;
 
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.LoginException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
 import org.alex.platform.util.ExceptionUtil;
@@ -57,6 +58,9 @@ public class ExceptionController {
         } else if (e instanceof SqlException) {
             LOG.error(ExceptionUtil.msg(e));
             return Result.fail(504, e.getMessage());
+        } else if (e instanceof LoginException) {
+            LOG.error(ExceptionUtil.msg(e));
+            return Result.fail(400, e.getMessage());
         } else {
             LOG.error(ExceptionUtil.msg(e));
             return Result.fail(500, e.getMessage());

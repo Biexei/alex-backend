@@ -1,5 +1,6 @@
 package org.alex.platform.controller;
 
+import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
@@ -10,12 +11,16 @@ import org.alex.platform.service.InterfaceSuiteCaseRefService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
 public class InterfaceSuiteCaseRefController {
     @Autowired
     InterfaceSuiteCaseRefService refService;
+    @Autowired
+    LoginUserInfo loginUserInfo;
 
     /**
      * 测试套件新增测试用例
@@ -101,8 +106,15 @@ public class InterfaceSuiteCaseRefController {
      * @throws SqlException      SqlException
      */
     @GetMapping("/interface/suite/execute/{suiteId}")
-    public Result executeSuiteCase(@PathVariable Integer suiteId) throws ParseException, BusinessException, SqlException {
-        refService.executeSuiteCaseById(suiteId);
+    public Result executeSuiteCase(@PathVariable Integer suiteId, HttpServletRequest request) throws ParseException, BusinessException, SqlException {
+        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
+        String executor = null;
+        try {
+            executor = map.get("realName").toString();
+        } catch (Exception e) {
+            executor = "";
+        }
+        refService.executeSuiteCaseById(suiteId, executor);
         return Result.success("执行成功");
     }
 
