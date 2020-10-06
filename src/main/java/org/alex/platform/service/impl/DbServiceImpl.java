@@ -11,6 +11,8 @@ import org.alex.platform.pojo.DbVO;
 import org.alex.platform.pojo.RelyDataDTO;
 import org.alex.platform.service.DbService;
 import org.alex.platform.util.JdbcUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class DbServiceImpl implements DbService {
     DbMapper dbMapper;
     @Autowired
     RelyDataMapper relyDataMapper;
+    private static final Logger LOG = LoggerFactory.getLogger(DbServiceImpl.class);
 
     /**
      * 添加数据源
@@ -36,6 +39,7 @@ public class DbServiceImpl implements DbService {
         dbDO.setCreatedTime(date);
         dbDO.setUpdateTime(date);
         if (null != this.findDbByName(name)) {
+            LOG.warn("新增数据源，数据源名称重复");
             throw new BusinessException("该数据源名称已存在");
         }
         dbMapper.insertDb(dbDO);
@@ -51,6 +55,7 @@ public class DbServiceImpl implements DbService {
     public void modifyDb(DbDO dbDO) throws BusinessException {
         dbDO.setUpdateTime(new Date());
         if (!dbMapper.checkDbName(dbDO).isEmpty()) {
+            LOG.warn("修改数据源，数据源名称重复");
             throw new BusinessException("该数据源名称已存在");
         }
         dbMapper.updateDb(dbDO);
@@ -67,6 +72,7 @@ public class DbServiceImpl implements DbService {
         RelyDataDTO relyDataDTO = new RelyDataDTO();
         relyDataDTO.setDatasourceId(dbId);
         if (!relyDataMapper.selectRelyDataList(relyDataDTO).isEmpty()) {
+            LOG.warn("删除数据源，请先删除数据中心相关依赖");
             throw new BusinessException("请先删除数据中心相关依赖");
         }
         dbMapper.deleteDbById(dbId);

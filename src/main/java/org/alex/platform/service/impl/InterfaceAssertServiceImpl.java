@@ -6,6 +6,8 @@ import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.pojo.InterfaceAssertDO;
 import org.alex.platform.pojo.InterfaceAssertVO;
 import org.alex.platform.service.InterfaceAssertService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,9 @@ import org.springframework.stereotype.Service;
 public class InterfaceAssertServiceImpl implements InterfaceAssertService {
     @Autowired
     InterfaceAssertMapper interfaceAssertMapper;
-
     @Autowired
     InterfaceCaseMapper interfaceCaseMapper;
+    private static final Logger LOG = LoggerFactory.getLogger(InterfaceAssertServiceImpl.class);
 
     /**
      * 新增断言
@@ -31,10 +33,12 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
         assertDO.setOrder(interfaceAssertDO.getOrder());
         assertDO.setCaseId(interfaceAssertDO.getCaseId());
         if (!interfaceAssertMapper.selectAssertList(assertDO).isEmpty()) {
+            LOG.warn("新增断言，断言排序重复");
             throw new BusinessException("断言排序重复");
         }
         //判断caseId是否存在
         if (interfaceCaseMapper.selectInterfaceCaseByCaseId(caseId) == null) {
+            LOG.warn("新增断言，用例编号不存在，caseId={}", caseId);
             throw new BusinessException("用例编号不存在");
         }
         interfaceAssertMapper.insertAssert(interfaceAssertDO);
@@ -51,10 +55,12 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
         //判断caseId是否存在
         Integer caseId = interfaceAssertDO.getCaseId();
         if (interfaceCaseMapper.selectInterfaceCaseByCaseId(caseId) == null) {
+            LOG.warn("修改断言，用例编号不存在，caseId={}", caseId);
             throw new BusinessException("用例编号不存在");
         }
         //判断排序重复
         if (!interfaceAssertMapper.checkAssertType(interfaceAssertDO).isEmpty()) {
+            LOG.warn("新增断言，断言排序重复");
             throw new BusinessException("断言排序重复");
         }
         interfaceAssertMapper.updateAssert(interfaceAssertDO);

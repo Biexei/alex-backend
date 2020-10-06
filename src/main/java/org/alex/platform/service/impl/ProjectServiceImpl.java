@@ -77,6 +77,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void modifyProject(ProjectDO projectDO) throws BusinessException {
         if (!projectMapper.checkName(projectDO).isEmpty()) {
+            LOG.warn("项目名称已存在, projectName={}", projectDO.getName());
             throw new BusinessException("项目名称已存在");
         }
         projectMapper.updateProject(projectDO);
@@ -87,6 +88,7 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectDO project = new ProjectDO();
         project.setName(projectDO.getName());
         if (findProject(project) != null) {
+            LOG.warn("项目名称已存在, projectName={}", projectDO.getName());
             throw new BusinessException("项目名称已存在");
         } else {
             projectMapper.insertProject(projectDO);
@@ -101,7 +103,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (moduleMapper.selectModuleList(moduleDTO).isEmpty()) {
             projectMapper.deleteProjectById(projectId);
         } else {
-            LOG.error("该项目下已存在模块");
+            LOG.warn("该项目下已存在模块, projectId={}", projectId);
             throw new BusinessException("该项目下已存在模块");
         }
 

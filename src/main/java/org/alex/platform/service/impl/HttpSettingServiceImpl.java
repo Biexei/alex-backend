@@ -7,6 +7,8 @@ import org.alex.platform.pojo.HttpSettingDO;
 import org.alex.platform.pojo.HttpSettingDTO;
 import org.alex.platform.pojo.HttpSettingVO;
 import org.alex.platform.service.HttpSettingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 public class HttpSettingServiceImpl implements HttpSettingService {
     @Autowired
     HttpSettingMapper httpSettingMapper;
+    private static final Logger LOG = LoggerFactory.getLogger(HttpSettingServiceImpl.class);
 
     /**
      * 获取配置项详情

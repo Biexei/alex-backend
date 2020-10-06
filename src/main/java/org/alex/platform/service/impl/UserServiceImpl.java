@@ -5,6 +5,8 @@ import org.alex.platform.pojo.UserDO;
 import org.alex.platform.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     /**
      * 查看用户列表

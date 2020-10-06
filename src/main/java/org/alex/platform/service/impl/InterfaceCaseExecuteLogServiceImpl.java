@@ -8,6 +8,8 @@ import org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogListVO;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogVO;
 import org.alex.platform.service.InterfaceCaseExecuteLogService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class InterfaceCaseExecuteLogServiceImpl implements InterfaceCaseExecuteLogService {
     @Autowired
     InterfaceCaseExecuteLogMapper mapper;
+    private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseExecuteLogServiceImpl.class);
 
     /**
      * 保存执行日志

@@ -9,6 +9,8 @@ import org.alex.platform.pojo.RelyDataDO;
 import org.alex.platform.pojo.RelyDataDTO;
 import org.alex.platform.pojo.RelyDataVO;
 import org.alex.platform.service.RelyDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +22,20 @@ public class RelyDataServiceImpl implements RelyDataService {
     RelyDataMapper relyDataMapper;
     @Autowired
     InterfaceCaseRelyDataMapper interfaceCaseRelyDataMapper;
+    private static final Logger LOG = LoggerFactory.getLogger(RelyDataServiceImpl.class);
 
     @Override
     public void saveRelyData(RelyDataDO relyDataDO) throws BusinessException {
         String name = relyDataDO.getName();
         // name不能在在于t_interface_case_rely_data
         if (null != interfaceCaseRelyDataMapper.selectIfRelyDataByName(name)) {
-            throw new BusinessException("依赖名称已存在与接口依赖");
+            LOG.warn("依赖名称已存在于接口依赖，relyName={}", name);
+            throw new BusinessException("依赖名称已存在于接口依赖");
         }
         // name不能在在于t_rely_data
         if (null != relyDataMapper.selectRelyDataByName(name)) {
-            throw new BusinessException("依赖名称已存在与其它依赖");
+            LOG.warn("依赖名称已存在于其它依赖，relyName={}", name);
+            throw new BusinessException("依赖名称已存在于其它依赖");
         }
         Date date = new Date();
         relyDataDO.setCreatedTime(date);
@@ -43,11 +48,13 @@ public class RelyDataServiceImpl implements RelyDataService {
         String name = relyDataDO.getName();
         // name不能在在于t_interface_case_rely_data
         if (null != interfaceCaseRelyDataMapper.selectIfRelyDataByName(name)) {
-            throw new BusinessException("依赖名称已存在与接口依赖");
+            LOG.warn("依赖名称已存在于接口依赖，relyName={}", name);
+            throw new BusinessException("依赖名称已存在于接口依赖");
         }
         // name不能在在于t_rely_data
         if (!relyDataMapper.checkName(relyDataDO).isEmpty()) {
-            throw new BusinessException("依赖名称已存在与其它依赖");
+            LOG.warn("依赖名称已存在于其它依赖，relyName={}", name);
+            throw new BusinessException("依赖名称已存在于其它依赖");
         }
         Date date = new Date();
         relyDataDO.setUpdateTime(date);
@@ -98,6 +105,7 @@ public class RelyDataServiceImpl implements RelyDataService {
         RelyDataVO relyDataVO = relyDataMapper.selectRelyDataById(id);
         // 依赖类型 0固定值 1反射方法 2sql 反射方法不允许删除
         if (relyDataVO.getType() == 1) {
+            LOG.warn("预置方法不允许删除");
             throw new BusinessException("预置方法不允许删除");
         }
         relyDataMapper.deleteRelyDataById(id);

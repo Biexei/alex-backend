@@ -2,6 +2,7 @@ package org.alex.platform;
 
 import com.alibaba.fastjson.JSON;
 import org.alex.platform.mapper.TaskMapper;
+import org.alex.platform.util.ExceptionUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,14 @@ public class TaskTest {
         String[] s = new String[list.size()];
         String[] objects = list.toArray(s);
         System.out.println(objects);
+    }
+
+    @Test
+    public void testException() {
+        try {
+            int a = 1 / 0;
+        } catch (Exception e) {
+            System.out.println(ExceptionUtil.msg(e));
+        }
     }
 }

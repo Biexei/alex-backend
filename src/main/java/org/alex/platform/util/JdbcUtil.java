@@ -4,6 +4,8 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.wall.WallConfig;
 import com.alibaba.druid.wall.WallFilter;
 import org.alex.platform.exception.SqlException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -14,6 +16,8 @@ import java.util.Map;
 public class JdbcUtil {
 
     private static JdbcTemplate jdbc;
+
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcUtil.class);
 
     private JdbcUtil() {
 
@@ -55,9 +59,9 @@ public class JdbcUtil {
             JdbcTemplate jdbc = new JdbcTemplate(ds);
             jdbc.queryForList("select 1");
         } catch (Exception e) {
-            e.printStackTrace();
             ds.close();
             msg = "连接失败，" + e.getMessage();
+            LOG.error("JDBC TEMPLATE 连接失败， errorMsg={}", ExceptionUtil.msg(e));
         }
         return msg;
     }
@@ -121,7 +125,7 @@ public class JdbcUtil {
                 break;
             }
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            LOG.error("JDBC TEMPLATE 连接失败， errorMsg={}", ExceptionUtil.msg(e));
             throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
         }
         return resultStr;
@@ -146,7 +150,7 @@ public class JdbcUtil {
                 break;
             }
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            LOG.error("JDBC TEMPLATE 连接失败， errorMsg={}", ExceptionUtil.msg(e));
             throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
         }
         return resultStr;
@@ -177,7 +181,7 @@ public class JdbcUtil {
                 break;
             }
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            LOG.error("JDBC TEMPLATE 连接失败， errorMsg={}", ExceptionUtil.msg(e));
             throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
         }
         return resultStr;

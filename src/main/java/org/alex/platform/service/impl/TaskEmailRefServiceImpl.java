@@ -5,6 +5,8 @@ import org.alex.platform.pojo.TaskEmailRefDO;
 import org.alex.platform.pojo.TaskEmailRefDTO;
 import org.alex.platform.pojo.TaskEmailRefVO;
 import org.alex.platform.service.TaskEmailRefService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 public class TaskEmailRefServiceImpl implements TaskEmailRefService {
     @Autowired
     TaskEmailRefMapper taskEmailRefMapper;
+    private static final Logger LOG = LoggerFactory.getLogger(TaskEmailRefServiceImpl.class);
 
     /**
      * 查看定时任务所有收件人

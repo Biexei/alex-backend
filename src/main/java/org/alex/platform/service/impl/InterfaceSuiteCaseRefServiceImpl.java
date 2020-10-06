@@ -13,6 +13,9 @@ import org.alex.platform.pojo.InterfaceSuiteCaseRefDTO;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefVO;
 import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.service.InterfaceSuiteCaseRefService;
+import org.alex.platform.util.ExceptionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
     InterfaceCaseService interfaceCaseService;
     @Autowired
     InterfaceCaseSuiteMapper interfaceCaseSuiteMapper;
+    private static final Logger LOG = LoggerFactory.getLogger(InterfaceSuiteCaseRefServiceImpl.class);
 
     /**
      * 测试套件新增用例
@@ -128,20 +132,24 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         InterfaceCaseSuiteVO interfaceCaseSuiteVO = interfaceCaseSuiteMapper.selectInterfaceCaseSuiteById(suiteId);
         Byte type = interfaceCaseSuiteVO.getExecuteType();
         if (type == 0) { // 异步
+            LOG.info("-----------------------开始并行执行测试套件，suiteId={}-----------------------", suiteId);
             suiteCaseList.parallelStream().forEach(suiteCase -> {
                 Integer caseId = suiteCase.getCaseId();
                 try {
                     interfaceCaseService.executeInterfaceCase(caseId);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOG.error("并行执行测试套件出现异常，errorMsg={}", ExceptionUtil.msg(e));
                     throw new RuntimeException(e.getMessage());
                 }
             });
+            LOG.info("-----------------------测试套件执行完成-----------------------");
         } else { // 同步
+            LOG.info("-----------------------开始串行执行测试套件，suiteId={}-----------------------", suiteId);
             for (InterfaceSuiteCaseRefVO suiteCase : suiteCaseList) {
                 Integer caseId = suiteCase.getCaseId();
                 interfaceCaseService.executeInterfaceCase(caseId);
             }
+            LOG.info("-----------------------测试套件执行完成-----------------------");
         }
     }
 }

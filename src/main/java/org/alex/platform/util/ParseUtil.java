@@ -15,6 +15,8 @@ import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
 import org.seimicrawler.xpath.JXDocument;
 import org.seimicrawler.xpath.JXNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ParseUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(ParseUtil.class);
     /**
      * xpath解析
      *
@@ -43,6 +46,7 @@ public class ParseUtil {
             }
             return JSON.toJSONString(result);
         } catch (Exception e) {
+            LOG.error("解析xml， xml格式错误， xml={}", xmlText);
             throw new ParseException("xml格式错误");
         }
 
@@ -82,6 +86,7 @@ public class ParseUtil {
     public static String parseHttpHeader(ResponseEntity entity, String headerName) throws ParseException {
         HttpHeaders headerMap = entity.getHeaders();
         if (!headerMap.containsKey(headerName)) {
+            LOG.error("解析响应头， 未找到该headerName， headerName={}", headerName);
             throw new ParseException("响应头中未找到该元素，请确保header无误");
         }
         return JSON.toJSONString(entity.getHeaders().get(headerName));

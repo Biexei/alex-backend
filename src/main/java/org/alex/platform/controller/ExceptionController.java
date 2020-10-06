@@ -4,6 +4,7 @@ import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
+import org.alex.platform.util.ExceptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -31,13 +32,13 @@ public class ExceptionController {
     @ExceptionHandler(Exception.class)
     public Result globalException(Exception e) {
         e.printStackTrace();
-        LOG.error(e.getMessage());
         if (e instanceof DataAccessException) {
             return Result.fail(504, "数据库异常");
         } else if (e instanceof MethodArgumentNotValidException) { // json请求验证-requestBody
             BindingResult bindingResult = ((MethodArgumentNotValidException) e).getBindingResult();
             List<ObjectError> errors = bindingResult.getAllErrors();
             String msg = errors.get(0).getDefaultMessage();
+            LOG.warn(msg);
             return Result.fail(501, msg);
         } else if (e instanceof ResourceAccessException) {
             return Result.fail(502, "代理服务器未开启" + e.getMessage());
@@ -45,14 +46,19 @@ public class ExceptionController {
             BindException be = (BindException) e;
             List<ObjectError> errors = be.getBindingResult().getAllErrors();
             String msg = errors.get(0).getDefaultMessage();
+            LOG.warn(msg);
             return Result.fail(501, msg);
         } else if (e instanceof BusinessException) {
+            LOG.error(ExceptionUtil.msg(e));
             return Result.fail(502, e.getMessage());
         } else if (e instanceof ParseException) {
+            LOG.error(ExceptionUtil.msg(e));
             return Result.fail(503, e.getMessage());
         } else if (e instanceof SqlException) {
+            LOG.error(ExceptionUtil.msg(e));
             return Result.fail(504, e.getMessage());
         } else {
+            LOG.error(ExceptionUtil.msg(e));
             return Result.fail(500, e.getMessage());
         }
     }

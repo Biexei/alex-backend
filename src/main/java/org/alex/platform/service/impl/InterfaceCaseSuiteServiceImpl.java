@@ -8,6 +8,8 @@ import org.alex.platform.mapper.InterfaceSuiteCaseRefMapper;
 import org.alex.platform.mapper.TaskMapper;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.InterfaceCaseSuiteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
     InterfaceSuiteCaseRefMapper interfaceSuiteCaseRefMapper;
     @Autowired
     TaskMapper taskMapper;
+    private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseSuiteServiceImpl.class);
 
     /**
      * 新增测试套件
@@ -51,12 +54,14 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
         InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO = new InterfaceSuiteCaseRefDTO();
         interfaceSuiteCaseRefDTO.setSuiteId(suiteId);
         if (!interfaceSuiteCaseRefMapper.selectSuiteCaseList(interfaceSuiteCaseRefDTO).isEmpty()) {
+            LOG.warn("该测试套件下已存在用例, suiteId={}", suiteId);
             throw new BusinessException("请先删除该测试套件下的用例");
         }
         // 存在定时任务的不准删除
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setSuiteId(suiteId);
         if (!taskMapper.selectTaskList(taskDTO).isEmpty()) {
+            LOG.warn("存在关于该测试套件的定时任务, suiteId={}", suiteId);
             throw new BusinessException("存在关于该测试套件的定时任务");
         }
         interfaceCaseSuiteMapper.deleteInterfaceCaseSuiteById(suiteId);

@@ -148,4 +148,26 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
+
+    @Override
+    public String toString() {
+        return "InterfaceCaseExecuteLogDO{" +
+                "id=" + id +
+                ", caseId=" + caseId +
+                ", caseUrl='" + caseUrl + '\'' +
+                ", caseDesc='" + caseDesc + '\'' +
+                ", requestHeaders='" + requestHeaders + '\'' +
+                ", requestParams='" + requestParams + '\'' +
+                ", requestData='" + requestData + '\'' +
+                ", requestJson='" + requestJson + '\'' +
+                ", responseCode=" + responseCode +
+                ", responseHeaders='" + responseHeaders + '\'' +
+                ", responseBody='" + responseBody + '\'' +
+                ", runTime=" + runTime +
+                ", executer='" + executer + '\'' +
+                ", status=" + status +
+                ", createdTime=" + createdTime +
+                ", errorMessage='" + errorMessage + '\'' +
+                '}';
+    }
 }

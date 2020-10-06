@@ -2,12 +2,12 @@ package org.alex.platform.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import org.alex.platform.mapper.TaskEmailRefMapper;
 import org.alex.platform.mapper.TaskMapper;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.TaskEmailRefService;
 import org.alex.platform.service.TaskService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +19,7 @@ public class TaskServiceImpl implements TaskService {
     TaskMapper taskMapper;
     @Autowired
     TaskEmailRefService taskEmailRefService;
+    private static final Logger LOG = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     /**
      * 查看定时任务列表

@@ -14,7 +14,10 @@ import org.alex.platform.service.InterfaceCaseExecuteLogService;
 import org.alex.platform.service.InterfaceCaseRelyDataService;
 import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.service.ProjectService;
+import org.alex.platform.util.ExceptionUtil;
 import org.alex.platform.util.ParseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
     InterfaceCaseExecuteLogService executeLogService;
     @Autowired
     ProjectService projectService;
+    private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseRelyDataServiceImpl.class);
 
     /**
      * 新增接口依赖
@@ -49,15 +53,18 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
         // 判断relyCaseId是否存在
         Integer caseId = ifRelyDataDO.getRelyCaseId();
         if (ifCaseService.findInterfaceCaseByCaseId(caseId) == null) {
+            LOG.warn("新增接口依赖，用例编号不存在，caseId={}", caseId);
             throw new BusinessException("用例编号不存在");
         }
         // 判断relyName是否已存在
         String relyName = ifRelyDataDO.getRelyName();
         if (relyDataMapper.selectRelyDataByName(relyName) != null) {
-            throw new BusinessException("依赖名称已存在与其它依赖");
+            LOG.warn("新增接口依赖，依赖名称已存在于其它依赖，relyName={}", relyName);
+            throw new BusinessException("依赖名称已存在于其它依赖");
         }
         if (this.findIfRelyDataByName(relyName) != null) {
-            throw new BusinessException("依赖名称已存在与接口依赖");
+            LOG.warn("新增接口依赖，依赖名称已存在于接口依赖，relyName={}", relyName);
+            throw new BusinessException("依赖名称已存在于接口依赖");
         }
         ifRelyDataMapper.insertIfRelyData(ifRelyDataDO);
     }
@@ -73,15 +80,18 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
         // 判断relyCaseId是否存在
         Integer caseId = ifRelyDataDO.getRelyCaseId();
         if (ifCaseService.findInterfaceCaseByCaseId(caseId) == null) {
+            LOG.warn("修改接口依赖，用例编号不存在，caseId={}", caseId);
             throw new BusinessException("用例编号不存在");
         }
         // 判断relyName是否已存在
         String relyName = ifRelyDataDO.getRelyName();
         if (relyDataMapper.selectRelyDataByName(relyName) != null) {
-            throw new BusinessException("依赖名称已存在与其它依赖");
+            LOG.warn("修改接口依赖，依赖名称已存在于其它依赖，relyName={}", relyName);
+            throw new BusinessException("依赖名称已存在于其它依赖");
         }
         if (!ifRelyDataMapper.checkRelyName(ifRelyDataDO).isEmpty()) {
-            throw new BusinessException("依赖名称已存在与接口依赖");
+            LOG.warn("修改接口依赖，依赖名称已存在于接口依赖，relyName={}", relyName);
+            throw new BusinessException("依赖名称已存在于接口依赖");
         }
         ifRelyDataMapper.updateIfRelyData(ifRelyDataDO);
     }
@@ -157,17 +167,21 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
      */
     @Override
     public String checkRelyResult(Integer relyId) throws ParseException, SqlException, BusinessException {
+        LOG.info("------------------------------执行接口预检操作------------------------------");
         InterfaceCaseRelyDataVO interfaceCaseRelyData = ifCaseRelyDataService.findIfRelyData(relyId);
         if (null == interfaceCaseRelyData) {
+            LOG.warn("预检接口依赖，未找到该接口依赖，relyId={}", relyId);
             throw new ParseException("未找到该接口依赖");
         }
         Integer caseId = interfaceCaseRelyData.getRelyCaseId();
         String relyName = interfaceCaseRelyData.getRelyName();
 
         if (relyName.indexOf("[") != -1 && relyName.endsWith("]")) {
+            LOG.info("------------------------------进入下标取值模式------------------------------");
             // 判断出现次数,首次出现和最后一次出现位置不一致，则说明[>1 ]>1
             if (relyName.indexOf("[") != relyName.lastIndexOf("[") ||
                     relyName.indexOf("]") != relyName.lastIndexOf("]")) {
+                LOG.warn("预检接口依赖，数组取值语法错误，relyName={}", relyName);
                 throw new ParseException("数组取值语法错误");
             }
             String indexStr = relyName.substring(relyName.indexOf("[") + 1, relyName.length() - 1);
@@ -175,107 +189,142 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                 int index = Integer.parseInt(indexStr);
                 relyName = relyName.substring(0, relyName.indexOf("["));
                 // 查询其所依赖的caseId
+                LOG.info("根据relyName获取caseId，relyName={}", relyName);
                 InterfaceCaseRelyDataDTO interfaceCaseRelyDataDTO = new InterfaceCaseRelyDataDTO();
                 interfaceCaseRelyDataDTO.setRelyName(relyName);
                 InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = ifCaseRelyDataService.findIfRelyDataByName(relyName);
                 if (null == interfaceCaseRelyDataVO) {
+                    LOG.warn("预检接口依赖，未找到该依赖数值，relyName={}", relyName);
                     throw new ParseException("未找到该依赖数值");
                 }
                 // 根据caseId调用相应case
+                LOG.info("根据caseId调用相应case，caseId={}", caseId);
                 Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
+                LOG.info("调用成功，executeLogId={}", executeLogId);
                 // 获取case执行结果, 不等于0, 则用例未通过
                 if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
+                    LOG.warn("预检接口依赖，前置用例执行未通过，executeLogId={}", executeLogId);
                     throw new BusinessException("前置用例执行未通过");
                 }
                 // 根据executeLogId查询对应的执行记录
                 InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
                 String responseBody = interfaceCaseExecuteLogVO.getResponseBody();
                 String responseHeaders = interfaceCaseExecuteLogVO.getResponseHeaders();
+                LOG.info("responseBody={}，responseHeaders={}", responseBody, responseHeaders);
                 // 根据contentType来确定对何字段进行替换, 提取数据类型   0json/1html/2header/
                 int contentType = (int) interfaceCaseRelyDataVO.getContentType();
-                if (contentType != 2) {
-                    throw new ParseException("只有依赖数据提取类型为header时才支持指定下标，" +
-                            "否则请自行调整jsonpath/xpath表达式，使提取结果唯一");
-                }
+//                if (contentType != 2) {
+//                    LOG.warn("预检接口依赖，仅header支持下标取值");
+//                    throw new ParseException("只有依赖数据提取类型为header时才支持指定下标，" +
+//                            "否则请自行调整jsonpath/xpath表达式，使提取结果唯一");
+//                }
                 String expression = interfaceCaseRelyDataVO.getExtractExpression();
                 try {
                     if (contentType == 0) { // json
+                        LOG.info("------------------------------根据jsonPath取值");
                         ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, expression), ArrayList.class);
                         if (jsonPathArray.isEmpty()) {
+                            LOG.warn("预检接口依赖，提取方式为jsonPath，提取内容为空，expression={}", expression);
                             throw new ParseException(expression + "提取内容为空");
                         }
+                        LOG.info("提取内容为：{}",jsonPathArray.get(0).toString());
                         return jsonPathArray.get(0).toString();
                     } else if (contentType == 1) { // html
+                        LOG.info("------------------------------根据xpath取值");
                         ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
                         if (xpathArray.isEmpty()) {
+                            LOG.warn("预检接口依赖，提取方式为xpath，提取内容为空，expression={}", expression);
                             throw new ParseException(expression + "提取内容为空");
                         }
+                        LOG.info("提取内容为：{}",xpathArray.get(0).toString());
                         return xpathArray.get(0).toString();
                     } else if (contentType == 2) { // headers
+                        LOG.info("------------------------------根据header取值");
                         JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders, HashMap.class).get(expression);
                         if (null == headerArray) {
+                            LOG.warn("预检接口依赖，提取方式为headers，未找到请求头，expression={}", expression);
                             throw new ParseException("未找到请求头:" + expression);
                         }
                         try {
-                            return (String) headerArray.get(index);
+                            LOG.info("提取内容为：{}",headerArray.get(0).toString());
+                            return headerArray.get(index).toString();
                         } catch (Exception e) {
+                            LOG.warn("预检接口依赖，提取方式为headers，数组下标越界，expression={}， index={}", index, expression);
                             throw new ParseException("数组下标越界");
                         }
                     } else {
+                        LOG.warn("不支持该种取值方式, contentType={}", contentType);
                         throw new BusinessException("不支持该种取值方式");
                     }
                 } catch (BusinessException e) {
                     throw new BusinessException("不支持该种取值方式");
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new ParseException(e.getMessage());
+                    LOG.error("预检接口依赖出现异常，errorMsg={}", ExceptionUtil.msg(e));
+                    throw new ParseException(ExceptionUtil.msg(e));
                 }
             } catch (NumberFormatException e) {
+                LOG.error("预检接口依赖，数组下标只能为数字，errorMsg={}", ExceptionUtil.msg(e));
                 throw new ParseException("数组下标只能为数字");
             }
         } else {
+            LOG.info("------------------------------进入无下标取值模式------------------------------");
             // 根据caseId调用相应case
+            LOG.info("根据caseId调用相应case，caseId={}", caseId);
             Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId);
+            LOG.info("调用成功，executeLogId={}", executeLogId);
             // 获取case执行结果, 不等于0, 则用例未通过
             if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
+                LOG.warn("预检接口依赖，前置用例执行未通过，executeLogId={}", executeLogId);
                 throw new BusinessException("前置用例执行未通过");
             }
             // 根据executeLogId查询对应的执行记录
             InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
             String responseBody = interfaceCaseExecuteLogVO.getResponseBody();
             String responseHeaders = interfaceCaseExecuteLogVO.getResponseHeaders();
+            LOG.info("responseBody={}，responseHeaders={}", responseBody, responseHeaders);
             // 根据contentType来确定对何字段进行替换, 提取数据类型   0json/1html/2header/
             int contentType = (int) interfaceCaseRelyData.getContentType();
             String expression = interfaceCaseRelyData.getExtractExpression();
             try {
                 if (contentType == 0) { // json
+                    LOG.info("------------------------------根据jsonPath取值");
                     ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, expression), ArrayList.class);
                     if (jsonPathArray.isEmpty()) {
+                        LOG.warn("预检接口依赖，提取方式为jsonPath，提取内容为空，expression={}", expression);
                         throw new ParseException(expression + "提取内容为空");
                     }
+                    LOG.info("提取内容为：{}",jsonPathArray.get(0).toString());
                     return jsonPathArray.get(0).toString();
                 } else if (contentType == 1) { // html
+                    LOG.info("------------------------------根据xpath取值");
                     ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
                     if (xpathArray.isEmpty()) {
+                        LOG.warn("预检接口依赖，提取方式为xpath，提取内容为空，expression={}", expression);
                         throw new ParseException(expression + "提取内容为空");
                     }
+                    LOG.info("提取内容为：{}",xpathArray.get(0).toString());
                     return xpathArray.get(0).toString();
                 } else if (contentType == 2) { // headers
+                    LOG.info("------------------------------根据header取值");
                     JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders,
                             HashMap.class).get(expression);
                     if (headerArray == null) {
+                        LOG.warn("预检接口依赖，提取方式为headers，未找到请求头，expression={}",expression);
                         throw new ParseException("未找到请求头:" + expression);
                     } else {
+                        LOG.info("提取内容为：{}",headerArray.get(0).toString());
                         return headerArray.get(0).toString();
                     }
                 } else {
+                    LOG.warn("不支持该种取值方式, contentType={}", contentType);
                     throw new BusinessException("不支持该种取值方式");
                 }
             } catch (BusinessException e) {
+                LOG.warn("不支持该种取值方式, contentType={}", contentType);
                 throw new BusinessException("不支持该种取值方式");
             } catch (Exception e) {
-                e.printStackTrace();
-                throw new ParseException(e.getMessage());
+                LOG.error("预检接口依赖出现异常，errorMsg={}", ExceptionUtil.msg(e));
+                throw new ParseException(ExceptionUtil.msg(e));
             }
         }
     }

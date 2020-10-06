@@ -53,7 +53,7 @@ public class ModuleServiceImpl implements ModuleService {
         project.setProjectId(moduleDO.getProjectId());
         //判断入参projectId是否存在
         if (projectMapper.selectProject(project) == null) {
-            LOG.error("项目编号不存在");
+            LOG.warn("项目编号不存在, projectId={}", moduleDO.getProjectId());
             throw new BusinessException("请选择项目名称");
         } else {
             moduleMapper.insertModule(moduleDO);
@@ -85,6 +85,7 @@ public class ModuleServiceImpl implements ModuleService {
         if (interfaceCaseMapper.selectInterfaceCaseList(listDTO).isEmpty()) {
             moduleMapper.deleteModuleById(moduleId);
         } else {
+            LOG.warn("删除模块失败，该模块下已存在用例, moduleId={}", moduleId);
             throw new BusinessException("该模块下已存在用例");
         }
     }

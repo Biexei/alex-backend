@@ -12,13 +12,13 @@ import java.util.Date;
 
 public class UserDO implements Serializable {
     private Integer userId;
-    @Size(min = 1, max = 20, message = "帐号名称长度必须为1~20")
-    @NotNull(message = "帐号名称不能为空")
+    @Size(min = 1, max = 20, message = "用户名长度必须为1~20")
+    @NotNull(message = "用户名不能为空")
     private String username;
     @Size(min = 3, max = 20, message = "密码长度必须为3~20")
     @NotNull(message = "密码不能为空")
     private String password;
-    @Pattern(regexp = "\\d{0,10}$", message = "工号长度必须为0~10数字")
+    @Pattern(regexp = "\\d{0,10}$", message = "工号必须为数字")
     private String jobNumber;
     @NotNull(message = "性别不能为空")
     @DecimalMax(value = "1", message = "性别必须为0|1")
