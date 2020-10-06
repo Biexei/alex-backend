@@ -1,5 +1,6 @@
 package org.alex.platform.controller;
 
+import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.RelyMethod;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -26,6 +28,8 @@ public class UserController {
     UserService userService;
     @Autowired
     RedisUtil redisUtil;
+    @Autowired
+    LoginUserInfo loginUserInfo;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
@@ -151,5 +155,17 @@ public class UserController {
     public Result removeUser(@PathVariable Integer userId) {
         userService.removeUserById(userId);
         return Result.success();
+    }
+
+    /**
+     * 退出登录
+     * @param request 请求对象
+     * @return Result
+     */
+    @GetMapping("/user/logout")
+    public Result logout(HttpServletRequest request) {
+        String token = request.getHeader("Token");
+        redisUtil.del(token);
+        return Result.success("退出成功");
     }
 }
