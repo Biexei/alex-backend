@@ -28,18 +28,22 @@
     <select id="selectUserByJobNumber" resultType="org.alex.platform.pojo.UserDO" parameterType="Integer">
         select user_id, username, password, job_number,sex, is_enable, real_name, role_id from t_user where job_number = #{jobNumber}
     </select>
+    <select id="checkUser" resultType="org.alex.platform.pojo.UserDO" parameterType="org.alex.platform.pojo.UserDO">
+        select user_id from `t_user` where `user_id`!=#{userId} and `username`=#{username}
+    </select>
     <delete id="deleteUser" parameterType="Integer">
         delete from `t_user` where user_id = #{userId}
     </delete>
     <update id="updateUser" parameterType="org.alex.platform.pojo.UserDO">
         update t_user
         <set>
-            <if test="password!=null">password=#{password},</if>
-            <if test="jobNumber!=null">job_number=#{jobNumber},</if>
-            <if test="isEnable!=null">is_enable=#{isEnable},</if>
-            <if test="sex!=null">sex=#{sex},</if>
-            <if test="updateTime!=null">update_time=#{updateTime},</if>
-            <if test="realName!=null">real_name=#{realName},</if>
+            username=#{username},
+            password=#{password},
+            job_number=#{jobNumber},
+            is_enable=#{isEnable},
+            sex=#{sex},
+            update_time=#{updateTime},
+            real_name=#{realName},
         </set>
         where user_id = #{userId}
     </update>

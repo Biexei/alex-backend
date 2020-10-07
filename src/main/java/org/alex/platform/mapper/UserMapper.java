@@ -9,6 +9,8 @@ import java.util.List;
 public interface UserMapper {
     List<UserDO> selectUserList(UserDO userDO);
 
+    List<UserDO> checkUser(UserDO userDO);
+
     void updateUser(UserDO userDO);
 
     void insertUser(UserDO userDO);

@@ -1,5 +1,6 @@
 package org.alex.platform.service.impl;
 
+import org.alex.platform.exception.BusinessException;
 import org.alex.platform.mapper.UserMapper;
 import org.alex.platform.pojo.UserDO;
 import org.alex.platform.service.UserService;
@@ -35,7 +36,11 @@ public class UserServiceImpl implements UserService {
      * @param userDO userDO
      */
     @Override
-    public void modifyUser(UserDO userDO) {
+    public void modifyUser(UserDO userDO) throws BusinessException {
+        // 用户名不能重复
+        if (!userMapper.checkUser(userDO).isEmpty()) {
+            throw new BusinessException("用户名已存在");
+        }
         userMapper.updateUser(userDO);
     }
 
