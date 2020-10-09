@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2020-10-06 23:03:35
+Date: 2020-10-09 21:43:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -77,22 +77,25 @@ CREATE TABLE `t_interface_assert` (
   `operator` tinyint DEFAULT NULL COMMENT '操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re',
   `excepted_result` varchar(1000) DEFAULT NULL COMMENT '预期结果',
   `order` int DEFAULT NULL COMMENT '排序 执行断言时按照该字段排序',
+  `created_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`assert_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert
 -- ----------------------------
-INSERT INTO `t_interface_assert` VALUES ('54', '状态码=200', '69', '3', '', '0', '200', '0');
-INSERT INTO `t_interface_assert` VALUES ('55', 'username=123', '69', '0', '$..data.list[0].username', '0', '[\"123\"]', '1');
-INSERT INTO `t_interface_assert` VALUES ('56', '状态码=200', '70', '3', '', '0', '200', '0');
-INSERT INTO `t_interface_assert` VALUES ('57', 'code=200', '70', '0', '$..code', '0', '[200]', '1');
-INSERT INTO `t_interface_assert` VALUES ('58', '状态码=200', '71', '3', '', '0', '200', '0');
-INSERT INTO `t_interface_assert` VALUES ('59', 'code=200', '71', '0', '$..code', '0', '[200]', '1');
-INSERT INTO `t_interface_assert` VALUES ('60', '项目总数和数据库总数一致', '71', '0', '$..data.total', '0', '[${projectCount}]', '2');
-INSERT INTO `t_interface_assert` VALUES ('65', '断言id=4', '73', '0', '$..data.projectId', '0', '[${selectProjectIdByName(\"#{$..data.name}\", \"#{$..data.desc}\")}]', '0');
-INSERT INTO `t_interface_assert` VALUES ('67', 'http code == 200', '75', '3', '', '0', '200', '0');
-INSERT INTO `t_interface_assert` VALUES ('68', 'sub code == 200', '75', '0', '$..code', '0', '[200]', '1');
+INSERT INTO `t_interface_assert` VALUES ('54', '状态码=200', '69', '3', '', '0', '200', '0', null, '2020-10-09 18:21:45');
+INSERT INTO `t_interface_assert` VALUES ('55', 'username=123', '69', '0', '$..data.list[0].username', '0', '[\"123\"]', '1', null, '2020-10-09 18:21:45');
+INSERT INTO `t_interface_assert` VALUES ('56', '状态码=200', '70', '3', '', '0', '200', '0', null, '2020-10-09 18:21:59');
+INSERT INTO `t_interface_assert` VALUES ('57', 'code=200', '70', '0', '$..code', '0', '[200]', '1', null, '2020-10-09 18:21:59');
+INSERT INTO `t_interface_assert` VALUES ('58', '状态码=200', '71', '3', '', '0', '200', '0', null, null);
+INSERT INTO `t_interface_assert` VALUES ('59', 'code=200', '71', '0', '$..code', '0', '[200]', '1', null, null);
+INSERT INTO `t_interface_assert` VALUES ('60', '项目总数和数据库总数一致', '71', '0', '$..data.total', '0', '[${projectCount}]', '2', null, null);
+INSERT INTO `t_interface_assert` VALUES ('65', '断言id=4', '73', '0', '$..data.projectId', '0', '[${selectProjectIdByName(\"#{$..data.name}\", \"#{$..data.desc}\")}]', '0', null, null);
+INSERT INTO `t_interface_assert` VALUES ('67', 'http code == 200', '75', '3', '', '0', '200', '0', null, '2020-10-09 18:21:20');
+INSERT INTO `t_interface_assert` VALUES ('68', 'sub code == 200', '75', '0', '$..code', '0', '[200]', '1', null, '2020-10-09 18:21:20');
+INSERT INTO `t_interface_assert` VALUES ('69', 'code', '75', '3', '', '0', '200', '2', '2020-10-09 18:14:58', '2020-10-09 18:21:20');
 
 -- ----------------------------
 -- Table structure for t_interface_assert_log
@@ -114,7 +117,7 @@ CREATE TABLE `t_interface_assert_log` (
   `error_message` mediumtext COMMENT '断言出错异常信息',
   `created_time` datetime DEFAULT NULL,
   PRIMARY KEY (`assert_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2320 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2344 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert_log
@@ -146,6 +149,30 @@ INSERT INTO `t_interface_assert_log` VALUES ('2316', '1356', '67', 'http code ==
 INSERT INTO `t_interface_assert_log` VALUES ('2317', '1356', '68', 'sub code == 200', '75', '0', '$..code', '0', '[200]', '1', '[200]', '0', null, '2020-10-06 22:01:29');
 INSERT INTO `t_interface_assert_log` VALUES ('2318', '1357', '56', '状态码=200', '70', '3', '', '0', '200', '0', '200', '0', null, '2020-10-06 22:01:29');
 INSERT INTO `t_interface_assert_log` VALUES ('2319', '1357', '57', 'code=200', '70', '0', '$..code', '0', '[200]', '1', '[200]', '0', null, '2020-10-06 22:01:29');
+INSERT INTO `t_interface_assert_log` VALUES ('2320', '1358', '67', 'http code == 200', '75', '3', '', '0', '200', '0', '200', '0', null, '2020-10-09 18:20:47');
+INSERT INTO `t_interface_assert_log` VALUES ('2321', '1358', '68', 'sub code == 200', '75', '0', '$..code', '0', '[200]', '1', '[200]', '0', null, '2020-10-09 18:20:47');
+INSERT INTO `t_interface_assert_log` VALUES ('2322', '1358', '69', 'code', '75', '3', '', '0', '300', '2', '200', '1', null, '2020-10-09 18:20:47');
+INSERT INTO `t_interface_assert_log` VALUES ('2323', '1359', '67', 'http code == 200', '75', '3', '', '0', '200', '0', '200', '0', null, '2020-10-09 18:20:53');
+INSERT INTO `t_interface_assert_log` VALUES ('2324', '1359', '68', 'sub code == 200', '75', '0', '$..code', '0', '[200]', '1', '[200]', '0', null, '2020-10-09 18:20:53');
+INSERT INTO `t_interface_assert_log` VALUES ('2325', '1359', '69', 'code', '75', '3', '', '0', 'as', '2', '200', '1', null, '2020-10-09 18:20:53');
+INSERT INTO `t_interface_assert_log` VALUES ('2326', '1360', '67', 'http code == 200', '75', '3', '', '0', '200', '0', '200', '0', null, '2020-10-09 18:21:07');
+INSERT INTO `t_interface_assert_log` VALUES ('2327', '1360', '68', 'sub code == 200', '75', '0', '$..code', '0', '[200', '1', '[200]', '1', null, '2020-10-09 18:21:07');
+INSERT INTO `t_interface_assert_log` VALUES ('2328', '1360', '69', 'code', '75', '3', '', '0', '200', '2', '200', '0', null, '2020-10-09 18:21:07');
+INSERT INTO `t_interface_assert_log` VALUES ('2329', '1361', '67', 'http code == 200', '75', '3', '', '0', '200', '0', '200', '0', null, '2020-10-09 18:21:32');
+INSERT INTO `t_interface_assert_log` VALUES ('2330', '1361', '68', 'sub code == 200', '75', '0', '$..code', '0', '[200]', '1', '[200]', '0', null, '2020-10-09 18:21:32');
+INSERT INTO `t_interface_assert_log` VALUES ('2331', '1361', '69', 'code', '75', '3', '', '0', '200', '2', '200', '0', null, '2020-10-09 18:21:32');
+INSERT INTO `t_interface_assert_log` VALUES ('2332', '1362', '54', '状态码=200', '69', '3', '', '0', '200', '0', '200', '0', null, '2020-10-09 18:21:32');
+INSERT INTO `t_interface_assert_log` VALUES ('2333', '1362', '55', 'username=123', '69', '0', '$..data.list[0].username', '0', '[\"123\"]', '1', '[\"123\"]', '0', null, '2020-10-09 18:21:32');
+INSERT INTO `t_interface_assert_log` VALUES ('2334', '1363', '67', 'http code == 200', '75', '3', '', '0', '200', '0', '200', '0', null, '2020-10-09 18:21:40');
+INSERT INTO `t_interface_assert_log` VALUES ('2335', '1363', '68', 'sub code == 200', '75', '0', '$..code', '0', '[200]', '1', '[200]', '0', null, '2020-10-09 18:21:40');
+INSERT INTO `t_interface_assert_log` VALUES ('2336', '1363', '69', 'code', '75', '3', '', '0', '200', '2', '200', '0', null, '2020-10-09 18:21:40');
+INSERT INTO `t_interface_assert_log` VALUES ('2337', '1364', '54', '状态码=200', '69', '3', '', '0', '200', '0', '200', '0', null, '2020-10-09 18:21:40');
+INSERT INTO `t_interface_assert_log` VALUES ('2338', '1364', '55', 'username=123', '69', '0', '$..data.list[0].username', '0', '[\"123]', '1', '[\"123\"]', '1', null, '2020-10-09 18:21:40');
+INSERT INTO `t_interface_assert_log` VALUES ('2339', '1365', '67', 'http code == 200', '75', '3', '', '0', '200', '0', '200', '0', null, '2020-10-09 18:21:53');
+INSERT INTO `t_interface_assert_log` VALUES ('2340', '1365', '68', 'sub code == 200', '75', '0', '$..code', '0', '[200]', '1', '[200]', '0', null, '2020-10-09 18:21:53');
+INSERT INTO `t_interface_assert_log` VALUES ('2341', '1365', '69', 'code', '75', '3', '', '0', '200', '2', '200', '0', null, '2020-10-09 18:21:53');
+INSERT INTO `t_interface_assert_log` VALUES ('2342', '1366', '56', '状态码=200', '70', '3', '', '0', '200', '0', '404', '1', null, '2020-10-09 18:21:53');
+INSERT INTO `t_interface_assert_log` VALUES ('2343', '1366', '57', 'code=200', '70', '0', '$..code', '0', '[200]', '1', '[]', '1', null, '2020-10-09 18:21:53');
 
 -- ----------------------------
 -- Table structure for t_interface_case
@@ -173,11 +200,11 @@ CREATE TABLE `t_interface_case` (
 -- ----------------------------
 -- Records of t_interface_case
 -- ----------------------------
-INSERT INTO `t_interface_case` VALUES ('4', '6', '69', 'user/list', '0', '查看所有的用户列表', '1', null, '{\"Token\":\"${Token}\"}', '', null, null, '1', '2020-09-26 21:14:31', '2020-10-06 20:16:19');
-INSERT INTO `t_interface_case` VALUES ('4', '6', '70', 'user/register', '1', '用户注册', '0', null, '{\"Token\":\"${Token}\"}', '', '{\"username\":\"${timestamp()}\",\"password\":\"123\",\"sex\":\"0\"}', null, '1', '2020-09-26 21:19:49', '2020-10-06 20:15:50');
+INSERT INTO `t_interface_case` VALUES ('4', '6', '69', 'user/list', '0', '查看所有的用户列表', '1', null, '{\"Token\":\"${Token}\"}', '', null, null, '1', '2020-09-26 21:14:31', '2020-10-09 18:21:45');
+INSERT INTO `t_interface_case` VALUES ('4', '6', '70', 'user/register', '1', '用户注册', '0', null, '{\"Token\":\"${Token}\"}', '', '{\"username\":\"${timestamp()}\",\"password\":\"123\",\"sex\":\"0\"}', null, '1', '2020-09-26 21:19:49', '2020-10-09 18:21:59');
 INSERT INTO `t_interface_case` VALUES ('4', '7', '71', 'project/list', '0', '查看项目列表', '0', null, '{\"Token\":\"${Token}\"}', '', null, null, '1', '2020-09-26 21:29:42', '2020-10-06 20:15:14');
 INSERT INTO `t_interface_case` VALUES ('4', '7', '73', 'project/info', '0', '查看项目详情', '1', null, '{\"Token\":\"${Token}\"}', '{\"projectId\":\"4\"}', null, null, '1', '2020-10-01 21:56:05', '2020-10-06 20:13:06');
-INSERT INTO `t_interface_case` VALUES ('4', '6', '75', '/user/login', '1', '用户登录', '0', null, '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '1', '2020-10-06 20:11:18', '2020-10-06 20:26:40');
+INSERT INTO `t_interface_case` VALUES ('4', '6', '75', '/user/login', '1', '用户登录', '0', null, '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '1', '2020-10-06 20:11:18', '2020-10-09 18:21:20');
 
 -- ----------------------------
 -- Table structure for t_interface_case_execute_log
@@ -201,7 +228,7 @@ CREATE TABLE `t_interface_case_execute_log` (
   `created_time` datetime DEFAULT NULL COMMENT '执行时间',
   `error_message` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '执行失败异常错误信息',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1358 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1367 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case_execute_log
@@ -220,6 +247,15 @@ INSERT INTO `t_interface_case_execute_log` VALUES ('1354', '75', '用户登录',
 INSERT INTO `t_interface_case_execute_log` VALUES ('1355', '71', '查看项目列表', 'http://localhost:7777/project/list', '{\"Token\":\"1044b340-b4c5-439f-a16d-73574fa921c9\"}', '', null, null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Tue, 06 Oct 2020 14:01:27 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"操作成功\",\"data\":{\"pageNum\":1,\"pageSize\":10,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":1,\"pages\":1,\"list\":[{\"created_time\":\"2020-07-29 16:26:54\",\"update_time\":\"2020-07-29 16:26:58\",\"project_id\":4,\"domain\":\"http://localhost:7777/\",\"name\":\"自动化平台接口\",\"desc\":\"描述\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1}}', '25', '系统管理员', '0', '2020-10-06 22:01:27', null);
 INSERT INTO `t_interface_case_execute_log` VALUES ('1356', '75', '用户登录', 'http://localhost:7777//user/login', '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Tue, 06 Oct 2020 14:01:28 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"登录成功\",\"data\":{\"realName\":\"系统管理员\",\"userId\":10,\"token\":\"723c00a5-c534-44fe-bdef-623a7054f571\",\"username\":\"123\",\"isEnable\":1}}', '22', '系统调度', '0', '2020-10-06 22:01:29', null);
 INSERT INTO `t_interface_case_execute_log` VALUES ('1357', '70', '用户注册', 'http://localhost:7777/user/register', '{\"Token\":\"723c00a5-c534-44fe-bdef-623a7054f571\"}', '', '{\"username\":\"1601992888712\",\"password\":\"123\",\"sex\":\"0\"}', null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Tue, 06 Oct 2020 14:01:28 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"注册成功\",\"data\":{}}', '90', '系统管理员', '0', '2020-10-06 22:01:29', null);
+INSERT INTO `t_interface_case_execute_log` VALUES ('1358', '75', '用户登录', 'http://localhost:7777//user/login', '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Fri, 09 Oct 2020 10:20:46 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"登录成功\",\"data\":{\"realName\":\"超级管理员\",\"userId\":1,\"token\":\"e671a906-3c29-4c57-86dc-674cf31670f1\",\"username\":\"123\",\"isEnable\":1}}', '163', '超级管理员', '1', '2020-10-09 18:20:47', null);
+INSERT INTO `t_interface_case_execute_log` VALUES ('1359', '75', '用户登录', 'http://localhost:7777//user/login', '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Fri, 09 Oct 2020 10:20:53 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"登录成功\",\"data\":{\"realName\":\"超级管理员\",\"userId\":1,\"token\":\"02ae5a61-b3b3-4736-aa9d-36bba864c77d\",\"username\":\"123\",\"isEnable\":1}}', '15', '超级管理员', '1', '2020-10-09 18:20:53', null);
+INSERT INTO `t_interface_case_execute_log` VALUES ('1360', '75', '用户登录', 'http://localhost:7777//user/login', '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Fri, 09 Oct 2020 10:21:06 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"登录成功\",\"data\":{\"realName\":\"超级管理员\",\"userId\":1,\"token\":\"7dbc9dee-79f9-4253-9acc-c26d6dafa967\",\"username\":\"123\",\"isEnable\":1}}', '15', '超级管理员', '1', '2020-10-09 18:21:07', null);
+INSERT INTO `t_interface_case_execute_log` VALUES ('1361', '75', '用户登录', 'http://localhost:7777//user/login', '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Fri, 09 Oct 2020 10:21:32 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"登录成功\",\"data\":{\"realName\":\"超级管理员\",\"userId\":1,\"token\":\"5b239380-c7b5-48db-8a03-51763e5b13cd\",\"username\":\"123\",\"isEnable\":1}}', '15', '系统调度', '0', '2020-10-09 18:21:32', null);
+INSERT INTO `t_interface_case_execute_log` VALUES ('1362', '69', '查看所有的用户列表', 'http://localhost:7777/user/list', '{\"Token\":\"5b239380-c7b5-48db-8a03-51763e5b13cd\"}', '', null, null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Fri, 09 Oct 2020 10:21:32 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"操作成功\",\"data\":{\"pageNum\":1,\"pageSize\":10,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":1,\"pages\":1,\"list\":[{\"userId\":1,\"username\":\"123\",\"password\":null,\"jobNumber\":\"1\",\"sex\":1,\"isEnable\":1,\"createdTime\":\"2020-10-06 22:43:09\",\"updateTime\":null,\"realName\":\"超级管理员\",\"roleId\":null}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1}}', '23', '超级管理员', '0', '2020-10-09 18:21:32', null);
+INSERT INTO `t_interface_case_execute_log` VALUES ('1363', '75', '用户登录', 'http://localhost:7777//user/login', '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Fri, 09 Oct 2020 10:21:39 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"登录成功\",\"data\":{\"realName\":\"超级管理员\",\"userId\":1,\"token\":\"797e3723-c963-4996-9893-c0d839ae00cc\",\"username\":\"123\",\"isEnable\":1}}', '22', '系统调度', '0', '2020-10-09 18:21:40', null);
+INSERT INTO `t_interface_case_execute_log` VALUES ('1364', '69', '查看所有的用户列表', 'http://localhost:7777/user/list', '{\"Token\":\"797e3723-c963-4996-9893-c0d839ae00cc\"}', '', null, null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Fri, 09 Oct 2020 10:21:39 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"操作成功\",\"data\":{\"pageNum\":1,\"pageSize\":10,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":1,\"pages\":1,\"list\":[{\"userId\":1,\"username\":\"123\",\"password\":null,\"jobNumber\":\"1\",\"sex\":1,\"isEnable\":1,\"createdTime\":\"2020-10-06 22:43:09\",\"updateTime\":null,\"realName\":\"超级管理员\",\"roleId\":null}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1}}', '21', '超级管理员', '1', '2020-10-09 18:21:40', null);
+INSERT INTO `t_interface_case_execute_log` VALUES ('1365', '75', '用户登录', 'http://localhost:7777//user/login', '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '200', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Fri, 09 Oct 2020 10:21:52 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"code\":200,\"msg\":\"登录成功\",\"data\":{\"realName\":\"超级管理员\",\"userId\":1,\"token\":\"2dd39838-cb99-49c7-bd38-dcdc53b03eb4\",\"username\":\"123\",\"isEnable\":1}}', '19', '系统调度', '0', '2020-10-09 18:21:53', null);
+INSERT INTO `t_interface_case_execute_log` VALUES ('1366', '70', '用户注册', 'http://localhost:7777/user/register11', '{\"Token\":\"2dd39838-cb99-49c7-bd38-dcdc53b03eb4\"}', '', '{\"username\":\"1602238912710\",\"password\":\"123\",\"sex\":\"0\"}', null, '404', '{\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\",\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\"Content-Type\":[\"application/json\"],\"Transfer-Encoding\":[\"chunked\"],\"Date\":[\"Fri, 09 Oct 2020 10:21:52 GMT\"],\"Keep-Alive\":[\"timeout=60\"],\"Connection\":[\"keep-alive\"]}', '{\"timestamp\":\"2020-10-09 18:21:52\",\"status\":404,\"error\":\"Not Found\",\"message\":\"No message available\",\"path\":\"/user/register11\"}', '28', '超级管理员', '1', '2020-10-09 18:21:53', null);
 
 -- ----------------------------
 -- Table structure for t_interface_case_rely_data
@@ -421,9 +457,10 @@ CREATE TABLE `t_user` (
   `real_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '真实姓名',
   `role_id` int DEFAULT NULL COMMENT '角色类型 0超级管理员 1系统管理员 2普通用户 ',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
 INSERT INTO `t_user` VALUES ('1', '123', '123', '1', '1', '1', '2020-10-06 22:43:09', '2020-10-06 22:43:09', '超级管理员', '0');
+INSERT INTO `t_user` VALUES ('84', '1234', '1234', '1', '1', '1', '2020-10-09 20:26:05', '2020-10-09 20:26:05', '1', '2');

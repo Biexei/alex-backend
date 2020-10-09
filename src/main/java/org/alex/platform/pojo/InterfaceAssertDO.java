@@ -1,7 +1,10 @@
 package org.alex.platform.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.Date;
 
 public class InterfaceAssertDO implements Serializable {
     private Integer assertId;
@@ -26,6 +29,26 @@ public class InterfaceAssertDO implements Serializable {
     private String exceptedResult;
     @NotNull(message = "排序不能为空")
     private Integer order;
+    @DateTimeFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
+    private Date createdTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
+    private Date updateTime;
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Integer getAssertId() {
         return assertId;

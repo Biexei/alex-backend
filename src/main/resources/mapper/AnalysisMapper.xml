@@ -3,8 +3,78 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.alex.platform.mapper.AnalysisMapper">
-<!--    已注册用户数-->
-    <select id="userCount" resultType="HashMap">
+    <!--    已注册用户数-->
+    <select id="userCount" resultType="Integer">
+        select COUNT(0) as userCount from `t_user`
+    </select>
 
+    <!--    测试套件总数-->
+    <select id="suiteCount" resultType="Integer">
+        select count(0) as suiteCount from `t_interface_case_suite`
+    </select>
+
+    <!--    测试套件总数-->
+    <select id="caseCount" resultType="Integer">
+        select count(0) as caseCount from `t_interface_case`
+    </select>
+
+    <!--    断言总数-->
+    <select id="assertCount" resultType="Integer">
+        select count(0) as assertCount from `t_interface_assert`
+    </select>
+
+
+    <!--    近7天用户注册量-->
+    <select id="registerWeek" resultType="org.alex.platform.pojo.AnalysisCountVO">
+        select SUBSTRING(created_time,1,10) as `date`, count(0) as `count`
+        from `t_user`
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(created_time)
+        GROUP BY SUBSTRING(created_time,1,10)
+        order by `date` asc
+    </select>
+
+    <!--    近7天用例新增数-->
+    <select id="caseWeek" resultType="org.alex.platform.pojo.AnalysisCountVO">
+        select SUBSTRING(created_time,1,10) as `date`, count(0) as `count`
+        from `t_interface_case`
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(created_time)
+        GROUP BY SUBSTRING(created_time,1,10)
+        order by `date` asc
+    </select>
+
+    <!--    近7天断言新增数-->
+    <select id="assertWeek" resultType="org.alex.platform.pojo.AnalysisCountVO">
+        select SUBSTRING(created_time,1,10) as `date`, count(0) as `count`
+        from `t_interface_assert`
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(created_time)
+        GROUP BY SUBSTRING(created_time,1,10)
+        order by `date` asc
+    </select>
+
+    <!--    近7天套件新增数-->
+    <select id="suiteWeek" resultType="org.alex.platform.pojo.AnalysisCountVO">
+        select SUBSTRING(created_time,1,10) as `date`, count(0) as `count`
+        from `t_interface_case_suite`
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(created_time)
+        GROUP BY SUBSTRING(created_time,1,10)
+        order by `date` asc
+    </select>
+
+    <!--    近7天用例执行情况统计，成功失败错误-->
+    <select id="executeLogWeek" resultType="HashMap">
+        select SUBSTRING(created_time,1,10) as `date`, `status`, count(0) as `count`
+        from `t_interface_case_execute_log`
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &gt;= date(created_time)
+        GROUP BY SUBSTRING(created_time,1,10), status
+        order by `date` asc, status asc
+    </select>
+
+    <!--    近7天断言执行情况统计，成功失败错误-->
+    <select id="assertLogWeek" resultType="HashMap">
+        select SUBSTRING(created_time,1,10) as `date`, `status`, count(0) as `count`
+        from `t_interface_assert_log`
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &gt;= date(created_time)
+        GROUP BY SUBSTRING(created_time,1,10), status
+        order by `date` asc, status asc
     </select>
 </mapper>

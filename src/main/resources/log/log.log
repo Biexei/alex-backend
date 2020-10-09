@@ -558,3 +558,811 @@ org.alex.platform.exception.LoginException: 登录已经过期，请重新登录
 2020-10-09 10:11:44.035  INFO 9440 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
 2020-10-09 10:11:44.184  INFO 9440 --- [http-nio-7777-exec-1] io.lettuce.core.EpollProvider            : Starting without optional epoll library
 2020-10-09 10:11:44.185  INFO 9440 --- [http-nio-7777-exec-1] io.lettuce.core.KqueueProvider           : Starting without optional kqueue library
+2020-10-09 18:12:19.524  INFO 14876 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 14876 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-10-09 18:12:19.536  INFO 14876 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-10-09 18:12:21.730  INFO 14876 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-10-09 18:12:21.734  INFO 14876 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-10-09 18:12:21.865  INFO 14876 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 91ms. Found 0 Redis repository interfaces.
+2020-10-09 18:12:22.618  INFO 14876 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [org.alex.platform.config.RedisConfig$$EnhancerBySpringCGLIB$$dc10d6a7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-10-09 18:12:23.369  INFO 14876 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-10-09 18:12:23.401  INFO 14876 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-09 18:12:23.402  INFO 14876 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-10-09 18:12:23.573  INFO 14876 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-09 18:12:23.575  INFO 14876 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 3819 ms
+2020-10-09 18:12:24.406  INFO 14876 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-10-09 18:12:24.654  INFO 14876 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-10-09 18:12:25.775  INFO 14876 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-09 18:12:26.344  INFO 14876 --- [main] org.alex.platform.config.TaskConfig      : ---------------------------------------定时任务开始调度---------------------------------------
+2020-10-09 18:12:27.826  INFO 14876 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-10-09 18:12:27.833  INFO 14876 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 10.06 seconds (JVM running for 12.269)
+2020-10-09 18:14:01.056  INFO 14876 --- [http-nio-7777-exec-2] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-10-09 18:14:01.063  INFO 14876 --- [http-nio-7777-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-10-09 18:14:01.063  INFO 14876 --- [http-nio-7777-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-10-09 18:14:01.070  INFO 14876 --- [http-nio-7777-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2020-10-09 18:14:01.115  WARN 14876 --- [http-nio-7777-exec-2] o.a.p.controller.ExceptionController     : org.alex.platform.exception.LoginException: 登录已经过期，请重新登录
+	at org.alex.platform.config.LoginConfig$1.preHandle(LoginConfig.java:32)
+	at org.springframework.web.servlet.HandlerExecutionChain.applyPreHandle(HandlerExecutionChain.java:141)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1035)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:634)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:123)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1594)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+
+2020-10-09 18:14:01.460 ERROR 14876 --- [http-nio-7777-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.alex.platform.exception.LoginException: 登录已经过期，请重新登录] with root cause
+
+org.alex.platform.exception.LoginException: 登录已经过期，请重新登录
+	at org.alex.platform.config.LoginConfig$1.preHandle(LoginConfig.java:32) ~[classes/:na]
+	at org.springframework.web.servlet.HandlerExecutionChain.applyPreHandle(HandlerExecutionChain.java:141) ~[spring-webmvc-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1035) ~[spring-webmvc-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943) ~[spring-webmvc-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) ~[spring-webmvc-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:634) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:83) ~[druid-1.1.10.jar:1.1.10]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[spring-web-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[spring-web-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[spring-web-5.2.5.RELEASE.jar:5.2.5.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202) ~[tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1594) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [na:1.8.0_161]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [na:1.8.0_161]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.33.jar:9.0.33]
+	at java.lang.Thread.run(Thread.java:748) [na:1.8.0_161]
+
+2020-10-09 18:14:01.467  WARN 14876 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.alex.platform.exception.LoginException: 登录已经过期，请重新登录
+	at org.alex.platform.config.LoginConfig$1.preHandle(LoginConfig.java:32)
+	at org.springframework.web.servlet.HandlerExecutionChain.applyPreHandle(HandlerExecutionChain.java:141)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1035)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:634)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:712)
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:461)
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:384)
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:312)
+	at org.apache.catalina.core.StandardHostValve.custom(StandardHostValve.java:394)
+	at org.apache.catalina.core.StandardHostValve.status(StandardHostValve.java:253)
+	at org.apache.catalina.core.StandardHostValve.throwable(StandardHostValve.java:348)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:173)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1594)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+
+2020-10-09 18:14:05.179  INFO 14876 --- [http-nio-7777-exec-3] io.lettuce.core.EpollProvider            : Starting without optional epoll library
+2020-10-09 18:14:05.183  INFO 14876 --- [http-nio-7777-exec-3] io.lettuce.core.KqueueProvider           : Starting without optional kqueue library
+2020-10-09 18:20:46.693  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------开始执行测试用例：caseId=75---------------------------------
+2020-10-09 18:20:46.699  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 1.获取case详情，caseId=75，用例详情=InterfaceCaseInfoVO{projectId=4, moduleId=6, caseId=75, url='/user/login', method=1, desc='用户登录', level=0, doc='null', headers='', params='{"username":"123","password":"123"}', data='', json='null', creater='1', createdTime=Tue Oct 06 20:11:18 CST 2020, asserts=[AssertVO{assertId=67, assertName='http code == 200', type=3, expression='', operator=0, exceptedResult='200', order=0}, AssertVO{assertId=68, assertName='sub code == 200', type=0, expression='$..code', operator=0, exceptedResult='[200]', order=1}, AssertVO{assertId=69, assertName='code', type=3, expression='', operator=0, exceptedResult='300', order=2}]}
+2020-10-09 18:20:46.699  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 2.执行case，caseId=75
+2020-10-09 18:20:46.699  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:46.699  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:20:46.700  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗headers，清洗后的内容=
+2020-10-09 18:20:46.700  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:46.700  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文={"username":"123","password":"123"}
+2020-10-09 18:20:46.700  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗params，清洗后的内容={"username":"123","password":"123"}
+2020-10-09 18:20:46.700  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:46.700  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:20:46.700  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗data，清洗后的内容=
+2020-10-09 18:20:46.805  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 开始执行POST方法
+2020-10-09 18:20:46.990  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 3.请求成功，保存执行日志，日志内容=InterfaceCaseExecuteLogDO{id=1358, caseId=75, caseUrl='http://localhost:7777//user/login', caseDesc='用户登录', requestHeaders='', requestParams='{"username":"123","password":"123"}', requestData='', requestJson='null', responseCode=200, responseHeaders='{"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:20:46 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}', responseBody='{"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"e671a906-3c29-4c57-86dc-674cf31670f1","username":"123","isEnable":1}}', runTime=163, executer='超级管理员', status=0, createdTime=Fri Oct 09 18:20:46 CST 2020, errorMessage='null'}，自增执行日志编号=1358
+2020-10-09 18:20:46.990  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 4.遍历用例的断言，依次执行... ... ...
+2020-10-09 18:20:46.990  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:20:46.990  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:20:46.990  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:46.990  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:20:46.990  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:20:46.991  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:20:46.991  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:20:46.991  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:20:46.992  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:20:46.992  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:20:46.992  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:20:47.002  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:20:47.002  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=[200]
+2020-10-09 18:20:47.002  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:47.002  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=[200]
+2020-10-09 18:20:47.002  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=[200]
+2020-10-09 18:20:47.030  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=[200], 类型=json, 响应Body={"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"e671a906-3c29-4c57-86dc-674cf31670f1","username":"123","isEnable":1}}, 提取表达式=$..code
+2020-10-09 18:20:47.030  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=[200]
+2020-10-09 18:20:47.031  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:20:47.031  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=[200]
+2020-10-09 18:20:47.031  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:20:47.031  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:20:47.039  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:20:47.040  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=300
+2020-10-09 18:20:47.040  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:47.040  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=300
+2020-10-09 18:20:47.040  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=300
+2020-10-09 18:20:47.040  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:20:47.040  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=300
+2020-10-09 18:20:47.040  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:20:47.040  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:20:47.040  WARN 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言失败
+2020-10-09 18:20:47.040  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:20:47.054  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 根据所有断言的状态，再次修改执行日志的状态
+2020-10-09 18:20:47.054  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------测试用例执行完毕：caseId=75---------------------------------
+2020-10-09 18:20:53.268  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------开始执行测试用例：caseId=75---------------------------------
+2020-10-09 18:20:53.274  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 1.获取case详情，caseId=75，用例详情=InterfaceCaseInfoVO{projectId=4, moduleId=6, caseId=75, url='/user/login', method=1, desc='用户登录', level=0, doc='null', headers='', params='{"username":"123","password":"123"}', data='', json='null', creater='1', createdTime=Tue Oct 06 20:11:18 CST 2020, asserts=[AssertVO{assertId=67, assertName='http code == 200', type=3, expression='', operator=0, exceptedResult='200', order=0}, AssertVO{assertId=68, assertName='sub code == 200', type=0, expression='$..code', operator=0, exceptedResult='[200]', order=1}, AssertVO{assertId=69, assertName='code', type=3, expression='', operator=0, exceptedResult='as', order=2}]}
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 2.执行case，caseId=75
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗headers，清洗后的内容=
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文={"username":"123","password":"123"}
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗params，清洗后的内容={"username":"123","password":"123"}
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗data，清洗后的内容=
+2020-10-09 18:20:53.275  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 开始执行POST方法
+2020-10-09 18:20:53.302  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 3.请求成功，保存执行日志，日志内容=InterfaceCaseExecuteLogDO{id=1359, caseId=75, caseUrl='http://localhost:7777//user/login', caseDesc='用户登录', requestHeaders='', requestParams='{"username":"123","password":"123"}', requestData='', requestJson='null', responseCode=200, responseHeaders='{"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:20:53 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}', responseBody='{"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"02ae5a61-b3b3-4736-aa9d-36bba864c77d","username":"123","isEnable":1}}', runTime=15, executer='超级管理员', status=0, createdTime=Fri Oct 09 18:20:53 CST 2020, errorMessage='null'}，自增执行日志编号=1359
+2020-10-09 18:20:53.302  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 4.遍历用例的断言，依次执行... ... ...
+2020-10-09 18:20:53.302  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:20:53.302  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:20:53.303  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:53.303  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:20:53.303  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:20:53.303  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:20:53.303  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:20:53.303  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:20:53.303  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:20:53.303  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:20:53.303  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:20:53.312  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:20:53.312  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=[200]
+2020-10-09 18:20:53.313  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:53.313  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=[200]
+2020-10-09 18:20:53.313  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=[200]
+2020-10-09 18:20:53.313  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=[200], 类型=json, 响应Body={"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"02ae5a61-b3b3-4736-aa9d-36bba864c77d","username":"123","isEnable":1}}, 提取表达式=$..code
+2020-10-09 18:20:53.313  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=[200]
+2020-10-09 18:20:53.313  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:20:53.313  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=[200]
+2020-10-09 18:20:53.313  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:20:53.313  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:20:53.320  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:20:53.320  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=as
+2020-10-09 18:20:53.320  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:20:53.320  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=as
+2020-10-09 18:20:53.321  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=as
+2020-10-09 18:20:53.321  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:20:53.321  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=as
+2020-10-09 18:20:53.321  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:20:53.321  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:20:53.321  WARN 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言失败
+2020-10-09 18:20:53.321  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:20:53.336  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : 根据所有断言的状态，再次修改执行日志的状态
+2020-10-09 18:20:53.336  INFO 14876 --- [http-nio-7777-exec-6] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------测试用例执行完毕：caseId=75---------------------------------
+2020-10-09 18:21:06.860  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------开始执行测试用例：caseId=75---------------------------------
+2020-10-09 18:21:06.865  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 1.获取case详情，caseId=75，用例详情=InterfaceCaseInfoVO{projectId=4, moduleId=6, caseId=75, url='/user/login', method=1, desc='用户登录', level=0, doc='null', headers='', params='{"username":"123","password":"123"}', data='', json='null', creater='1', createdTime=Tue Oct 06 20:11:18 CST 2020, asserts=[AssertVO{assertId=67, assertName='http code == 200', type=3, expression='', operator=0, exceptedResult='200', order=0}, AssertVO{assertId=68, assertName='sub code == 200', type=0, expression='$..code', operator=0, exceptedResult='[200', order=1}, AssertVO{assertId=69, assertName='code', type=3, expression='', operator=0, exceptedResult='200', order=2}]}
+2020-10-09 18:21:06.865  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 2.执行case，caseId=75
+2020-10-09 18:21:06.865  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:06.866  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:06.866  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗headers，清洗后的内容=
+2020-10-09 18:21:06.866  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:06.866  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文={"username":"123","password":"123"}
+2020-10-09 18:21:06.866  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗params，清洗后的内容={"username":"123","password":"123"}
+2020-10-09 18:21:06.866  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:06.866  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:06.866  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗data，清洗后的内容=
+2020-10-09 18:21:06.866  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 开始执行POST方法
+2020-10-09 18:21:06.892  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 3.请求成功，保存执行日志，日志内容=InterfaceCaseExecuteLogDO{id=1360, caseId=75, caseUrl='http://localhost:7777//user/login', caseDesc='用户登录', requestHeaders='', requestParams='{"username":"123","password":"123"}', requestData='', requestJson='null', responseCode=200, responseHeaders='{"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:21:06 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}', responseBody='{"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"7dbc9dee-79f9-4253-9acc-c26d6dafa967","username":"123","isEnable":1}}', runTime=15, executer='超级管理员', status=0, createdTime=Fri Oct 09 18:21:06 CST 2020, errorMessage='null'}，自增执行日志编号=1360
+2020-10-09 18:21:06.892  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 4.遍历用例的断言，依次执行... ... ...
+2020-10-09 18:21:06.892  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:06.892  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:06.892  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:06.892  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:06.893  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:06.893  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:21:06.893  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:06.893  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:06.893  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:21:06.893  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:06.893  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:06.900  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:06.901  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=[200
+2020-10-09 18:21:06.901  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:06.901  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=[200
+2020-10-09 18:21:06.901  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=[200
+2020-10-09 18:21:06.901  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=[200], 类型=json, 响应Body={"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"7dbc9dee-79f9-4253-9acc-c26d6dafa967","username":"123","isEnable":1}}, 提取表达式=$..code
+2020-10-09 18:21:06.901  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=[200
+2020-10-09 18:21:06.901  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:06.901  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=[200]
+2020-10-09 18:21:06.901  WARN 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言失败
+2020-10-09 18:21:06.901  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:06.910  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:06.922  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : 根据所有断言的状态，再次修改执行日志的状态
+2020-10-09 18:21:06.922  INFO 14876 --- [http-nio-7777-exec-5] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------测试用例执行完毕：caseId=75---------------------------------
+2020-10-09 18:21:32.123  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------开始执行测试用例：caseId=69---------------------------------
+2020-10-09 18:21:32.129  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 1.获取case详情，caseId=69，用例详情=InterfaceCaseInfoVO{projectId=4, moduleId=6, caseId=69, url='user/list', method=0, desc='查看所有的用户列表', level=1, doc='null', headers='{"Token":"${Token}"}', params='', data='null', json='null', creater='1', createdTime=Sat Sep 26 21:14:31 CST 2020, asserts=[AssertVO{assertId=54, assertName='状态码=200', type=3, expression='', operator=0, exceptedResult='200', order=0}, AssertVO{assertId=55, assertName='username=123', type=0, expression='$..data.list[0].username', operator=0, exceptedResult='["123"]', order=1}]}
+2020-10-09 18:21:32.129  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 2.执行case，caseId=69
+2020-10-09 18:21:32.129  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:32.129  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文={"Token":"${Token}"}
+2020-10-09 18:21:32.129  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : relyName=Token
+2020-10-09 18:21:32.129  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------进入普通依赖数据模式
+2020-10-09 18:21:32.132  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------开始执行测试用例：caseId=75---------------------------------
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 1.获取case详情，caseId=75，用例详情=InterfaceCaseInfoVO{projectId=4, moduleId=6, caseId=75, url='/user/login', method=1, desc='用户登录', level=0, doc='null', headers='', params='{"username":"123","password":"123"}', data='', json='null', creater='1', createdTime=Tue Oct 06 20:11:18 CST 2020, asserts=[AssertVO{assertId=67, assertName='http code == 200', type=3, expression='', operator=0, exceptedResult='200', order=0}, AssertVO{assertId=68, assertName='sub code == 200', type=0, expression='$..code', operator=0, exceptedResult='[200]', order=1}, AssertVO{assertId=69, assertName='code', type=3, expression='', operator=0, exceptedResult='200', order=2}]}
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 2.执行case，caseId=75
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗headers，清洗后的内容=
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文={"username":"123","password":"123"}
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗params，清洗后的内容={"username":"123","password":"123"}
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗data，清洗后的内容=
+2020-10-09 18:21:32.136  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 开始执行POST方法
+2020-10-09 18:21:32.160  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 3.请求成功，保存执行日志，日志内容=InterfaceCaseExecuteLogDO{id=1361, caseId=75, caseUrl='http://localhost:7777//user/login', caseDesc='用户登录', requestHeaders='', requestParams='{"username":"123","password":"123"}', requestData='', requestJson='null', responseCode=200, responseHeaders='{"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:21:32 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}', responseBody='{"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"5b239380-c7b5-48db-8a03-51763e5b13cd","username":"123","isEnable":1}}', runTime=15, executer='系统调度', status=0, createdTime=Fri Oct 09 18:21:32 CST 2020, errorMessage='null'}，自增执行日志编号=1361
+2020-10-09 18:21:32.160  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 4.遍历用例的断言，依次执行... ... ...
+2020-10-09 18:21:32.160  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:32.161  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:32.161  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:32.161  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:32.161  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:32.161  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:21:32.161  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:32.161  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:32.161  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:21:32.161  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:32.161  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=[200]
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=[200]
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=[200]
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=[200], 类型=json, 响应Body={"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"5b239380-c7b5-48db-8a03-51763e5b13cd","username":"123","isEnable":1}}, 提取表达式=$..code
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=[200]
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=[200]
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:32.168  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:32.175  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:32.175  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:32.176  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:32.176  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:32.176  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:32.176  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:21:32.176  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:32.176  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:32.176  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:21:32.176  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:32.176  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:32.190  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 根据所有断言的状态，再次修改执行日志的状态
+2020-10-09 18:21:32.190  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------测试用例执行完毕：caseId=75---------------------------------
+2020-10-09 18:21:32.196  WARN 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 前置用例responseBody={"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"5b239380-c7b5-48db-8a03-51763e5b13cd","username":"123","isEnable":1}}
+2020-10-09 18:21:32.197  WARN 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 前置用例responseHeaders={"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:21:32 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}
+2020-10-09 18:21:32.197  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : jsonPath提取值并替换后的结果={"Token":"5b239380-c7b5-48db-8a03-51763e5b13cd"}
+2020-10-09 18:21:32.197  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗headers，清洗后的内容={"Token":"5b239380-c7b5-48db-8a03-51763e5b13cd"}
+2020-10-09 18:21:32.197  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:32.197  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:32.197  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗params，清洗后的内容=
+2020-10-09 18:21:32.197  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 开始执行GET方法
+2020-10-09 18:21:32.228  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 3.请求成功，保存执行日志，日志内容=InterfaceCaseExecuteLogDO{id=1362, caseId=69, caseUrl='http://localhost:7777/user/list', caseDesc='查看所有的用户列表', requestHeaders='{"Token":"5b239380-c7b5-48db-8a03-51763e5b13cd"}', requestParams='', requestData='null', requestJson='null', responseCode=200, responseHeaders='{"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:21:32 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}', responseBody='{"code":200,"msg":"操作成功","data":{"pageNum":1,"pageSize":10,"size":1,"startRow":1,"endRow":1,"total":1,"pages":1,"list":[{"userId":1,"username":"123","password":null,"jobNumber":"1","sex":1,"isEnable":1,"createdTime":"2020-10-06 22:43:09","updateTime":null,"realName":"超级管理员","roleId":null}],"prePage":0,"nextPage":0,"isFirstPage":true,"isLastPage":true,"hasPreviousPage":false,"hasNextPage":false,"navigatePages":8,"navigatepageNums":[1],"navigateFirstPage":1,"navigateLastPage":1,"firstPage":1,"lastPage":1}}', runTime=23, executer='超级管理员', status=0, createdTime=Fri Oct 09 18:21:32 CST 2020, errorMessage='null'}，自增执行日志编号=1362
+2020-10-09 18:21:32.228  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 4.遍历用例的断言，依次执行... ... ...
+2020-10-09 18:21:32.228  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:32.228  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:32.228  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:32.228  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:32.228  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:32.228  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:21:32.228  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:32.228  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:32.229  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:21:32.229  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:32.229  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:32.237  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:32.237  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=["123"]
+2020-10-09 18:21:32.237  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:32.237  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=["123"]
+2020-10-09 18:21:32.237  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=["123"]
+2020-10-09 18:21:32.240  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=["123"], 类型=json, 响应Body={"code":200,"msg":"操作成功","data":{"pageNum":1,"pageSize":10,"size":1,"startRow":1,"endRow":1,"total":1,"pages":1,"list":[{"userId":1,"username":"123","password":null,"jobNumber":"1","sex":1,"isEnable":1,"createdTime":"2020-10-06 22:43:09","updateTime":null,"realName":"超级管理员","roleId":null}],"prePage":0,"nextPage":0,"isFirstPage":true,"isLastPage":true,"hasPreviousPage":false,"hasNextPage":false,"navigatePages":8,"navigatepageNums":[1],"navigateFirstPage":1,"navigateLastPage":1,"firstPage":1,"lastPage":1}}, 提取表达式=$..data.list[0].username
+2020-10-09 18:21:32.240  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=["123"]
+2020-10-09 18:21:32.241  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:32.241  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=["123"]
+2020-10-09 18:21:32.241  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:32.241  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:32.249  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : 根据所有断言的状态，再次修改执行日志的状态
+2020-10-09 18:21:32.249  INFO 14876 --- [http-nio-7777-exec-1] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------测试用例执行完毕：caseId=69---------------------------------
+2020-10-09 18:21:40.292  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------开始执行测试用例：caseId=69---------------------------------
+2020-10-09 18:21:40.297  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 1.获取case详情，caseId=69，用例详情=InterfaceCaseInfoVO{projectId=4, moduleId=6, caseId=69, url='user/list', method=0, desc='查看所有的用户列表', level=1, doc='null', headers='{"Token":"${Token}"}', params='', data='null', json='null', creater='1', createdTime=Sat Sep 26 21:14:31 CST 2020, asserts=[AssertVO{assertId=54, assertName='状态码=200', type=3, expression='', operator=0, exceptedResult='200', order=0}, AssertVO{assertId=55, assertName='username=123', type=0, expression='$..data.list[0].username', operator=0, exceptedResult='["123]', order=1}]}
+2020-10-09 18:21:40.297  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 2.执行case，caseId=69
+2020-10-09 18:21:40.297  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:40.297  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文={"Token":"${Token}"}
+2020-10-09 18:21:40.297  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : relyName=Token
+2020-10-09 18:21:40.297  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------进入普通依赖数据模式
+2020-10-09 18:21:40.299  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------开始执行测试用例：caseId=75---------------------------------
+2020-10-09 18:21:40.304  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 1.获取case详情，caseId=75，用例详情=InterfaceCaseInfoVO{projectId=4, moduleId=6, caseId=75, url='/user/login', method=1, desc='用户登录', level=0, doc='null', headers='', params='{"username":"123","password":"123"}', data='', json='null', creater='1', createdTime=Tue Oct 06 20:11:18 CST 2020, asserts=[AssertVO{assertId=67, assertName='http code == 200', type=3, expression='', operator=0, exceptedResult='200', order=0}, AssertVO{assertId=68, assertName='sub code == 200', type=0, expression='$..code', operator=0, exceptedResult='[200]', order=1}, AssertVO{assertId=69, assertName='code', type=3, expression='', operator=0, exceptedResult='200', order=2}]}
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 2.执行case，caseId=75
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗headers，清洗后的内容=
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文={"username":"123","password":"123"}
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗params，清洗后的内容={"username":"123","password":"123"}
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗data，清洗后的内容=
+2020-10-09 18:21:40.305  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 开始执行POST方法
+2020-10-09 18:21:40.335  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 3.请求成功，保存执行日志，日志内容=InterfaceCaseExecuteLogDO{id=1363, caseId=75, caseUrl='http://localhost:7777//user/login', caseDesc='用户登录', requestHeaders='', requestParams='{"username":"123","password":"123"}', requestData='', requestJson='null', responseCode=200, responseHeaders='{"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:21:39 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}', responseBody='{"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"797e3723-c963-4996-9893-c0d839ae00cc","username":"123","isEnable":1}}', runTime=22, executer='系统调度', status=0, createdTime=Fri Oct 09 18:21:40 CST 2020, errorMessage='null'}，自增执行日志编号=1363
+2020-10-09 18:21:40.335  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 4.遍历用例的断言，依次执行... ... ...
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:40.336  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:40.343  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:40.344  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=[200]
+2020-10-09 18:21:40.344  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:40.344  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=[200]
+2020-10-09 18:21:40.344  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=[200]
+2020-10-09 18:21:40.344  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=[200], 类型=json, 响应Body={"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"797e3723-c963-4996-9893-c0d839ae00cc","username":"123","isEnable":1}}, 提取表达式=$..code
+2020-10-09 18:21:40.344  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=[200]
+2020-10-09 18:21:40.344  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:40.344  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=[200]
+2020-10-09 18:21:40.344  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:40.344  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:40.351  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:40.361  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 根据所有断言的状态，再次修改执行日志的状态
+2020-10-09 18:21:40.361  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------测试用例执行完毕：caseId=75---------------------------------
+2020-10-09 18:21:40.365  WARN 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 前置用例responseBody={"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"797e3723-c963-4996-9893-c0d839ae00cc","username":"123","isEnable":1}}
+2020-10-09 18:21:40.365  WARN 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 前置用例responseHeaders={"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:21:39 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}
+2020-10-09 18:21:40.366  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : jsonPath提取值并替换后的结果={"Token":"797e3723-c963-4996-9893-c0d839ae00cc"}
+2020-10-09 18:21:40.366  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗headers，清洗后的内容={"Token":"797e3723-c963-4996-9893-c0d839ae00cc"}
+2020-10-09 18:21:40.366  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:40.366  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:40.366  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗params，清洗后的内容=
+2020-10-09 18:21:40.366  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 开始执行GET方法
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 3.请求成功，保存执行日志，日志内容=InterfaceCaseExecuteLogDO{id=1364, caseId=69, caseUrl='http://localhost:7777/user/list', caseDesc='查看所有的用户列表', requestHeaders='{"Token":"797e3723-c963-4996-9893-c0d839ae00cc"}', requestParams='', requestData='null', requestJson='null', responseCode=200, responseHeaders='{"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:21:39 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}', responseBody='{"code":200,"msg":"操作成功","data":{"pageNum":1,"pageSize":10,"size":1,"startRow":1,"endRow":1,"total":1,"pages":1,"list":[{"userId":1,"username":"123","password":null,"jobNumber":"1","sex":1,"isEnable":1,"createdTime":"2020-10-06 22:43:09","updateTime":null,"realName":"超级管理员","roleId":null}],"prePage":0,"nextPage":0,"isFirstPage":true,"isLastPage":true,"hasPreviousPage":false,"hasNextPage":false,"navigatePages":8,"navigatepageNums":[1],"navigateFirstPage":1,"navigateLastPage":1,"firstPage":1,"lastPage":1}}', runTime=21, executer='超级管理员', status=0, createdTime=Fri Oct 09 18:21:40 CST 2020, errorMessage='null'}，自增执行日志编号=1364
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 4.遍历用例的断言，依次执行... ... ...
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:40.394  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:21:40.395  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:40.395  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:40.400  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:40.400  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=["123]
+2020-10-09 18:21:40.400  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:40.400  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=["123]
+2020-10-09 18:21:40.400  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=["123]
+2020-10-09 18:21:40.400  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=["123"], 类型=json, 响应Body={"code":200,"msg":"操作成功","data":{"pageNum":1,"pageSize":10,"size":1,"startRow":1,"endRow":1,"total":1,"pages":1,"list":[{"userId":1,"username":"123","password":null,"jobNumber":"1","sex":1,"isEnable":1,"createdTime":"2020-10-06 22:43:09","updateTime":null,"realName":"超级管理员","roleId":null}],"prePage":0,"nextPage":0,"isFirstPage":true,"isLastPage":true,"hasPreviousPage":false,"hasNextPage":false,"navigatePages":8,"navigatepageNums":[1],"navigateFirstPage":1,"navigateLastPage":1,"firstPage":1,"lastPage":1}}, 提取表达式=$..data.list[0].username
+2020-10-09 18:21:40.400  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=["123]
+2020-10-09 18:21:40.400  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:40.400  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=["123"]
+2020-10-09 18:21:40.400  WARN 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言失败
+2020-10-09 18:21:40.400  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:40.412  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : 根据所有断言的状态，再次修改执行日志的状态
+2020-10-09 18:21:40.412  INFO 14876 --- [http-nio-7777-exec-9] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------测试用例执行完毕：caseId=69---------------------------------
+2020-10-09 18:21:52.631  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------开始执行测试用例：caseId=70---------------------------------
+2020-10-09 18:21:52.637  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 1.获取case详情，caseId=70，用例详情=InterfaceCaseInfoVO{projectId=4, moduleId=6, caseId=70, url='user/register11', method=1, desc='用户注册', level=0, doc='null', headers='{"Token":"${Token}"}', params='', data='{"username":"${timestamp()}","password":"123","sex":"0"}', json='null', creater='1', createdTime=Sat Sep 26 21:19:49 CST 2020, asserts=[AssertVO{assertId=56, assertName='状态码=200', type=3, expression='', operator=0, exceptedResult='200', order=0}, AssertVO{assertId=57, assertName='code=200', type=0, expression='$..code', operator=0, exceptedResult='[200]', order=1}]}
+2020-10-09 18:21:52.637  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 2.执行case，caseId=70
+2020-10-09 18:21:52.637  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.637  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文={"Token":"${Token}"}
+2020-10-09 18:21:52.637  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : relyName=Token
+2020-10-09 18:21:52.637  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------进入普通依赖数据模式
+2020-10-09 18:21:52.639  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------开始执行测试用例：caseId=75---------------------------------
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 1.获取case详情，caseId=75，用例详情=InterfaceCaseInfoVO{projectId=4, moduleId=6, caseId=75, url='/user/login', method=1, desc='用户登录', level=0, doc='null', headers='', params='{"username":"123","password":"123"}', data='', json='null', creater='1', createdTime=Tue Oct 06 20:11:18 CST 2020, asserts=[AssertVO{assertId=67, assertName='http code == 200', type=3, expression='', operator=0, exceptedResult='200', order=0}, AssertVO{assertId=68, assertName='sub code == 200', type=0, expression='$..code', operator=0, exceptedResult='[200]', order=1}, AssertVO{assertId=69, assertName='code', type=3, expression='', operator=0, exceptedResult='200', order=2}]}
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 2.执行case，caseId=75
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗headers，清洗后的内容=
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文={"username":"123","password":"123"}
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗params，清洗后的内容={"username":"123","password":"123"}
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗data，清洗后的内容=
+2020-10-09 18:21:52.644  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 开始执行POST方法
+2020-10-09 18:21:52.676  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 3.请求成功，保存执行日志，日志内容=InterfaceCaseExecuteLogDO{id=1365, caseId=75, caseUrl='http://localhost:7777//user/login', caseDesc='用户登录', requestHeaders='', requestParams='{"username":"123","password":"123"}', requestData='', requestJson='null', responseCode=200, responseHeaders='{"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:21:52 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}', responseBody='{"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"2dd39838-cb99-49c7-bd38-dcdc53b03eb4","username":"123","isEnable":1}}', runTime=19, executer='系统调度', status=0, createdTime=Fri Oct 09 18:21:52 CST 2020, errorMessage='null'}，自增执行日志编号=1365
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 4.遍历用例的断言，依次执行... ... ...
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:52.677  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=[200]
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=[200]
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=[200]
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=[200], 类型=json, 响应Body={"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"2dd39838-cb99-49c7-bd38-dcdc53b03eb4","username":"123","isEnable":1}}, 提取表达式=$..code
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=[200]
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=[200]
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:52.684  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:52.690  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:52.691  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:52.691  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.691  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:52.691  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:52.691  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=200, 类型=code, 响应Body=200, 提取表达式=
+2020-10-09 18:21:52.691  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:52.691  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:52.691  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=200
+2020-10-09 18:21:52.691  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言通过
+2020-10-09 18:21:52.691  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:52.700  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 根据所有断言的状态，再次修改执行日志的状态
+2020-10-09 18:21:52.700  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------测试用例执行完毕：caseId=75---------------------------------
+2020-10-09 18:21:52.705  WARN 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 前置用例responseBody={"code":200,"msg":"登录成功","data":{"realName":"超级管理员","userId":1,"token":"2dd39838-cb99-49c7-bd38-dcdc53b03eb4","username":"123","isEnable":1}}
+2020-10-09 18:21:52.705  WARN 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 前置用例responseHeaders={"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:21:52 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}
+2020-10-09 18:21:52.705  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : jsonPath提取值并替换后的结果={"Token":"2dd39838-cb99-49c7-bd38-dcdc53b03eb4"}
+2020-10-09 18:21:52.705  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗headers，清洗后的内容={"Token":"2dd39838-cb99-49c7-bd38-dcdc53b03eb4"}
+2020-10-09 18:21:52.705  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.705  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=
+2020-10-09 18:21:52.705  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗params，清洗后的内容=
+2020-10-09 18:21:52.705  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.705  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文={"username":"${timestamp()}","password":"123","sex":"0"}
+2020-10-09 18:21:52.705  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : relyName=timestamp()
+2020-10-09 18:21:52.705  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------进入预置方法/动态SQL模式
+2020-10-09 18:21:52.705  WARN 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预置方法名称/动态SQL依赖名称=timestamp
+2020-10-09 18:21:52.709  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------进入预置方法模式
+2020-10-09 18:21:52.710  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 方法名称=timestamp，方法参数=[]
+2020-10-09 18:21:52.710  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预置方法执行并替换后的结果={"username":"1602238912710","password":"123","sex":"0"}
+2020-10-09 18:21:52.710  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗data，清洗后的内容={"username":"1602238912710","password":"123","sex":"0"}
+2020-10-09 18:21:52.710  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 开始执行POST方法
+2020-10-09 18:21:52.746  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 3.请求成功，保存执行日志，日志内容=InterfaceCaseExecuteLogDO{id=1366, caseId=70, caseUrl='http://localhost:7777/user/register11', caseDesc='用户注册', requestHeaders='{"Token":"2dd39838-cb99-49c7-bd38-dcdc53b03eb4"}', requestParams='', requestData='{"username":"1602238912710","password":"123","sex":"0"}', requestJson='null', responseCode=404, responseHeaders='{"Vary":["Origin","Access-Control-Request-Method","Access-Control-Request-Headers","Origin","Access-Control-Request-Method","Access-Control-Request-Headers"],"Content-Type":["application/json"],"Transfer-Encoding":["chunked"],"Date":["Fri, 09 Oct 2020 10:21:52 GMT"],"Keep-Alive":["timeout=60"],"Connection":["keep-alive"]}', responseBody='{"timestamp":"2020-10-09 18:21:52","status":404,"error":"Not Found","message":"No message available","path":"/user/register11"}', runTime=28, executer='超级管理员', status=0, createdTime=Fri Oct 09 18:21:52 CST 2020, errorMessage='null'}，自增执行日志编号=1366
+2020-10-09 18:21:52.746  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 4.遍历用例的断言，依次执行... ... ...
+2020-10-09 18:21:52.746  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:52.746  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=200
+2020-10-09 18:21:52.747  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.747  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=200
+2020-10-09 18:21:52.747  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=200
+2020-10-09 18:21:52.747  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=404, 类型=code, 响应Body=404, 提取表达式=
+2020-10-09 18:21:52.747  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=200
+2020-10-09 18:21:52.747  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:52.747  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=404
+2020-10-09 18:21:52.747  WARN 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言失败
+2020-10-09 18:21:52.747  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:52.752  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 5.清洗断言预期结果... ... ...
+2020-10-09 18:21:52.752  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗内容为=[200]
+2020-10-09 18:21:52.752  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------开始字符串解析流程--------------------------------------
+2020-10-09 18:21:52.752  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : --------------------------------------待解析字符串原文=[200]
+2020-10-09 18:21:52.752  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 清洗${}模式，清洗后的结果=[200]
+2020-10-09 18:21:52.752  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言实际结果=[], 类型=json, 响应Body={"timestamp":"2020-10-09 18:21:52","status":404,"error":"Not Found","message":"No message available","path":"/user/register11"}, 提取表达式=$..code
+2020-10-09 18:21:52.753  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 预期结果=[200]
+2020-10-09 18:21:52.753  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 操作符=0
+2020-10-09 18:21:52.753  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 实际结果=[]
+2020-10-09 18:21:52.753  WARN 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 断言失败
+2020-10-09 18:21:52.753  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 保存断言日志
+2020-10-09 18:21:52.765  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : 根据所有断言的状态，再次修改执行日志的状态
+2020-10-09 18:21:52.765  INFO 14876 --- [http-nio-7777-exec-10] o.a.p.s.impl.InterfaceCaseServiceImpl    : ---------------------------------测试用例执行完毕：caseId=70---------------------------------
+2020-10-09 20:13:59.354  WARN 14876 --- [http-nio-7777-exec-1] o.a.p.controller.ExceptionController     : org.alex.platform.exception.LoginException: 登录已经过期，请重新登录
+	at org.alex.platform.config.LoginConfig$1.preHandle(LoginConfig.java:36)
+	at org.springframework.web.servlet.HandlerExecutionChain.applyPreHandle(HandlerExecutionChain.java:141)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1035)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:634)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at com.alibaba.druid.support.http.WebStatFilter.doFilter(WebStatFilter.java:123)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1594)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+
+2020-10-09 20:43:42.040  INFO 8092 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 8092 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-10-09 20:43:42.042  INFO 8092 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-10-09 20:43:43.685  INFO 8092 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-10-09 20:43:43.687  INFO 8092 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-10-09 20:43:43.757  INFO 8092 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57ms. Found 0 Redis repository interfaces.
+2020-10-09 20:43:44.113  INFO 8092 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [org.alex.platform.config.RedisConfig$$EnhancerBySpringCGLIB$$3d5f68ed] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-10-09 20:43:44.686  INFO 8092 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-10-09 20:43:44.701  INFO 8092 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-09 20:43:44.702  INFO 8092 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-10-09 20:43:44.883  INFO 8092 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-09 20:43:44.884  INFO 8092 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2722 ms
+2020-10-09 20:43:45.517  INFO 8092 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-10-09 20:43:45.718  INFO 8092 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-10-09 20:43:46.784  INFO 8092 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-09 20:43:47.187  INFO 8092 --- [main] org.alex.platform.config.TaskConfig      : ---------------------------------------定时任务开始调度---------------------------------------
+2020-10-09 20:43:48.455  INFO 8092 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-10-09 20:43:48.458  INFO 8092 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 7.381 seconds (JVM running for 9.121)
+2020-10-09 20:44:04.543  INFO 8092 --- [http-nio-7777-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-10-09 20:44:04.549  INFO 8092 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-10-09 20:44:04.549  INFO 8092 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-10-09 20:44:04.559  INFO 8092 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
+2020-10-09 20:57:31.360  INFO 15784 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 15784 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-10-09 20:57:31.363  INFO 15784 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-10-09 20:57:32.387  INFO 15784 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-10-09 20:57:32.389  INFO 15784 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-10-09 20:57:32.470  INFO 15784 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 68ms. Found 0 Redis repository interfaces.
+2020-10-09 20:57:32.757  INFO 15784 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [org.alex.platform.config.RedisConfig$$EnhancerBySpringCGLIB$$963a1cdb] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-10-09 20:57:33.040  INFO 15784 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-10-09 20:57:33.049  INFO 15784 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-09 20:57:33.049  INFO 15784 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-10-09 20:57:33.137  INFO 15784 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-09 20:57:33.137  INFO 15784 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1717 ms
+2020-10-09 20:57:33.552  INFO 15784 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-10-09 20:57:33.673  INFO 15784 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-10-09 20:57:34.306  INFO 15784 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-09 20:57:34.610  INFO 15784 --- [main] org.alex.platform.config.TaskConfig      : ---------------------------------------定时任务开始调度---------------------------------------
+2020-10-09 20:57:35.242  INFO 15784 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-10-09 20:57:35.246  INFO 15784 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 4.48 seconds (JVM running for 5.286)
+2020-10-09 20:57:43.539  INFO 15784 --- [http-nio-7777-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-10-09 20:57:43.546  INFO 15784 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-10-09 20:57:43.546  INFO 15784 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-10-09 20:57:43.555  INFO 15784 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
+2020-10-09 20:59:17.535  INFO 11588 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 11588 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-10-09 20:59:17.537  INFO 11588 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-10-09 20:59:18.407  INFO 11588 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-10-09 20:59:18.409  INFO 11588 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-10-09 20:59:18.483  INFO 11588 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61ms. Found 0 Redis repository interfaces.
+2020-10-09 20:59:18.765  INFO 11588 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [org.alex.platform.config.RedisConfig$$EnhancerBySpringCGLIB$$c631af70] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-10-09 20:59:19.080  INFO 11588 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-10-09 20:59:19.091  INFO 11588 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-09 20:59:19.096  INFO 11588 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-10-09 20:59:19.219  INFO 11588 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-09 20:59:19.220  INFO 11588 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1630 ms
+2020-10-09 20:59:19.664  INFO 11588 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-10-09 20:59:19.787  INFO 11588 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-10-09 20:59:20.411  INFO 11588 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-09 20:59:20.718  INFO 11588 --- [main] org.alex.platform.config.TaskConfig      : ---------------------------------------定时任务开始调度---------------------------------------
+2020-10-09 20:59:21.339  INFO 11588 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-10-09 20:59:21.343  INFO 11588 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 4.315 seconds (JVM running for 5.147)
+2020-10-09 20:59:26.012  INFO 11588 --- [http-nio-7777-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-10-09 20:59:26.019  INFO 11588 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-10-09 20:59:26.019  INFO 11588 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-10-09 20:59:26.027  INFO 11588 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2020-10-09 21:00:35.737  INFO 5220 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 5220 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-10-09 21:00:35.742  INFO 5220 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-10-09 21:00:37.116  INFO 5220 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-10-09 21:00:37.119  INFO 5220 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-10-09 21:00:37.189  INFO 5220 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57ms. Found 0 Redis repository interfaces.
+2020-10-09 21:00:37.545  INFO 5220 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [org.alex.platform.config.RedisConfig$$EnhancerBySpringCGLIB$$17833e1d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-10-09 21:00:37.824  INFO 5220 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-10-09 21:00:37.833  INFO 5220 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-09 21:00:37.833  INFO 5220 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-10-09 21:00:37.924  INFO 5220 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-09 21:00:37.924  INFO 5220 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2088 ms
+2020-10-09 21:00:38.632  INFO 5220 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-10-09 21:00:38.791  INFO 5220 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-10-09 21:00:39.395  INFO 5220 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-09 21:00:39.721  INFO 5220 --- [main] org.alex.platform.config.TaskConfig      : ---------------------------------------定时任务开始调度---------------------------------------
+2020-10-09 21:00:40.379  INFO 5220 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-10-09 21:00:40.383  INFO 5220 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 5.217 seconds (JVM running for 6.135)
+2020-10-09 21:00:43.360  INFO 5220 --- [http-nio-7777-exec-2] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-10-09 21:00:43.367  INFO 5220 --- [http-nio-7777-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-10-09 21:00:43.367  INFO 5220 --- [http-nio-7777-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-10-09 21:00:43.376  INFO 5220 --- [http-nio-7777-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
+2020-10-09 21:20:42.841  INFO 2964 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 2964 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-10-09 21:20:42.844  INFO 2964 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-10-09 21:20:43.848  INFO 2964 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-10-09 21:20:43.851  INFO 2964 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-10-09 21:20:43.928  INFO 2964 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61ms. Found 0 Redis repository interfaces.
+2020-10-09 21:20:44.213  INFO 2964 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [org.alex.platform.config.RedisConfig$$EnhancerBySpringCGLIB$$ece8a9f7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-10-09 21:20:44.502  INFO 2964 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-10-09 21:20:44.512  INFO 2964 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-09 21:20:44.512  INFO 2964 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-10-09 21:20:44.641  INFO 2964 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-09 21:20:44.643  INFO 2964 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1719 ms
+2020-10-09 21:20:45.128  INFO 2964 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-10-09 21:20:45.251  INFO 2964 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-10-09 21:20:45.874  INFO 2964 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-09 21:20:46.208  INFO 2964 --- [main] org.alex.platform.config.TaskConfig      : ---------------------------------------定时任务开始调度---------------------------------------
+2020-10-09 21:20:46.851  INFO 2964 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-10-09 21:20:46.854  INFO 2964 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 4.505 seconds (JVM running for 5.293)
+2020-10-09 21:20:50.233  INFO 2964 --- [http-nio-7777-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-10-09 21:20:50.240  INFO 2964 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-10-09 21:20:50.240  INFO 2964 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-10-09 21:20:50.249  INFO 2964 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
+2020-10-09 21:21:12.083  INFO 6336 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 6336 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-10-09 21:21:12.086  INFO 6336 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-10-09 21:21:13.364  INFO 6336 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-10-09 21:21:13.373  INFO 6336 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-10-09 21:21:13.448  INFO 6336 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 58ms. Found 0 Redis repository interfaces.
+2020-10-09 21:21:13.713  INFO 6336 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [org.alex.platform.config.RedisConfig$$EnhancerBySpringCGLIB$$424ca24c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-10-09 21:21:13.993  INFO 6336 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-10-09 21:21:14.012  INFO 6336 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-09 21:21:14.013  INFO 6336 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-10-09 21:21:14.109  INFO 6336 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-09 21:21:14.109  INFO 6336 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1963 ms
+2020-10-09 21:21:14.514  INFO 6336 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-10-09 21:21:14.643  INFO 6336 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-10-09 21:21:15.271  INFO 6336 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-09 21:21:15.587  INFO 6336 --- [main] org.alex.platform.config.TaskConfig      : ---------------------------------------定时任务开始调度---------------------------------------
+2020-10-09 21:21:16.197  INFO 6336 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-10-09 21:21:16.201  INFO 6336 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 4.69 seconds (JVM running for 5.574)
+2020-10-09 21:21:20.481  INFO 6336 --- [http-nio-7777-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-10-09 21:21:20.488  INFO 6336 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-10-09 21:21:20.488  INFO 6336 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-10-09 21:21:20.498  INFO 6336 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
+2020-10-09 21:36:03.535  INFO 11576 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 11576 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-10-09 21:36:03.538  INFO 11576 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-10-09 21:36:04.326  INFO 11576 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-10-09 21:36:04.328  INFO 11576 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-10-09 21:36:04.395  INFO 11576 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 55ms. Found 0 Redis repository interfaces.
+2020-10-09 21:36:04.656  INFO 11576 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [org.alex.platform.config.RedisConfig$$EnhancerBySpringCGLIB$$fe473efe] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-10-09 21:36:04.924  INFO 11576 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-10-09 21:36:04.934  INFO 11576 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-09 21:36:04.935  INFO 11576 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-10-09 21:36:05.018  INFO 11576 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-09 21:36:05.018  INFO 11576 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1423 ms
+2020-10-09 21:36:05.401  INFO 11576 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-10-09 21:36:05.520  INFO 11576 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-10-09 21:36:06.099  INFO 11576 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-09 21:36:06.382  INFO 11576 --- [main] org.alex.platform.config.TaskConfig      : ---------------------------------------定时任务开始调度---------------------------------------
+2020-10-09 21:36:06.953  INFO 11576 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-10-09 21:36:06.956  INFO 11576 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 3.895 seconds (JVM running for 4.728)
+2020-10-09 21:36:12.437  INFO 11576 --- [http-nio-7777-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-10-09 21:36:12.443  INFO 11576 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-10-09 21:36:12.443  INFO 11576 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-10-09 21:36:12.452  INFO 11576 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2020-10-09 21:39:03.876  INFO 2188 --- [main] org.alex.platform.PlatformApplication    : Starting PlatformApplication on DESKTOP-KGA3ETP with PID 2188 (C:\Users\10147\IdeaProjects\platform\target\classes started by beix in C:\Users\10147\IdeaProjects\platform)
+2020-10-09 21:39:03.881  INFO 2188 --- [main] org.alex.platform.PlatformApplication    : No active profile set, falling back to default profiles: default
+2020-10-09 21:39:04.801  INFO 2188 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-10-09 21:39:04.803  INFO 2188 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-10-09 21:39:04.871  INFO 2188 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 55ms. Found 0 Redis repository interfaces.
+2020-10-09 21:39:05.133  INFO 2188 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'redisConfig' of type [org.alex.platform.config.RedisConfig$$EnhancerBySpringCGLIB$$1b7fa0e4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-10-09 21:39:05.408  INFO 2188 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2020-10-09 21:39:05.416  INFO 2188 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-10-09 21:39:05.417  INFO 2188 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-10-09 21:39:05.495  INFO 2188 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-10-09 21:39:05.495  INFO 2188 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1545 ms
+2020-10-09 21:39:05.894  INFO 2188 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-10-09 21:39:06.028  INFO 2188 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-10-09 21:39:06.599  INFO 2188 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-09 21:39:06.880  INFO 2188 --- [main] org.alex.platform.config.TaskConfig      : ---------------------------------------定时任务开始调度---------------------------------------
+2020-10-09 21:39:07.458  INFO 2188 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2020-10-09 21:39:07.461  INFO 2188 --- [main] org.alex.platform.PlatformApplication    : Started PlatformApplication in 4.008 seconds (JVM running for 4.724)
+2020-10-09 21:39:13.957  INFO 2188 --- [http-nio-7777-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [1593331780,1593586548,1593595767] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2020-10-09 21:39:13.966  INFO 2188 --- [http-nio-7777-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-10-09 21:39:13.966  INFO 2188 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-10-09 21:39:13.971  INFO 2188 --- [http-nio-7777-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms

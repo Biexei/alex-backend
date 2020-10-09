@@ -13,6 +13,8 @@
             <if test= "operator != null">`operator`,</if>
             <if test= "exceptedResult != null">`excepted_result`,</if>
             <if test= "order != null">`order`,</if>
+            <if test= "createdTime != null">`created_time`,</if>
+            <if test= "updateTime != null">`update_time`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test= "assertName != null">#{assertName},</if>
@@ -22,6 +24,8 @@
             <if test= "operator != null">#{operator},</if>
             <if test= "exceptedResult != null">#{exceptedResult},</if>
             <if test= "order != null">#{order},</if>
+            <if test= "createdTime != null">#{createdTime},</if>
+            <if test= "updateTime != null">#{updateTime},</if>
         </trim>
     </insert>
 
@@ -35,6 +39,7 @@
             `operator` = #{operator},
             `excepted_result` = #{exceptedResult},
             `order` = #{order},
+            `update_time` = #{updateTime},
         </set>
         where `assert_id` = #{assertId}
     </update>

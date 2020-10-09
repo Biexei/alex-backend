@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class InterfaceAssertServiceImpl implements InterfaceAssertService {
     @Autowired
@@ -41,6 +43,9 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
             LOG.warn("新增断言，用例编号不存在，caseId={}", caseId);
             throw new BusinessException("用例编号不存在");
         }
+        Date date = new Date();
+        interfaceAssertDO.setCreatedTime(date);
+        interfaceAssertDO.setUpdateTime(date);
         interfaceAssertMapper.insertAssert(interfaceAssertDO);
     }
 
@@ -63,6 +68,7 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
             LOG.warn("新增断言，断言排序重复");
             throw new BusinessException("断言排序重复");
         }
+        interfaceAssertDO.setUpdateTime(new Date());
         interfaceAssertMapper.updateAssert(interfaceAssertDO);
     }
 
