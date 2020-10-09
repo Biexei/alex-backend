@@ -34,6 +34,7 @@ public class ExceptionController {
     public Result globalException(Exception e) {
         e.printStackTrace();
         if (e instanceof DataAccessException) {
+            LOG.error(ExceptionUtil.msg(e));
             return Result.fail(504, "数据库异常");
         } else if (e instanceof MethodArgumentNotValidException) { // json请求验证-requestBody
             BindingResult bindingResult = ((MethodArgumentNotValidException) e).getBindingResult();
@@ -42,6 +43,7 @@ public class ExceptionController {
             LOG.warn(msg);
             return Result.fail(501, msg);
         } else if (e instanceof ResourceAccessException) {
+            LOG.error(ExceptionUtil.msg(e));
             return Result.fail(502, "代理服务器未开启" + e.getMessage());
         } else if (e instanceof BindException) { // 表单请求验证
             BindException be = (BindException) e;
@@ -59,7 +61,7 @@ public class ExceptionController {
             LOG.error(ExceptionUtil.msg(e));
             return Result.fail(504, e.getMessage());
         } else if (e instanceof LoginException) {
-            LOG.error(ExceptionUtil.msg(e));
+            LOG.warn(ExceptionUtil.msg(e));
             return Result.fail(400, e.getMessage());
         } else {
             LOG.error(ExceptionUtil.msg(e));
