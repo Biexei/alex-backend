@@ -23,20 +23,45 @@ public class AnalysisController {
      */
     @GetMapping("/count")
     public Result countAll() {
+        LinkedList<HashMap<String, Object>> list = new LinkedList<>();
         Integer userCount = analysisService.userCount();
         Integer suiteCount = analysisService.suiteCount();
         Integer assertCount = analysisService.assertCount();
         Integer caseCount = analysisService.caseCount();
-        HashMap<String, Integer> map = new HashMap<>();
-        map.put("userCount", userCount);
-        map.put("suiteCount", suiteCount);
-        map.put("assertCount", assertCount);
-        map.put("caseCount", caseCount);
-        return Result.success(map);
+        HashMap<String, Object> userMap = new HashMap<>();
+        userMap.put("类型", "用户");
+        userMap.put("总数", userCount);
+
+
+        HashMap<String, Object> caseMap = new HashMap<>();
+        caseMap.put("类型", "用例");
+        caseMap.put("总数", caseCount);
+
+        HashMap<String, Object> suiteMap = new HashMap<>();
+        suiteMap.put("类型", "测试套件");
+        suiteMap.put("总数", suiteCount);
+
+        HashMap<String, Object> assertMap = new HashMap<>();
+        assertMap.put("类型", "断言");
+        assertMap.put("总数", assertCount);
+
+
+        list.add(userMap);
+        list.add(caseMap);
+        list.add(assertMap);
+        list.add(suiteMap);
+
+        return Result.success(list);
     }
 
+    /**
+     * 近7天用户注册数量
+     *
+     * @return Result
+     */
     @GetMapping("/week/register")
     public Result registerWeek() {
+        LinkedList<TreeMap<String, Object>> list = new LinkedList<>();
         TreeMap<String, Integer> days = interval7Days();
         ArrayList<AnalysisCountVO> registerWeek = analysisService.registerWeek();
         for (AnalysisCountVO analysisCountVO : registerWeek) {
@@ -44,7 +69,86 @@ public class AnalysisController {
             Integer count = analysisCountVO.getCount();
             days.put(date, count);
         }
-        return Result.success(days);
+        for (Map.Entry entry : days.entrySet()) {
+            TreeMap<String, Object> map = new TreeMap<>();
+            map.put("日期", entry.getKey());
+            map.put("新增用户", entry.getValue());
+            list.add(map);
+        }
+        return Result.success(list);
+    }
+
+    /**
+     * 近7天用例新增数
+     *
+     * @return Result
+     */
+    @GetMapping("/week/case")
+    public Result caseWeek() {
+        LinkedList<TreeMap<String, Object>> list = new LinkedList<>();
+        TreeMap<String, Integer> days = interval7Days();
+        ArrayList<AnalysisCountVO> registerWeek = analysisService.caseWeek();
+        for (AnalysisCountVO analysisCountVO : registerWeek) {
+            String date = analysisCountVO.getDate();
+            Integer count = analysisCountVO.getCount();
+            days.put(date, count);
+        }
+        for (Map.Entry entry : days.entrySet()) {
+            TreeMap<String, Object> map = new TreeMap<>();
+            map.put("日期", entry.getKey());
+            map.put("新增用例", entry.getValue());
+            list.add(map);
+        }
+        return Result.success(list);
+    }
+
+    /**
+     * 近7天断言新增数
+     *
+     * @return Result
+     */
+    @GetMapping("/week/assert")
+    public Result assertWeek() {
+        LinkedList<TreeMap<String, Object>> list = new LinkedList<>();
+        TreeMap<String, Integer> days = interval7Days();
+        ArrayList<AnalysisCountVO> registerWeek = analysisService.assertWeek();
+        for (AnalysisCountVO analysisCountVO : registerWeek) {
+            String date = analysisCountVO.getDate();
+            Integer count = analysisCountVO.getCount();
+            days.put(date, count);
+        }
+        for (Map.Entry entry : days.entrySet()) {
+            TreeMap<String, Object> map = new TreeMap<>();
+            map.put("日期", entry.getKey());
+            map.put("新增断言", entry.getValue());
+            list.add(map);
+        }
+        return Result.success(list);
+    }
+
+
+    /**
+     * 近7天测试套件新增数
+     *
+     * @return Result
+     */
+    @GetMapping("/week/suite")
+    public Result suiteWeek() {
+        LinkedList<TreeMap<String, Object>> list = new LinkedList<>();
+        TreeMap<String, Integer> days = interval7Days();
+        ArrayList<AnalysisCountVO> registerWeek = analysisService.suiteWeek();
+        for (AnalysisCountVO analysisCountVO : registerWeek) {
+            String date = analysisCountVO.getDate();
+            Integer count = analysisCountVO.getCount();
+            days.put(date, count);
+        }
+        for (Map.Entry entry : days.entrySet()) {
+            TreeMap<String, Object> map = new TreeMap<>();
+            map.put("日期", entry.getKey());
+            map.put("新增测试套件", entry.getValue());
+            list.add(map);
+        }
+        return Result.success(list);
     }
 
 
