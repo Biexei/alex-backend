@@ -18,6 +18,6 @@ public interface AnalysisMapper {
     ArrayList<AnalysisCountVO> assertWeek();
     ArrayList<AnalysisCountVO> suiteWeek();
 
-    ArrayList<HashMap<String, Object>> executeLogWeek();
-    ArrayList<HashMap<String, Object>> assertLogWeek();
+    ArrayList<String> selectExecuteLog(String ymd);
+    ArrayList<String> selectAssertLog(String ymd);
 }

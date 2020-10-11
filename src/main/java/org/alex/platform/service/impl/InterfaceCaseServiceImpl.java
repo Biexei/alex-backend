@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -350,7 +351,13 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 LOG.error("不支持的请求方式");
                 throw new BusinessException("不支持的请求方式");
             }
-        } catch (Exception e) {
+        } catch (ResourceAccessException e) {
+            // 代理未开启
+            caseStatus = 2;
+            e.printStackTrace();
+            LOG.error("请检查是否启用代理服务器");
+            exceptionMessage = "请检查是否启用代理服务器";
+        }   catch (Exception e) {
             // 出现异常则追加错误信息，并将case状态设置为2错误
             caseStatus = 2;
             e.printStackTrace();

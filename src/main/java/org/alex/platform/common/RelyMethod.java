@@ -67,6 +67,15 @@ public class RelyMethod {
     }
 
     /**
+     * 返回当前时间
+     *
+     * @return String
+     */
+    public String now() {
+        return now("yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
      * 返回当前时间昨天
      *
      * @param format 时间格式
@@ -75,6 +84,15 @@ public class RelyMethod {
     public String yesterday(String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(DateUtils.addDays(new Date(), -1));
+    }
+
+    /**
+     * 返回当前时间昨天
+     *
+     * @return 返回当前时间昨天
+     */
+    public String yesterday() {
+        return yesterday("yyyy-MM-dd HH:mm:ss");
     }
 
     /**
@@ -89,6 +107,15 @@ public class RelyMethod {
     }
 
     /**
+     * 返回当前时间上个月
+     *
+     * @return 返回当前时间上个月
+     */
+    public String lastMonth() {
+        return lastMonth("yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
      * 返回当前时间下个月
      *
      * @param format 时间格式
@@ -97,6 +124,15 @@ public class RelyMethod {
     public String nextMonth(String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(DateUtils.addMonths(new Date(), 1));
+    }
+
+    /**
+     * 返回当前时间下个月
+     *
+     * @return 返回当前时间下个月
+     */
+    public String nextMonth() {
+        return nextMonth("yyyy-MM-dd HH:mm:ss");
     }
 
     /**
@@ -111,6 +147,15 @@ public class RelyMethod {
     }
 
     /**
+     * 返回当前时间去年
+     *
+     * @return 返回当前时间去年
+     */
+    public String lastYear() {
+        return lastYear("yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
      * 返回当前时间明年
      *
      * @param format 时间格式
@@ -119,6 +164,15 @@ public class RelyMethod {
     public String nextYear(String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(DateUtils.addYears(new Date(), 1));
+    }
+
+    /**
+     * 返回当前时间明年
+     *
+     * @return 返回当前时间明年
+     */
+    public String nextYear() {
+        return nextYear("yyyy-MM-dd HH:mm:ss");
     }
 
     /**
@@ -152,6 +206,16 @@ public class RelyMethod {
         } else { // 没有匹配的操作时间则返回当前时间
             return sdf.format(new Date());
         }
+    }
+
+    /**
+     * 返回指定日期的时间
+     * @param operator 年月日时分秒
+     * @param amount 数量
+     * @return  返回指定日期的时间
+     */
+    public String time(String operator, String amount) {
+        return time(operator, amount, "yyyy-MM-dd HH:mm:ss");
     }
 
     /**

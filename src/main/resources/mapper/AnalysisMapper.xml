@@ -60,21 +60,32 @@
         order by `date` asc
     </select>
 
-    <!--    近7天用例执行情况统计，成功失败错误-->
-    <select id="executeLogWeek" resultType="HashMap">
-        select SUBSTRING(created_time,1,10) as `date`, `status`, count(0) as `count`
+    <select id="selectExecuteLog" parameterType="String" resultType="String">
+        select count(0) as `count`
         from `t_interface_case_execute_log`
-        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &gt;= date(created_time)
-        GROUP BY SUBSTRING(created_time,1,10), status
-        order by `date` asc, status asc
+        where SUBSTRING(created_time,1,10) = #{date} and `status`=0
+        UNION all
+        select count(0) as `count`
+        from `t_interface_case_execute_log`
+        where SUBSTRING(created_time,1,10) = #{date} and `status`=1
+        UNION all
+        select count(0) as `count`
+        from `t_interface_case_execute_log`
+        where SUBSTRING(created_time,1,10) = #{date} and `status`=2
     </select>
 
-    <!--    近7天断言执行情况统计，成功失败错误-->
-    <select id="assertLogWeek" resultType="HashMap">
-        select SUBSTRING(created_time,1,10) as `date`, `status`, count(0) as `count`
+    <select id="selectAssertLog" parameterType="String" resultType="String">
+        select count(0) as `count`
         from `t_interface_assert_log`
-        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &gt;= date(created_time)
-        GROUP BY SUBSTRING(created_time,1,10), status
-        order by `date` asc, status asc
+        where SUBSTRING(created_time,1,10) = #{date} and `status`=0
+        UNION all
+        select count(0) as `count`
+        from `t_interface_assert_log`
+        where SUBSTRING(created_time,1,10) = #{date} and `status`=1
+        UNION all
+        select count(0) as `count`
+        from `t_interface_assert_log`
+        where SUBSTRING(created_time,1,10) = #{date} and `status`=2
     </select>
+
 </mapper>

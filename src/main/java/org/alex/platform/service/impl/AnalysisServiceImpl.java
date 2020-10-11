@@ -54,12 +54,14 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     @Override
-    public ArrayList<HashMap<String, Object>> executeLogWeek() {
-        return analysisMapper.executeLogWeek();
+    public ArrayList<String> selectExecuteLog(String ymd) {
+        return analysisMapper.selectExecuteLog(ymd);
     }
 
     @Override
-    public ArrayList<HashMap<String, Object>> assertLogWeek() {
-        return analysisMapper.assertLogWeek();
+    public ArrayList<String> selectAssertLog(String ymd) {
+        return analysisMapper.selectAssertLog(ymd);
     }
+
+
 }

@@ -151,6 +151,51 @@ public class AnalysisController {
         return Result.success(list);
     }
 
+    /**
+     * 近7天用例执行情况统计
+     *
+     * @return Result
+     */
+    @GetMapping("/week/executeLog")
+    public Result executeLogWeek() {
+        LinkedList<TreeMap<String, Object>> result = new LinkedList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        for (int i = 6; i >= 0; i--) {
+            TreeMap<String, Object> map = new TreeMap<>();
+            String ymd = format.format(DateUtils.addDays(date, -i));
+            ArrayList<String> list = analysisService.selectExecuteLog(ymd);
+            map.put("日期", ymd);
+            map.put("执行通过", list.get(0));
+            map.put("执行失败", list.get(1));
+            map.put("执行错误", list.get(2));
+            result.add(map);
+        }
+        return Result.success(result);
+    }
+
+    /**
+     * 近7天断言执行情况统计
+     *
+     * @return Result
+     */
+    @GetMapping("/week/assertLog")
+    public Result assertLogWeek() {
+        LinkedList<TreeMap<String, Object>> result = new LinkedList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        for (int i = 6; i >= 0; i--) {
+            TreeMap<String, Object> map = new TreeMap<>();
+            String ymd = format.format(DateUtils.addDays(date, -i));
+            ArrayList<String> list = analysisService.selectAssertLog(ymd);
+            map.put("日期", ymd);
+            map.put("断言通过", list.get(0));
+            map.put("断言失败", list.get(1));
+            map.put("断言错误", list.get(2));
+            result.add(map);
+        }
+        return Result.success(result);
+    }
 
     public static TreeMap<String, Integer> interval7Days() {
         TreeMap<String, Integer> map = new TreeMap<>();
