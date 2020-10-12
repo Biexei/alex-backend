@@ -17,6 +17,15 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private Byte status;
     private Date createdTime;
     private String errorMessage;
+    private String suiteLogNo;
+
+    public String getSuiteLogNo() {
+        return suiteLogNo;
+    }
+
+    public void setSuiteLogNo(String suiteLogNo) {
+        this.suiteLogNo = suiteLogNo;
+    }
 
     public Integer getId() {
         return id;

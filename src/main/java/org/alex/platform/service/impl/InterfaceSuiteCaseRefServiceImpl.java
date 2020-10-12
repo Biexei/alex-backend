@@ -5,23 +5,24 @@ import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
+import org.alex.platform.mapper.InterfaceCaseExecuteLogMapper;
 import org.alex.platform.mapper.InterfaceCaseSuiteMapper;
 import org.alex.platform.mapper.InterfaceSuiteCaseRefMapper;
-import org.alex.platform.pojo.InterfaceCaseSuiteVO;
-import org.alex.platform.pojo.InterfaceSuiteCaseRefDO;
-import org.alex.platform.pojo.InterfaceSuiteCaseRefDTO;
-import org.alex.platform.pojo.InterfaceSuiteCaseRefVO;
+import org.alex.platform.pojo.*;
 import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.service.InterfaceSuiteCaseRefService;
+import org.alex.platform.service.InterfaceSuiteLogService;
 import org.alex.platform.util.ExceptionUtil;
+import org.alex.platform.util.NoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefService {
@@ -31,6 +32,10 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
     InterfaceCaseService interfaceCaseService;
     @Autowired
     InterfaceCaseSuiteMapper interfaceCaseSuiteMapper;
+    @Autowired
+    InterfaceCaseExecuteLogMapper interfaceCaseExecuteLogMapper;
+    @Autowired
+    InterfaceSuiteLogService interfaceSuiteLogService;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceSuiteCaseRefServiceImpl.class);
 
     /**
@@ -131,25 +136,70 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         // 判断测试套件执行方式 0并行1串行
         InterfaceCaseSuiteVO interfaceCaseSuiteVO = interfaceCaseSuiteMapper.selectInterfaceCaseSuiteById(suiteId);
         Byte type = interfaceCaseSuiteVO.getExecuteType();
+
+        // 写入测试套件执行日志表
+        String suiteLogNo = NoUtil.genSuiteLogNo();
+        AtomicInteger totalRunCase = new AtomicInteger();
+        AtomicInteger totalSuccess = new AtomicInteger();
+        AtomicInteger totalFailed = new AtomicInteger();
+        AtomicInteger totalError = new AtomicInteger();
+        Date startTime = new Date();
+        long begin = System.currentTimeMillis();
         if (type == 0) { // 异步
             LOG.info("-----------------------开始并行执行测试套件，suiteId={}-----------------------", suiteId);
             suiteCaseList.parallelStream().forEach(suiteCase -> {
                 Integer caseId = suiteCase.getCaseId();
                 try {
-                    interfaceCaseService.executeInterfaceCase(caseId, executor);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo);
+                    InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
+                    Byte status = interfaceCaseExecuteLogVO.getStatus();
+                    if (status == 0) {
+                        totalSuccess.getAndIncrement();
+                    } else if (status == 1) {
+                        totalFailed.getAndIncrement();
+                    } else {
+                        totalError.getAndIncrement();
+                    }
+                    totalRunCase.getAndIncrement();
                 } catch (Exception e) {
                     LOG.error("并行执行测试套件出现异常，errorMsg={}", ExceptionUtil.msg(e));
                     throw new RuntimeException(e.getMessage());
                 }
             });
-            LOG.info("-----------------------测试套件执行完成-----------------------");
         } else { // 同步
             LOG.info("-----------------------开始串行执行测试套件，suiteId={}-----------------------", suiteId);
             for (InterfaceSuiteCaseRefVO suiteCase : suiteCaseList) {
                 Integer caseId = suiteCase.getCaseId();
-                interfaceCaseService.executeInterfaceCase(caseId, executor);
+                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo);
+                InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
+                Byte status = interfaceCaseExecuteLogVO.getStatus();
+                if (status == 0) {
+                    totalSuccess.getAndIncrement();
+                } else if (status == 1) {
+                    totalFailed.getAndIncrement();
+                } else {
+                    totalError.getAndIncrement();
+                }
+                totalRunCase.getAndIncrement();
             }
-            LOG.info("-----------------------测试套件执行完成-----------------------");
         }
+
+        // 写入测试套件执行日志表
+        long end = System.currentTimeMillis();
+        Date endTime = new Date();
+        InterfaceSuiteLogDO interfaceSuiteLogDO = new InterfaceSuiteLogDO();
+        interfaceSuiteLogDO.setSuiteId(suiteId);
+        interfaceSuiteLogDO.setSuiteLogNo(suiteLogNo);
+        interfaceSuiteLogDO.setRunTime((end - begin));
+        interfaceSuiteLogDO.setTotalSuccess(totalSuccess.intValue());
+        interfaceSuiteLogDO.setTotalFailed(totalFailed.intValue());
+        interfaceSuiteLogDO.setTotalError(totalError.intValue());
+        interfaceSuiteLogDO.setTotalRunCase(totalRunCase.intValue());
+        interfaceSuiteLogDO.setStartTime(startTime);
+        interfaceSuiteLogDO.setEndTime(endTime);
+        interfaceSuiteLogService.saveIfSuiteLog(interfaceSuiteLogDO);
+        LOG.info("写入测试套件执行日志表，suiteLogNo={}，success={}，failed={}，error={}",
+                suiteLogNo, totalSuccess.intValue(), totalFailed.intValue(), totalError.intValue());
+        LOG.info("-----------------------测试套件执行完成-----------------------");
     }
 }

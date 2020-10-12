@@ -113,7 +113,7 @@ public class JDBCTest {
                     }
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     // 根据caseId调用相应case
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度");
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null);
                     // 获取case执行结果, 不等于0, 则用例未通过
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
                         throw new BusinessException("relyName关联的前置用例执行失败!");
@@ -253,7 +253,7 @@ public class JDBCTest {
                 } else {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     // 根据caseId调用相应case
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度");
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", "null");
                     // 获取case执行结果, 不等于0, 则用例未通过
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
                         throw new BusinessException("relyName关联的前置用例执行失败!");

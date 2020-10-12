@@ -21,6 +21,7 @@
             <if test="createdTime != null">`created_time`,</if>
             <if test="errorMessage != null">`error_message`,</if>
             <if test="caseUrl != null">`case_url`,</if>
+            <if test="suiteLogNo != null">`suite_log_no`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="caseId != null">#{caseId},</if>
@@ -38,13 +39,15 @@
             <if test="createdTime != null">#{createdTime},</if>
             <if test="errorMessage != null">#{errorMessage},</if>
             <if test="caseUrl != null">#{caseUrl},</if>
+            <if test="suiteLogNo != null">#{suiteLogNo},</if>
         </trim>
     </insert>
     <select id="selectExecuteList" parameterType="org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO"
             resultType="org.alex.platform.pojo.InterfaceCaseExecuteLogListVO">
         select `log`.`id`, `case`.`case_id`, `case`.`desc` as `case_desc`, `project`.`project_id`,
             `project`.`name` as `project_name`, `module`.`module_id`, `module`.`name` as `module_name`,
-            `log`.`response_body`, `log`.`executer`, `log`.`run_time`, `log`.`status`, `log`.`created_time`, `log`.`error_message`
+            `log`.`response_body`, `log`.`executer`, `log`.`run_time`, `log`.`status`, `log`.`created_time`,
+            `log`.`error_message`, `log`.`suite_log_no`
         from `t_interface_case_execute_log` as `log`
         LEFT JOIN `t_interface_case` as `case` on `log`.`case_id` = `case`.`case_id`
         LEFT JOIN `t_project` as `project` on `case`.`project_id` = `project`.`project_id`
@@ -56,6 +59,7 @@
             <if test="moduleName != null">and `module`.`name` like concat('%',#{moduleName},'%')</if>
             <if test="caseId != null">and `case`.`case_id` = #{caseId}</if>
             <if test="caseDesc != null">and `case_desc` like concat('%',#{caseDesc},'%')</if>
+            <if test="suiteLogNo != null">and `suite_log_no` like concat('%',#{suiteLogNo},'%')</if>
             <if test="createdStartTime != null">and `log`.`created_time` &gt;= #{createdStartTime}</if>
             <if test="createdEndTime != null">and `log`.`created_time` &lt;= #{createdEndTime}</if>
             <if test="status != null">and `log`.`status` = #{status}</if>
@@ -93,6 +97,7 @@
         <result column="created_time" property="createdTime"/>
         <result column="error_message" property="errorMessage"/>
         <result column="case_url" property="caseUrl"/>
+        <result column="suite_log_no" property="suiteLogNo"/>
         <collection property="assertList" resultMap="assertList" ofType="org.alex.platform.pojo.InterfaceAssertLogListVO"/>
     </resultMap>
 
@@ -101,7 +106,8 @@
         `elog`.`request_data`, `elog`.`request_json`, `elog`.`response_code`, `elog`.`response_headers`,
         `elog`.`response_body`, `elog`.`executer`, `elog`.`status`, `elog`.`created_time`, `elog`.`error_message`,
         `alog`.`assert_name`, `alog`.`type`, `alog`.`expression`, `alog`.`operator`, `alog`.`excepted_result`, `alog`.`order`,
-        `alog`.`actual_result`, `alog`.`status` as `assert_status`, `alog`.`error_message` as `assert_error_message` , `elog`.`run_time`
+        `alog`.`actual_result`, `alog`.`status` as `assert_status`, `alog`.`error_message` as `assert_error_message` ,
+        `elog`.`run_time`,`elog`.`suite_log_no`
         from `t_interface_case_execute_log` as `elog`
         left join `t_interface_assert_log` as `alog` on `elog`.id = `alog`.`execute_log_id`
         where `elog`.`id` = #{executeId}
@@ -125,6 +131,7 @@
             <if test="status != null">`status` = #{status},</if>
             <if test="createdTime != null">`created_time` = #{createdTime},</if>
             <if test="errorMessage != null">`error_message` = #{errorMessage},</if>
+            <if test="suiteLogNo != null">`suite_log_no` = #{suiteLogNo},</if>
         </set>
         where `id` = #{id}
     </update>

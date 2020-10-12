@@ -9,6 +9,8 @@ import org.alex.platform.pojo.HttpSettingVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -22,9 +24,8 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +52,6 @@ public class RestUtil {
                 sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port)));
             }
         }
-        // sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)));
         // 2.设置超时时长
         sh.setConnectTimeout(10 * 1000);
         sh.setReadTimeout(10 * 1000);
@@ -69,19 +69,24 @@ public class RestUtil {
             }
         });
         // 4.配置全局headers
-        restTemplate.getInterceptors().add((httpRequest, bytes, clientHttpRequestExecution) -> {
-            HttpHeaders headers = httpRequest.getHeaders();
-            // 1.设置请求头
-            List<HttpSettingVO> header = getHeader();
-            if (!header.isEmpty()) {
-                for (HttpSettingVO httpSettingVO : header) {
-                    headers.remove(httpSettingVO.getName());
-                    headers.add(httpSettingVO.getName(), httpSettingVO.getValue());
-                }
-            }
-            // headers.add("User-Agent", "self ua");
-            return clientHttpRequestExecution.execute(httpRequest, bytes);
-        });
+        // 2020-10-12去除，造成并行执行case时java.util.ConcurrentModificationException
+//        restTemplate.getInterceptors().add(new ClientHttpRequestInterceptor() {
+//            @Override
+//            public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution
+//                    clientHttpRequestExecution) throws IOException {
+//                HttpHeaders headers = httpRequest.getHeaders();
+//                // 1.设置请求头
+//                List<HttpSettingVO> header = getHeader();
+//                if (!header.isEmpty()) {
+//                    for (HttpSettingVO httpSettingVO : header) {
+//                        LinkedList<String> list = new LinkedList<>();
+//                        list.add(httpSettingVO.getValue());
+//                        headers.put(httpSettingVO.getName(), list);
+//                    }
+//                }
+//                return clientHttpRequestExecution.execute(httpRequest, bytes);
+//            }
+//        });
         return restTemplate;
     }
 
@@ -316,10 +321,10 @@ public class RestUtil {
     }
 
     public static List<HttpSettingVO> getHeader() {
-        HttpSettingDTO httpSettingDTO1 = new HttpSettingDTO();
-        httpSettingDTO1.setStatus((byte)0);
-        httpSettingDTO1.setType((byte)1);
-        return restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO1);
+        HttpSettingDTO httpSettingDTO = new HttpSettingDTO();
+        httpSettingDTO.setStatus((byte)0);
+        httpSettingDTO.setType((byte)1);
+        return restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO);
     }
 
 }

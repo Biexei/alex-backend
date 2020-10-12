@@ -199,7 +199,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                 }
                 // 根据caseId调用相应case
                 LOG.info("根据caseId调用相应case，caseId={}", caseId);
-                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor);
+                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null);
                 LOG.info("调用成功，executeLogId={}", executeLogId);
                 // 获取case执行结果, 不等于0, 则用例未通过
                 if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
@@ -270,7 +270,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             LOG.info("------------------------------进入无下标取值模式------------------------------");
             // 根据caseId调用相应case
             LOG.info("根据caseId调用相应case，caseId={}", caseId);
-            Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor);
+            Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null);
             LOG.info("调用成功，executeLogId={}", executeLogId);
             // 获取case执行结果, 不等于0, 则用例未通过
             if (executeLogService.findExecute(executeLogId).getStatus() != 0) {

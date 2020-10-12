@@ -17,6 +17,15 @@ public class InterfaceCaseExecuteLogListDTO implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdEndTime;
     private Byte status;
+    private String suiteLogNo;
+
+    public String getSuiteLogNo() {
+        return suiteLogNo;
+    }
+
+    public void setSuiteLogNo(String suiteLogNo) {
+        this.suiteLogNo = suiteLogNo;
+    }
 
     public Integer getProjectId() {
         return projectId;
