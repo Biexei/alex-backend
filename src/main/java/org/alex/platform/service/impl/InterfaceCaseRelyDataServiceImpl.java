@@ -15,7 +15,9 @@ import org.alex.platform.service.InterfaceCaseRelyDataService;
 import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.service.ProjectService;
 import org.alex.platform.util.ExceptionUtil;
+import org.alex.platform.util.NoUtil;
 import org.alex.platform.util.ParseUtil;
+import org.alex.platform.util.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,8 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
     InterfaceCaseExecuteLogService executeLogService;
     @Autowired
     ProjectService projectService;
+    @Autowired
+    RedisUtil redisUtil;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseRelyDataServiceImpl.class);
 
     /**
@@ -199,7 +203,12 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                 }
                 // 根据caseId调用相应case
                 LOG.info("根据caseId调用相应case，caseId={}", caseId);
-                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null);
+
+                String chainNo = NoUtil.genChainNo();
+                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo);
+                // 缓存
+                redisUtil.stackPush(chainNo, executeLogId);
+
                 LOG.info("调用成功，executeLogId={}", executeLogId);
                 // 获取case执行结果, 不等于0, 则用例未通过
                 if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
@@ -270,7 +279,11 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             LOG.info("------------------------------进入无下标取值模式------------------------------");
             // 根据caseId调用相应case
             LOG.info("根据caseId调用相应case，caseId={}", caseId);
-            Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null);
+
+            String chainNo = NoUtil.genChainNo();
+            Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo);
+            redisUtil.stackPush(chainNo, executeLogId);
+
             LOG.info("调用成功，executeLogId={}", executeLogId);
             // 获取case执行结果, 不等于0, 则用例未通过
             if (executeLogService.findExecute(executeLogId).getStatus() != 0) {

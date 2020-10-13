@@ -18,6 +18,15 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private Date createdTime;
     private String errorMessage;
     private String suiteLogNo;
+    private String chain;
+
+    public String getChain() {
+        return chain;
+    }
+
+    public void setChain(String chain) {
+        this.chain = chain;
+    }
 
     public String getSuiteLogNo() {
         return suiteLogNo;

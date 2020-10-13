@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -38,5 +39,18 @@ public class RedisUtil {
 
     public void del(String key) {
         redisTemplate.delete(key);
+    }
+
+    public void stackPush(String key, Object value) {
+        redisTemplate.opsForList().rightPush(key, value);
+        redisTemplate.expire(key, 30*60, TimeUnit.SECONDS);
+    }
+
+    public Object stackPop(String key) {
+        return redisTemplate.opsForList().rightPop(key);
+    }
+
+    public List<Object> stackGetAll(String key) {
+        return redisTemplate.opsForList().range(key, 0, -1);
     }
 }

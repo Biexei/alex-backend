@@ -23,7 +23,7 @@ public interface InterfaceCaseService {
 
     InterfaceCaseInfoVO findInterfaceCaseByCaseId(Integer caseId);
 
-    Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo) throws ParseException, BusinessException, SqlException;
+    Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo) throws ParseException, BusinessException, SqlException;
 
-    String parseRelyData(String s) throws BusinessException, ParseException, SqlException;
+    String parseRelyData(String s, String chainNo) throws BusinessException, ParseException, SqlException;
 }

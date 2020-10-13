@@ -39,4 +39,15 @@ public class InterfaceCaseExecuteLogController {
         Integer size = pageSize == null ? 10 : pageSize;
         return Result.success(executeLogService.findExecuteList(executeLogListDTO, num, size));
     }
+
+    /**
+     * 获取执行用例的调用链
+     *
+     * @param executeId executeId
+     * @return Result
+     */
+    @GetMapping("/interface/log/chain/{executeId}")
+    public Result caseExecuteLogChain(@PathVariable Integer executeId) {
+        return Result.success(executeLogService.caseExecuteLogChain(executeId));
+    }
 }

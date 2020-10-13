@@ -53,6 +53,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     InterfaceSuiteCaseRefMapper interfaceSuiteCaseRefMapper;
     @Autowired
     InterfaceAssertMapper interfaceAssertMapper;
+    @Autowired
+    RedisUtil redisUtil;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseServiceImpl.class);
 
     /**
@@ -281,7 +283,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * @return 执行日志编号
      */
     @Override
-    public Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo) throws ParseException, BusinessException, SqlException {
+    public Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo) throws ParseException, BusinessException, SqlException {
         LOG.info("---------------------------------开始执行测试用例：caseId={}---------------------------------", interfaceCaseId);
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
@@ -309,19 +311,19 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         try {
             // 清洗
             if (null != headers) {
-                headers = this.parseRelyData(headers);
+                headers = this.parseRelyData(headers, chainNo);
                 LOG.info("清洗headers，清洗后的内容={}", headers);
             }
             if (null != params) {
-                params = this.parseRelyData(params);
+                params = this.parseRelyData(params, chainNo);
                 LOG.info("清洗params，清洗后的内容={}", params);
             }
             if (null != data) {
-                data = this.parseRelyData(data);
+                data = this.parseRelyData(data, chainNo);
                 LOG.info("清洗data，清洗后的内容={}", data);
             }
             if (null != json) {
-                json = this.parseRelyData(json);
+                json = this.parseRelyData(json, chainNo);
                 LOG.info("清洗json，清洗后的内容={}", json);
             }
 
@@ -391,6 +393,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
             // 返回自增id
             Integer executeLogId = executedLogDO.getId();
+
+            InterfaceCaseExecuteLogDO updateChain = new InterfaceCaseExecuteLogDO();
+            updateChain.setId(executeLogId);
+            updateChain.setChain(redisUtil.stackGetAll(chainNo).toString());
+            executeLogService.modifyExecuteLog(updateChain);
+
             LOG.warn("3.请求错误，仅保存执行，保存执行日志，日志内容={}，自增执行日志编号={}", executedLogDO, executeLogId);
             return executeLogId;
         } else { //请求成功记录执行日志和断言日志
@@ -474,7 +482,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             }
                         }
                         // 清洗${}
-                        exceptedResult = this.parseRelyData(exceptedResult);
+                        exceptedResult = this.parseRelyData(exceptedResult, chainNo);
                         LOG.info("清洗${}模式，清洗后的结果={}", "{}", exceptedResult);
                     } catch (ParseException | BusinessException | SqlException e) {
                         assertErrorMessage = e.getMessage();
@@ -554,6 +562,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogService.modifyExecuteLog(updateStatus);
             LOG.info("根据所有断言的状态，再次修改执行日志的状态");
             LOG.info("---------------------------------测试用例执行完毕：caseId={}---------------------------------", interfaceCaseId);
+            // 修改调用链
+            InterfaceCaseExecuteLogDO updateChain = new InterfaceCaseExecuteLogDO();
+            updateChain.setId(executedLogId);
+            updateChain.setChain(redisUtil.stackGetAll(chainNo).toString());
+            executeLogService.modifyExecuteLog(updateChain);
             return executedLogId;
         }
     }
@@ -566,7 +579,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * @throws ParseException    解析异常
      * @throws BusinessException 业务异常
      */
-    public String parseRelyData(String s) throws ParseException, BusinessException, SqlException {
+    public String parseRelyData(String s, String chainNo) throws ParseException, BusinessException, SqlException {
         LOG.info("--------------------------------------开始字符串解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
         Pattern p = Pattern.compile("\\$\\{.+?\\}");
@@ -604,7 +617,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     LOG.info("获取到的用例编号={}", caseId);
                     // 根据caseId调用相应case
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null);
+
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo);
+                    redisUtil.stackPush(chainNo, executeLogId);
+
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
                     // 获取case执行结果, 不等于0, 则用例未通过
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
@@ -673,7 +689,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         throw new BusinessException("不支持该contentType");
                     } catch (Exception e) {
                         LOG.error("下标取值模式执行异常，errorMsg={}", ExceptionUtil.msg(e));
-                        throw new ParseException(ExceptionUtil.msg(e));
+                        throw new ParseException(e.getMessage());
                     }
                 } catch (NumberFormatException e) {
                     LOG.error("数组下标只能为数字");
@@ -748,7 +764,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     String sql = relyDataVO.getValue();
                     if (relyDataVO.getValue() != null) {
                         LOG.info("开始解析SQL，解析前SQL={}", sql);
-                        sql = parseRelyData(sql);
+                        sql = parseRelyData(sql, chainNo);
                         LOG.info("解析SQL完成，解析后SQL={}", sql);
                     }
                     LOG.info("SQL执行参数，SQL={}, params={}", sql, params);
@@ -796,7 +812,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             String sql = relyDataVO.getValue();
                             if (relyDataVO.getValue() != null) {
                                 LOG.info("开始解析SQL，解析前SQL={}", sql);
-                                sql = parseRelyData(sql);
+                                sql = parseRelyData(sql, chainNo);
                                 LOG.info("解析SQL完成，解析后SQL={}", sql);
                             }
                             LOG.info("SQL执行参数，SQL={}", sql);
@@ -807,7 +823,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 } else {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     // 根据caseId调用相应case
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null);
+
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo);
+                    redisUtil.stackPush(chainNo, executeLogId);
+
                     // 获取case执行结果, 不等于0, 则用例未通过
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
                         LOG.warn("前置用例执行未通过");

@@ -11,6 +11,7 @@ import org.alex.platform.pojo.InterfaceCaseDTO;
 import org.alex.platform.pojo.InterfaceCaseListDTO;
 import org.alex.platform.service.InterfaceCaseExecuteLogService;
 import org.alex.platform.service.InterfaceCaseService;
+import org.alex.platform.util.NoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -111,7 +112,7 @@ public class InterfaceCaseController {
         } catch (Exception e) {
             executor = "";
         }
-        Integer executeLog = interfaceCaseService.executeInterfaceCase(caseId, executor, null);
+        Integer executeLog = interfaceCaseService.executeInterfaceCase(caseId, executor, null, NoUtil.genChainNo());
         Byte status = executeLogService.findExecute(executeLog).getStatus();
         if (status == 0) {
             return Result.success("测试用例执行成功");

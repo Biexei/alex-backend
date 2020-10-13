@@ -150,7 +150,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             suiteCaseList.parallelStream().forEach(suiteCase -> {
                 Integer caseId = suiteCase.getCaseId();
                 try {
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo());
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                     Byte status = interfaceCaseExecuteLogVO.getStatus();
                     if (status == 0) {
@@ -170,7 +170,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             LOG.info("-----------------------开始串行执行测试套件，suiteId={}-----------------------", suiteId);
             for (InterfaceSuiteCaseRefVO suiteCase : suiteCaseList) {
                 Integer caseId = suiteCase.getCaseId();
-                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo);
+                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo());
                 InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                 Byte status = interfaceCaseExecuteLogVO.getStatus();
                 if (status == 0) {

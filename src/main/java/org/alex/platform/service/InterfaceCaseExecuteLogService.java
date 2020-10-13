@@ -7,6 +7,9 @@ import org.alex.platform.pojo.InterfaceCaseExecuteLogListVO;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogVO;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public interface InterfaceCaseExecuteLogService {
@@ -19,4 +22,6 @@ public interface InterfaceCaseExecuteLogService {
     InterfaceCaseExecuteLogVO findExecute(Integer executeId);
 
     void modifyExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
+
+    LinkedList<HashMap<String, Object>> caseExecuteLogChain(Integer executeId);
 }

@@ -1,5 +1,6 @@
 package org.alex.platform;
 
+import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.util.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,9 @@ public class RedisTest {
 
     @Test
     public void testSet() {
-        System.out.println(redisUtil.get("49a232b7-1a26-460c-b710-284a11b4aae11"));
+//        redisUtil.stackPush("1", 1);
+//        redisUtil.stackPush("1", 2);
+//        redisUtil.stackPush("1", 3);
+        System.out.println(redisUtil.stackGetAll("1"));
     }
 }
