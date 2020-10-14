@@ -48,19 +48,7 @@ public class InterfaceSuiteLogController {
      * @return Result
      */
     @GetMapping("/suite/log/{id}")
-    public Result findIfSuiteLogByNo(@PathVariable Integer id) {
+    public Result findIfSuiteLogById(@PathVariable Integer id) {
         return Result.success(interfaceSuiteLogService.findIfSuiteLogById(id));
-    }
-
-    /**
-     * 新增测试套件执行日志
-     *
-     * @param interfaceSuiteLogDO interfaceSuiteLogDO
-     * @return Result
-     */
-    @PostMapping("/suite/save")
-    public Result saveIfSuiteLog(InterfaceSuiteLogDO interfaceSuiteLogDO) {
-        interfaceSuiteLogService.saveIfSuiteLog(interfaceSuiteLogDO);
-        return Result.success("新增成功");
     }
 }

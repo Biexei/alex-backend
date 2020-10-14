@@ -9,7 +9,9 @@ public class InterfaceSuiteLogDO {
     private Integer suiteId;
     private String suiteLogNo;
     private Long runTime;
+    private Integer totalCase;
     private Integer totalRunCase;
+    private Integer totalSkip;
     private Integer totalSuccess;
     private Integer totalFailed;
     private Integer totalError;
@@ -17,6 +19,22 @@ public class InterfaceSuiteLogDO {
     private Date startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
+
+    public Integer getTotalCase() {
+        return totalCase;
+    }
+
+    public void setTotalCase(Integer totalCase) {
+        this.totalCase = totalCase;
+    }
+
+    public Integer getTotalSkip() {
+        return totalSkip;
+    }
+
+    public void setTotalSkip(Integer totalSkip) {
+        this.totalSkip = totalSkip;
+    }
 
     public Integer getId() {
         return id;

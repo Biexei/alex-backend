@@ -5,6 +5,7 @@
 <mapper namespace="org.alex.platform.mapper.InterfaceSuiteLogMapper">
     <select id="selectIfSuiteLog" parameterType="org.alex.platform.pojo.InterfaceSuiteLogDTO" resultType="org.alex.platform.pojo.InterfaceSuiteLogVO">
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
+        `log`.`total_case`,`log`.`total_skip`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
@@ -17,11 +18,13 @@
             <if test="suiteDesc!=null">and `suite`.`desc` like concat('%',#{suiteDesc},'%')</if>
             <if test="suiteLogNo!=null">and `log`.`suite_log_no` like concat('%',#{suiteLogNo},'%')</if>
             <if test="createdStartTime!=null">and `log`.`start_time`&gt;=#{createdStartTime}</if>
-            <if test="createdEndTime!=null">and `log`.`start_time`&lt;=#{createdStartTime}</if>
+            <if test="createdEndTime!=null">and `log`.`start_time`&lt;=#{createdEndTime}</if>
         </where>
+        order by `log`.`id` desc
     </select>
     <select id="selectIfSuiteLogByNo" parameterType="String" resultType="org.alex.platform.pojo.InterfaceSuiteLogVO">
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
+        `log`.`total_case`,`log`.`total_skip`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
@@ -31,6 +34,7 @@
     </select>
     <select id="selectIfSuiteLogById" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceSuiteLogVO">
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
+        `log`.`total_case`,`log`.`total_skip`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
@@ -44,6 +48,8 @@
             <if test="suiteId!=null">`suite_id`,</if>
             <if test="suiteLogNo!=null">`suite_log_no`,</if>
             <if test="runTime!=null">`run_time`,</if>
+            <if test="totalCase!=null">`total_case`,</if>
+            <if test="totalSkip!=null">`total_skip`,</if>
             <if test="totalRunCase!=null">`total_run_case`,</if>
             <if test="totalSuccess!=null">`total_success`,</if>
             <if test="totalFailed!=null">`total_failed`,</if>
@@ -55,6 +61,8 @@
             <if test="suiteId!=null">#{suiteId},</if>
             <if test="suiteLogNo!=null">#{suiteLogNo},</if>
             <if test="runTime!=null">#{runTime},</if>
+            <if test="totalCase!=null">#{totalCase},</if>
+            <if test="totalSkip!=null">#{totalSkip},</if>
             <if test="totalRunCase!=null">#{totalRunCase},</if>
             <if test="totalSuccess!=null">#{totalSuccess},</if>
             <if test="totalFailed!=null">#{totalFailed},</if>
