@@ -9,9 +9,45 @@ public class ProjectVO implements Serializable {
     private String name;
     private String desc;
     private String domain;
+    private String devDomain;
+    private String testDomain;
+    private String stgDomain;
+    private String prodDomain;
     private Date createdTime;
     private Date updateTime;
     private List<ModuleDO> modules;
+
+    public String getDevDomain() {
+        return devDomain;
+    }
+
+    public void setDevDomain(String devDomain) {
+        this.devDomain = devDomain;
+    }
+
+    public String getTestDomain() {
+        return testDomain;
+    }
+
+    public void setTestDomain(String testDomain) {
+        this.testDomain = testDomain;
+    }
+
+    public String getStgDomain() {
+        return stgDomain;
+    }
+
+    public void setStgDomain(String stgDomain) {
+        this.stgDomain = stgDomain;
+    }
+
+    public String getProdDomain() {
+        return prodDomain;
+    }
+
+    public void setProdDomain(String prodDomain) {
+        this.prodDomain = prodDomain;
+    }
 
     public Integer getProjectId() {
         return projectId;

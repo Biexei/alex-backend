@@ -18,6 +18,10 @@
         <result column="name" property="name"/>
         <result column="desc" property="desc"/>
         <result column="domain" property="domain"/>
+        <result column="dev_domain" property="devDomain"/>
+        <result column="test_domain" property="testDomain"/>
+        <result column="stg_domain" property="stgDomain"/>
+        <result column="prod_domain" property="prodDomain"/>
         <result column="created_time" property="createdTime"/>
         <result column="update_time" property="updateTime"/>
         <collection property="modules" ofType="org.alex.platform.pojo.ModuleDO" resultMap="moduleDO"/>
@@ -38,7 +42,8 @@
     </select>
 
     <sql id="query_all">
-        select `project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`
+        select `project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`,
+        `dev_domain`, `test_domain`, `stg_domain`, `prod_domain`
         from t_project
         <where>
             <if test="projectId != null">`project_id` = #{projectId}</if>
@@ -47,11 +52,12 @@
         </where>
     </sql>
     <sql id="query_one">
-        select `project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`
+        select `project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`,
+        `dev_domain`, `test_domain`, `stg_domain`, `prod_domain`
         from t_project
         where `project_id` = #{projectId}
     </sql>
-    <select id="selectProjectList" resultType="HashMap" parameterType="org.alex.platform.pojo.ProjectDO">
+    <select id="selectProjectList" resultType="org.alex.platform.pojo.ProjectDO" parameterType="org.alex.platform.pojo.ProjectDO">
         <include refid="query_all"/>
     </select>
     <select id="selectProject" resultType="org.alex.platform.pojo.ProjectDO" parameterType="org.alex.platform.pojo.ProjectDO">
@@ -63,6 +69,10 @@
             <if test="name != null">`name`,</if>
             <if test="desc != null">`desc`,</if>
             <if test="domain != null">`domain`,</if>
+            <if test="devDomain != null">`dev_domain`,</if>
+            <if test="testDomain != null">`test_domain`,</if>
+            <if test="stgDomain != null">`stg_domain`,</if>
+            <if test="prodDomain != null">`prod_domain`,</if>
             <if test="createdTime != null">`created_time`,</if>
             <if test="updateTime != null">`update_time`,</if>
         </trim>
@@ -70,6 +80,10 @@
             <if test="name != null">#{name},</if>
             <if test="desc != null">#{desc},</if>
             <if test="domain != null">#{domain},</if>
+            <if test="devDomain != null">#{devDomain},</if>
+            <if test="testDomain != null">#{testDomain},</if>
+            <if test="stgDomain != null">#{stgDomain},</if>
+            <if test="prodDomain != null">#{prodDomain},</if>
             <if test="createdTime != null">#{createdTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
         </trim>
@@ -77,10 +91,14 @@
     <update id="updateProject" parameterType="org.alex.platform.pojo.ProjectDO">
         update t_project
         <set>
-            <if test="name != null">`name`=#{name},</if>
-            <if test="desc != null">`desc`=#{desc},</if>
-            <if test="domain != null">`domain`=#{domain},</if>
-            <if test="updateTime != null">`update_time`=#{updateTime},</if>
+            `name`=#{name},
+            `desc`=#{desc},
+            `domain`=#{domain},
+            `dev_domain`=#{devDomain},
+            `test_domain`=#{testDomain},
+            `stg_domain`=#{stgDomain},
+            `prod_domain`=#{prodDomain},
+            `update_time`=#{updateTime},
         </set>
         where `project_id` = #{projectId}
     </update>

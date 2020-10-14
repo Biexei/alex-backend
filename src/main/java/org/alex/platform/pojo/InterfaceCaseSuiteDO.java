@@ -2,8 +2,7 @@ package org.alex.platform.pojo;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +18,18 @@ public class InterfaceCaseSuiteDO implements Serializable {
     private String creator;
     @NotNull(message = "执行方式不允许为空")
     private Byte executeType;
+    @NotNull(message = "运行环境不允许为空")
+    @Max(value = 3, message = "运行环境设置错误")
+    @Min(value = 0, message = "运行环境设置错误")
+    private Byte runDev;
+
+    public Byte getRunDev() {
+        return runDev;
+    }
+
+    public void setRunDev(Byte runDev) {
+        this.runDev = runDev;
+    }
 
     public Integer getSuiteId() {
         return suiteId;
