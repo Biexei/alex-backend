@@ -63,6 +63,9 @@
     <select id="selectProject" resultType="org.alex.platform.pojo.ProjectDO" parameterType="org.alex.platform.pojo.ProjectDO">
         <include refid="query_one"/>
     </select>
+    <select id="selectProjectById" resultType="org.alex.platform.pojo.ProjectVO" parameterType="Integer">
+        <include refid="query_one"/>
+    </select>
     <insert id="insertProject" parameterType="org.alex.platform.pojo.ProjectDO">
         insert into t_project
         <trim prefix="(" suffix=")" suffixOverrides=",">

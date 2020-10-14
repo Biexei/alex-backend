@@ -70,6 +70,11 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.selectModulesById(projectId);
     }
 
+    @Override
+    public ProjectVO findProjectById(Integer projectId) {
+        return projectMapper.selectProjectById(projectId);
+    }
+
     /**
      * 修改项目信息
      * @param projectDO projectDO

@@ -21,7 +21,7 @@
             <if test="updateTime!=null">#{updateTime},</if>
             <if test="creator!=null">#{creator},</if>
             <if test="executeType!=null">#{executeType},</if>
-            <if test="runDev!=null">#{run_dev},</if>
+            <if test="runDev!=null">#{runDev},</if>
         </trim>
     </insert>
     <update id="updateInterfaceCaseSuite" parameterType="org.alex.platform.pojo.InterfaceCaseSuiteDO">

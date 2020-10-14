@@ -112,7 +112,7 @@ public class InterfaceCaseController {
         } catch (Exception e) {
             executor = "";
         }
-        Integer executeLog = interfaceCaseService.executeInterfaceCase(caseId, executor, null, NoUtil.genChainNo());
+        Integer executeLog = interfaceCaseService.executeInterfaceCase(caseId, executor, null, NoUtil.genChainNo(), null);
         Byte status = executeLogService.findExecute(executeLog).getStatus();
         if (status == 0) {
             return Result.success("测试用例执行成功");

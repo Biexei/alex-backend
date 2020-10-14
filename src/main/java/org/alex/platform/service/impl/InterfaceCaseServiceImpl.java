@@ -12,7 +12,6 @@ import org.alex.platform.mapper.*;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.*;
 import org.alex.platform.util.*;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +54,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     InterfaceAssertMapper interfaceAssertMapper;
     @Autowired
     RedisUtil redisUtil;
+    @Autowired
+    InterfaceCaseSuiteService ifSuiteService;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseServiceImpl.class);
 
     /**
@@ -277,13 +278,19 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     }
 
     /**
-     * 执行指定用例编号
-     *
-     * @param interfaceCaseId 需要执行的用例编号
-     * @return 执行日志编号
+     * 执行指定用例
+     * @param interfaceCaseId 用例编号
+     * @param executor 执行人，若作为依赖数据应用则应该传参‘系统调度’
+     * @param suiteLogNo 测试套件日志编号 主要为调用入口为测试套件时使用，否则传参null
+     * @param chainNo 调用链路跟踪 每次调用均会将自增日志编号写入缓存，再序列化
+     * @param suiteId 测试套件编号，主要用于调用入口为测试套件时确定运行环境，否则应该传参null
+     * @return 自增日志编号
+     * @throws ParseException ParseException
+     * @throws BusinessException BusinessException
+     * @throws SqlException SqlException
      */
     @Override
-    public Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo) throws ParseException, BusinessException, SqlException {
+    public Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo, Integer suiteId) throws ParseException, BusinessException, SqlException {
         LOG.info("---------------------------------开始执行测试用例：caseId={}---------------------------------", interfaceCaseId);
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
@@ -292,8 +299,31 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         // 1.获取case详情
         InterfaceCaseInfoVO interfaceCaseInfoVO = this.findInterfaceCaseByCaseId(interfaceCaseId);
         Integer projectId = interfaceCaseInfoVO.getProjectId();
-        // 查询项目domain
-        String url = projectService.findModulesById(projectId).getDomain() + interfaceCaseInfoVO.getUrl();
+
+        ProjectVO projectVO = projectService.findProjectById(projectId);
+        // 获取项目域名
+        String url;
+        if (suiteId == null) { // 未指定suiteId进入调试模式,使用domain
+            url = projectVO.getDomain() + interfaceCaseInfoVO.getUrl();
+        } else { // 指定suiteId则获取suite运行环境
+            // 根据suiteId获取运行环境
+            InterfaceCaseSuiteVO suiteVO = ifSuiteService.findInterfaceCaseSuiteById(suiteId);
+            Byte runDev = suiteVO.getRunDev();
+            // 0dev 1test 2stg 3prod
+            if (runDev == 0) {
+                url = projectVO.getDevDomain() + interfaceCaseInfoVO.getUrl();
+            } else if (runDev == 1) {
+                url = projectVO.getTestDomain() + interfaceCaseInfoVO.getUrl();
+            } else if (runDev == 2) {
+                url = projectVO.getStgDomain() + interfaceCaseInfoVO.getUrl();
+            } else if (runDev == 3) {
+                url = projectVO.getProdDomain() + interfaceCaseInfoVO.getUrl();
+            } else {
+                LOG.error("运行环境错误，invalid runDev={}", runDev);
+                throw new BusinessException("运行环境错误");
+            }
+
+        }
         String desc = interfaceCaseInfoVO.getDesc();
         String headers = interfaceCaseInfoVO.getHeaders();
         String params = interfaceCaseInfoVO.getParams();
@@ -311,19 +341,19 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         try {
             // 清洗
             if (null != headers) {
-                headers = this.parseRelyData(headers, chainNo);
+                headers = this.parseRelyData(headers, chainNo, suiteId);
                 LOG.info("清洗headers，清洗后的内容={}", headers);
             }
             if (null != params) {
-                params = this.parseRelyData(params, chainNo);
+                params = this.parseRelyData(params, chainNo, suiteId);
                 LOG.info("清洗params，清洗后的内容={}", params);
             }
             if (null != data) {
-                data = this.parseRelyData(data, chainNo);
+                data = this.parseRelyData(data, chainNo, suiteId);
                 LOG.info("清洗data，清洗后的内容={}", data);
             }
             if (null != json) {
-                json = this.parseRelyData(json, chainNo);
+                json = this.parseRelyData(json, chainNo, suiteId);
                 LOG.info("清洗json，清洗后的内容={}", json);
             }
 
@@ -482,7 +512,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             }
                         }
                         // 清洗${}
-                        exceptedResult = this.parseRelyData(exceptedResult, chainNo);
+                        exceptedResult = this.parseRelyData(exceptedResult, chainNo, suiteId);
                         LOG.info("清洗${}模式，清洗后的结果={}", "{}", exceptedResult);
                     } catch (ParseException | BusinessException | SqlException e) {
                         assertErrorMessage = e.getMessage();
@@ -572,14 +602,16 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     }
 
     /**
-     * 字符解析
-     *
-     * @param s 入参字符串
-     * @return 解析后的字符串
-     * @throws ParseException    解析异常
-     * @throws BusinessException 业务异常
+     * 字符清洗
+     * @param s 待清洗数据
+     * @param chainNo 调用链路跟踪 每次调用均会将自增日志编号写入缓存，再序列化
+     * @param suiteId 测试套件编号，主要用于调用入口为测试套件时确定运行环境，否则应该传参null
+     * @return 清洗后的数据
+     * @throws ParseException ParseException
+     * @throws BusinessException BusinessException
+     * @throws SqlException SqlException
      */
-    public String parseRelyData(String s, String chainNo) throws ParseException, BusinessException, SqlException {
+    public String parseRelyData(String s, String chainNo, Integer suiteId) throws ParseException, BusinessException, SqlException {
         LOG.info("--------------------------------------开始字符串解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
         Pattern p = Pattern.compile("\\$\\{.+?\\}");
@@ -618,7 +650,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     LOG.info("获取到的用例编号={}", caseId);
                     // 根据caseId调用相应case
 
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId);
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
@@ -764,7 +796,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     String sql = relyDataVO.getValue();
                     if (relyDataVO.getValue() != null) {
                         LOG.info("开始解析SQL，解析前SQL={}", sql);
-                        sql = parseRelyData(sql, chainNo);
+                        sql = parseRelyData(sql, chainNo, suiteId);
                         LOG.info("解析SQL完成，解析后SQL={}", sql);
                     }
                     LOG.info("SQL执行参数，SQL={}, params={}", sql, params);
@@ -812,7 +844,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             String sql = relyDataVO.getValue();
                             if (relyDataVO.getValue() != null) {
                                 LOG.info("开始解析SQL，解析前SQL={}", sql);
-                                sql = parseRelyData(sql, chainNo);
+                                sql = parseRelyData(sql, chainNo, suiteId);
                                 LOG.info("解析SQL完成，解析后SQL={}", sql);
                             }
                             LOG.info("SQL执行参数，SQL={}", sql);
@@ -824,7 +856,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     // 根据caseId调用相应case
 
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId);
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     // 获取case执行结果, 不等于0, 则用例未通过

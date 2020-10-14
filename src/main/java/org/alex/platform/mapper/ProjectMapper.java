@@ -17,6 +17,8 @@ public interface ProjectMapper {
 
     ProjectVO selectModulesById(Integer projectId);
 
+    ProjectVO selectProjectById(Integer projectId);
+
     void updateProject(ProjectDO projectDO);
 
     void insertProject(ProjectDO projectDO);

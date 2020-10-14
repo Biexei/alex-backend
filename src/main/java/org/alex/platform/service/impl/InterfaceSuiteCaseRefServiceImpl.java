@@ -155,7 +155,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                     if (suiteCase.getCaseStatus() == 1) {
                         totalSkip.getAndIncrement();
                     } else {
-                        Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo());
+                        Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
                         InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                         Byte status = interfaceCaseExecuteLogVO.getStatus();
                         if (status == 0) {
@@ -180,7 +180,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                 if (suiteCase.getCaseStatus() == 1) {
                     totalSkip.getAndIncrement();
                 } else {
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo());
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                     Byte status = interfaceCaseExecuteLogVO.getStatus();
                     if (status == 0) {

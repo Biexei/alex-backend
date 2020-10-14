@@ -18,6 +18,8 @@ public interface ProjectService {
 
     ProjectVO findModulesById(Integer projectId);
 
+    ProjectVO findProjectById(Integer projectId);
+
     void modifyProject(ProjectDO projectDO) throws Exception;
 
     void saveProject(ProjectDO projectDO) throws Exception;
