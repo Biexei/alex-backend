@@ -19,4 +19,6 @@ public interface InterfaceSuiteCaseRefMapper {
     void deleteSuiteCaseByObject(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO);
 
     List<InterfaceSuiteCaseRefVO> selectSuiteCaseList(InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO);
+
+    List<InterfaceSuiteCaseRefDO> selectSuiteAllCase(Integer suiteId);
 }

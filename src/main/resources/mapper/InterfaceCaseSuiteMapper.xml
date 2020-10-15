@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.alex.platform.mapper.InterfaceCaseSuiteMapper">
-    <insert id="insertInterfaceCaseSuite" parameterType="org.alex.platform.pojo.InterfaceCaseSuiteDO">
+    <insert id="insertInterfaceCaseSuite" parameterType="org.alex.platform.pojo.InterfaceCaseSuiteDO" useGeneratedKeys="true" keyProperty="suiteId">
         insert into `t_interface_case_suite`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="suiteName!=null">`suite_name`,</if>

@@ -1,5 +1,6 @@
 package org.alex.platform.controller;
 
+import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.pojo.InterfaceCaseSuiteDO;
@@ -12,12 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 
 @RestController
 public class InterfaceCaseSuiteController {
     @Autowired
     InterfaceCaseSuiteService interfaceCaseSuiteService;
+    @Autowired
+    LoginUserInfo loginUserInfo;
 
     /**
      * 新增测试套件
@@ -83,5 +88,23 @@ public class InterfaceCaseSuiteController {
         int num = pageNum == null ? 1 : pageNum;
         int size = pageSize == null ? 10 : pageSize;
         return Result.success(interfaceCaseSuiteService.findInterfaceCaseSuite(interfaceCaseSuiteDTO, num, size));
+    }
+
+    /**
+     * 复制测试套件
+     * @param suiteId 被复制测试套件编号
+     * @param request 获取测试套件添加人
+     * @return Result
+     */
+    @GetMapping("/interface/suite/copy/{suiteId}")
+    public Result copyInterfaceCaseSuiteById(@PathVariable Integer suiteId, HttpServletRequest request) {
+        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
+        String creator;
+        try {
+            creator = map.get("realName").toString();
+        } catch (Exception e) {
+            creator = "";
+        }
+        return Result.success(interfaceCaseSuiteService.copyInterfaceCaseSuiteById(suiteId, creator));
     }
 }

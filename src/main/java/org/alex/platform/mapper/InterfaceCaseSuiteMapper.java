@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface InterfaceCaseSuiteMapper {
-    void insertInterfaceCaseSuite(InterfaceCaseSuiteDO interfaceCaseSuiteDO);
+    Integer insertInterfaceCaseSuite(InterfaceCaseSuiteDO interfaceCaseSuiteDO);
 
     void updateInterfaceCaseSuite(InterfaceCaseSuiteDO interfaceCaseSuiteDO);
 

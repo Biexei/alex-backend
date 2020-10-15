@@ -52,4 +52,9 @@
         </where>
         order by `suite`.`suite_id` desc, `ref`.`order` desc
     </select>
+    <select id="selectSuiteAllCase" resultType="org.alex.platform.pojo.InterfaceSuiteCaseRefDO" parameterType="Integer">
+        select `id`, `case_id`, `suite_id`, `case_status`, `order`
+        from `t_interface_suite_case_ref`
+        where `suite_id` = #{suiteId}
+    </select>
 </mapper>

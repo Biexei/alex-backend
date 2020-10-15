@@ -13,6 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
 @Service
 public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService {
     @Autowired
@@ -25,12 +30,13 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
 
     /**
      * 新增测试套件
-     *
      * @param interfaceCaseSuiteDO interfaceCaseSuiteDO
+     * @return 自增对象
      */
     @Override
-    public void saveInterfaceCaseSuite(InterfaceCaseSuiteDO interfaceCaseSuiteDO) {
+    public InterfaceCaseSuiteDO saveInterfaceCaseSuite(InterfaceCaseSuiteDO interfaceCaseSuiteDO) {
         interfaceCaseSuiteMapper.insertInterfaceCaseSuite(interfaceCaseSuiteDO);
+        return interfaceCaseSuiteDO;
     }
 
     /**
@@ -91,5 +97,44 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
                                                                  Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo<>(interfaceCaseSuiteMapper.selectInterfaceCaseSuite(interfaceCaseSuiteDTO));
+    }
+
+    /**
+     * 辅助测试套件
+     *
+     * @param suiteId 被复制的测试套件编号
+     * @param creator 创建人
+     * @return 复制测试用例个数
+     */
+    @Override
+    public HashMap<String, Integer> copyInterfaceCaseSuiteById(Integer suiteId, String creator) {
+        Integer copyCaseCount = 0;
+        // 1.获取被复制测试套件信息
+        InterfaceCaseSuiteVO copiedSuite = this.findInterfaceCaseSuiteById(suiteId);
+        // 2.获取被测试套件所有的测试用例
+        List<InterfaceSuiteCaseRefDO> copiedSuiteCaseList = interfaceSuiteCaseRefMapper.selectSuiteAllCase(suiteId);
+        // 3.新增测试套件，并获取自增主键
+        InterfaceCaseSuiteDO suiteDO = new InterfaceCaseSuiteDO();
+        suiteDO.setSuiteName(copiedSuite.getSuiteName());
+        suiteDO.setDesc(copiedSuite.getDesc());
+        Date date = new Date();
+        suiteDO.setCreatedTime(date);
+        suiteDO.setUpdateTime(date);
+        suiteDO.setCreator(creator);
+        suiteDO.setExecuteType(copiedSuite.getExecuteType());
+        suiteDO.setRunDev(copiedSuite.getRunDev());
+        InterfaceCaseSuiteDO incrementSuiteDO = this.saveInterfaceCaseSuite(suiteDO);
+        Integer incrementSuiteId = incrementSuiteDO.getSuiteId();
+        // 4.往新增测试套件添加用例
+        List<InterfaceSuiteCaseRefDO> toInsertSuiteCase = new LinkedList<>();
+        for(InterfaceSuiteCaseRefDO suiteCase : copiedSuiteCaseList) {
+            suiteCase.setSuiteId(incrementSuiteId);
+            toInsertSuiteCase.add(suiteCase);
+            copyCaseCount ++;
+        }
+        interfaceSuiteCaseRefMapper.insertSuiteCase(toInsertSuiteCase);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("copyCaseCount", copyCaseCount);
+        return map;
     }
 }
