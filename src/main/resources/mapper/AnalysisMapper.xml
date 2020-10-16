@@ -28,7 +28,7 @@
     <select id="registerWeek" resultType="org.alex.platform.pojo.AnalysisCountVO">
         select SUBSTRING(created_time,1,10) as `date`, count(0) as `count`
         from `t_user`
-        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(created_time)
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(created_time)
         GROUP BY SUBSTRING(created_time,1,10)
         order by `date` asc
     </select>
@@ -37,7 +37,7 @@
     <select id="caseWeek" resultType="org.alex.platform.pojo.AnalysisCountVO">
         select SUBSTRING(created_time,1,10) as `date`, count(0) as `count`
         from `t_interface_case`
-        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(created_time)
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(created_time)
         GROUP BY SUBSTRING(created_time,1,10)
         order by `date` asc
     </select>
@@ -46,7 +46,7 @@
     <select id="assertWeek" resultType="org.alex.platform.pojo.AnalysisCountVO">
         select SUBSTRING(created_time,1,10) as `date`, count(0) as `count`
         from `t_interface_assert`
-        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(created_time)
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(created_time)
         GROUP BY SUBSTRING(created_time,1,10)
         order by `date` asc
     </select>
@@ -55,7 +55,7 @@
     <select id="suiteWeek" resultType="org.alex.platform.pojo.AnalysisCountVO">
         select SUBSTRING(created_time,1,10) as `date`, count(0) as `count`
         from `t_interface_case_suite`
-        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(created_time)
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; date(created_time)
         GROUP BY SUBSTRING(created_time,1,10)
         order by `date` asc
     </select>
