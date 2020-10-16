@@ -10,10 +10,19 @@ public class InterfaceSuiteLogDTO {
     private String suiteName;
     private String suiteDesc;
     private String suiteLogNo;
+    private Byte runDev;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdStartTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdEndTime;
+
+    public Byte getRunDev() {
+        return runDev;
+    }
+
+    public void setRunDev(Byte runDev) {
+        this.runDev = runDev;
+    }
 
     public Integer getId() {
         return id;

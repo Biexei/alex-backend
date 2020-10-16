@@ -19,6 +19,24 @@ public class InterfaceSuiteLogDO {
     private Date startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
+    private Byte executeType;
+    private Byte runDev;
+
+    public Byte getExecuteType() {
+        return executeType;
+    }
+
+    public void setExecuteType(Byte executeType) {
+        this.executeType = executeType;
+    }
+
+    public Byte getRunDev() {
+        return runDev;
+    }
+
+    public void setRunDev(Byte runDev) {
+        this.runDev = runDev;
+    }
 
     public Integer getTotalCase() {
         return totalCase;

@@ -135,6 +135,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         // 判断测试套件执行方式 0并行1串行
         InterfaceCaseSuiteVO interfaceCaseSuiteVO = interfaceCaseSuiteMapper.selectInterfaceCaseSuiteById(suiteId);
         Byte type = interfaceCaseSuiteVO.getExecuteType();
+        Byte runDev = interfaceCaseSuiteVO.getRunDev();
 
         // 写入测试套件执行日志表
         String suiteLogNo = NoUtil.genSuiteLogNo();
@@ -210,9 +211,12 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         interfaceSuiteLogDO.setTotalCase(totalCase);
         interfaceSuiteLogDO.setStartTime(startTime);
         interfaceSuiteLogDO.setEndTime(endTime);
+        interfaceSuiteLogDO.setExecuteType(type);
+        interfaceSuiteLogDO.setRunDev(runDev);
         interfaceSuiteLogService.saveIfSuiteLog(interfaceSuiteLogDO);
-        LOG.info("写入测试套件执行日志表，suiteLogNo={}，success={}，failed={}，error={}, skip={}",
-                suiteLogNo, totalSuccess.intValue(), totalFailed.intValue(), totalError.intValue(), totalSkip.intValue());
+        LOG.info("写入测试套件执行日志表，suiteLogNo={}，success={}，failed={}，error={}, skip={}, 运行环境={}, 执行方式={}",
+                suiteLogNo, totalSuccess.intValue(), totalFailed.intValue(), totalError.intValue()
+                , totalSkip.intValue(), type, runDev);
         LOG.info("-----------------------测试套件执行完成-----------------------");
     }
 }
