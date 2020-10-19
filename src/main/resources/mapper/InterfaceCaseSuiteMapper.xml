@@ -33,7 +33,6 @@
             `desc`=#{desc},
             `created_time`=#{createdTime},
             `update_time`=#{updateTime},
-            `creator`=#{creator},
             `execute_type`=#{executeType},
             `run_dev`=#{runDev},
             `is_retry`=#{isRetry},
