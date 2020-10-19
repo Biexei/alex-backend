@@ -15,8 +15,6 @@ import java.util.Map;
 
 public class JdbcUtil {
 
-    private static JdbcTemplate jdbc;
-
     private static final Logger LOG = LoggerFactory.getLogger(JdbcUtil.class);
 
     private JdbcUtil() {
@@ -67,39 +65,35 @@ public class JdbcUtil {
     }
 
     /**
-     * 持锁懒汉式单例
      * @param url 数据库url
      * @param username 连接用户名
      * @param password 连接密码
      * @return spring template
      */
-    public static synchronized JdbcTemplate getInstance(String url, String username, String password){
-        if (jdbc == null) {
-            DruidDataSource ds = new DruidDataSource();
-            WallFilter wallFilter = new WallFilter();
-            WallConfig wallConfig = new WallConfig();
-            // 配置仅允许查询
-            wallConfig.setDeleteAllow(false);
-            wallConfig.setUpdateAllow(false);
-            wallConfig.setInsertAllow(false);
-            wallConfig.setDropTableAllow(false);
-            wallConfig.setAlterTableAllow(false);
+    public static JdbcTemplate getInstance(String url, String username, String password){
+        DruidDataSource ds = new DruidDataSource();
+        WallFilter wallFilter = new WallFilter();
+        WallConfig wallConfig = new WallConfig();
+        // 配置仅允许查询
+        wallConfig.setDeleteAllow(false);
+        wallConfig.setUpdateAllow(false);
+        wallConfig.setInsertAllow(false);
+        wallConfig.setDropTableAllow(false);
+        wallConfig.setAlterTableAllow(false);
 
-            // 将配置加入过滤器
-            wallFilter.setConfig(wallConfig);
-            List wallFilters = new ArrayList<WallFilter>();
-            wallFilters.add(wallFilter);
+        // 将配置加入过滤器
+        wallFilter.setConfig(wallConfig);
+        List wallFilters = new ArrayList<WallFilter>();
+        wallFilters.add(wallFilter);
 
-            // 添加过滤器
-            ds.setProxyFilters(wallFilters);
-            ds.setUsername(username);
-            ds.setFailFast(true);
-            ds.setConnectionErrorRetryAttempts(3);
-            ds.setPassword(password);
-            ds.setUrl(url);
-            jdbc = new JdbcTemplate(ds);
-        }
-        return jdbc;
+        // 添加过滤器
+        ds.setProxyFilters(wallFilters);
+        ds.setUsername(username);
+        ds.setFailFast(true);
+        ds.setConnectionErrorRetryAttempts(3);
+        ds.setPassword(password);
+        ds.setUrl(url);
+        return new JdbcTemplate(ds);
     }
 
     /**

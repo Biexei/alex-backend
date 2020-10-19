@@ -546,10 +546,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         LOG.info("断言实际结果={}, 类型={}, 响应Body={}, 提取表达式={}", actualResult, "html", responseBody, expression);
                     } else if (type == 2) { // header
                         actualResult = ParseUtil.parseHttpHeader(responseEntity, expression);
-                        LOG.info("断言实际结果={}, 类型={}, 响应Body={}, 提取表达式={}", actualResult, "header", JSON.toJSONString(responseEntity.getHeaders()), expression);
+                        LOG.info("断言实际结果={}, 类型={}, 响应header={}, 提取表达式={}", actualResult, "header", JSON.toJSONString(responseEntity.getHeaders()), expression);
                     } else if (type == 3) { // responseCode
                         actualResult = String.valueOf(ParseUtil.parseHttpCode(responseEntity));
-                        LOG.info("断言实际结果={}, 类型={}, 响应Body={}, 提取表达式={}", actualResult, "code", ParseUtil.parseHttpCode(responseEntity), expression);
+                        LOG.info("断言实际结果={}, 类型={}, 响应code={}, 提取表达式={}", actualResult, "code", ParseUtil.parseHttpCode(responseEntity), expression);
                     }
                     LOG.info("预期结果={}", exceptedResult);
                     LOG.info("操作符={}", operator);

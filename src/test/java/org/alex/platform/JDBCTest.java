@@ -53,13 +53,16 @@ public class JDBCTest {
         String url = "jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8&tinyInt1isBit=false&transformedBitIsBoolean=false";
         String username = "root";
         String password = "root";
-        JdbcTemplate jdbc = JdbcUtil.getInstance(url, username, password);
-        List<Map<String, Object>> query = jdbc.queryForList("select username from `t_user` where user_id= ?",18);
+//        JdbcTemplate jdbc = JdbcUtil.getInstance(url, username, password);
+//        List<Map<String, Object>> query = jdbc.queryForList("select * from `t_user`");
 //        System.out.println(this.getValue(query, 0, 0));
-//        for (Object key : result.keySet()) {
-//            System.out.println(result.get(key));
-//            break;
-//        }
+
+        System.out.println(JdbcUtil.checkJdbcConnection(url, username, password));
+
+        String url1 = "jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8&tinyInt1isBit=false&transformedBitIsBoolean=false";
+        String username1 = "root";
+        String password1 = "root1";
+        System.out.println(JdbcUtil.checkJdbcConnection(url1, username1, password1));
     }
 
     public String getValue(List<Map<String, Object>> queryResult, int rowIndex, int colIndex) throws ParseException {
