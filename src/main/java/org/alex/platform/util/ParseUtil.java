@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jayway.jsonpath.JsonPath;
+import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.dom4j.Document;
@@ -46,8 +47,8 @@ public class ParseUtil {
             }
             return JSON.toJSONString(result);
         } catch (Exception e) {
-            LOG.error("解析xml， xml格式错误， xml={}", xmlText);
-            throw new ParseException("xml格式错误");
+            LOG.error("xpath解析异常，xml={}，xpath={}", xmlText, xpath);
+            throw new ParseException("XPATH解析异常");
         }
 
 //        List<String> result = new ArrayList<>();
@@ -99,7 +100,11 @@ public class ParseUtil {
      * @param jsonPath
      * @return
      */
-    public static String parseJson(String jsonText, String jsonPath) {
-        return JSON.toJSONString(JsonPath.read(jsonText, jsonPath));
+    public static String parseJson(String jsonText, String jsonPath) throws ParseException {
+        try {
+            return JSON.toJSONString(JsonPath.read(jsonText, jsonPath));
+        } catch (Exception e) {
+            throw new ParseException("JsonPath解析异常");
+        }
     }
 }

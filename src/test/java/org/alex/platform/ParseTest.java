@@ -152,7 +152,7 @@ public class ParseTest {
                 "    \"expensive\": 10\n" +
                 "}";
         String s = "";
-        System.out.println(ParseUtil.parseJson(json, "$..store.book[0].category"));
+//        System.out.println(ParseUtil.parseJson(json, "$..store.book[0].category"));
     }
 
     @Test

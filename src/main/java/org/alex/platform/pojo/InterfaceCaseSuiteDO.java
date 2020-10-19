@@ -22,6 +22,18 @@ public class InterfaceCaseSuiteDO implements Serializable {
     @Max(value = 3, message = "运行环境设置错误")
     @Min(value = 0, message = "运行环境设置错误")
     private Byte runDev;
+    @NotNull(message = "失败重试不能为空")
+    @Max(value = 1, message = "失败重试设置错误")
+    @Min(value = 0, message = "失败重试设置错误")
+    private Byte isRetry;
+
+    public Byte getIsRetry() {
+        return isRetry;
+    }
+
+    public void setIsRetry(Byte isRetry) {
+        this.isRetry = isRetry;
+    }
 
     public Byte getRunDev() {
         return runDev;

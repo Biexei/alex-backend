@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -136,6 +137,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         InterfaceCaseSuiteVO interfaceCaseSuiteVO = interfaceCaseSuiteMapper.selectInterfaceCaseSuiteById(suiteId);
         Byte type = interfaceCaseSuiteVO.getExecuteType();
         Byte runDev = interfaceCaseSuiteVO.getRunDev();
+        AtomicBoolean isRetry = new AtomicBoolean(interfaceCaseSuiteVO.getIsRetry() == 0);
 
         // 写入测试套件执行日志表
         String suiteLogNo = NoUtil.genSuiteLogNo();
@@ -162,7 +164,22 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                         if (status == 0) {
                             totalSuccess.getAndIncrement();
                         } else if (status == 1) {
-                            totalFailed.getAndIncrement();
+                            // 失败重试机制
+                            if (isRetry.get()) {
+                                interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
+                                InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
+                                Byte retryStatus = retryVO.getStatus();
+                                if (retryStatus == 0) {
+                                    totalSuccess.getAndIncrement();
+                                } else if (retryStatus == 1) {
+                                    totalFailed.getAndIncrement();
+                                } else {
+                                    totalError.getAndIncrement();
+                                }
+                                isRetry.set(false);
+                            } else {
+                                totalFailed.getAndIncrement();
+                            }
                         } else {
                             totalError.getAndIncrement();
                         }
@@ -187,7 +204,21 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                     if (status == 0) {
                         totalSuccess.getAndIncrement();
                     } else if (status == 1) {
-                        totalFailed.getAndIncrement();
+                        if (isRetry.get()) {
+                            interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
+                            InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
+                            Byte retryStatus = retryVO.getStatus();
+                            if (retryStatus == 0) {
+                                totalSuccess.getAndIncrement();
+                            } else if (retryStatus == 1) {
+                                totalFailed.getAndIncrement();
+                            } else {
+                                totalError.getAndIncrement();
+                            }
+                            isRetry.set(false);
+                        } else {
+                            totalFailed.getAndIncrement();
+                        }
                     } else {
                         totalError.getAndIncrement();
                     }

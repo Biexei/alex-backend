@@ -383,13 +383,19 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 LOG.error("不支持的请求方式");
                 throw new BusinessException("不支持的请求方式");
             }
+        } catch (ParseException | BusinessException | SqlException e) {
+            // 自定义异常
+            caseStatus = 2;
+            e.printStackTrace();
+            LOG.error(ExceptionUtil.msg(e));
+            exceptionMessage = e.getMessage();
         } catch (ResourceAccessException e) {
             // 代理未开启
             caseStatus = 2;
             e.printStackTrace();
             LOG.error("请检查是否启用代理服务器");
             exceptionMessage = "请检查是否启用代理服务器";
-        }   catch (Exception e) {
+        } catch (Exception e) {
             // 出现异常则追加错误信息，并将case状态设置为2错误
             caseStatus = 2;
             e.printStackTrace();
@@ -537,24 +543,54 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 // 根据type 提取数据类型   0json/1html/2header/3responseCode 来制定断言方案
                 String actualResult = null;
                 // 断言出错异常信息
+                boolean isPass = false;
                 try {
                     if (type == 0) { // json
                         actualResult = ParseUtil.parseJson(responseBody, expression);
                         LOG.info("断言实际结果={}, 类型={}, 响应Body={}, 提取表达式={}", actualResult, "json", responseBody, expression);
+                        isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
+                        // 兼容处理数组长度为1时的情况，可省略[]
+                        if (!isPass) {
+                            List temp = JSONObject.parseObject(actualResult, List.class);
+                            if (temp.size() == 1) {
+                                String tempActualResult = temp.get(0).toString();
+                                isPass = AssertUtil.asserts(tempActualResult, operator, exceptedResult);
+                            }
+                        }
                     } else if (type == 1) { // html
                         actualResult = ParseUtil.parseXml(responseBody, expression);
                         LOG.info("断言实际结果={}, 类型={}, 响应Body={}, 提取表达式={}", actualResult, "html", responseBody, expression);
+                        isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
+                        // 兼容处理数组长度为1时的情况，可省略[]
+                        if (!isPass) {
+                            List temp = JSONObject.parseObject(actualResult, List.class);
+                            if (temp.size() == 1) {
+                                String tempActualResult = temp.get(0).toString();
+                                isPass = AssertUtil.asserts(tempActualResult, operator, exceptedResult);
+                            }
+                        }
                     } else if (type == 2) { // header
                         actualResult = ParseUtil.parseHttpHeader(responseEntity, expression);
                         LOG.info("断言实际结果={}, 类型={}, 响应header={}, 提取表达式={}", actualResult, "header", JSON.toJSONString(responseEntity.getHeaders()), expression);
+                        isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
+                        // 兼容处理数组长度为1时的情况，可省略[]
+                        if (!isPass) {
+                            List temp = JSONObject.parseObject(actualResult, List.class);
+                            if (temp.size() == 1) {
+                                String tempActualResult = temp.get(0).toString();
+                                isPass = AssertUtil.asserts(tempActualResult, operator, exceptedResult);
+                            }
+                        }
                     } else if (type == 3) { // responseCode
                         actualResult = String.valueOf(ParseUtil.parseHttpCode(responseEntity));
                         LOG.info("断言实际结果={}, 类型={}, 响应code={}, 提取表达式={}", actualResult, "code", ParseUtil.parseHttpCode(responseEntity), expression);
+                        isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
+                    } else {
+                        throw new BusinessException("不支持的断言方式");
                     }
                     LOG.info("预期结果={}", exceptedResult);
                     LOG.info("操作符={}", operator);
                     LOG.info("实际结果={}", actualResult);
-                    boolean isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
                     if (isPass) {
                         LOG.info("断言通过");
                         assertStatus = 0;
@@ -562,6 +598,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         LOG.warn("断言失败");
                         assertStatus = 1;
                     }
+                } catch (BusinessException | ParseException e) {
+                    assertStatus = 2;
+                    LOG.error("断言错误, errorMsg={}", ExceptionUtil.msg(e));
+                    // assertErrorMessage = ExceptionUtil.msg(e);
+                    assertErrorMessage = e.getMessage();
                 } catch (Exception e) {
                     assertStatus = 2;
                     LOG.error("断言错误, errorMsg={}", ExceptionUtil.msg(e));

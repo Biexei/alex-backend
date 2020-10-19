@@ -132,7 +132,9 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
             toInsertSuiteCase.add(suiteCase);
             copyCaseCount ++;
         }
-        interfaceSuiteCaseRefMapper.insertSuiteCase(toInsertSuiteCase);
+        if (!toInsertSuiteCase.isEmpty()) {
+            interfaceSuiteCaseRefMapper.insertSuiteCase(toInsertSuiteCase);
+        }
         HashMap<String, Integer> map = new HashMap<>();
         map.put("copyCaseCount", copyCaseCount);
         return map;
