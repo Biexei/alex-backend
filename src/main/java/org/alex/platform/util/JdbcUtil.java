@@ -50,7 +50,8 @@ public class JdbcUtil {
             ds.setProxyFilters(wallFilters);
             ds.setUsername(username);
             ds.setFailFast(true);
-            ds.setConnectionErrorRetryAttempts(3);
+            ds.setConnectionErrorRetryAttempts(1);
+            ds.setBreakAfterAcquireFailure(true);
             ds.setPassword(password);
             ds.setUrl(url);
             // 执行一条sql才会检查连接是否出现异常

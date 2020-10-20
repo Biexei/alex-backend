@@ -26,7 +26,7 @@ public class LoginConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration interceptor = registry.addInterceptor(new HandlerInterceptor() {
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws LoginException {
-                if (!request.getMethod().toUpperCase().equals("OPTIONS")) {
+                if (!request.getMethod().equalsIgnoreCase("OPTIONS")) {
                     String token = request.getHeader("Token");
                     if ("".equals(token) || null == token) {
                         throw new LoginException("登录已经过期，请重新登录");

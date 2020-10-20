@@ -32,6 +32,142 @@ public class DbDO implements Serializable {
     @NotNull(message = "状态不能为空")
     private Byte status;
 
+    @NotEmpty(message = "开发环境URL不能为空")
+    @Size(min = 1, max = 100, message = "开发环境URL长度必须为[1,100]")
+    private String devUrl;
+    @NotEmpty(message = "开发环境帐号不能为空")
+    @Size(min = 1, max = 100, message = "开发环境帐号长度必须为[1,100]")
+    private String devUsername;
+    @NotEmpty(message = "开发环境密码不能为空")
+    @Size(min = 1, max = 100, message = "开发环境密码长度必须为[1,100]")
+    private String devPassword;
+
+    @NotEmpty(message = "测试环境URL不能为空")
+    @Size(min = 1, max = 100, message = "测试环境URL长度必须为[1,100]")
+    private String testUrl;
+    @NotEmpty(message = "测试环境帐号不能为空")
+    @Size(min = 1, max = 100, message = "测试环境帐号长度必须为[1,100]")
+    private String testUsername;
+    @NotEmpty(message = "测试环境密码不能为空")
+    @Size(min = 1, max = 100, message = "测试环境密码长度必须为[1,100]")
+    private String testPassword;
+
+    @NotEmpty(message = "预发环境URL不能为空")
+    @Size(min = 1, max = 100, message = "预发环境URL长度必须为[1,100]")
+    private String stgUrl;
+    @NotEmpty(message = "预发环境帐号不能为空")
+    @Size(min = 1, max = 100, message = "预发环境帐号长度必须为[1,100]")
+    private String stgUsername;
+    @NotEmpty(message = "预发环境密码不能为空")
+    @Size(min = 1, max = 100, message = "预发环境密码长度必须为[1,100]")
+    private String stgPassword;
+
+    @NotEmpty(message = "线上环境URL不能为空")
+    @Size(min = 1, max = 100, message = "线上环境URL长度必须为[1,100]")
+    private String prodUrl;
+    @NotEmpty(message = "线上环境帐号不能为空")
+    @Size(min = 1, max = 100, message = "线上环境帐号长度必须为[1,100]")
+    private String prodUsername;
+    @NotEmpty(message = "线上环境密码不能为空")
+    @Size(min = 1, max = 100, message = "线上环境密码长度必须为[1,100]")
+    private String prodPassword;
+
+    public String getDevUrl() {
+        return devUrl;
+    }
+
+    public void setDevUrl(String devUrl) {
+        this.devUrl = devUrl;
+    }
+
+    public String getDevUsername() {
+        return devUsername;
+    }
+
+    public void setDevUsername(String devUsername) {
+        this.devUsername = devUsername;
+    }
+
+    public String getDevPassword() {
+        return devPassword;
+    }
+
+    public void setDevPassword(String devPassword) {
+        this.devPassword = devPassword;
+    }
+
+    public String getTestUrl() {
+        return testUrl;
+    }
+
+    public void setTestUrl(String testUrl) {
+        this.testUrl = testUrl;
+    }
+
+    public String getTestUsername() {
+        return testUsername;
+    }
+
+    public void setTestUsername(String testUsername) {
+        this.testUsername = testUsername;
+    }
+
+    public String getTestPassword() {
+        return testPassword;
+    }
+
+    public void setTestPassword(String testPassword) {
+        this.testPassword = testPassword;
+    }
+
+    public String getStgUrl() {
+        return stgUrl;
+    }
+
+    public void setStgUrl(String stgUrl) {
+        this.stgUrl = stgUrl;
+    }
+
+    public String getStgUsername() {
+        return stgUsername;
+    }
+
+    public void setStgUsername(String stgUsername) {
+        this.stgUsername = stgUsername;
+    }
+
+    public String getStgPassword() {
+        return stgPassword;
+    }
+
+    public void setStgPassword(String stgPassword) {
+        this.stgPassword = stgPassword;
+    }
+
+    public String getProdUrl() {
+        return prodUrl;
+    }
+
+    public void setProdUrl(String prodUrl) {
+        this.prodUrl = prodUrl;
+    }
+
+    public String getProdUsername() {
+        return prodUsername;
+    }
+
+    public void setProdUsername(String prodUsername) {
+        this.prodUsername = prodUsername;
+    }
+
+    public String getProdPassword() {
+        return prodPassword;
+    }
+
+    public void setProdPassword(String prodPassword) {
+        this.prodPassword = prodPassword;
+    }
+
     public Integer getId() {
         return id;
     }
