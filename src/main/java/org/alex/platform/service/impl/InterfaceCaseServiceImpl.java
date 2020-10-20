@@ -309,7 +309,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             // 根据suiteId获取运行环境
             InterfaceCaseSuiteVO suiteVO = ifSuiteService.findInterfaceCaseSuiteById(suiteId);
             Byte runDev = suiteVO.getRunDev();
-            // 0dev 1test 2stg 3prod
+            // 0dev 1test 2stg 3prod 4debug调试模式
             if (runDev == 0) {
                 url = projectVO.getDevDomain() + interfaceCaseInfoVO.getUrl();
             } else if (runDev == 1) {
@@ -318,6 +318,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 url = projectVO.getStgDomain() + interfaceCaseInfoVO.getUrl();
             } else if (runDev == 3) {
                 url = projectVO.getProdDomain() + interfaceCaseInfoVO.getUrl();
+            } else if (runDev == 4) {
+                url = projectVO.getDomain() + interfaceCaseInfoVO.getUrl();
             } else {
                 LOG.error("运行环境错误，invalid runDev={}", runDev);
                 throw new BusinessException("运行环境错误");

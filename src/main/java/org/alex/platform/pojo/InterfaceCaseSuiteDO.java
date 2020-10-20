@@ -19,7 +19,7 @@ public class InterfaceCaseSuiteDO implements Serializable {
     @NotNull(message = "执行方式不允许为空")
     private Byte executeType;
     @NotNull(message = "运行环境不允许为空")
-    @Max(value = 3, message = "运行环境设置错误")
+    @Max(value = 4, message = "运行环境设置错误")
     @Min(value = 0, message = "运行环境设置错误")
     private Byte runDev;
     @NotNull(message = "失败重试不能为空")

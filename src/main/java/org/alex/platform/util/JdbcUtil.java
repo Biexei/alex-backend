@@ -1,6 +1,7 @@
 package org.alex.platform.util;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.alibaba.druid.wall.WallConfig;
 import com.alibaba.druid.wall.WallFilter;
 import org.alex.platform.exception.SqlException;
@@ -10,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +32,16 @@ public class JdbcUtil {
      */
     public static String checkJdbcConnection(String url, String username, String password) {
         String msg = "连接成功";
-        DruidDataSource ds = new DruidDataSource();
+        // DruidDataSource ds = new DruidDataSource();
+        DruidDataSource ds = null;
         try {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("init","false");
+            map.put("url", url);
+            map.put("username", username);
+            map.put("password", password);
+            ds = (DruidDataSource) DruidDataSourceFactory.createDataSource(map);
+
             WallFilter wallFilter = new WallFilter();
             WallConfig wallConfig = new WallConfig();
             // 配置仅允许查询
@@ -48,17 +58,16 @@ public class JdbcUtil {
 
             // 添加过滤器
             ds.setProxyFilters(wallFilters);
-            ds.setUsername(username);
             ds.setFailFast(true);
             ds.setConnectionErrorRetryAttempts(1);
             ds.setBreakAfterAcquireFailure(true);
-            ds.setPassword(password);
-            ds.setUrl(url);
-            // 执行一条sql才会检查连接是否出现异常
+            ds.init();
+
+            // 连通性检查
             JdbcTemplate jdbc = new JdbcTemplate(ds);
             jdbc.queryForList("select 1");
-        } catch (Exception e) {
             ds.close();
+        } catch (Exception e) {
             msg = "连接失败，" + e.getMessage();
             LOG.error("JDBC TEMPLATE 连接失败， errorMsg={}", ExceptionUtil.msg(e));
         }
@@ -71,8 +80,14 @@ public class JdbcUtil {
      * @param password 连接密码
      * @return spring template
      */
-    public static JdbcTemplate getInstance(String url, String username, String password){
-        DruidDataSource ds = new DruidDataSource();
+    public static DruidDataSource getDruidDataSource(String url, String username, String password) throws Exception {
+        // DruidDataSource ds = new DruidDataSource();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("init","false");
+        map.put("url", url);
+        map.put("username", username);
+        map.put("password", password);
+        DruidDataSource ds = (DruidDataSource) DruidDataSourceFactory.createDataSource(map);
         WallFilter wallFilter = new WallFilter();
         WallConfig wallConfig = new WallConfig();
         // 配置仅允许查询
@@ -89,12 +104,11 @@ public class JdbcUtil {
 
         // 添加过滤器
         ds.setProxyFilters(wallFilters);
-        ds.setUsername(username);
         ds.setFailFast(true);
-        ds.setConnectionErrorRetryAttempts(3);
-        ds.setPassword(password);
-        ds.setUrl(url);
-        return new JdbcTemplate(ds);
+        ds.setConnectionErrorRetryAttempts(1);
+        ds.setBreakAfterAcquireFailure(true);
+        ds.init();
+        return ds;
     }
 
     /**
@@ -109,7 +123,10 @@ public class JdbcUtil {
         String resultStr = "";
         try {
             resultStr = "";
-            JdbcTemplate jdbcTemplate = getInstance(url, username, password);
+
+            DruidDataSource druidDataSource = getDruidDataSource(url, username, password);
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(druidDataSource);
+
             List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
             if (list.isEmpty()) {
                 throw new SqlException("查询结果为空");
@@ -119,7 +136,8 @@ public class JdbcUtil {
                 resultStr = result.get(key).toString();
                 break;
             }
-        } catch (DataAccessException e) {
+            druidDataSource.close();
+        } catch (Exception e) {
             LOG.error("JDBC TEMPLATE 连接失败， errorMsg={}", ExceptionUtil.msg(e));
             throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
         }
@@ -144,7 +162,7 @@ public class JdbcUtil {
                 resultStr = result.get(key).toString();
                 break;
             }
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             LOG.error("JDBC TEMPLATE 连接失败， errorMsg={}", ExceptionUtil.msg(e));
             throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
         }
@@ -165,7 +183,10 @@ public class JdbcUtil {
         String resultStr = "";
         try {
             resultStr = "";
-            JdbcTemplate jdbcTemplate = getInstance(url, username, password);
+
+            DruidDataSource druidDataSource = getDruidDataSource(url, username, password);
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(druidDataSource);
+
             List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
             if (list.isEmpty()) {
                 throw new SqlException("查询结果为空");
@@ -175,7 +196,8 @@ public class JdbcUtil {
                 resultStr = result.get(key).toString();
                 break;
             }
-        } catch (DataAccessException e) {
+            druidDataSource.close();
+        } catch (Exception e) {
             LOG.error("JDBC TEMPLATE 连接失败， errorMsg={}", ExceptionUtil.msg(e));
             throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
         }
