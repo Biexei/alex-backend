@@ -808,7 +808,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     }
                     // 反射执行对应方法
                     try {
-                        Class<?> clazz = Class.forName("org.alex.platform.common.RelyMethod");
+                        Class<?> clazz = Class.forName("org.alex.platform.common.ReflectMethod");
                         Class[] paramsList = new Class[params.length];
                         for (int i = 0; i < params.length; i++) {
                             paramsList[i] = String.class;

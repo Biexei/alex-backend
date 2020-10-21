@@ -1,17 +1,25 @@
 package org.alex.platform.common;
 
+import com.github.javafaker.Faker;
 import org.alex.platform.util.MD5Util;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
-public class RelyMethod {
+public class ReflectMethod {
+
+    // faker 单例
+    private static class SingleFaker{
+        private static final Faker INSTANCE = new Faker(Locale.SIMPLIFIED_CHINESE);
+    }
+
+    public static Faker getInstance() {
+        return SingleFaker.INSTANCE;
+    }
+
     /**
      * md5
      *
@@ -191,20 +199,21 @@ public class RelyMethod {
         } catch (NumberFormatException e) { // 类转换异常中则将amount设置成0
             amt = 0;
         }
-        if (operator.equals("y")) { // 年
-            return sdf.format(DateUtils.addYears(new Date(), amt));
-        } else if (operator.equals("M")) { // 月
-            return sdf.format(DateUtils.addMonths(new Date(), amt));
-        } else if (operator.equals("d")) { // 日
-            return sdf.format(DateUtils.addDays(new Date(), amt));
-        } else if (operator.equals("h")) { // 时
-            return sdf.format(DateUtils.addHours(new Date(), amt));
-        } else if (operator.equals("m")) { // 分
-            return sdf.format(DateUtils.addMinutes(new Date(), amt));
-        } else if (operator.equals("s")) { // 秒
-            return sdf.format(DateUtils.addSeconds(new Date(), amt));
-        } else { // 没有匹配的操作时间则返回当前时间
-            return sdf.format(new Date());
+        switch (operator) {
+            case "y":  // 年
+                return sdf.format(DateUtils.addYears(new Date(), amt));
+            case "M":  // 月
+                return sdf.format(DateUtils.addMonths(new Date(), amt));
+            case "d":  // 日
+                return sdf.format(DateUtils.addDays(new Date(), amt));
+            case "h":  // 时
+                return sdf.format(DateUtils.addHours(new Date(), amt));
+            case "m":  // 分
+                return sdf.format(DateUtils.addMinutes(new Date(), amt));
+            case "s":  // 秒
+                return sdf.format(DateUtils.addSeconds(new Date(), amt));
+            default:  // 没有匹配的操作时间则返回当前时间
+                return sdf.format(new Date());
         }
     }
 
@@ -325,8 +334,105 @@ public class RelyMethod {
         return sb.toString();
     }
 
+    /**
+     * 随机获取城市
+     * @return 随机城市
+     */
+    public String city() {
+        return getInstance().address().city();
+    }
+
+
+    /**
+     * 获取随机省份
+     * @return 随机省份
+     */
+    public String province() {
+        return getInstance().address().state();
+    }
+
+    /**
+     * 获取随机国家
+     * @return 随机国家
+     */
+    public String country() {
+        return getInstance().address().country();
+    }
+
+    /**
+     * 获取随机手机号
+     * @return 随机手机号
+     */
+    public String phone() {
+        return getInstance().phoneNumber().cellPhone();
+    }
+
+    /**
+     * 获取随机邮箱
+     * @return 随机邮箱
+     */
+    public String email() {
+        Faker faker = new Faker(Locale.ENGLISH);
+        return faker.internet().emailAddress();
+    }
+
+    /**
+     * 获取随机mac地址
+     * @return 随机mac地址
+     */
+    public String mac() {
+        return getInstance().internet().macAddress();
+    }
+
+    /**
+     * 获取随机书籍
+     * @return 随机书籍
+     */
+    public String book() {
+        return getInstance().book().title();
+    }
+
+    /**
+     * 获取随机名字
+     * @return 随机名称
+     */
+    public String name() {
+        return getInstance().name().fullName();
+    }
+
+    /**
+     * 随机ipv4
+     * @return ipv4
+     */
+    public String ipv4() {
+        return getInstance().internet().ipV4Address();
+    }
+
+    /**
+     * 随机私有ipv4
+     * @return 随机私有ipv4
+     */
+    public String privateIpv4() {
+        return getInstance().internet().privateIpV4Address();
+    }
+
+    /**
+     * 随机公有ipv4
+     * @return 随机公有ipv4
+     */
+    public String publicIpv4() {
+        return getInstance().internet().publicIpV4Address();
+    }
+
+    /**
+     * 随机ipv6
+     * @return ipv6
+     */
+    public String ipv6() {
+        return getInstance().internet().ipV6Address();
+    }
+
     public static void main(String[] args) {
-        RelyMethod rm = new RelyMethod();
-        System.out.println(rm.randomIllegal("100"));
+        System.out.println(new ReflectMethod().publicIpv4());
     }
 }

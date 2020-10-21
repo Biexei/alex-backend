@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Configuration
-public class LoginConfig implements WebMvcConfigurer {
+public class AuthConfig implements WebMvcConfigurer {
     @Autowired
     RedisUtil redisUtil;
 

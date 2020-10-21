@@ -1,31 +1,18 @@
 package org.alex.platform;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import org.alex.platform.common.RelyMethod;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
-import org.alex.platform.exception.SqlException;
 import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.mapper.ModuleMapper;
-import org.alex.platform.pojo.*;
 import org.alex.platform.service.*;
 import org.alex.platform.util.AssertUtil;
-import org.alex.platform.util.JdbcUtil;
 import org.alex.platform.util.ParseUtil;
-import org.alex.platform.util.RestUtil;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.json.JsonbTester;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.lang.reflect.Method;
-import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

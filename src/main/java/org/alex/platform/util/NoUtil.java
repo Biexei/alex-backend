@@ -1,6 +1,6 @@
 package org.alex.platform.util;
 
-import org.alex.platform.common.RelyMethod;
+import org.alex.platform.common.ReflectMethod;
 
 import java.util.UUID;
 
@@ -11,10 +11,10 @@ public class NoUtil {
      * @return 测试套件执行日志编号
      */
     public static String genSuiteLogNo() {
-        RelyMethod relyMethod = new RelyMethod();
-        String prefix = relyMethod.now("yyyyMMddHHmmss");
-        String mid = relyMethod.randomUpper("5");
-        String suffix = relyMethod.randomInt("5");
+        ReflectMethod reflectMethod = new ReflectMethod();
+        String prefix = reflectMethod.now("yyyyMMddHHmmss");
+        String mid = reflectMethod.randomUpper("5");
+        String suffix = reflectMethod.randomInt("5");
         return prefix + mid + suffix;
     }
 
