@@ -153,6 +153,10 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             LOG.info("-----------------------开始并行执行测试套件，suiteId={}-----------------------", suiteId);
             suiteCaseList.parallelStream().forEach(suiteCase -> {
                 Integer caseId = suiteCase.getCaseId();
+                boolean doRetryFlag = false;
+                if (isRetry.get()) {
+                    doRetryFlag = true;
+                }
                 try {
                     // 禁用
                     if (suiteCase.getCaseStatus() == 1) {
@@ -165,9 +169,9 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                             totalSuccess.getAndIncrement();
                         } else if (status == 1) {
                             // 失败重试机制
-                            if (isRetry.get()) {
-                                interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
-                                InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
+                            if (doRetryFlag) {
+                                Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
+                                InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(retryExecuteLogId);
                                 Byte retryStatus = retryVO.getStatus();
                                 if (retryStatus == 0) {
                                     totalSuccess.getAndIncrement();
@@ -176,7 +180,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                                 } else {
                                     totalError.getAndIncrement();
                                 }
-                                isRetry.set(false);
+                                doRetryFlag = false;
                             } else {
                                 totalFailed.getAndIncrement();
                             }
@@ -194,6 +198,10 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             LOG.info("-----------------------开始串行执行测试套件，suiteId={}-----------------------", suiteId);
             for (InterfaceSuiteCaseRefVO suiteCase : suiteCaseList) {
                 Integer caseId = suiteCase.getCaseId();
+                boolean doRetryFlag = false;
+                if (isRetry.get()) {
+                    doRetryFlag = true;
+                }
                 // 禁用
                 if (suiteCase.getCaseStatus() == 1) {
                     totalSkip.getAndIncrement();
@@ -204,9 +212,9 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                     if (status == 0) {
                         totalSuccess.getAndIncrement();
                     } else if (status == 1) {
-                        if (isRetry.get()) {
-                            interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
-                            InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
+                        if (doRetryFlag) {
+                            Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
+                            InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(retryExecuteLogId);
                             Byte retryStatus = retryVO.getStatus();
                             if (retryStatus == 0) {
                                 totalSuccess.getAndIncrement();
@@ -215,7 +223,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                             } else {
                                 totalError.getAndIncrement();
                             }
-                            isRetry.set(false);
+                            doRetryFlag = false;
                         } else {
                             totalFailed.getAndIncrement();
                         }
