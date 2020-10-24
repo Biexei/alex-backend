@@ -19,6 +19,15 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private String errorMessage;
     private String suiteLogNo;
     private String chain;
+    private Byte isFailedRetry;
+
+    public Byte getIsFailedRetry() {
+        return isFailedRetry;
+    }
+
+    public void setIsFailedRetry(Byte isFailedRetry) {
+        this.isFailedRetry = isFailedRetry;
+    }
 
     public String getChain() {
         return chain;

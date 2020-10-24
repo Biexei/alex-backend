@@ -147,6 +147,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         AtomicInteger totalSuccess = new AtomicInteger();
         AtomicInteger totalFailed = new AtomicInteger();
         AtomicInteger totalError = new AtomicInteger();
+        AtomicInteger totalRetry = new AtomicInteger();
         Date startTime = new Date();
         long begin = System.currentTimeMillis();
         if (type == 0) { // 异步
@@ -162,7 +163,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                     if (suiteCase.getCaseStatus() == 1) {
                         totalSkip.getAndIncrement();
                     } else {
-                        Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
+                        Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 1);
                         InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                         Byte status = interfaceCaseExecuteLogVO.getStatus();
                         if (status == 0) {
@@ -170,7 +171,8 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                         } else if (status == 1) {
                             // 失败重试机制
                             if (doRetryFlag) {
-                                Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
+                                totalRetry.getAndIncrement();
+                                Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 0);
                                 InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(retryExecuteLogId);
                                 Byte retryStatus = retryVO.getStatus();
                                 if (retryStatus == 0) {
@@ -206,14 +208,15 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                 if (suiteCase.getCaseStatus() == 1) {
                     totalSkip.getAndIncrement();
                 } else {
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 1);
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                     Byte status = interfaceCaseExecuteLogVO.getStatus();
                     if (status == 0) {
                         totalSuccess.getAndIncrement();
                     } else if (status == 1) {
                         if (doRetryFlag) {
-                            Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId);
+                            totalRetry.getAndIncrement();
+                            Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 0);
                             InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(retryExecuteLogId);
                             Byte retryStatus = retryVO.getStatus();
                             if (retryStatus == 0) {
@@ -252,6 +255,14 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         interfaceSuiteLogDO.setEndTime(endTime);
         interfaceSuiteLogDO.setExecuteType(type);
         interfaceSuiteLogDO.setRunDev(runDev);
+        interfaceSuiteLogDO.setExecutor(executor);
+        interfaceSuiteLogDO.setIsRetry(interfaceCaseSuiteVO.getIsRetry());
+        // 仅开启失败重跑才写入该字段，否则连0都不准写
+        if (isRetry.get()) {
+            interfaceSuiteLogDO.setTotalRetry(totalRetry.intValue());
+        } else {
+            interfaceSuiteLogDO.setTotalRetry(null);
+        }
         interfaceSuiteLogService.saveIfSuiteLog(interfaceSuiteLogDO);
         LOG.info("写入测试套件执行日志表，suiteLogNo={}，success={}，failed={}，error={}, skip={}, 运行环境={}, 执行方式={}",
                 suiteLogNo, totalSuccess.intValue(), totalFailed.intValue(), totalError.intValue()

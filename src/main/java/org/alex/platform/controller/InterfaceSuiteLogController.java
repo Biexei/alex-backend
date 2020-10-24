@@ -51,4 +51,26 @@ public class InterfaceSuiteLogController {
     public Result findIfSuiteLogById(@PathVariable Integer id) {
         return Result.success(interfaceSuiteLogService.findIfSuiteLogById(id));
     }
+
+    /**
+     * 根据项目 模块统计执行情况
+     * @param suiteLogNo suiteLogNo
+     * @return Result
+     */
+    @GetMapping("/suite/summary/{suiteLogNo}")
+    public Result findSuiteLogSummary(@PathVariable String suiteLogNo) {
+        return Result.success(interfaceSuiteLogService.findSuiteLogSummary(suiteLogNo));
+    }
+
+
+    /**
+     * 统计测试报告首页测试套件执行情况
+     *
+     * @param suiteLogNo 测试套件日志编号
+     * @return HashMap
+     */
+    @GetMapping("/suite/assert/log/{suiteLogNo}")
+    public Result findSuiteReportAssert(@PathVariable String suiteLogNo) {
+        return Result.success(interfaceSuiteLogService.findSuiteReportAssert(suiteLogNo));
+    }
 }

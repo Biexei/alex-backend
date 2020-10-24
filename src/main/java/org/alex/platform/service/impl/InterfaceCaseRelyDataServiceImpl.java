@@ -205,7 +205,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                 LOG.info("根据caseId调用相应case，caseId={}", caseId);
 
                 String chainNo = NoUtil.genChainNo();
-                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo, null);
+                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo, null, (byte) 1);
                 // 缓存
                 redisUtil.stackPush(chainNo, executeLogId);
 
@@ -281,7 +281,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             LOG.info("根据caseId调用相应case，caseId={}", caseId);
 
             String chainNo = NoUtil.genChainNo();
-            Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo, null);
+            Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo, null, (byte) 1);
             redisUtil.stackPush(chainNo, executeLogId);
 
             LOG.info("调用成功，executeLogId={}", executeLogId);

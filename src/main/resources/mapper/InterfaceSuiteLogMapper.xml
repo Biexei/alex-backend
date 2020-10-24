@@ -5,8 +5,9 @@
 <mapper namespace="org.alex.platform.mapper.InterfaceSuiteLogMapper">
     <select id="selectIfSuiteLog" parameterType="org.alex.platform.pojo.InterfaceSuiteLogDTO" resultType="org.alex.platform.pojo.InterfaceSuiteLogVO">
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
-        `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,
+        `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,`log`.`executor`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
+        `log`.`is_retry`,`log`.`total_retry`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
         LEFT JOIN `t_interface_case_suite` as `suite`
@@ -16,6 +17,7 @@
             <if test="suiteId!=null">and `log`.`suite_id`=#{suiteId}</if>
             <if test="runDev!=null">and `log`.`run_dev`=#{runDev}</if>
             <if test="suiteName!=null">and `suite`.`suite_name` like concat('%',#{suiteName},'%')</if>
+            <if test="executor!=null">and `log`.`executor` like concat('%',#{executor},'%')</if>
             <if test="suiteDesc!=null">and `suite`.`desc` like concat('%',#{suiteDesc},'%')</if>
             <if test="suiteLogNo!=null">and `log`.`suite_log_no` like concat('%',#{suiteLogNo},'%')</if>
             <if test="createdStartTime!=null">and `log`.`start_time`&gt;=#{createdStartTime}</if>
@@ -25,8 +27,9 @@
     </select>
     <select id="selectIfSuiteLogByNo" parameterType="String" resultType="org.alex.platform.pojo.InterfaceSuiteLogVO">
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
-        `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,
+        `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,`log`.`executor`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
+        `log`.`is_retry`,`log`.`total_retry`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
         LEFT JOIN `t_interface_case_suite` as `suite`
@@ -35,8 +38,9 @@
     </select>
     <select id="selectIfSuiteLogById" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceSuiteLogVO">
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
-        `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,
+        `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,`log`.`executor`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
+        `log`.`is_retry`,`log`.`total_retry`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
         LEFT JOIN `t_interface_case_suite` as `suite`
@@ -59,6 +63,9 @@
             <if test="endTime!=null">`end_time`,</if>
             <if test="executeType!=null">`execute_type`,</if>
             <if test="runDev!=null">`run_dev`,</if>
+            <if test="executor!=null">`executor`,</if>
+            <if test="isRetry!=null">`is_retry`,</if>
+            <if test="totalRetry!=null">`total_retry`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="suiteId!=null">#{suiteId},</if>
@@ -74,7 +81,33 @@
             <if test="endTime!=null">#{endTime},</if>
             <if test="executeType!=null">#{executeType},</if>
             <if test="runDev!=null">#{runDev},</if>
+            <if test="executor!=null">#{executor},</if>
+            <if test="isRetry!=null">#{isRetry},</if>
+            <if test="totalRetry!=null">#{totalRetry},</if>
         </trim>
     </insert>
+
+    <select id="selectSuiteLogProjectModule" parameterType="String" resultType="java.util.HashMap">
+        select `project`.`project_id`,`project`.`name` as `project_name`,
+        `module`.`module_id`,`module`.`name` as `module_name`
+        from `t_interface_case_execute_log` as `log`
+        LEFT JOIN `t_interface_case` as `case` on `log`.`case_id` = `case`.`case_id`
+        LEFT JOIN `t_project` as `project` on `case`.`project_id` = `project`.`project_id`
+        LEFT JOIN `t_module` as `module` on `case`.`module_id` = `module`.`module_id`
+        where `log`.`suite_log_no`=#{suiteLogNo}
+        group by `project_id`, `module_id`
+        order by `project_id`, `module_id`, `status`
+    </select>
+
+    <select id="selectSuiteLogSummary" parameterType="org.alex.platform.pojo.InterfaceSuiteSummaryDTO" resultType="java.util.HashMap">
+        select `project`.`project_id`,`project`.`name` as `project_name`,
+        `module`.`module_id`,`module`.`name` as `module_name`, `status`, count(*) as `count`
+        from `t_interface_case_execute_log` as `log`
+        LEFT JOIN `t_interface_case` as `case` on `log`.`case_id` = `case`.`case_id`
+        LEFT JOIN `t_project` as `project` on `case`.`project_id` = `project`.`project_id`
+        LEFT JOIN `t_module` as `module` on `case`.`module_id` = `module`.`module_id`
+        where `log`.`suite_log_no`=#{suiteLogNo} and `project`.`project_id`=#{projectId} and `module`.`module_id` =#{moduleId}
+        group by `status`
+    </select>
 
 </mapper>

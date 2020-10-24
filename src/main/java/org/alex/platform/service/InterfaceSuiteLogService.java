@@ -4,6 +4,10 @@ import com.github.pagehelper.PageInfo;
 import org.alex.platform.pojo.InterfaceSuiteLogDTO;
 import org.alex.platform.pojo.InterfaceSuiteLogDO;
 import org.alex.platform.pojo.InterfaceSuiteLogVO;
+import org.alex.platform.pojo.InterfaceSuiteSummaryDTO;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public interface InterfaceSuiteLogService {
@@ -14,4 +18,8 @@ public interface InterfaceSuiteLogService {
     InterfaceSuiteLogVO findIfSuiteLogById(Integer id);
 
     InterfaceSuiteLogDO saveIfSuiteLog(InterfaceSuiteLogDO interfaceSuiteLogDO);
+
+    ArrayList<HashMap<String, Object>> findSuiteLogSummary(String suiteLogNo);
+
+    HashMap<String, Object> findSuiteReportAssert(String suiteLogNo);
 }

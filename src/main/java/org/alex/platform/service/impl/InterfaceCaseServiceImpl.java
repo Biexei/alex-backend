@@ -284,13 +284,16 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * @param suiteLogNo 测试套件日志编号 主要为调用入口为测试套件时使用，否则传参null
      * @param chainNo 调用链路跟踪 每次调用均会将自增日志编号写入缓存，再序列化
      * @param suiteId 测试套件编号，主要用于调用入口为测试套件时确定运行环境，否则应该传参null
+     * @param isFailedRetry 判断该执行日志是否为失败重试，0是1否，主要用于测试报告统计断言情况
      * @return 自增日志编号
      * @throws ParseException ParseException
      * @throws BusinessException BusinessException
      * @throws SqlException SqlException
      */
     @Override
-    public Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo, Integer suiteId) throws ParseException, BusinessException, SqlException {
+    public Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo,
+                                        String chainNo, Integer suiteId, Byte isFailedRetry)
+            throws ParseException, BusinessException, SqlException {
         LOG.info("---------------------------------开始执行测试用例：caseId={}---------------------------------", interfaceCaseId);
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
@@ -428,6 +431,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setRunTime(runTime);
             executeLogDO.setCaseUrl(url);
             executeLogDO.setSuiteLogNo(suiteLogNo);
+            executeLogDO.setIsFailedRetry(isFailedRetry);
             InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
             // 返回自增id
             Integer executeLogId = executedLogDO.getId();
@@ -456,12 +460,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setResponseHeaders(responseHeaders);
             executeLogDO.setResponseBody(responseBody);
             executeLogDO.setRunTime(runTime);
-            // 后续加入拦截器后根据token反查
             executeLogDO.setExecuter(executor);
             executeLogDO.setStatus(caseStatus);
             executeLogDO.setCreatedTime(new Date());
             executeLogDO.setCaseUrl(url);
             executeLogDO.setSuiteLogNo(suiteLogNo);
+            executeLogDO.setIsFailedRetry(isFailedRetry);
             InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
             // 4.保存断言日志表，获取运行日志自增id然后在断言日志表中写入断言信息，断言日志都成功后再将日志修改状态为0成功
             // 日志自增id
@@ -702,7 +706,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     LOG.info("获取到的用例编号={}", caseId);
                     // 根据caseId调用相应case
 
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId, (byte) 1);
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
@@ -956,7 +960,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     // 根据caseId调用相应case
 
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId, (byte) 1);
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     // 获取case执行结果, 不等于0, 则用例未通过

@@ -15,6 +15,15 @@ public class InterfaceSuiteLogDTO {
     private Date createdStartTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdEndTime;
+    private String executor;
+
+    public String getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(String executor) {
+        this.executor = executor;
+    }
 
     public Byte getRunDev() {
         return runDev;

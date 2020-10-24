@@ -15,12 +15,39 @@ public class InterfaceSuiteLogDO {
     private Integer totalSuccess;
     private Integer totalFailed;
     private Integer totalError;
+    private Integer totalRetry;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
     private Byte executeType;
     private Byte runDev;
+    private String executor;
+    private Byte isRetry;
+
+    public Integer getTotalRetry() {
+        return totalRetry;
+    }
+
+    public void setTotalRetry(Integer totalRetry) {
+        this.totalRetry = totalRetry;
+    }
+
+    public Byte getIsRetry() {
+        return isRetry;
+    }
+
+    public void setIsRetry(Byte isRetry) {
+        this.isRetry = isRetry;
+    }
+
+    public String getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(String executor) {
+        this.executor = executor;
+    }
 
     public Byte getExecuteType() {
         return executeType;

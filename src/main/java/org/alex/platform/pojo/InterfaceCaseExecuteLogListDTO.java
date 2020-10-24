@@ -9,7 +9,7 @@ public class InterfaceCaseExecuteLogListDTO implements Serializable {
     private Integer projectId;
     private String projectName;
     private Integer moduleId;
-    private Integer moduleName;
+    private String moduleName;
     private Integer caseId;
     private String caseDesc;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -18,6 +18,15 @@ public class InterfaceCaseExecuteLogListDTO implements Serializable {
     private Date createdEndTime;
     private Byte status;
     private String suiteLogNo;
+    private Byte isFailedRetry;
+
+    public Byte getIsFailedRetry() {
+        return isFailedRetry;
+    }
+
+    public void setIsFailedRetry(Byte isFailedRetry) {
+        this.isFailedRetry = isFailedRetry;
+    }
 
     public String getSuiteLogNo() {
         return suiteLogNo;
@@ -51,11 +60,11 @@ public class InterfaceCaseExecuteLogListDTO implements Serializable {
         this.moduleId = moduleId;
     }
 
-    public Integer getModuleName() {
+    public String getModuleName() {
         return moduleName;
     }
 
-    public void setModuleName(Integer moduleName) {
+    public void setModuleName(String moduleName) {
         this.moduleName = moduleName;
     }
 

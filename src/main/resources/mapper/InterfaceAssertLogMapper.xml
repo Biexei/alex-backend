@@ -59,4 +59,12 @@
        </where>
        order by `assert_log_id` desc
    </select>
+    <select id="selectSuiteReportAssert" parameterType="String" resultType="java.util.HashMap">
+            select `assert_log`.`status`, count(*) as `count`
+            from `t_interface_case_execute_log` as `log`
+            inner JOIN `t_interface_assert_log` as `assert_log` on `log`.`id` = `assert_log`.`execute_log_id`
+            where `log`.`suite_log_no` = #{suiteLogNo} and `is_failed_retry` = 1 <!--忽略失败重跑的-->
+            group by `assert_log`.`status`
+            order by `assert_log`.`status` asc
+    </select>
 </mapper>

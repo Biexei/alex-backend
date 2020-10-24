@@ -3,9 +3,11 @@ package org.alex.platform.mapper;
 import org.alex.platform.pojo.InterfaceSuiteLogDO;
 import org.alex.platform.pojo.InterfaceSuiteLogDTO;
 import org.alex.platform.pojo.InterfaceSuiteLogVO;
+import org.alex.platform.pojo.InterfaceSuiteSummaryDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Repository
 public interface InterfaceSuiteLogMapper {
@@ -16,4 +18,8 @@ public interface InterfaceSuiteLogMapper {
     InterfaceSuiteLogVO selectIfSuiteLogById(Integer id);
 
     Integer insertIfSuiteLog(InterfaceSuiteLogDO interfaceSuiteLogDO);
+
+    ArrayList<HashMap<String, Object>> selectSuiteLogProjectModule(String suiteLogNo);
+
+    ArrayList<HashMap<String, Object>> selectSuiteLogSummary(InterfaceSuiteSummaryDTO interfaceSuiteSummaryDTO);
 }
