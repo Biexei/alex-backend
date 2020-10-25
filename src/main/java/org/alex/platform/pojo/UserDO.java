@@ -20,7 +20,6 @@ public class UserDO implements Serializable {
     private String password;
     @Pattern(regexp = "\\d{0,10}$", message = "工号必须为数字")
     private String jobNumber;
-    @NotNull(message = "性别不能为空")
     @DecimalMax(value = "1", message = "性别必须为0|1")
     private Byte sex;
     @DecimalMax(value = "1", message = "状态必须为0|1")
@@ -29,6 +28,7 @@ public class UserDO implements Serializable {
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    @NotNull(message = "真实姓名不能为空")
     @Size(max = 20, message = "真实姓名长度必须小于20")
     private String realName;
     private Integer roleId;

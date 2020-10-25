@@ -81,6 +81,37 @@ public class UserController {
     }
 
     /**
+     * 新增用户
+     *
+     * @param userDO userDO
+     * @return Result
+     */
+    @PostMapping("/user/save")
+    @ResponseBody
+    public Result saveUser(@Validated UserDO userDO) {
+        String username = userDO.getUsername();
+        String password = userDO.getPassword();
+        String realName = userDO.getRealName();
+        Byte sex = userDO.getSex();
+        Date date = new Date();
+        userDO.setCreatedTime(date);
+        userDO.setUpdateTime(date);
+        userDO.setIsEnable((byte) 1);
+        userDO.setRoleId(2);
+        if (username == null || password == null || sex == null || realName == null) {
+            LOG.error("请完善注册信息");
+            return Result.fail("请完善注册信息");
+        } else {
+            if (userService.saveUser(userDO)) {
+                return Result.success("注册成功");
+            } else {
+                LOG.error("用户名已存在");
+                return Result.fail("用户名已存在");
+            }
+        }
+    }
+
+    /**
      * 用户注册
      *
      * @param userDO userDO
@@ -88,16 +119,17 @@ public class UserController {
      */
     @PostMapping("/user/register")
     @ResponseBody
-    public Result register(@Validated UserDO userDO) {
+    public Result registerUser(@Validated UserDO userDO) {
         String username = userDO.getUsername();
         String password = userDO.getPassword();
-        Byte sex = userDO.getSex();
+        String realName = userDO.getRealName();
         Date date = new Date();
         userDO.setCreatedTime(date);
         userDO.setUpdateTime(date);
         userDO.setIsEnable((byte) 1);
         userDO.setRoleId(2);
-        if (username == null || password == null || sex == null) {
+        userDO.setSex((byte) 1);
+        if (username == null || password == null || realName == null) {
             LOG.error("请完善注册信息");
             return Result.fail("请完善注册信息");
         } else {
