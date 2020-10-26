@@ -25,5 +25,5 @@ public interface InterfaceCaseService {
 
     Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo) throws ParseException, BusinessException, SqlException;
 
-    String parseRelyData(String s, String chainNo, Integer suiteId, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException;
+    String parseRelyData(String s, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException;
 }

@@ -347,19 +347,19 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         try {
             // 清洗
             if (null != headers) {
-                headers = this.parseRelyData(headers, chainNo, suiteId, suiteLogDetailNo);
+                headers = this.parseRelyData(headers, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
                 LOG.info("清洗headers，清洗后的内容={}", headers);
             }
             if (null != params) {
-                params = this.parseRelyData(params, chainNo, suiteId, suiteLogDetailNo);
+                params = this.parseRelyData(params, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
                 LOG.info("清洗params，清洗后的内容={}", params);
             }
             if (null != data) {
-                data = this.parseRelyData(data, chainNo, suiteId, suiteLogDetailNo);
+                data = this.parseRelyData(data, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
                 LOG.info("清洗data，清洗后的内容={}", data);
             }
             if (null != json) {
-                json = this.parseRelyData(json, chainNo, suiteId, suiteLogDetailNo);
+                json = this.parseRelyData(json, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
                 LOG.info("清洗json，清洗后的内容={}", json);
             }
 
@@ -527,7 +527,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             }
                         }
                         // 清洗${}
-                        exceptedResult = this.parseRelyData(exceptedResult, chainNo, suiteId, suiteLogDetailNo);
+                        exceptedResult = this.parseRelyData(exceptedResult, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
                         LOG.info("清洗${}模式，清洗后的结果={}", "{}", exceptedResult);
                     } catch (ParseException | BusinessException | SqlException e) {
                         assertErrorMessage = e.getMessage();
@@ -656,13 +656,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * @param s 待清洗数据
      * @param chainNo 调用链路跟踪 每次调用均会将自增日志编号写入缓存，再序列化
      * @param suiteId 测试套件编号，主要用于调用入口为测试套件时确定运行环境，否则应该传参null
+     * @param isFailedRetry 判断该执行日志是否为失败重试，0是1否，主要用于测试报告统计断言情况
      * @param suiteLogDetailNo suiteLogNo仅记录重跑和真正运行的，suiteLogDetailNo会包括用例所依赖的case
      * @return 清洗后的数据
      * @throws ParseException ParseException
      * @throws BusinessException BusinessException
      * @throws SqlException SqlException
      */
-    public String parseRelyData(String s, String chainNo, Integer suiteId, String suiteLogDetailNo)
+    public String parseRelyData(String s, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo)
             throws ParseException, BusinessException, SqlException {
         LOG.info("--------------------------------------开始字符串解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
@@ -711,7 +712,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     LOG.info("获取到的用例编号={}", caseId);
                     // 根据caseId调用相应case
 
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId, (byte) 1, suiteLogDetailNo);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
@@ -881,7 +882,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     String sql = relyDataVO.getValue();
                     if (relyDataVO.getValue() != null) {
                         LOG.info("开始解析SQL，解析前SQL={}", sql);
-                        sql = parseRelyData(sql, chainNo, suiteId, suiteLogDetailNo);
+                        sql = parseRelyData(sql, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
                         LOG.info("解析SQL完成，解析后SQL={}", sql);
                     }
                     LOG.info("SQL执行参数，SQL={}, params={}", sql, params);
@@ -953,7 +954,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             String sql = relyDataVO.getValue();
                             if (relyDataVO.getValue() != null) {
                                 LOG.info("开始解析SQL，解析前SQL={}", sql);
-                                sql = parseRelyData(sql, chainNo, suiteId, suiteLogDetailNo);
+                                sql = parseRelyData(sql, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
                                 LOG.info("解析SQL完成，解析后SQL={}", sql);
                             }
                             LOG.info("SQL执行参数，SQL={}", sql);
@@ -965,7 +966,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     // 根据caseId调用相应case
 
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId, (byte) 1, suiteLogDetailNo);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     // 获取case执行结果, 不等于0, 则用例未通过
