@@ -18,7 +18,16 @@ public class InterfaceCaseExecuteLogListDTO implements Serializable {
     private Date createdEndTime;
     private Byte status;
     private String suiteLogNo;
+    private String suiteLogDetailNo;
     private Byte isFailedRetry;
+
+    public String getSuiteLogDetailNo() {
+        return suiteLogDetailNo;
+    }
+
+    public void setSuiteLogDetailNo(String suiteLogDetailNo) {
+        this.suiteLogDetailNo = suiteLogDetailNo;
+    }
 
     public Byte getIsFailedRetry() {
         return isFailedRetry;

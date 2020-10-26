@@ -205,7 +205,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                 LOG.info("根据caseId调用相应case，caseId={}", caseId);
 
                 String chainNo = NoUtil.genChainNo();
-                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo, null, (byte) 1);
+                Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo, null, (byte) 1, null);
                 // 缓存
                 redisUtil.stackPush(chainNo, executeLogId);
 
@@ -269,7 +269,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                     throw new BusinessException("不支持该种取值方式");
                 } catch (Exception e) {
                     LOG.error("预检接口依赖出现异常，errorMsg={}", ExceptionUtil.msg(e));
-                    throw new ParseException(ExceptionUtil.msg(e));
+                    throw new ParseException(e.getMessage());
                 }
             } catch (NumberFormatException e) {
                 LOG.error("预检接口依赖，数组下标只能为数字，errorMsg={}", ExceptionUtil.msg(e));
@@ -281,7 +281,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             LOG.info("根据caseId调用相应case，caseId={}", caseId);
 
             String chainNo = NoUtil.genChainNo();
-            Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo, null, (byte) 1);
+            Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo, null, (byte) 1, null);
             redisUtil.stackPush(chainNo, executeLogId);
 
             LOG.info("调用成功，executeLogId={}", executeLogId);
@@ -337,7 +337,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                 throw new BusinessException("不支持该种取值方式");
             } catch (Exception e) {
                 LOG.error("预检接口依赖出现异常，errorMsg={}", ExceptionUtil.msg(e));
-                throw new ParseException(ExceptionUtil.msg(e));
+                throw new ParseException(e.getMessage());
             }
         }
     }
