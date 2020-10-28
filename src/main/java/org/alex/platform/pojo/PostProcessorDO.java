@@ -3,9 +3,10 @@ package org.alex.platform.pojo;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class PostProcessorDO {
+public class PostProcessorDO implements Serializable {
     private Integer postProcessorId;
     @NotNull(message = "测试用例编号不能为空")
     private Integer caseId;

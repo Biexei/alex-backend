@@ -67,6 +67,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      */
     @Override
     public InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException {
+        Date date = new Date();
+        interfaceCaseDO.setCreatedTime(date);
+        interfaceCaseDO.setUpdateTime(date);
         Integer moduleId = interfaceCaseDO.getModuleId();
         Integer projectId = interfaceCaseDO.getProjectId();
 
@@ -120,6 +123,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      */
     @Override
     public void modifyInterfaceCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
+        Date updateTime = new Date();
+        interfaceCaseDTO.setUpdateTime(updateTime);
         InterfaceCaseDO interfaceCaseDO = new InterfaceCaseDO();
         interfaceCaseDO.setModuleId(interfaceCaseDTO.getModuleId());
         interfaceCaseDO.setProjectId(interfaceCaseDTO.getProjectId());

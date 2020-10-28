@@ -38,9 +38,6 @@ public class InterfaceCaseController {
      */
     @PostMapping("/interface/case/save")
     public Result saveInterfaceCase(@RequestBody @Validated InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
-        Date date = new Date();
-        interfaceCaseDTO.setCreatedTime(date);
-        interfaceCaseDTO.setUpdateTime(date);
         interfaceCaseService.saveInterfaceCaseAndAssert(interfaceCaseDTO);
         return Result.success("新增成功");
     }
@@ -54,7 +51,6 @@ public class InterfaceCaseController {
      */
     @PostMapping("/interface/case/modify")
     public Result modifyInterfaceCase(@RequestBody @Validated InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
-        interfaceCaseDTO.setUpdateTime(new Date());
         interfaceCaseService.modifyInterfaceCase(interfaceCaseDTO);
         return Result.success("修改成功");
     }

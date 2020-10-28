@@ -2,9 +2,10 @@ package org.alex.platform.pojo;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PostProcessorLogDO {
+public class PostProcessorLogDO implements Serializable {
     private Integer id;
     private Integer postProcessorId;
     private Integer caseId;

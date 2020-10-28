@@ -1,6 +1,8 @@
 package org.alex.platform.pojo;
 
-public class PostProcessorDTO {
+import java.io.Serializable;
+
+public class PostProcessorDTO implements Serializable {
     private Integer postProcessorId;
     private Integer caseId;
     private String name;

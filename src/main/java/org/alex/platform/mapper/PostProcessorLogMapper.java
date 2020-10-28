@@ -1,6 +1,5 @@
 package org.alex.platform.mapper;
 
-import org.alex.platform.pojo.PostProcessorDO;
 import org.alex.platform.pojo.PostProcessorLogDO;
 import org.alex.platform.pojo.PostProcessorLogDTO;
 import org.alex.platform.pojo.PostProcessorLogVO;
@@ -14,5 +13,5 @@ public interface PostProcessorLogMapper {
 
     List<PostProcessorLogVO> selectPostProcessorLogList(PostProcessorLogDTO postProcessorLogDTO);
 
-    Integer insertPostProcessorLog(PostProcessorLogDO PostProcessorLogDO);
+    Integer insertPostProcessorLog(PostProcessorLogDO postProcessorLogDO);
 }

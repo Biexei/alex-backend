@@ -10,6 +10,8 @@ import java.util.List;
 public interface InterfaceAssertMapper {
     void insertAssert(InterfaceAssertDO interfaceAssertDO);
 
+    void insertAssertList(List<InterfaceAssertDO> interfaceAssertDOList);
+
     void updateAssert(InterfaceAssertDO interfaceAssertDO);
 
     void deleteAssertByCaseId(Integer caseId);

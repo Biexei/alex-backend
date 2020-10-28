@@ -16,7 +16,7 @@ public interface PostProcessorMapper {
 
     List<PostProcessorVO> checkPostProcessorName(@Param("postProcessorId") Integer postProcessorId, @Param("name") String name);
 
-    List<PostProcessorVO> selectPostProcessorList(PostProcessorDTO postProcessorDTOO);
+    List<PostProcessorVO> selectPostProcessorList(PostProcessorDTO postProcessorDTO);
 
     Integer insertPostProcessor(PostProcessorDO postProcessorDO);
 

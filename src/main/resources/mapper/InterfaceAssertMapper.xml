@@ -29,6 +29,25 @@
         </trim>
     </insert>
 
+    <insert id="insertAssertList" parameterType="org.alex.platform.pojo.InterfaceAssertDO">
+        insert into (`t_interface_assert` `assert_name`,`case_id`,`type`,`expression`,`operator`,
+        `excepted_result`,`order`,`created_time`,`update_time`)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+                #{item.assertName},
+                #{item.caseId},
+                #{item.type},
+                #{item.expression},
+                #{item.operator},
+                #{item.exceptedResult},
+                #{item.order},
+                #{item.createdTime},
+                #{item.updateTime},
+            )
+        </foreach>
+    </insert>
+
     <update id="updateAssert" parameterType="org.alex.platform.pojo.InterfaceAssertDO">
         update `t_interface_assert`
         <set>

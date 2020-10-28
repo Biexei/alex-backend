@@ -13,7 +13,7 @@
         from `t_post_processor`
         where `post_processor_id`=#{postProcessorId}
     </select>
-    <select id="checkPostProcessorName" parameterType="String" resultType="org.alex.platform.pojo.PostProcessorVO">
+    <select id="checkPostProcessorName" resultType="org.alex.platform.pojo.PostProcessorVO">
         select `post_processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`
         from `t_post_processor`
         where `post_processor_id`!=#{postProcessorId} and `name`=#{name}
@@ -24,7 +24,7 @@
         <where>
             <if test="postProcessorId!=null">and `post_processor_id`=#{postProcessorId}</if>
             <if test="caseId!=null">and `case_id`=#{caseId}</if>
-            <if test="name!=null">and `name`=#{name}</if>
+            <if test="name!=null">and `name` like concat("%",#{name},"%")</if>
             <if test="type!=null">and `type`=#{type}</if>
         </where>
     </select>
@@ -54,7 +54,6 @@
             `name`=#{name},
             `type`=#{type},
             `expression`=#{expression},
-            `created_time`=#{createdTime},
             `update_time`=#{updateTime}
         </set>
         where `post_processor_id`=#{postProcessorId}

@@ -1,4 +1,6 @@
 package org.alex.platform.pojo;
 
-public class PostProcessorLogVO extends PostProcessorLogDO{
+import java.io.Serializable;
+
+public class PostProcessorLogVO extends PostProcessorLogDO implements Serializable {
 }
