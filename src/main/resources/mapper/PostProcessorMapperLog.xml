@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.PostProcessorMapper">
+
+    <select id="selectPostProcessorLogById" parameterType="Integer" resultType="org.alex.platform.pojo.PostProcessorLogVO">
+        select `id`, `post_processor_id`, `case_id`, `case_execute_log_id`,`name`, `value`,
+        `type`, `expression`, `created_time`
+        from `t_post_processor_log`
+        where `id`=#{id}
+    </select>
+
+    <select id="selectPostProcessorLogList" parameterType="org.alex.platform.pojo.PostProcessorLogDTO" resultType="org.alex.platform.pojo.PostProcessorLogVO">
+        select `id`, `post_processor_id`, `case_id`, `case_execute_log_id`,`name`, `value`,
+        `type`, `expression`, `created_time`
+        <where>
+            <if test="id!=null">and `id`=#{id}</if>
+            <if test="postProcessorId!=null">and `post_processor_id`=#{postProcessorId}</if>
+            <if test="caseId!=null">and `case_id`=#{caseId}</if>
+            <if test="caseExecuteLogId!=null">and `case_execute_log_id`=#{caseExecuteLogId}</if>
+            <if test="name!=null">and `name` like concat('%',#{name},'%')</if>
+            <if test="value!=null">and `value` like concat('%',#{value},'%')</if>
+            <if test="type!=null">and `type`=#{type}</if>
+            <if test="createdStartTime!=null">and `created_time` &gt;=#{createdStartTime}</if>
+            <if test="createdEndTime!=null">and `created_time` &lt;=#{createdEndTime}</if>
+        </where>
+    </select>
+    <insert id="insertPostProcessorLog" parameterType="org.alex.platform.pojo.PostProcessorLogDO" useGeneratedKeys="true" keyProperty="id">
+        insert into `t_post_processor`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="postProcessorId!=null">`post_processor_id`,</if>
+            <if test="caseId!=null">`case_id`,</if>
+            <if test="caseExecuteLogId!=null">`case_execute_log_id`,</if>
+            <if test="name!=null">`name`,</if>
+            <if test="value!=null">`value`,</if>
+            <if test="type!=null">`type`,</if>
+            <if test="expression!=null">`expression`,</if>
+            <if test="createdTime!=null">`created_time`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="postProcessorId!=null">#{postProcessorId},</if>
+            <if test="caseId!=null">#{caseId},</if>
+            <if test="caseExecuteLogId!=null">#{caseExecuteLogId},</if>
+            <if test="name!=null">#{name},</if>
+            <if test="value!=null">#{value},</if>
+            <if test="type!=null">#{type},</if>
+            <if test="expression!=null">#{expression},</if>
+            <if test="createdTime!=null">#{createdTime},</if>
+        </trim>
+    </insert>
+
+</mapper>
