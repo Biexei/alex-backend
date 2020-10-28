@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class InterfaceCaseExecuteLogServiceImpl implements InterfaceCaseExecuteLogService {
@@ -114,5 +115,13 @@ public class InterfaceCaseExecuteLogServiceImpl implements InterfaceCaseExecuteL
         return list;
     }
 
-
+    /**
+     * 查看所有的执行日志列表，不分页
+     * @param executeLogListDTO executeLogListDTO
+     * @return List<InterfaceCaseExecuteLogListVO>
+     */
+    @Override
+    public List<InterfaceCaseExecuteLogListVO> findExecuteListAll(InterfaceCaseExecuteLogListDTO executeLogListDTO) {
+        return mapper.selectExecuteList(executeLogListDTO);
+    }
 }

@@ -24,4 +24,6 @@ public interface InterfaceCaseExecuteLogService {
     void modifyExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
 
     LinkedList<HashMap<String, Object>> caseExecuteLogChain(Integer executeId);
+
+    List<InterfaceCaseExecuteLogListVO> findExecuteListAll(InterfaceCaseExecuteLogListDTO executeLogListDTO);
 }

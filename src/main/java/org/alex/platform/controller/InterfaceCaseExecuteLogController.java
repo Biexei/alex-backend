@@ -80,4 +80,20 @@ public class InterfaceCaseExecuteLogController {
     public Result caseExecuteLogChain(@PathVariable Integer executeId) {
         return Result.success(executeLogService.caseExecuteLogChain(executeId));
     }
+
+    /**
+     * 获取指定suiteLogNo的执行记录，不分页
+     * @param suiteLogNo suiteLogNo
+     * @return Result
+     * @throws BusinessException 入参suiteLogNo必填
+     */
+    @GetMapping("/interface/log/list/chain/{suiteLogNo}")
+    public Result findReportChain(@PathVariable String suiteLogNo) throws BusinessException {
+        if (suiteLogNo == null) {
+            throw new BusinessException("请求参数错误"); // 只准查指定suiteLogNo,该接口主要用于前端测试报告用例调用链tab页面展示
+        }
+        InterfaceCaseExecuteLogListDTO dto = new InterfaceCaseExecuteLogListDTO();
+        dto.setSuiteLogNo(suiteLogNo);
+        return Result.success(executeLogService.findExecuteListAll(dto));
+    }
 }
