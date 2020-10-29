@@ -4,22 +4,27 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.alex.platform.mapper.PostProcessorMapper">
     <select id="selectPostProcessorByName" parameterType="String" resultType="org.alex.platform.pojo.PostProcessorVO">
-        select `post_processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`
+        select `post_processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`, `have_default_value`, `default_value`
         from `t_post_processor`
         where `name`=#{name}
     </select>
     <select id="selectPostProcessorById" parameterType="Integer" resultType="org.alex.platform.pojo.PostProcessorVO">
-        select `post_processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`
+        select `post_processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`, `have_default_value`, `default_value`
         from `t_post_processor`
         where `post_processor_id`=#{postProcessorId}
     </select>
+    <select id="selectPostProcessorIdByCaseId" parameterType="Integer" resultType="Integer">
+        select `post_processor_id`
+        from `t_post_processor`
+        where `case_id`=#{caseId}
+    </select>
     <select id="checkPostProcessorName" resultType="org.alex.platform.pojo.PostProcessorVO">
-        select `post_processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`
+        select `post_processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`, `have_default_value`, `default_value`
         from `t_post_processor`
         where `post_processor_id`!=#{postProcessorId} and `name`=#{name}
     </select>
     <select id="selectPostProcessorList" parameterType="org.alex.platform.pojo.PostProcessorDTO" resultType="org.alex.platform.pojo.PostProcessorVO">
-        select `post_processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`
+        select `post_processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`, `have_default_value`, `default_value`
         from `t_post_processor`
         <where>
             <if test="postProcessorId!=null">and `post_processor_id`=#{postProcessorId}</if>
@@ -37,6 +42,8 @@
             <if test="expression!=null">`expression`,</if>
             <if test="createdTime!=null">`created_time`,</if>
             <if test="updateTime!=null">`update_time`,</if>
+            <if test="defaultValue!=null">`default_value`,</if>
+            <if test="haveDefaultValue!=null">`have_default_value`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="caseId!=null">#{caseId},</if>
@@ -45,6 +52,8 @@
             <if test="expression!=null">#{expression},</if>
             <if test="createdTime!=null">#{createdTime},</if>
             <if test="updateTime!=null">#{updateTime},</if>
+            <if test="defaultValue!=null">#{defaultValue},</if>
+            <if test="haveDefaultValue!=null">#{haveDefaultValue},</if>
         </trim>
     </insert>
     <update id="updatePostProcessor" parameterType="org.alex.platform.pojo.PostProcessorDO">
@@ -54,7 +63,9 @@
             `name`=#{name},
             `type`=#{type},
             `expression`=#{expression},
-            `update_time`=#{updateTime}
+            `update_time`=#{updateTime},
+            `default_value`=#{defaultValue},
+            `have_default_value`=#{haveDefaultValue}
         </set>
         where `post_processor_id`=#{postProcessorId}
     </update>

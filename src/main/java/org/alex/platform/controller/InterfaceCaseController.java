@@ -38,7 +38,7 @@ public class InterfaceCaseController {
      */
     @PostMapping("/interface/case/save")
     public Result saveInterfaceCase(@RequestBody @Validated InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
-        interfaceCaseService.saveInterfaceCaseAndAssert(interfaceCaseDTO);
+        interfaceCaseService.saveInterfaceCaseAndAssertAndPostProcessor(interfaceCaseDTO);
         return Result.success("新增成功");
     }
 

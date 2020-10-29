@@ -12,6 +12,8 @@ import java.util.List;
 public interface PostProcessorMapper {
     PostProcessorVO selectPostProcessorByName(String name);
 
+    List<Integer>selectPostProcessorIdByCaseId(Integer caseId);
+
     PostProcessorVO selectPostProcessorById(Integer postProcessorId);
 
     List<PostProcessorVO> checkPostProcessorName(@Param("postProcessorId") Integer postProcessorId, @Param("name") String name);

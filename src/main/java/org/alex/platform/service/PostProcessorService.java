@@ -20,6 +20,7 @@ public interface PostProcessorService {
     @Transactional
     PostProcessorDO savePostProcessor(PostProcessorDO postProcessorDO) throws BusinessException;
 
+    @Transactional
     void modifyPostProcessor(PostProcessorDO postProcessorDO) throws BusinessException;
 
     void removePostProcessorById(Integer postProcessorId);

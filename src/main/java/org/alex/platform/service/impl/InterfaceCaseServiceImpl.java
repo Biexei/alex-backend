@@ -56,6 +56,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     RedisUtil redisUtil;
     @Autowired
     InterfaceCaseSuiteService ifSuiteService;
+    @Autowired
+    PostProcessorService postProcessorService;
+    @Autowired
+    PostProcessorLogService postProcessorLogService;
+    @Autowired
+    PostProcessorMapper postProcessorMapper;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseServiceImpl.class);
 
     /**
@@ -96,13 +102,13 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     }
 
     /**
-     * 新增接口测试用例及断言
+     * 新增接口测试用例及断言及后置处理器
      *
      * @param interfaceCaseDTO interfaceCaseDTO
      * @throws BusinessException BusinessException
      */
     @Override
-    public void saveInterfaceCaseAndAssert(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
+    public void saveInterfaceCaseAndAssertAndPostProcessor(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
         //插入用例详情表，获取自增用例编号
         Integer caseId = this.saveInterfaceCase(interfaceCaseDTO).getCaseId();
         //插入断言表
@@ -111,6 +117,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             for (InterfaceAssertDO assertDO : assertList) {
                 assertDO.setCaseId(caseId);
                 interfaceAssertService.saveAssert(assertDO);
+            }
+        }
+        //插入后置处理器表
+        List<PostProcessorDO> postProcessorList = interfaceCaseDTO.getPostProcessors();
+        if (!postProcessorList.isEmpty()) {
+            for (PostProcessorDO postProcessorDO : postProcessorList) {
+                postProcessorDO.setCaseId(caseId);
+                postProcessorService.savePostProcessor(postProcessorDO);
             }
         }
     }
@@ -176,42 +190,68 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         interfaceCaseMapper.updateInterfaceCase(interfaceCaseDO);
         List<InterfaceAssertDO> asserts = interfaceCaseDTO.getAsserts();
         List<Integer> allAssertId = interfaceAssertMapper.selectAllAssertId(interfaceCaseDTO.getCaseId());
-        for (InterfaceAssertDO assertDO : asserts) {
-            // 编辑的时候如果注入依赖为接口依赖，并且依赖接口为当前接口，应该禁止，避免造成死循环
-            Pattern pp = Pattern.compile("\\$\\{.+?\\}");
-            Matcher mm = pp.matcher(assertDO.getExceptedResult());
-            while (mm.find()) {
-                String findStr = mm.group();
-                // 获取relyName
-                String relyName = findStr.substring(2, findStr.length() - 1);
-                InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName);
-                if (null != interfaceCaseRelyDataVO) {
-                    int caseId = interfaceCaseRelyDataVO.getRelyCaseId();
-                    if (interfaceCaseDO.getCaseId() == caseId) {
-                        LOG.warn("修改接口测试用例，assert，接口依赖的用例不能为当前用例");
-                        throw new BusinessException("接口依赖的用例不能为当前用例");
+        if (asserts != null) {
+            for (InterfaceAssertDO assertDO : asserts) {
+                // 编辑的时候如果注入依赖为接口依赖，并且依赖接口为当前接口，应该禁止，避免造成死循环
+                Pattern pp = Pattern.compile("\\$\\{.+?\\}");
+                Matcher mm = pp.matcher(assertDO.getExceptedResult());
+                while (mm.find()) {
+                    String findStr = mm.group();
+                    // 获取relyName
+                    String relyName = findStr.substring(2, findStr.length() - 1);
+                    InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName);
+                    if (null != interfaceCaseRelyDataVO) {
+                        int caseId = interfaceCaseRelyDataVO.getRelyCaseId();
+                        if (interfaceCaseDO.getCaseId() == caseId) {
+                            LOG.warn("修改接口测试用例，assert，接口依赖的用例不能为当前用例");
+                            throw new BusinessException("接口依赖的用例不能为当前用例");
+                        }
+                    }
+                }
+
+                // 修改断言表  修改存在的
+                assertDO.setCaseId(interfaceCaseDTO.getCaseId());
+                interfaceAssertService.modifyAssert(assertDO);
+                // 新增没有传assertId的
+                if (assertDO.getAssertId() == null) {
+                    interfaceAssertService.saveAssert(assertDO);
+                } else {
+                    // 有就移出此次新增前的id队列
+                    for (int i = 0; i < allAssertId.size(); i++) {
+                        if (allAssertId.get(i).equals(assertDO.getAssertId())) {
+                            allAssertId.remove(i);
+                        }
                     }
                 }
             }
-
-            // 修改断言表  修改存在的
-            assertDO.setCaseId(interfaceCaseDTO.getCaseId());
-            interfaceAssertService.modifyAssert(assertDO);
-            // 新增没有传assertId的
-            if (assertDO.getAssertId() == null) {
-                interfaceAssertService.saveAssert(assertDO);
-            } else {
-                // 删除不存在的
-                // 查询该用例已有的断言
-                for (int i = 0; i < allAssertId.size(); i++) {
-                    if (allAssertId.get(i) == assertDO.getAssertId()) {
-                        allAssertId.remove(i);
-                    }
-                }
+            for (Integer assertId : allAssertId) {
+                interfaceAssertService.removeAssertByAssertId(assertId);
             }
         }
-        for (Integer assertId : allAssertId) {
-            interfaceAssertService.removeAssertByAssertId(assertId);
+
+        // 修改后置处理器
+        List<PostProcessorDO> postProcessors = interfaceCaseDTO.getPostProcessors();
+        List<Integer> postProcessorIdList = postProcessorMapper.selectPostProcessorIdByCaseId(interfaceCaseDTO.getCaseId());
+        if (postProcessors != null) {
+            for(PostProcessorDO postProcessorDO : postProcessors) {
+                postProcessorDO.setCaseId(interfaceCaseDTO.getCaseId());
+                // 1.修改已存在的
+                postProcessorService.modifyPostProcessor(postProcessorDO);
+                // 2.新增没有postProcessorId的
+                if (postProcessorDO.getPostProcessorId() == null) {
+                    postProcessorService.savePostProcessor(postProcessorDO);
+                } else {
+                    // 3.有就移出此次新增前的id队列
+                    for (int i = 0; i < postProcessorIdList.size(); i++) {
+                        if (postProcessorIdList.get(i).equals(postProcessorDO.getPostProcessorId())) {
+                            postProcessorIdList.remove(i);
+                        }
+                    }
+                }
+            }
+            for (Integer postProcessorId : postProcessorIdList) {
+                postProcessorService.removePostProcessorById(postProcessorId);
+            }
         }
     }
 

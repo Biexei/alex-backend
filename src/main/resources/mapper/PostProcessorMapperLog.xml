@@ -6,14 +6,14 @@
 
     <select id="selectPostProcessorLogById" parameterType="Integer" resultType="org.alex.platform.pojo.PostProcessorLogVO">
         select `id`, `post_processor_id`, `case_id`, `case_execute_log_id`,`name`, `value`,
-        `type`, `expression`, `created_time`
+        `type`, `expression`, `created_time`, `is_default_value`
         from `t_post_processor_log`
         where `id`=#{id}
     </select>
 
     <select id="selectPostProcessorLogList" parameterType="org.alex.platform.pojo.PostProcessorLogDTO" resultType="org.alex.platform.pojo.PostProcessorLogVO">
         select `id`, `post_processor_id`, `case_id`, `case_execute_log_id`,`name`, `value`,
-        `type`, `expression`, `created_time`
+        `type`, `expression`, `created_time`, `is_default_value`
         <where>
             <if test="id!=null">and `id`=#{id}</if>
             <if test="postProcessorId!=null">and `post_processor_id`=#{postProcessorId}</if>
@@ -22,6 +22,7 @@
             <if test="name!=null">and `name` like concat('%',#{name},'%')</if>
             <if test="value!=null">and `value` like concat('%',#{value},'%')</if>
             <if test="type!=null">and `type`=#{type}</if>
+            <if test="isDefaultValue!=null">and `is_default_value`=#{isDefaultValue}</if>
             <if test="createdStartTime!=null">and `created_time` &gt;=#{createdStartTime}</if>
             <if test="createdEndTime!=null">and `created_time` &lt;=#{createdEndTime}</if>
         </where>
@@ -36,6 +37,7 @@
             <if test="value!=null">`value`,</if>
             <if test="type!=null">`type`,</if>
             <if test="expression!=null">`expression`,</if>
+            <if test="isDefaultValue!=null">`is_default_value`,</if>
             <if test="createdTime!=null">`created_time`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -45,6 +47,7 @@
             <if test="name!=null">#{name},</if>
             <if test="value!=null">#{value},</if>
             <if test="type!=null">#{type},</if>
+            <if test="isDefaultValue!=null">#{isDefaultValue},</if>
             <if test="expression!=null">#{expression},</if>
             <if test="createdTime!=null">#{createdTime},</if>
         </trim>

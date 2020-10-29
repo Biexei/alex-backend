@@ -20,26 +20,14 @@ public class InterfaceCaseInfoVO implements Serializable {
     private String creater;
     private Date createdTime;
     private List<InterfaceAssertVO> asserts;
+    private List<PostProcessorDO> postProcessors;
 
-    @Override
-    public String toString() {
-        return "InterfaceCaseInfoVO{" +
-                "projectId=" + projectId +
-                ", moduleId=" + moduleId +
-                ", caseId=" + caseId +
-                ", url='" + url + '\'' +
-                ", method=" + method +
-                ", desc='" + desc + '\'' +
-                ", level=" + level +
-                ", doc='" + doc + '\'' +
-                ", headers='" + headers + '\'' +
-                ", params='" + params + '\'' +
-                ", data='" + data + '\'' +
-                ", json='" + json + '\'' +
-                ", creater='" + creater + '\'' +
-                ", createdTime=" + createdTime +
-                ", asserts=" + asserts +
-                '}';
+    public List<PostProcessorDO> getPostProcessors() {
+        return postProcessors;
+    }
+
+    public void setPostProcessors(List<PostProcessorDO> postProcessors) {
+        this.postProcessors = postProcessors;
     }
 
     public Integer getProjectId() {

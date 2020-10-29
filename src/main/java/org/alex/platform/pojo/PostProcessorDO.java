@@ -26,6 +26,28 @@ public class PostProcessorDO implements Serializable {
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    @Size(max = 100, message = "缺省值必须小于等于100")
+    @NotNull(message = "是否存在缺省值不能为空")
+    @Max(value = 1, message = "是否存在缺省值为0~1")
+    @Min(value = 0, message = "是否存在缺省值0~1")
+    private Byte haveDefaultValue;
+    private String defaultValue;
+
+    public Byte getHaveDefaultValue() {
+        return haveDefaultValue;
+    }
+
+    public void setHaveDefaultValue(Byte haveDefaultValue) {
+        this.haveDefaultValue = haveDefaultValue;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
     public Integer getPostProcessorId() {
         return postProcessorId;

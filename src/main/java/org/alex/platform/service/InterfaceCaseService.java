@@ -12,7 +12,7 @@ public interface InterfaceCaseService {
     InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException;
 
     @Transactional
-    void saveInterfaceCaseAndAssert(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;
+    void saveInterfaceCaseAndAssertAndPostProcessor(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;
 
     @Transactional
     void modifyInterfaceCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;

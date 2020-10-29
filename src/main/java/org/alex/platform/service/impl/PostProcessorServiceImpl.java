@@ -80,8 +80,24 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         Date date = new Date();
         postProcessorDO.setCreatedTime(date);
         postProcessorDO.setUpdateTime(date);
+        // 0.检查缺省值
+        Byte haveDefaultValue = postProcessorDO.getHaveDefaultValue();
+        String defaultValue = postProcessorDO.getDefaultValue();
+        if (haveDefaultValue == 0) { // 存在缺省值, 则缺省值不允许为空
+            if (defaultValue == null) {
+                throw new BusinessException("缺省值不能为空");
+            }
+        } else if (haveDefaultValue == 1) { // 不存在缺省值, 将defaultValue置为null
+            postProcessorDO.setDefaultValue(null);
+        } else {
+            throw new BusinessException("haveDefaultValue参数值非法");
+        }
         // 1.检查caseId合法性
         Integer caseId = postProcessorDO.getCaseId();
+        if (caseId == null) {
+            LOG.error("新增后置处理器时，后置处理器用例编号为空");
+            throw new BusinessException("后置处理器用例编号不能为空");
+        }
         if (interfaceCaseMapper.selectInterfaceCaseByCaseId(caseId) == null) {
             LOG.error("新增后置处理器时，后置处理器用例编号不存在");
             throw new BusinessException("后置处理器用例编号不存在");
@@ -105,8 +121,24 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     @Override
     public void modifyPostProcessor(PostProcessorDO postProcessorDO) throws BusinessException {
         postProcessorDO.setUpdateTime(new Date());
+        // 0.检查缺省值
+        Byte haveDefaultValue = postProcessorDO.getHaveDefaultValue();
+        String defaultValue = postProcessorDO.getDefaultValue();
+        if (haveDefaultValue == 0) { // 存在缺省值, 则缺省值不允许为空
+            if (defaultValue == null) {
+                throw new BusinessException("缺省值不能为空");
+            }
+        } else if (haveDefaultValue == 1) { // 不存在缺省值, 将defaultValue置为null
+            postProcessorDO.setDefaultValue(null);
+        } else {
+            throw new BusinessException("haveDefaultValue参数值非法");
+        }
         // 1.检查caseId合法性
         Integer caseId = postProcessorDO.getCaseId();
+        if (caseId == null) {
+            LOG.error("修改后置处理器时，后置处理器用例编号为空");
+            throw new BusinessException("后置处理器用例编号不能为空");
+        }
         if (interfaceCaseMapper.selectInterfaceCaseByCaseId(caseId) == null) {
             LOG.error("修改后置处理器时，后置处理器用例编号不存在");
             throw new BusinessException("后置处理器用例编号不存在");
