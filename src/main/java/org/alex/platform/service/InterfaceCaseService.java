@@ -8,15 +8,16 @@ import org.alex.platform.pojo.*;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface InterfaceCaseService {
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void saveInterfaceCaseAndAssertAndPostProcessor(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void modifyInterfaceCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;
 
+    @Transactional(rollbackFor = Exception.class)
     void removeInterfaceCase(Integer interfaceCaseId) throws BusinessException;
 
     PageInfo<InterfaceCaseListVO> findInterfaceCaseList(InterfaceCaseListDTO interfaceCaseListDTO, Integer pageNum, Integer pageSize);

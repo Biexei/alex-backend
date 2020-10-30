@@ -18,13 +18,14 @@ public class InterfaceAssertDO implements Serializable {
     @Min(value = 0, message = "提取数据类型必须为0~3")
     private Byte type;
     @NotNull(message = "提取表达式不能为空")
+    @NotEmpty(message = "提取表达式不能为空")
     @Size(max = 50, message = "提取表达式长度必须小于50")
     private String expression;
     @NotNull(message = "操作符不能为空")
     @Max(value = 7, message = "操作符必须为0~7")
     @Min(value = 0, message = "操作符必须为0~7")
     private Byte operator;
-    @Size(max = 1000, message = "预期结果长度必须小于50")
+    @Size(max = 1000, message = "预期结果长度必须小于1000")
     @NotNull(message = "预期结果不能为空")
     private String exceptedResult;
     @NotNull(message = "排序不能为空")

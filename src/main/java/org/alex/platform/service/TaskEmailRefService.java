@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public interface TaskEmailRefService {
     ArrayList<TaskEmailRefVO> findTaskEmailRefList(TaskEmailRefDTO taskEmailRefDTO);
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void saveTaskEmailRef(TaskEmailRefDO taskEmailRefDO);
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void removeTaskEmailRef(TaskEmailRefDTO taskEmailRefDTO);
 }

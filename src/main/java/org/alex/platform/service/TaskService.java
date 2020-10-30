@@ -14,12 +14,12 @@ public interface TaskService {
 
     TaskDO saveTask(TaskDO taskDO);
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void saveTaskAndRef(TaskRefDO taskRefDO);
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void modifyTaskAndRef(TaskRefDO taskRefDO);
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void removeTask(Integer taskId);
 }

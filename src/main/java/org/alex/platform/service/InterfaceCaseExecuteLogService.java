@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public interface InterfaceCaseExecuteLogService {
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     InterfaceCaseExecuteLogDO saveExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
 
     PageInfo<InterfaceCaseExecuteLogListVO> findExecuteList(InterfaceCaseExecuteLogListDTO executeLogListDTO,

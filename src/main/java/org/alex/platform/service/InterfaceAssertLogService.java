@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface InterfaceAssertLogService {
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void saveInterfaceAssertLog(InterfaceAssertLogDO interfaceAssertLogDO);
 
     PageInfo<InterfaceAssertLogVO> findInterfaceAssertLogList(InterfaceAssertLogDTO interfaceAssertLogDTO,

@@ -17,14 +17,15 @@ public interface PostProcessorService {
 
     List<PostProcessorVO> findPostProcessorList(PostProcessorDTO postProcessorDTO);
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     PostProcessorDO savePostProcessor(PostProcessorDO postProcessorDO) throws BusinessException;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void modifyPostProcessor(PostProcessorDO postProcessorDO) throws BusinessException;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void removePostProcessorById(Integer postProcessorId);
 
+    @Transactional(rollbackFor = Exception.class)
     void removePostProcessorByCaseId(Integer caseId);
 }

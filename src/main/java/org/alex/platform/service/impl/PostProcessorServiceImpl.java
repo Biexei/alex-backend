@@ -1,12 +1,14 @@
 package org.alex.platform.service.impl;
 
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.mapper.PostProcessorMapper;
 import org.alex.platform.pojo.PostProcessorDO;
 import org.alex.platform.pojo.PostProcessorDTO;
 import org.alex.platform.pojo.PostProcessorVO;
 import org.alex.platform.service.PostProcessorService;
+import org.alex.platform.util.ValidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +79,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     @Override
     public PostProcessorDO savePostProcessor(PostProcessorDO postProcessorDO) throws BusinessException {
+        // 数据校验
+        this.checkDO(postProcessorDO);
+
         Date date = new Date();
         postProcessorDO.setCreatedTime(date);
         postProcessorDO.setUpdateTime(date);
@@ -120,6 +125,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     @Override
     public void modifyPostProcessor(PostProcessorDO postProcessorDO) throws BusinessException {
+        // 数据校验
+        this.checkDO(postProcessorDO);
+
         postProcessorDO.setUpdateTime(new Date());
         // 0.检查缺省值
         Byte haveDefaultValue = postProcessorDO.getHaveDefaultValue();
@@ -173,5 +181,33 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     public void removePostProcessorByCaseId(Integer caseId) {
         postProcessorMapper.deletePostProcessorByCaseId(caseId);
         LOG.debug("删除后置处理器，caseId={}", caseId);
+    }
+
+    public void checkDO(PostProcessorDO postProcessorDO) throws ValidException {
+        // 数据校验
+        Integer caseId = postProcessorDO.getCaseId();
+        ValidUtil.notNUll(caseId, "用例编号不能为空");
+
+        String name = postProcessorDO.getName();
+        ValidUtil.notNUll(name, "后置处理器名称不能为空");
+        ValidUtil.notEmpty(name, "后置处理器名称不能为空");
+        ValidUtil.length(name, 50,"后置处理器名称必须小于等于50");
+        // 名称必须为英文
+        ValidUtil.isWord(name, "后置处理器名称必须为英文");
+
+        Byte type = postProcessorDO.getType();
+        ValidUtil.notNUll(type, "后置处理器提取类型不能为空");
+        ValidUtil.size(type, 0, 2,"后置处理器提取类型方式为0~2");
+
+        String expression = postProcessorDO.getExpression();
+        ValidUtil.notNUll(expression, "后置处理器提取表达式不能为空");
+        ValidUtil.notEmpty(expression, "后置处理器提取表达式不能为空");
+        ValidUtil.length(expression, 50,"后置处理器提取表达式必须小于等于50");
+
+        if (type == 0) {
+            ValidUtil.isJsonPath(expression);
+        } else if (type == 1) {
+            ValidUtil.isXpath(expression);
+        }
     }
 }

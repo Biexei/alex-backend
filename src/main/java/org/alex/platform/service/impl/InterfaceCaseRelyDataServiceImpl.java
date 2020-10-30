@@ -14,10 +14,7 @@ import org.alex.platform.service.InterfaceCaseExecuteLogService;
 import org.alex.platform.service.InterfaceCaseRelyDataService;
 import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.service.ProjectService;
-import org.alex.platform.util.ExceptionUtil;
-import org.alex.platform.util.NoUtil;
-import org.alex.platform.util.ParseUtil;
-import org.alex.platform.util.RedisUtil;
+import org.alex.platform.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +51,14 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
      */
     @Override
     public void saveIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
+        // 检查提取表达式
+        Byte contentType = ifRelyDataDO.getContentType(); // 提取数据类型   0json/1html/2header/
+        String extractExpression = ifRelyDataDO.getExtractExpression();
+        if (contentType == 0) {
+            ValidUtil.isJsonPath(extractExpression);
+        } else if (contentType == 1) {
+            ValidUtil.isXpath(extractExpression);
+        }
         // 判断relyCaseId是否存在
         Integer caseId = ifRelyDataDO.getRelyCaseId();
         if (ifCaseService.findInterfaceCaseByCaseId(caseId) == null) {
@@ -81,6 +86,14 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
      */
     @Override
     public void modifyIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
+        // 检查提取表达式
+        Byte contentType = ifRelyDataDO.getContentType(); // 提取数据类型   0json/1html/2header/
+        String extractExpression = ifRelyDataDO.getExtractExpression();
+        if (contentType == 0) {
+            ValidUtil.isJsonPath(extractExpression);
+        } else if (contentType == 1) {
+            ValidUtil.isXpath(extractExpression);
+        }
         // 判断relyCaseId是否存在
         Integer caseId = ifRelyDataDO.getRelyCaseId();
         if (ifCaseService.findInterfaceCaseByCaseId(caseId) == null) {

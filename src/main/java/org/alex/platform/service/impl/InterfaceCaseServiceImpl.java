@@ -79,9 +79,15 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         Integer moduleId = interfaceCaseDO.getModuleId();
         Integer projectId = interfaceCaseDO.getProjectId();
 
-
+        String headers = interfaceCaseDO.getHeaders();
+        String params = interfaceCaseDO.getParams();
         String data = interfaceCaseDO.getData();
         String json = interfaceCaseDO.getJson();
+        ValidUtil.isJsonObject(headers, "请检查header格式");
+        ValidUtil.isJsonObject(params, "请检查params格式");
+        ValidUtil.isJsonObject(data, "请检查data格式");
+        ValidUtil.isJson(json, "请检查json格式");
+
         //data json 只能任传其一
         if (data != null && json != null) {
             LOG.warn("新增接口测试用例，data/json只能任传其一");
@@ -162,11 +168,17 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         interfaceCaseDO.setCreater(interfaceCaseDTO.getCreater());
         interfaceCaseDO.setUpdateTime(interfaceCaseDTO.getUpdateTime());
 
+        String headers = interfaceCaseDO.getHeaders();
+        String params = interfaceCaseDO.getParams();
+        String data = interfaceCaseDO.getData();
+        String json = interfaceCaseDO.getJson();
+        ValidUtil.isJsonObject(headers, "请检查header格式");
+        ValidUtil.isJsonObject(params, "请检查params格式");
+        ValidUtil.isJsonObject(data, "请检查data格式");
+        ValidUtil.isJson(json, "请检查json格式");
+
         // 编辑的时候如果注入依赖为接口依赖，并且依赖接口为当前接口，应该禁止，避免造成死循环
-        String checkStr = interfaceCaseDO.getHeaders() + " "
-                + interfaceCaseDO.getParams() + " "
-                + interfaceCaseDO.getData() + " "
-                + interfaceCaseDO.getJson() + " ";
+        String checkStr = headers + " " + params + " " + data + " " + json + " ";
         Pattern p = Pattern.compile("\\$\\{.+?\\}");
         Matcher matcher = p.matcher(checkStr);
         while (matcher.find()) {
@@ -292,19 +304,21 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             inIfRelyData = false;
         } else {
             LOG.warn("删除接口测试用例，该用例已存在与数据中心-接口依赖，interfaceCaseId={}", interfaceCaseId);
-            errorMsg = errorMsg + "该用例已存在与数据中心-接口依赖";
+            errorMsg = errorMsg + "该用例已存在于接口依赖";
         }
         // 检查是否存在于t_interface_suite_case_ref
         if (interfaceSuiteCaseRefMapper.selectSuiteCaseList(interfaceSuiteCaseRefDTO).isEmpty()) {
             inCaseRef = false;
         } else {
             LOG.warn("删除接口测试用例，该用例已存在与接口测试-测试套件，interfaceCaseId={}", interfaceCaseId);
-            errorMsg = errorMsg + "该用例已存在与接口测试-测试套件";
+            errorMsg = errorMsg + "该用例已存在于测试套件";
         }
         if (!inIfRelyData && !inCaseRef) {
             interfaceCaseMapper.removeInterfaceCase(interfaceCaseId);
-            // 删除于之相关的断言
+            // 删除与之相关的断言
             interfaceAssertService.removeAssertByCaseId(interfaceCaseId);
+            // 删除与之相关的后置处理器
+            postProcessorService.removePostProcessorByCaseId(interfaceCaseId);
         } else {
             throw new BusinessException(errorMsg);
         }
