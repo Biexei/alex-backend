@@ -23,5 +23,8 @@ public interface PostProcessorService {
     @Transactional
     void modifyPostProcessor(PostProcessorDO postProcessorDO) throws BusinessException;
 
+    @Transactional
     void removePostProcessorById(Integer postProcessorId);
+
+    void removePostProcessorByCaseId(Integer caseId);
 }

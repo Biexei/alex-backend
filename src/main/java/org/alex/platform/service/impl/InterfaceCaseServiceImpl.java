@@ -137,12 +137,19 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      */
     @Override
     public void modifyInterfaceCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
+
+        Integer caseId = interfaceCaseDTO.getCaseId();
+
+        if (caseId == null) {
+            LOG.error("参数错误，缺少caseId");
+            throw new BusinessException("参数错误，缺少caseId");
+        }
         Date updateTime = new Date();
         interfaceCaseDTO.setUpdateTime(updateTime);
         InterfaceCaseDO interfaceCaseDO = new InterfaceCaseDO();
         interfaceCaseDO.setModuleId(interfaceCaseDTO.getModuleId());
         interfaceCaseDO.setProjectId(interfaceCaseDTO.getProjectId());
-        interfaceCaseDO.setCaseId(interfaceCaseDTO.getCaseId());
+        interfaceCaseDO.setCaseId(caseId);
         interfaceCaseDO.setUrl(interfaceCaseDTO.getUrl());
         interfaceCaseDO.setMethod(interfaceCaseDTO.getMethod());
         interfaceCaseDO.setDesc(interfaceCaseDTO.getDesc());
@@ -168,8 +175,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             String relyName = findStr.substring(2, findStr.length() - 1);
             InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName);
             if (null != interfaceCaseRelyDataVO) {
-                int caseId = interfaceCaseRelyDataVO.getRelyCaseId();
-                if (interfaceCaseDO.getCaseId() == caseId) {
+                int relyCaseId = interfaceCaseRelyDataVO.getRelyCaseId();
+                if (caseId == relyCaseId) {
                     LOG.warn("修改接口测试用例，headers/params/data/json，接口依赖的用例不能为当前用例");
                     throw new BusinessException("接口依赖的用例不能为当前用例");
                 }
@@ -201,8 +208,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     String relyName = findStr.substring(2, findStr.length() - 1);
                     InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName);
                     if (null != interfaceCaseRelyDataVO) {
-                        int caseId = interfaceCaseRelyDataVO.getRelyCaseId();
-                        if (interfaceCaseDO.getCaseId() == caseId) {
+                        int relyCaseId = interfaceCaseRelyDataVO.getRelyCaseId();
+                        if (caseId == relyCaseId) {
                             LOG.warn("修改接口测试用例，assert，接口依赖的用例不能为当前用例");
                             throw new BusinessException("接口依赖的用例不能为当前用例");
                         }
@@ -227,6 +234,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             for (Integer assertId : allAssertId) {
                 interfaceAssertService.removeAssertByAssertId(assertId);
             }
+        } else {
+            // 移除该接口下所有断言
+            interfaceAssertService.removeAssertByCaseId(caseId);
         }
 
         // 修改后置处理器
@@ -252,6 +262,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             for (Integer postProcessorId : postProcessorIdList) {
                 postProcessorService.removePostProcessorById(postProcessorId);
             }
+        } else {
+            // 移除该用例下所有的后置处理器
+            postProcessorService.removePostProcessorByCaseId(caseId);
         }
     }
 

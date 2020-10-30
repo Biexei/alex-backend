@@ -72,4 +72,7 @@
     <delete id="deletePostProcessorById" parameterType="Integer">
         delete  from `t_post_processor` where `post_processor_id`=#{postProcessorId}
     </delete>
+    <delete id="deletePostProcessorByCaseId" parameterType="Integer">
+        delete  from `t_post_processor` where `case_id`=#{caseId}
+    </delete>
 </mapper>

@@ -26,4 +26,6 @@ public interface PostProcessorMapper {
 
     void deletePostProcessorById(Integer postProcessorId);
 
+    void deletePostProcessorByCaseId(Integer caseId);
+
 }

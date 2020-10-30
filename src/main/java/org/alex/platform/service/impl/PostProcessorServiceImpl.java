@@ -161,5 +161,17 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     @Override
     public void removePostProcessorById(Integer postProcessorId) {
         postProcessorMapper.deletePostProcessorById(postProcessorId);
+        LOG.debug("删除后置处理器，postProcessorId={}", postProcessorId);
+    }
+
+    /**
+     * 根据caseId删除后置处理器
+     *
+     * @param caseId caseId
+     */
+    @Override
+    public void removePostProcessorByCaseId(Integer caseId) {
+        postProcessorMapper.deletePostProcessorByCaseId(caseId);
+        LOG.debug("删除后置处理器，caseId={}", caseId);
     }
 }
