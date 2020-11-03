@@ -13,6 +13,8 @@ public interface PostProcessorService {
 
     PostProcessorVO findPostProcessorById(Integer postProcessorId);
 
+    List<Integer> findPostProcessorIdByCaseId(Integer caseId);
+
     List<PostProcessorVO> checkPostProcessorName(Integer postProcessorId, String name);
 
     List<PostProcessorVO> findPostProcessorList(PostProcessorDTO postProcessorDTO);

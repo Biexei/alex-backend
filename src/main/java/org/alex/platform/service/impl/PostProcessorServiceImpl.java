@@ -48,6 +48,17 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     }
 
     /**
+     * 获取测试用例包含的所有后置处理器
+     *
+     * @param caseId 测试用例编号
+     * @return 后置处理器list
+     */
+    @Override
+    public List<Integer> findPostProcessorIdByCaseId(Integer caseId) {
+        return postProcessorMapper.selectPostProcessorIdByCaseId(caseId);
+    }
+
+    /**
      * 检查名称唯一性
      *
      * @param postProcessorId postProcessorId
@@ -191,18 +202,18 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         String name = postProcessorDO.getName();
         ValidUtil.notNUll(name, "后置处理器名称不能为空");
         ValidUtil.notEmpty(name, "后置处理器名称不能为空");
-        ValidUtil.length(name, 50,"后置处理器名称必须小于等于50");
+        ValidUtil.length(name, 50, "后置处理器名称必须小于等于50");
         // 名称必须为英文
         ValidUtil.isWord(name, "后置处理器名称必须为英文");
 
         Byte type = postProcessorDO.getType();
         ValidUtil.notNUll(type, "后置处理器提取类型不能为空");
-        ValidUtil.size(type, 0, 2,"后置处理器提取类型方式为0~2");
+        ValidUtil.size(type, 0, 2, "后置处理器提取类型方式为0~2");
 
         String expression = postProcessorDO.getExpression();
         ValidUtil.notNUll(expression, "后置处理器提取表达式不能为空");
         ValidUtil.notEmpty(expression, "后置处理器提取表达式不能为空");
-        ValidUtil.length(expression, 50,"后置处理器提取表达式必须小于等于50");
+        ValidUtil.length(expression, 50, "后置处理器提取表达式必须小于等于50");
 
         if (type == 0) {
             ValidUtil.isJsonPath(expression);

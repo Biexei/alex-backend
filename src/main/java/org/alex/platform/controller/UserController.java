@@ -168,11 +168,7 @@ public class UserController {
             userMap.put("username", userInfo.getUsername());
             userMap.put("realName", userInfo.getRealName());
             userMap.put("isEnable", userInfo.getIsEnable());
-            try {
-                redisUtil.set(token, userMap, 60*30);
-            } catch (BusinessException e) {
-                e.getMessage();
-            }
+            redisUtil.set(token, userMap, 60*30);
             return Result.success("登录成功", userMap);
         } else {
             LOG.error("帐号名或者密码错误");

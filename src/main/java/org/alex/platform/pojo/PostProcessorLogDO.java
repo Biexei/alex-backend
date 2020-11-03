@@ -17,6 +17,24 @@ public class PostProcessorLogDO implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
     private Byte isDefaultValue;
+    private Byte status;
+    private String errorMsg;
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
 
     public Byte getIsDefaultValue() {
         return isDefaultValue;

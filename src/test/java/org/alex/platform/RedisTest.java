@@ -19,6 +19,6 @@ public class RedisTest {
 
     @Test
     public void testSet() {
-        redisUtil.hashPut("key", null, 123);
+        System.out.println(redisUtil.hashGet("key", "123"));
     }
 }

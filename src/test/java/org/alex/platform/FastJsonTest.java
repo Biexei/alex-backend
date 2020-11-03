@@ -17,12 +17,7 @@ import java.util.Map;
 public class FastJsonTest {
     @Test
     public void doTest(){
-        String s1 = "123";
-        String s2 = new String("123");
-        JSONObject object1 = JSONArray.parseObject(s1);
-        JSONObject object2 = JSONArray.parseObject(s2);
-        System.out.println(object1);
-        System.out.println(object2);
-        System.out.println(object1==object2);
+        String s = "[]";
+        System.out.println(JSONObject.parseObject(s, ArrayList.class));
     }
 }

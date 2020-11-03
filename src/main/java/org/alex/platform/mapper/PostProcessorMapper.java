@@ -12,7 +12,7 @@ import java.util.List;
 public interface PostProcessorMapper {
     PostProcessorVO selectPostProcessorByName(String name);
 
-    List<Integer>selectPostProcessorIdByCaseId(Integer caseId);
+    List<Integer> selectPostProcessorIdByCaseId(Integer caseId);
 
     PostProcessorVO selectPostProcessorById(Integer postProcessorId);
 

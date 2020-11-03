@@ -48,7 +48,7 @@ public class ParseUtil {
             return JSON.toJSONString(result);
         } catch (Exception e) {
             LOG.error("xpath解析异常，xml={}，xpath={}", xmlText, xpath);
-            throw new ParseException("XPATH解析异常");
+            throw new ParseException("XPATH解析异常，xpath: " + xpath);
         }
 
 //        List<String> result = new ArrayList<>();
@@ -104,7 +104,8 @@ public class ParseUtil {
         try {
             return JSON.toJSONString(JsonPath.read(jsonText, jsonPath));
         } catch (Exception e) {
-            throw new ParseException("JsonPath解析异常");
+            LOG.error("jsonPath解析异常，jsonText={}，jsonPath={}", jsonText, jsonPath);
+            throw new ParseException("jsonPath解析异常，jsonPath: " + jsonPath);
         }
     }
 }

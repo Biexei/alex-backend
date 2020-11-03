@@ -5,6 +5,10 @@ import org.alex.platform.common.ReflectMethod;
 import java.util.UUID;
 
 public class NoUtil {
+
+    // 当接口未包含在测试套件时，且定义了后置处理器，全局都使用该名称作为缓存key
+    public static final String TEMP_POST_PROCESSOR_NO = "tempPostProcessor";
+
     /**
      * 生成测试套件执行日志编号
      *
