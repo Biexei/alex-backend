@@ -60,7 +60,7 @@ public class HttpSettingController {
         if (httpSettingDO.getType() == 0) {
             httpSettingDO.setStatus((byte) 1);
             String domain = httpSettingDO.getValue();
-            if (!Pattern.matches("[a-zA-z]+:(\\d+)$", domain)) {
+            if (!Pattern.matches("[a-zA-z0-9\\.]+:(\\d+)$", domain)) {
                 throw new BusinessException("代理服务器格式错误");
             }
         } else if (httpSettingDO.getType() == 2) { // 邮箱
@@ -88,7 +88,7 @@ public class HttpSettingController {
     public Result modifyHttpSetting(@Validated HttpSettingDO httpSettingDO) throws BusinessException {
         if (httpSettingDO.getType() == 0) {
             String domain = httpSettingDO.getValue();
-            if (!Pattern.matches("[a-zA-z]+:(\\d+)$", domain)) {
+            if (!Pattern.matches("[a-zA-z0-9\\.]+:(\\d+)$", domain)) {
                 throw new BusinessException("代理服务器格式错误");
             }
         } else if (httpSettingDO.getType() == 2) { // 邮箱

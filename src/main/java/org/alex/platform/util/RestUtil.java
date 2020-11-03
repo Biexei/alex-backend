@@ -43,14 +43,12 @@ public class RestUtil {
         RestTemplate restTemplate = SingleRestTemplate.INSTANCE;
         SimpleClientHttpRequestFactory sh = new SimpleClientHttpRequestFactory();
         // 1.设置代理
-        List<HttpSettingVO> proxy = getProxy();
-        if (!proxy.isEmpty()) {
-            for (HttpSettingVO httpSettingVO : proxy) {
-                String[] domain = httpSettingVO.getValue().split(":");
-                String host = domain[0];
-                int port = Integer.parseInt(domain[1]);
-                sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port)));
-            }
+        HttpSettingVO proxy = getProxy();
+        if (proxy != null) {
+            String[] domain = proxy.getValue().split(":");
+            String host = domain[0];
+            int port = Integer.parseInt(domain[1]);
+            sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port)));
         }
         // 2.设置超时时长
         sh.setConnectTimeout(10 * 1000);
@@ -313,11 +311,16 @@ public class RestUtil {
         restUtil.httpSettingMapper = this.httpSettingMapper;
     }
 
-    public static List<HttpSettingVO> getProxy() {
+    public static HttpSettingVO getProxy() {
         HttpSettingDTO httpSettingDTO = new HttpSettingDTO();
         httpSettingDTO.setStatus((byte)0);
         httpSettingDTO.setType((byte)0);
-        return restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO);
+        List<HttpSettingVO> list = restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO);
+        if (!list.isEmpty()) {
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 
     public static List<HttpSettingVO> getHeader() {

@@ -1,6 +1,5 @@
 package org.alex.platform.util;
 
-import org.alex.platform.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -17,11 +16,11 @@ public class RedisUtil {
         this.redisTemplate = redisTemplate;
     }
 
-    public void set(String key, Object value, long time) throws BusinessException {
-        if (time > 0) {
-            redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
+    public void set(String key, Object value, long expire) {
+        if (expire > 0) {
+            redisTemplate.opsForValue().set(key, value, expire, TimeUnit.SECONDS);
         } else {
-            throw new BusinessException("set redis key time invalid");
+            throw new IllegalArgumentException("set redis key time invalid");
         }
     }
 
@@ -33,8 +32,8 @@ public class RedisUtil {
         return redisTemplate.opsForValue().get(key);
     }
 
-    public void expire(String key, long time) {
-        redisTemplate.expire(key, time, TimeUnit.SECONDS);
+    public void expire(String key, long expire) {
+        redisTemplate.expire(key, expire, TimeUnit.SECONDS);
     }
 
     public void del(String key) {
@@ -43,7 +42,16 @@ public class RedisUtil {
 
     public void stackPush(String key, Object value) {
         redisTemplate.opsForList().rightPush(key, value);
-        redisTemplate.expire(key, 30*60, TimeUnit.SECONDS);
+        redisTemplate.expire(key, 60*60, TimeUnit.SECONDS);
+    }
+
+    public void stackPush(String key, Object value, long expire) {
+        if (expire > 0) {
+            redisTemplate.opsForList().rightPush(key, value);
+            redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+        } else {
+            throw new IllegalArgumentException("set redis key time invalid");
+        }
     }
 
     public Object stackPop(String key) {
@@ -53,4 +61,27 @@ public class RedisUtil {
     public List<Object> stackGetAll(String key) {
         return redisTemplate.opsForList().range(key, 0, -1);
     }
+
+    public void hashPut(String key, String hashKey, Object value, long expire) {
+        if (expire > 0) {
+            redisTemplate.opsForHash().put(key, hashKey, value);
+            redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+        } else {
+            throw new IllegalArgumentException("set redis key time invalid");
+        }
+    }
+
+    public void hashPut(String key, String hashKey, Object value) {
+        redisTemplate.opsForHash().put(key, hashKey, value);
+        redisTemplate.expire(key, 60*60, TimeUnit.SECONDS);
+    }
+
+    public Object hashGet(String key, Object hashKey) {
+        return redisTemplate.opsForHash().get(key, hashKey);
+    }
+
+    public List<Object> hashGetAll(String key) {
+        return redisTemplate.opsForHash().values(key);
+    }
+
 }
