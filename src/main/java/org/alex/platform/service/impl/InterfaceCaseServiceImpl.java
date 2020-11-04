@@ -406,6 +406,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         String params = interfaceCaseInfoVO.getParams();
         String data = interfaceCaseInfoVO.getData();
         String json = interfaceCaseInfoVO.getJson();
+        String rawHeaders = headers;
+        String rawParams = params;
+        String rawData = data;
+        String rawJson = json;
         Byte method = interfaceCaseInfoVO.getMethod();
         List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
         LOG.info("1.获取case详情，caseId={}，用例详情={}", interfaceCaseId, interfaceCaseInfoVO);
@@ -419,18 +423,22 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             // 清洗
             if (null != headers) {
                 headers = this.parseRelyData(headers, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                LOG.info("清洗headers，清洗前的内容={}", rawHeaders);
                 LOG.info("清洗headers，清洗后的内容={}", headers);
             }
             if (null != params) {
                 params = this.parseRelyData(params, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                LOG.info("清洗params，清洗前的内容={}", rawParams);
                 LOG.info("清洗params，清洗后的内容={}", params);
             }
             if (null != data) {
                 data = this.parseRelyData(data, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                LOG.info("清洗data，清洗前的内容={}", rawData);
                 LOG.info("清洗data，清洗后的内容={}", data);
             }
             if (null != json) {
                 json = this.parseRelyData(json, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                LOG.info("清洗json，清洗前的内容={}", rawJson);
                 LOG.info("清洗json，清洗后的内容={}", json);
             }
 
@@ -492,6 +500,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setRequestParams(params);
             executeLogDO.setRequestData(data);
             executeLogDO.setRequestJson(json);
+            executeLogDO.setRawRequestHeaders(rawHeaders);
+            executeLogDO.setRawRequestParams(rawParams);
+            executeLogDO.setRawRequestData(rawData);
+            executeLogDO.setRawRequestJson(rawJson);
             executeLogDO.setResponseCode(null);
             executeLogDO.setResponseHeaders(null);
             executeLogDO.setResponseBody(null);
@@ -529,6 +541,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setRequestParams(params);
             executeLogDO.setRequestData(data);
             executeLogDO.setRequestJson(json);
+            executeLogDO.setRawRequestHeaders(rawHeaders);
+            executeLogDO.setRawRequestParams(rawParams);
+            executeLogDO.setRawRequestData(rawData);
+            executeLogDO.setRawRequestJson(rawJson);
             executeLogDO.setResponseCode(responseCode);
             executeLogDO.setResponseHeaders(responseHeaders);
             executeLogDO.setResponseBody(responseBody);
@@ -574,32 +590,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 String exceptedResult = interfaceAssertVO.getExceptedResult();
                 if (null != exceptedResult) {
                     try {
-                        // 清洗#{}
-                        LOG.info("清洗${}模式，清洗内容为={}", "{}", exceptedResult);
-                        Pattern p = Pattern.compile("\\$\\{.+\\}");
-                        Matcher m = p.matcher(exceptedResult);
-                        while (m.find()) {
-                            String findStr = m.group();
-                            LOG.info("清洗#{}模式，清洗内容为={}", "{}", findStr);
-                            Pattern pp = Pattern.compile("#\\{.+?\\}");
-                            Matcher mm = pp.matcher(findStr);
-                            while (mm.find()) {
-                                // #{xx}
-                                String group = mm.group();
-                                String jsonPath = group.substring(2, group.length() - 1);
-                                LOG.info("清洗#{}模式，jsonPath={}", "{}", jsonPath);
-                                ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, jsonPath), ArrayList.class);
-                                if (jsonPathArray.isEmpty()) {
-                                    LOG.warn("jsonPath={}，提取内容为空", jsonPath);
-                                    throw new ParseException(jsonPath + "提取内容为空");
-                                }
-                                exceptedResult = exceptedResult.replace(group, jsonPathArray.get(0).toString());
-                                LOG.info("清洗#{}模式，清洗后的结果={}", "{}", exceptedResult);
-                            }
-                        }
-                        // 清洗${}
                         exceptedResult = this.parseRelyData(exceptedResult, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
-                        LOG.info("清洗${}模式，清洗后的结果={}", "{}", exceptedResult);
+                        LOG.info("清洗断言，清洗后的结果={}", exceptedResult);
                     } catch (ParseException | BusinessException | SqlException e) {
                         assertErrorMessage = e.getMessage();
                         assertStatus = 2;
@@ -611,66 +603,48 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         statusList.add(assertStatus);
                         assertLogDO.setErrorMessage(assertErrorMessage);
                         assertLogDO.setCreatedTime(new Date());
-                        LOG.error("清洗过程出现异常，断言状态置为失败，保存断言失败日志");
+                        LOG.error("清洗断言过程出现异常，断言状态置为失败，保存断言失败日志");
                         assertLogService.saveInterfaceAssertLog(assertLogDO);
                         continue;
                     }
                 }
-
-
                 assertLogDO.setExceptedResult(exceptedResult);
                 assertLogDO.setOrder(order);
                 // 根据type 提取数据类型   0json/1html/2header/3responseCode 来制定断言方案
                 String actualResult = null;
                 // 断言出错异常信息
                 boolean isPass = false;
+                ArrayList resultList = null;
                 try {
                     if (type == 0) { // json
                         actualResult = ParseUtil.parseJson(responseBody, expression);
                         LOG.info("断言实际结果={}, 类型={}, 响应Body={}, 提取表达式={}", actualResult, "json", responseBody, expression);
-                        isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
-                        // 兼容处理数组长度为1时的情况，可省略[]
-                        if (!isPass) {
-                            List temp = JSONObject.parseObject(actualResult, List.class);
-                            if (temp.size() == 1) {
-                                String tempActualResult = temp.get(0).toString();
-                                isPass = AssertUtil.asserts(tempActualResult, operator, exceptedResult);
-                            }
-                        }
+                        resultList = JSONObject.parseObject(actualResult, ArrayList.class);
                     } else if (type == 1) { // html
                         actualResult = ParseUtil.parseXml(responseBody, expression);
                         LOG.info("断言实际结果={}, 类型={}, 响应Body={}, 提取表达式={}", actualResult, "html", responseBody, expression);
-                        isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
-                        // 兼容处理数组长度为1时的情况，可省略[]
-                        if (!isPass) {
-                            List temp = JSONObject.parseObject(actualResult, List.class);
-                            if (temp.size() == 1) {
-                                String tempActualResult = temp.get(0).toString();
-                                isPass = AssertUtil.asserts(tempActualResult, operator, exceptedResult);
-                            }
-                        }
+                        resultList = JSONObject.parseObject(actualResult, ArrayList.class);
                     } else if (type == 2) { // header
                         actualResult = ParseUtil.parseHttpHeader(responseEntity, expression);
                         LOG.info("断言实际结果={}, 类型={}, 响应header={}, 提取表达式={}", actualResult, "header", JSON.toJSONString(responseEntity.getHeaders()), expression);
-                        isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
-                        // 兼容处理数组长度为1时的情况，可省略[]
-                        if (!isPass) {
-                            List temp = JSONObject.parseObject(actualResult, List.class);
-                            if (temp.size() == 1) {
-                                String tempActualResult = temp.get(0).toString();
-                                isPass = AssertUtil.asserts(tempActualResult, operator, exceptedResult);
-                            }
-                        }
+                        resultList = JSONObject.parseObject(actualResult, ArrayList.class);
                     } else if (type == 3) { // responseCode
                         actualResult = String.valueOf(ParseUtil.parseHttpCode(responseEntity));
                         LOG.info("断言实际结果={}, 类型={}, 响应code={}, 提取表达式={}", actualResult, "code", ParseUtil.parseHttpCode(responseEntity), expression);
-                        isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
                     } else {
                         throw new BusinessException("不支持的断言方式");
                     }
                     LOG.info("预期结果={}", exceptedResult);
                     LOG.info("操作符={}", operator);
                     LOG.info("实际结果={}", actualResult);
+                    if (type != 3) {
+                        if (resultList.size() == 1) {
+                            actualResult = resultList.get(0).toString();
+                        } else {
+                            actualResult = JSON.toJSONString(resultList);
+                        }
+                    }
+                    isPass = AssertUtil.asserts(actualResult, operator, exceptedResult);
                     if (isPass) {
                         LOG.info("断言通过");
                         assertStatus = 0;
@@ -754,10 +728,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 if (haveDefaultValue == 0) {
                                     isDefaultValue = 0;
                                     value = defaultValue;
-                                    LOG.info("提取类型={}，提取表达式={} 为空，使用默认值={}", "jsonPath", expression, value);
+                                    LOG.info("提取类型={}，提取表达式={} 为空，使用默认值={}", "response-json", expression, value);
                                 } else {
                                     status = 1;
-                                    LOG.warn("jsonPath提取内容为空，jsonPath={}", expression);
+                                    LOG.warn("response-json提取内容为空，jsonPath={}", expression);
                                     errorMsg = "后置处理器" + name + "提取类型为空，提取表达式为：" + expression;
                                 }
                             } else {
@@ -767,7 +741,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     value = JSON.toJSONString(jsonPathArray);
                                 }
-                                LOG.info("提取类型={}，提取表达式={}，写入缓存内容={}", "jsonPath", expression, value);
+                                LOG.info("提取类型={}，提取表达式={}，写入缓存内容={}", "response-json", expression, value);
                             }
                         } else if (type == 1) { // xml
                             String s = "[]";
@@ -782,10 +756,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 if (haveDefaultValue == 0) {
                                     isDefaultValue = 0;
                                     value = defaultValue;
-                                    LOG.info("提取类型={}，提取表达式={} 为空，使用默认值={}", "xpath", expression, value);
+                                    LOG.info("提取类型={}，提取表达式={} 为空，使用默认值={}", "response-xml", expression, value);
                                 } else {
                                     status = 1;
-                                    LOG.warn("xpath提取内容为空，jsonPath={}", expression);
+                                    LOG.warn("response-xml提取内容为空，xpath={}", expression);
                                     errorMsg = "后置处理器" + name + "提取类型为空，提取表达式为：" + expression;
                                 }
                             } else {
@@ -795,7 +769,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     value = JSON.toJSONString(xpathArray);
                                 }
-                                LOG.info("提取类型={}，提取表达式={}，写入缓存内容={}", "xpath", expression, value);
+                                LOG.info("提取类型={}，提取表达式={}，写入缓存内容={}", "response-xml", expression, value);
                             }
                         } else if (type == 2) { //header
                             JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders, HashMap.class).get(expression);
@@ -816,6 +790,49 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     value = JSON.toJSONString(headerArray);
                                 }
+                            }
+                        } else if (type >= 3 && type <= 6) { // 3request-header/4request-params/5request-data/6request-json
+                            // 均使用jsonPath提取表达式
+                            String s = "[]";
+                            try {
+                                switch (type) {
+                                    case 3:
+                                        s = ParseUtil.parseJson(headers, expression);
+                                        break;
+                                    case 4:
+                                        s = ParseUtil.parseJson(params, expression);
+                                        break;
+                                    case 5:
+                                        s = ParseUtil.parseJson(data, expression);
+                                        break;
+                                    case 6:
+                                        s = ParseUtil.parseJson(json, expression);
+                                        break;
+                                }
+                            } catch (ParseException e) {
+                                isThrowException = true;
+                                exceptionMsg = e.getMessage();
+                            }
+                            ArrayList jsonPathArray = JSONObject.parseObject(s, ArrayList.class);
+                            if (jsonPathArray.isEmpty()) {
+                                if (haveDefaultValue == 0) {
+                                    isDefaultValue = 0;
+                                    value = defaultValue;
+                                    LOG.info("提取类型={}，3request-header/4request-params/5request-data/6request-json，" +
+                                            "提取表达式={} 为空，使用默认值={}", type, expression, value);
+                                } else {
+                                    status = 1;
+                                    LOG.warn("jsonPath提取内容为空，jsonPath={}", expression);
+                                    errorMsg = "后置处理器" + name + "提取类型为空，提取表达式为：" + expression;
+                                }
+                            } else {
+                                isDefaultValue = 1;
+                                if (jsonPathArray.size() == 1) {
+                                    value = jsonPathArray.get(0).toString();
+                                } else {
+                                    value = JSON.toJSONString(jsonPathArray);
+                                }
+                                LOG.info("提取类型={}，提取表达式={}，写入缓存内容={}", "jsonPath", expression, value);
                             }
                         } else {
                             status = 1;
@@ -963,11 +980,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     LOG.warn("前置用例responseHeaders={}", responseHeaders);
                     // 根据contentType来确定对何字段进行替换, 提取数据类型   0json/1html/2header/
                     int contentType = (int) interfaceCaseRelyDataVO.getContentType();
-                    // 2020.09.27 xpath/jsonPath也支持下标
 //                    if (contentType != 2) {
 //                        throw new ParseException("只有依赖数据提取类型为header时才支持指定下标，" +
 //                                "否则请自行调整jsonpath/xpath表达式，使提取结果唯一");
 //                    }
+                    // 2020.09.27 xpath/jsonPath也支持下标
                     String expression = interfaceCaseRelyDataVO.getExtractExpression();
                     try {
                         if (contentType == 0) { // json
@@ -998,7 +1015,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             }
                         } else if (contentType == 2) { // headers
                             JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders, HashMap.class).get(expression);
-                            if (null == headerArray) {
+                            if (null == headerArray || headerArray.isEmpty()) {
                                 LOG.warn("未找到请求头，header={}", expression);
                                 throw new ParseException("未找到请求头:" + expression);
                             }
@@ -1056,7 +1073,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         Class[] paramsList = new Class[params.length];
                         for (int i = 0; i < params.length; i++) {
                             paramsList[i] = String.class;
-                            // 去除收尾空格
+                            // 去除首尾引号
                             params[i] = params[i].substring(1, params[i].length() - 1);
                         }
                         LOG.info("方法名称={}，方法参数={}", methodName, Arrays.toString(params));
@@ -1070,7 +1087,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 } else if (relyDataVO.getType() == 2) { //sql
                     LOG.info("--------------------------------------进入动态SQL模式");
                     for (int i = 0; i < params.length; i++) {
-                        // 去除收尾空格
+                        // 去除首尾引号
                         params[i] = params[i].substring(1, params[i].length() - 1);
                     }
                     Integer datasourceId = relyDataVO.getDatasourceId();
@@ -1224,7 +1241,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 LOG.warn("jsonPath提取内容为空，jsonPath={}", expression);
                                 throw new ParseException(expression + "提取内容为空");
                             }
-                            s = s.replace(findStr, jsonPathArray.get(0).toString());
+                            if (jsonPathArray.size() == 1) {
+                                s = s.replace(findStr, jsonPathArray.get(0).toString());
+                            } else {
+                                s = s.replace(findStr, JSON.toJSONString(jsonPathArray));
+                            }
                             LOG.info("jsonPath提取值并替换后的结果={}", s);
                         } else if (contentType == 1) { // html
                             ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
@@ -1232,16 +1253,24 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 LOG.warn("xpath提取内容为空，jsonPath={}", expression);
                                 throw new ParseException(expression + "提取内容为空");
                             }
-                            s = s.replace(findStr, xpathArray.get(0).toString());
+                            if (xpathArray.size() == 1) {
+                                s = s.replace(findStr, xpathArray.get(0).toString());
+                            } else {
+                                s = s.replace(findStr, JSON.toJSONString(xpathArray));
+                            }
                             LOG.info("xml提取值并替换后的结果={}", s);
                         } else if (contentType == 2) { // headers
                             JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders,
                                     HashMap.class).get(expression);
-                            if (headerArray == null) {
+                            if (headerArray == null || headerArray.isEmpty()) {
                                 LOG.warn("未找到请求头，header={}", expression);
                                 throw new ParseException("未找到请求头:" + expression);
                             } else {
-                                s = s.replace(findStr, headerArray.get(0).toString());
+                                if (headerArray.size() == 1) {
+                                    s = s.replace(findStr, headerArray.get(0).toString());
+                                } else {
+                                    s = s.replace(findStr, JSON.toJSONString(headerArray));
+                                }
                                 LOG.info("header提取值并替换后的结果={}", s);
                             }
                         } else {

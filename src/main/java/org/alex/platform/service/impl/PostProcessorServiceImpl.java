@@ -208,7 +208,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
 
         Byte type = postProcessorDO.getType();
         ValidUtil.notNUll(type, "后置处理器提取类型不能为空");
-        ValidUtil.size(type, 0, 2, "后置处理器提取类型方式为0~2");
+        ValidUtil.size(type, 0, 6, "后置处理器提取类型方式为0~6");
 
         String expression = postProcessorDO.getExpression();
         ValidUtil.notNUll(expression, "后置处理器提取表达式不能为空");
@@ -219,6 +219,8 @@ public class PostProcessorServiceImpl implements PostProcessorService {
             ValidUtil.isJsonPath(expression);
         } else if (type == 1) {
             ValidUtil.isXpath(expression);
+        } else if (type >= 3 && type <= 6) {
+            ValidUtil.isJsonPath(expression);
         }
     }
 }

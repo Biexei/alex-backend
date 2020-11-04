@@ -24,6 +24,42 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
     private String suiteLogDetailNo;
     private String chain;
     private Byte isFailedRetry;
+    private String rawRequestHeaders;
+    private String rawRequestParams;
+    private String rawRequestData;
+    private String rawRequestJson;
+
+    public String getRawRequestHeaders() {
+        return rawRequestHeaders;
+    }
+
+    public void setRawRequestHeaders(String rawRequestHeaders) {
+        this.rawRequestHeaders = rawRequestHeaders;
+    }
+
+    public String getRawRequestParams() {
+        return rawRequestParams;
+    }
+
+    public void setRawRequestParams(String rawRequestParams) {
+        this.rawRequestParams = rawRequestParams;
+    }
+
+    public String getRawRequestData() {
+        return rawRequestData;
+    }
+
+    public void setRawRequestData(String rawRequestData) {
+        this.rawRequestData = rawRequestData;
+    }
+
+    public String getRawRequestJson() {
+        return rawRequestJson;
+    }
+
+    public void setRawRequestJson(String rawRequestJson) {
+        this.rawRequestJson = rawRequestJson;
+    }
 
     public String getSuiteLogDetailNo() {
         return suiteLogDetailNo;

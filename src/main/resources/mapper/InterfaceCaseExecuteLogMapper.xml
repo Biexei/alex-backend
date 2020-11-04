@@ -25,6 +25,10 @@
             <if test="suiteLogDetailNo != null">`suite_log_detail_no`,</if>
             <if test="chain != null">`chain`,</if>
             <if test="isFailedRetry != null">`is_failed_retry`,</if>
+            <if test="rawRequestHeaders != null">`raw_request_headers`,</if>
+            <if test="rawRequestParams != null">`raw_request_params`,</if>
+            <if test="rawRequestData != null">`raw_request_data`,</if>
+            <if test="rawRequestJson != null">`raw_request_json`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="caseId != null">#{caseId},</if>
@@ -46,6 +50,10 @@
             <if test="suiteLogDetailNo != null">#{suiteLogDetailNo},</if>
             <if test="chain != null">#{chain},</if>
             <if test="isFailedRetry != null">#{isFailedRetry},</if>
+            <if test="rawRequestHeaders != null">#{rawRequestHeaders},</if>
+            <if test="rawRequestParams != null">#{rawRequestParams},</if>
+            <if test="rawRequestData != null">#{rawRequestData},</if>
+            <if test="rawRequestJson != null">#{rawRequestJson},</if>
         </trim>
     </insert>
     <select id="selectExecuteList" parameterType="org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO"
@@ -97,6 +105,10 @@
         <result column="request_params" property="requestParams"/>
         <result column="request_data" property="requestData"/>
         <result column="request_json" property="requestJson"/>
+        <result column="raw_request_headers" property="rawRequestHeaders"/>
+        <result column="raw_request_params" property="rawRequestParams"/>
+        <result column="raw_request_data" property="rawRequestData"/>
+        <result column="raw_request_json" property="rawRequestJson"/>
         <result column="response_code" property="responseCode"/>
         <result column="response_headers" property="responseHeaders"/>
         <result column="response_body" property="responseBody"/>
@@ -119,7 +131,8 @@
         `elog`.`response_body`, `elog`.`executer`, `elog`.`status`, `elog`.`created_time`, `elog`.`error_message`,
         `alog`.`assert_name`, `alog`.`type`, `alog`.`expression`, `alog`.`operator`, `alog`.`excepted_result`, `alog`.`order`,
         `alog`.`actual_result`, `alog`.`status` as `assert_status`, `alog`.`error_message` as `assert_error_message` ,
-        `elog`.`run_time`,`elog`.`suite_log_no`,`elog`.`suite_log_detail_no`,`elog`.`chain`,`elog`.`is_failed_retry`
+        `elog`.`run_time`,`elog`.`suite_log_no`,`elog`.`suite_log_detail_no`,`elog`.`chain`,`elog`.`is_failed_retry`,
+        `elog`.`raw_request_headers`,`elog`.`raw_request_params`,`elog`.`raw_request_data`,`elog`.`raw_request_json`
         from `t_interface_case_execute_log` as `elog`
         left join `t_interface_assert_log` as `alog` on `elog`.id = `alog`.`execute_log_id`
         where `elog`.`id` = #{executeId}
@@ -147,6 +160,10 @@
             <if test="suiteLogDetailNo != null">`suite_log_detail_no` = #{suiteLogDetailNo},</if>
             <if test="chain != null">`chain` = #{chain},</if>
             <if test="isFailedRetry != null">`is_failed_retry` = #{isFailedRetry},</if>
+            <if test="rawRequestHeaders != null">`raw_request_headers` = #{rawRequestHeaders},</if>
+            <if test="rawRequestParams != null">`raw_request_params` = #{rawRequestParams},</if>
+            <if test="rawRequestData != null">`raw_request_data` = #{rawRequestData},</if>
+            <if test="rawRequestJson != null">`raw_request_json` = #{rawRequestJson},</if>
         </set>
         where `id` = #{id}
     </update>

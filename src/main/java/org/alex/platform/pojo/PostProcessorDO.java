@@ -15,8 +15,8 @@ public class PostProcessorDO implements Serializable {
     @Size(max = 50, message = "后置处理器名称必须小于等于50")
     private String name;
     @NotNull(message = "后置处理器提取类型不能为空")
-    @Max(value = 2, message = "后置处理器提取类型方式为0~2")
-    @Min(value = 0, message = "后置处理器提取类型方式为0~2")
+    @Max(value = 6, message = "后置处理器提取类型方式为0~6")
+    @Min(value = 0, message = "后置处理器提取类型方式为0~6")
     private Byte type;
     @NotNull(message = "后置处理器提取表达式不能为空")
     @NotEmpty(message = "后置处理器提取表达式不能为空")
