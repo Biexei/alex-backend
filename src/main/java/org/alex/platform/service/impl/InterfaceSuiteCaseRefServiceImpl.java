@@ -14,6 +14,7 @@ import org.alex.platform.service.InterfaceSuiteCaseRefService;
 import org.alex.platform.service.InterfaceSuiteLogService;
 import org.alex.platform.util.ExceptionUtil;
 import org.alex.platform.util.NoUtil;
+import org.alex.platform.util.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
     InterfaceCaseExecuteLogMapper interfaceCaseExecuteLogMapper;
     @Autowired
     InterfaceSuiteLogService interfaceSuiteLogService;
+    @Autowired
+    RedisUtil redisUtil;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceSuiteCaseRefServiceImpl.class);
 
     /**
@@ -269,5 +272,8 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                 suiteLogNo, totalSuccess.intValue(), totalFailed.intValue(), totalError.intValue()
                 , totalSkip.intValue(), type, runDev);
         LOG.info("-----------------------测试套件执行完成-----------------------");
+
+        // 删除后置处理器缓存
+        redisUtil.del(suiteLogDetailNo);
     }
 }

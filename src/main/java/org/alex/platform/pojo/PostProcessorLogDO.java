@@ -19,6 +19,15 @@ public class PostProcessorLogDO implements Serializable {
     private Byte isDefaultValue;
     private Byte status;
     private String errorMsg;
+    private Byte wr;
+
+    public Byte getWr() {
+        return wr;
+    }
+
+    public void setWr(Byte wr) {
+        this.wr = wr;
+    }
 
     public Byte getStatus() {
         return status;

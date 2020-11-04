@@ -18,6 +18,15 @@ public class PostProcessorLogDTO implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdEndTime;
     private Byte status;
+    private Byte wr;
+
+    public Byte getWr() {
+        return wr;
+    }
+
+    public void setWr(Byte wr) {
+        this.wr = wr;
+    }
 
     public Byte getStatus() {
         return status;

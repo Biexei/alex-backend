@@ -19,6 +19,6 @@ public class RedisTest {
 
     @Test
     public void testSet() {
-        System.out.println(redisUtil.hashGet("key", "123"));
+        redisUtil.del("tempPostProcessor");
     }
 }

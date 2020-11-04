@@ -83,5 +83,4 @@ public class RedisUtil {
     public List<Object> hashGetAll(String key) {
         return redisTemplate.opsForHash().values(key);
     }
-
 }

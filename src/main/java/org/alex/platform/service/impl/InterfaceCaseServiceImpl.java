@@ -561,6 +561,136 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             // 日志自增id
             int executedLogId = executedLogDO.getId();
             LOG.info("3.请求成功，保存执行日志，日志内容={}，自增执行日志编号={}", executedLogDO, executedLogId);
+
+
+            // 断言执行前，执行从request提取类型
+            // 即type=3request-header/4request-params/5request-data/6request-json的后置处理器
+            // 但是response提取必须所有断言执行完成且用例状态为通过才提取
+            if (1 == 1) { // 控制作用域 懒得再写。。。
+                PostProcessorDTO postProcessorDTO = new PostProcessorDTO();
+                postProcessorDTO.setCaseId(interfaceCaseId);
+                List<PostProcessorVO> processorList = postProcessorService.findPostProcessorList(postProcessorDTO);
+                PostProcessorLogDO postProcessorLogDO;
+                String value = null;
+                if (!processorList.isEmpty()) {
+                    for(PostProcessorVO postProcessorVO : processorList) {
+                        postProcessorLogDO = new PostProcessorLogDO();
+                        // 提取值
+                        Byte type = postProcessorVO.getType();
+                        String expression = postProcessorVO.getExpression();
+                        String name = postProcessorVO.getName();
+                        Byte haveDefaultValue = postProcessorVO.getHaveDefaultValue();
+                        String defaultValue = postProcessorVO.getDefaultValue();
+                        Byte isDefaultValue = null;
+                        byte status = 0; // 状态 0通过 1失败
+                        String errorMsg = "";
+                        boolean isThrowException = false;
+                        String exceptionMsg = "";
+                        if (type >= 3 && type <= 6) { // 3request-header/4request-params/5request-data/6request-json
+                            // 均使用jsonPath提取表达式
+                            String s = "[]";
+                            try {
+                                switch (type) {
+                                    case 3:
+                                        s = ParseUtil.parseJson(headers, expression);
+                                        break;
+                                    case 4:
+                                        s = ParseUtil.parseJson(params, expression);
+                                        break;
+                                    case 5:
+                                        s = ParseUtil.parseJson(data, expression);
+                                        break;
+                                    case 6:
+                                        s = ParseUtil.parseJson(json, expression);
+                                        break;
+                                }
+                            } catch (ParseException e) {
+                                isThrowException = true;
+                                exceptionMsg = e.getMessage();
+                            }
+                            ArrayList jsonPathArray = JSONObject.parseObject(s, ArrayList.class);
+                            if (jsonPathArray.isEmpty()) {
+                                if (haveDefaultValue == 0) {
+                                    isDefaultValue = 0;
+                                    value = defaultValue;
+                                    LOG.info("提取类型={}，3request-header/4request-params/5request-data/6request-json，" +
+                                            "提取表达式={} 为空，使用默认值={}", type, expression, value);
+                                } else {
+                                    status = 1;
+                                    LOG.warn("jsonPath提取内容为空，jsonPath={}", expression);
+                                    errorMsg = "后置处理器" + name + "提取类型为空，提取表达式为：" + expression;
+                                }
+                            } else {
+                                isDefaultValue = 1;
+                                if (jsonPathArray.size() == 1) {
+                                    value = jsonPathArray.get(0).toString();
+                                } else {
+                                    value = JSON.toJSONString(jsonPathArray);
+                                }
+                                LOG.info("提取类型={}，提取表达式={}，写入缓存内容={}", "jsonPath", expression, value);
+                            }
+                            postProcessorLogDO = new PostProcessorLogDO();
+                            postProcessorLogDO.setPostProcessorId(postProcessorVO.getPostProcessorId());
+                            postProcessorLogDO.setCaseId(postProcessorVO.getCaseId());
+                            postProcessorLogDO.setCaseExecuteLogId(executedLogId);
+                            postProcessorLogDO.setName(name);
+                            postProcessorLogDO.setType(type);
+                            postProcessorLogDO.setExpression(expression);
+                            postProcessorLogDO.setWr((byte) 1);
+                            if (!isThrowException) {
+                                // 写入后置处理器记录表
+                                postProcessorLogDO.setIsDefaultValue(isDefaultValue);
+                                postProcessorLogDO.setValue(value);
+                                postProcessorLogDO.setCreatedTime(new Date());
+                                postProcessorLogDO.setStatus(status);
+                                if (status == 0) {
+                                    postProcessorLogDO.setErrorMsg(null);
+                                } else {
+                                    postProcessorLogDO.setErrorMsg(errorMsg);
+                                }
+                                // 写入后置处理器日志表
+                                postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
+                                LOG.info("写入后置处理器日志表");
+                                // 如果后置处理器出错，那么将用例执行状态重新置为错误
+                                if (status == 1) {
+                                    InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
+                                    afterPostProcessorLogDo.setId(executedLogId);
+                                    afterPostProcessorLogDo.setStatus((byte) 2);
+                                    afterPostProcessorLogDo.setErrorMessage(errorMsg);
+                                    executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
+                                    LOG.info("后置处理器运行错误，主动将用例执行状态置为错误");
+                                } else {
+                                    // 写入redis
+                                    if (suiteLogDetailNo == null) { // 不存在则写入临时域
+                                        redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value, 24*60*60);
+                                        LOG.info("写入后置处理器，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
+                                    } else { // 否则写入测试套件域
+                                        redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
+                                        LOG.info("写入后置处理器，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
+                                    }
+                                }
+                            } else { // 若解析json、xpath出错
+                                // 写入后置处理器记录表
+                                postProcessorLogDO.setIsDefaultValue(null);
+                                postProcessorLogDO.setValue(null);
+                                postProcessorLogDO.setCreatedTime(new Date());
+                                postProcessorLogDO.setStatus((byte) 1);
+                                postProcessorLogDO.setErrorMsg(exceptionMsg);
+                                postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
+                                LOG.warn("后置处理器解析出错，写入后置处理器记录表");
+                                // 重置用例状态
+                                InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
+                                afterPostProcessorLogDo.setId(executedLogId);
+                                afterPostProcessorLogDo.setStatus((byte) 2);
+                                afterPostProcessorLogDo.setErrorMessage(exceptionMsg);
+                                executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
+                                LOG.info("后置处理器解析出错，主动将用例执行状态置为错误");
+                            }
+                        }
+                    }
+                }
+            }
+
             // 遍历用例关联的断言,并写入断言日志表
             // 获取每次执行断言的状态
             List<Byte> statusList = new ArrayList<>();
@@ -585,11 +715,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 assertLogDO.setType(type);
                 assertLogDO.setExpression(expression);
                 assertLogDO.setOperator(operator);
-                // 清洗断言预期结果
-                LOG.info("5.清洗断言预期结果... ... ...");
                 String exceptedResult = interfaceAssertVO.getExceptedResult();
+                assertLogDO.setRawExceptedResult(exceptedResult);
                 if (null != exceptedResult) {
                     try {
+                        // 清洗断言预期结果
+                        LOG.info("5.清洗断言预期结果... ... ...");
                         exceptedResult = this.parseRelyData(exceptedResult, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
                         LOG.info("清洗断言，清洗后的结果={}", exceptedResult);
                     } catch (ParseException | BusinessException | SqlException e) {
@@ -791,109 +922,68 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     value = JSON.toJSONString(headerArray);
                                 }
                             }
-                        } else if (type >= 3 && type <= 6) { // 3request-header/4request-params/5request-data/6request-json
-                            // 均使用jsonPath提取表达式
-                            String s = "[]";
-                            try {
-                                switch (type) {
-                                    case 3:
-                                        s = ParseUtil.parseJson(headers, expression);
-                                        break;
-                                    case 4:
-                                        s = ParseUtil.parseJson(params, expression);
-                                        break;
-                                    case 5:
-                                        s = ParseUtil.parseJson(data, expression);
-                                        break;
-                                    case 6:
-                                        s = ParseUtil.parseJson(json, expression);
-                                        break;
-                                }
-                            } catch (ParseException e) {
-                                isThrowException = true;
-                                exceptionMsg = e.getMessage();
-                            }
-                            ArrayList jsonPathArray = JSONObject.parseObject(s, ArrayList.class);
-                            if (jsonPathArray.isEmpty()) {
-                                if (haveDefaultValue == 0) {
-                                    isDefaultValue = 0;
-                                    value = defaultValue;
-                                    LOG.info("提取类型={}，3request-header/4request-params/5request-data/6request-json，" +
-                                            "提取表达式={} 为空，使用默认值={}", type, expression, value);
-                                } else {
-                                    status = 1;
-                                    LOG.warn("jsonPath提取内容为空，jsonPath={}", expression);
-                                    errorMsg = "后置处理器" + name + "提取类型为空，提取表达式为：" + expression;
-                                }
-                            } else {
-                                isDefaultValue = 1;
-                                if (jsonPathArray.size() == 1) {
-                                    value = jsonPathArray.get(0).toString();
-                                } else {
-                                    value = JSON.toJSONString(jsonPathArray);
-                                }
-                                LOG.info("提取类型={}，提取表达式={}，写入缓存内容={}", "jsonPath", expression, value);
-                            }
-                        } else {
+                        } else if (type >= 7) {
                             status = 1;
                             LOG.error("后置处理器提取类型错误");
                             errorMsg = "后置处理器提取类型错误";
                         }
-                        postProcessorLogDO = new PostProcessorLogDO();
-                        postProcessorLogDO.setPostProcessorId(postProcessorVO.getPostProcessorId());
-                        postProcessorLogDO.setCaseId(postProcessorVO.getCaseId());
-                        postProcessorLogDO.setCaseExecuteLogId(executedLogId);
-                        postProcessorLogDO.setName(name);
-                        postProcessorLogDO.setType(type);
-                        postProcessorLogDO.setExpression(expression);
-                        if (!isThrowException) {
-                            // 写入后置处理器记录表
-                            postProcessorLogDO.setIsDefaultValue(isDefaultValue);
-                            postProcessorLogDO.setValue(value);
-                            postProcessorLogDO.setCreatedTime(new Date());
-                            postProcessorLogDO.setStatus(status);
-                            if (status == 0) {
-                                postProcessorLogDO.setErrorMsg(null);
-                            } else {
-                                postProcessorLogDO.setErrorMsg(errorMsg);
-                            }
-                            // 写入后置处理器日志表
-                            postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
-                            LOG.info("写入后置处理器日志表");
-                            // 如果后置处理器出错，那么将用例执行状态重新置为错误
-                            if (status == 1) {
+                        if (type <= 2 || type >7 ) { // 3-6时，已在前面写入缓存
+                            postProcessorLogDO = new PostProcessorLogDO();
+                            postProcessorLogDO.setPostProcessorId(postProcessorVO.getPostProcessorId());
+                            postProcessorLogDO.setCaseId(postProcessorVO.getCaseId());
+                            postProcessorLogDO.setCaseExecuteLogId(executedLogId);
+                            postProcessorLogDO.setName(name);
+                            postProcessorLogDO.setType(type);
+                            postProcessorLogDO.setExpression(expression);
+                            if (!isThrowException) {
+                                // 写入后置处理器记录表
+                                postProcessorLogDO.setIsDefaultValue(isDefaultValue);
+                                postProcessorLogDO.setValue(value);
+                                postProcessorLogDO.setCreatedTime(new Date());
+                                postProcessorLogDO.setStatus(status);
+                                postProcessorLogDO.setWr((byte) 1);
+                                if (status == 0) {
+                                    postProcessorLogDO.setErrorMsg(null);
+                                } else {
+                                    postProcessorLogDO.setErrorMsg(errorMsg);
+                                }
+                                // 写入后置处理器日志表
+                                postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
+                                LOG.info("写入后置处理器日志表");
+                                // 如果后置处理器出错，那么将用例执行状态重新置为错误
+                                if (status == 1) {
+                                    InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
+                                    afterPostProcessorLogDo.setId(executedLogId);
+                                    afterPostProcessorLogDo.setStatus((byte) 2);
+                                    afterPostProcessorLogDo.setErrorMessage(errorMsg);
+                                    executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
+                                    LOG.info("后置处理器运行错误，主动将用例执行状态置为错误");
+                                } else {
+                                    if (suiteLogDetailNo == null) { // 不存在则写入临时域
+                                        redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value, 24*60*60);
+                                        LOG.info("写入后置处理器，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
+                                    } else { // 否则写入测试套件域
+                                        redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
+                                        LOG.info("写入后置处理器，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
+                                    }
+                                }
+                            } else { // 若解析json、xpath出错
+                                // 写入后置处理器记录表
+                                postProcessorLogDO.setIsDefaultValue(null);
+                                postProcessorLogDO.setValue(null);
+                                postProcessorLogDO.setCreatedTime(new Date());
+                                postProcessorLogDO.setStatus((byte) 1);
+                                postProcessorLogDO.setErrorMsg(exceptionMsg);
+                                postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
+                                LOG.warn("后置处理器解析出错，写入后置处理器记录表");
+                                // 重置用例状态
                                 InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
                                 afterPostProcessorLogDo.setId(executedLogId);
                                 afterPostProcessorLogDo.setStatus((byte) 2);
-                                afterPostProcessorLogDo.setErrorMessage(errorMsg);
+                                afterPostProcessorLogDo.setErrorMessage(exceptionMsg);
                                 executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
-                                LOG.info("后置处理器运行错误，主动将用例执行状态置为错误");
-                            } else {
-                                // 写入redis
-                                if (suiteLogDetailNo == null) { // 不存在则写入临时域
-                                    redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value, 24*60*60);
-                                    LOG.info("写入后置处理器，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
-                                } else { // 否则写入测试套件域
-                                    redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
-                                    LOG.info("写入后置处理器，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
-                                }
+                                LOG.info("后置处理器解析出错，主动将用例执行状态置为错误");
                             }
-                        } else { // 若解析json、xpath出错
-                            // 写入后置处理器记录表
-                            postProcessorLogDO.setIsDefaultValue(null);
-                            postProcessorLogDO.setValue(null);
-                            postProcessorLogDO.setCreatedTime(new Date());
-                            postProcessorLogDO.setStatus((byte) 1);
-                            postProcessorLogDO.setErrorMsg(exceptionMsg);
-                            postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
-                            LOG.warn("后置处理器解析出错，写入后置处理器记录表");
-                            // 重置用例状态
-                            InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
-                            afterPostProcessorLogDo.setId(executedLogId);
-                            afterPostProcessorLogDo.setStatus((byte) 2);
-                            afterPostProcessorLogDo.setErrorMessage(exceptionMsg);
-                            executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
-                            LOG.info("后置处理器解析出错，主动将用例执行状态置为错误");
                         }
                     }
                 }
@@ -916,6 +1006,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      */
     public String parseRelyData(String s, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo)
             throws ParseException, BusinessException, SqlException {
+
+        // 解析后置处理器
+        s = parsePostProcessor(s, suiteLogDetailNo);
+
         LOG.info("--------------------------------------开始字符串解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
         // env 0dev1test2stg3prod4debug
@@ -926,7 +1020,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             runEnv = ifSuiteService.findInterfaceCaseSuiteById(suiteId).getRunDev();
         }
         LOG.info("--------------------------------------运行环境={}, 0dev 1test 2stg 3prod 4debug", runEnv);
-        System.out.println("运行环境=" + runEnv);
         Pattern p = Pattern.compile("\\$\\{.+?\\}");
         Matcher matcher = p.matcher(s);
         while (matcher.find()) {
@@ -1286,6 +1379,53 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 }
             }
         }
+        return s;
+    }
+
+    /**
+     * 解析后置处理器
+     * @param s 原文
+     * @param suiteLogDetailNo 非空时使用测试套件域，否则使用临时域
+     * @return 解析后的字符串
+     * @throws ParseException 找不到后置处理器
+     */
+    @Override
+    public String parsePostProcessor(String s, String suiteLogDetailNo) throws ParseException {
+        LOG.info("--------------------------------------开始后置处理器提取解析流程--------------------------------------");
+        LOG.info("--------------------------------------待解析字符串原文={}", s);
+        Pattern pattern = Pattern.compile("#\\{.+?\\}");
+        Matcher matcher = pattern.matcher(s);
+        while (matcher.find()) {
+            String findStr = matcher.group();
+            String postProcessorName = findStr.substring(2, findStr.length() - 1);
+            PostProcessorVO postProcessor = postProcessorService.findPostProcessorByName(postProcessorName);
+            LOG.info("后置处理器名称={}", postProcessorName);
+            Object redisResult;
+            if (suiteLogDetailNo == null) {
+                LOG.info("suiteLogDetailNo == null，使用临时变量域");
+                redisResult = redisUtil.hashGet(NoUtil.TEMP_POST_PROCESSOR_NO, postProcessorName);
+            } else {
+                LOG.info("suiteLogDetailNo != null，使用测试套件域");
+                redisResult = redisUtil.hashGet(suiteLogDetailNo, postProcessorName);
+            }
+            if (redisResult == null) {
+                LOG.error("未找到后置处理器" + postProcessorName);
+                throw new ParseException("未找到后置处理器" + postProcessorName);
+            }
+            String redisResultStr = redisResult.toString();
+            s = s.replace(findStr, redisResultStr);
+
+            // 写入后置处理器日志表
+            PostProcessorLogDO postProcessorLogDO = new PostProcessorLogDO();
+            postProcessorLogDO.setName(postProcessor.getName());
+            postProcessorLogDO.setValue(redisResultStr);
+            postProcessorLogDO.setCreatedTime(new Date());
+            postProcessorLogDO.setStatus((byte) 0);
+            postProcessorLogDO.setWr((byte)0);
+            postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
+        }
+        LOG.info("--------------------------------------结束后置处理器提取解析流程--------------------------------------");
+        LOG.info("--------------------------------------解析后的字符串为={}", s);
         return s;
     }
 }

@@ -10,6 +10,15 @@ public class InterfaceAssertLogListVO {
     private String actualResult;
     private Byte status;
     private String errorMessage;
+    private String rawExceptedResult;
+
+    public String getRawExceptedResult() {
+        return rawExceptedResult;
+    }
+
+    public void setRawExceptedResult(String rawExceptedResult) {
+        this.rawExceptedResult = rawExceptedResult;
+    }
 
     public String getAssertName() {
         return assertName;

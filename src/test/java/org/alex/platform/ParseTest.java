@@ -158,4 +158,20 @@ public class ParseTest {
         }
     }
 
+    public void parsePostProcessor(String s) {
+        Pattern pattern = Pattern.compile("#\\{.+?\\}");
+        Matcher matcher = pattern.matcher(s);
+        while (matcher.find()) {
+            String findStr = matcher.group();
+            String postProcessorName = findStr.substring(2, findStr.length() - 1);
+            System.out.println(postProcessorName);
+        }
+    }
+
+    @Test
+    public void testParse() {
+        String s = "#{a}#{b}#{c#{#d}}";
+        parsePostProcessor(s);
+    }
+
 }

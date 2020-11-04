@@ -18,6 +18,15 @@ public class InterfaceAssertLogDO implements Serializable {
     private Byte status;
     private String errorMessage;
     private Date createdTime;
+    private String rawExceptedResult;
+
+    public String getRawExceptedResult() {
+        return rawExceptedResult;
+    }
+
+    public void setRawExceptedResult(String rawExceptedResult) {
+        this.rawExceptedResult = rawExceptedResult;
+    }
 
     public Date getCreatedTime() {
         return createdTime;

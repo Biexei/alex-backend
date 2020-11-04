@@ -91,6 +91,7 @@
         <result column="expression" property="expression"/>
         <result column="operator" property="operator"/>
         <result column="excepted_result" property="exceptedResult"/>
+        <result column="raw_excepted_result" property="rawExceptedResult"/>
         <result column="order" property="order"/>
         <result column="actual_result" property="actualResult"/>
         <result column="assert_status" property="status"/>
@@ -132,7 +133,8 @@
         `alog`.`assert_name`, `alog`.`type`, `alog`.`expression`, `alog`.`operator`, `alog`.`excepted_result`, `alog`.`order`,
         `alog`.`actual_result`, `alog`.`status` as `assert_status`, `alog`.`error_message` as `assert_error_message` ,
         `elog`.`run_time`,`elog`.`suite_log_no`,`elog`.`suite_log_detail_no`,`elog`.`chain`,`elog`.`is_failed_retry`,
-        `elog`.`raw_request_headers`,`elog`.`raw_request_params`,`elog`.`raw_request_data`,`elog`.`raw_request_json`
+        `elog`.`raw_request_headers`,`elog`.`raw_request_params`,`elog`.`raw_request_data`,`elog`.`raw_request_json`,
+        `alog`.`raw_excepted_result`
         from `t_interface_case_execute_log` as `elog`
         left join `t_interface_assert_log` as `alog` on `elog`.id = `alog`.`execute_log_id`
         where `elog`.`id` = #{executeId}

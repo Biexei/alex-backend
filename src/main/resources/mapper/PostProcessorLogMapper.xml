@@ -6,14 +6,14 @@
 
     <select id="selectPostProcessorLogById" parameterType="Integer" resultType="org.alex.platform.pojo.PostProcessorLogVO">
         select `id`, `post_processor_id`, `case_id`, `case_execute_log_id`,`name`, `value`,
-        `type`, `expression`, `created_time`, `is_default_value`,`status`, `error_msg`
+        `type`, `expression`, `created_time`, `is_default_value`,`status`, `error_msg`,`wr`
         from `t_post_processor_log`
         where `id`=#{id}
     </select>
 
     <select id="selectPostProcessorLogList" parameterType="org.alex.platform.pojo.PostProcessorLogDTO" resultType="org.alex.platform.pojo.PostProcessorLogVO">
         select `id`, `post_processor_id`, `case_id`, `case_execute_log_id`,`name`, `value`,
-        `type`, `expression`, `created_time`, `is_default_value`,`status`, `error_msg`
+        `type`, `expression`, `created_time`, `is_default_value`,`status`, `error_msg`,`wr`
         from `t_post_processor_log`
         <where>
             <if test="id!=null">and `id`=#{id}</if>
@@ -27,6 +27,7 @@
             <if test="createdStartTime!=null">and `created_time` &gt;=#{createdStartTime}</if>
             <if test="createdEndTime!=null">and `created_time` &lt;=#{createdEndTime}</if>
             <if test="status!=null">and status=#{status}</if>
+            <if test="wr!=null">and wr=#{wr}</if>
         </where>
     </select>
     <insert id="insertPostProcessorLog" parameterType="org.alex.platform.pojo.PostProcessorLogDO" useGeneratedKeys="true" keyProperty="id">
@@ -43,6 +44,7 @@
             <if test="createdTime!=null">`created_time`,</if>
             <if test="status!=null">`status`,</if>
             <if test="errorMsg!=null">`error_msg`,</if>
+            <if test="wr!=null">`wr`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="postProcessorId!=null">#{postProcessorId},</if>
@@ -56,6 +58,7 @@
             <if test="createdTime!=null">#{createdTime},</if>
             <if test="status!=null">#{status},</if>
             <if test="errorMsg!=null">#{errorMsg},</if>
+            <if test="wr!=null">#{wr},</if>
         </trim>
     </insert>
 
