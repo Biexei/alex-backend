@@ -61,5 +61,22 @@
             <if test="wr!=null">#{wr},</if>
         </trim>
     </insert>
+    <update id="updatePostProcessorLog" parameterType="org.alex.platform.pojo.PostProcessorLogDO">
+        update `t_post_processor_log`
+        <set>
+            <if test="post_processor_id!=null">`post_processor_id`=#{postProcessorId},</if>
+            <if test="case_id!=null">`case_id`=#{caseId},</if>
+            <if test="case_execute_log_id!=null">`case_execute_log_id`=#{caseExecuteLogId},</if>
+            <if test="name!=null">`name`=#{name},</if>
+            <if test="value!=null">`value`=#{value},</if>
+            <if test="type!=null">`type`=#{type},</if>
+            <if test="expression!=null">`expression`=#{expression},</if>
+            <if test="created_time!=null">`created_time`=#{createdTime},</if>
+            <if test="status!=null">`status!=null`=#{status},</if>
+            <if test="error_msg!=null">`error_msg`=#{errorMsg},</if>
+            <if test="wr!=null">`wr`=#{wr},</if>
+        </set>
+        where `id` = #{id}
+    </update>
 
 </mapper>

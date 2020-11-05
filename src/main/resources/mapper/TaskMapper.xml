@@ -69,7 +69,7 @@
             `desc`=#{desc},
             `cron`=#{cron},
             <if test="nextTime!=null">`next_time`=#{nextTime},</if>
-            `created_time`=#{createdTime},
+            <if test="createdTime!=null">`created_time`=#{createdTime},</if>
             `update_time`=#{updateTime},
             `suite_type`=#{suiteType},
             `suite_id`=#{suiteId},

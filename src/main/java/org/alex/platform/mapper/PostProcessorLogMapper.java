@@ -14,4 +14,6 @@ public interface PostProcessorLogMapper {
     List<PostProcessorLogVO> selectPostProcessorLogList(PostProcessorLogDTO postProcessorLogDTO);
 
     Integer insertPostProcessorLog(PostProcessorLogDO postProcessorLogDO);
+
+    void updatePostProcessorLog(PostProcessorLogDO postProcessorLogDO);
 }
