@@ -662,7 +662,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     // 写入redis
                                     if (suiteLogDetailNo == null) { // 不存在则写入临时域
-                                        redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value, 24*60*60);
+                                        redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
                                         LOG.info("写入后置处理器，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
                                     } else { // 否则写入测试套件域
                                         redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
@@ -960,7 +960,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     LOG.info("后置处理器运行错误，主动将用例执行状态置为错误");
                                 } else {
                                     if (suiteLogDetailNo == null) { // 不存在则写入临时域
-                                        redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value, 24*60*60);
+                                        redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
                                         LOG.info("写入后置处理器，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
                                     } else { // 否则写入测试套件域
                                         redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
