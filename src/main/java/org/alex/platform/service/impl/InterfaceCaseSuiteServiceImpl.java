@@ -3,11 +3,13 @@ package org.alex.platform.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.InterfaceCaseSuiteMapper;
 import org.alex.platform.mapper.InterfaceSuiteCaseRefMapper;
 import org.alex.platform.mapper.TaskMapper;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.InterfaceCaseSuiteService;
+import org.alex.platform.service.InterfaceSuiteProcessorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +27,15 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
     @Autowired
     InterfaceSuiteCaseRefMapper interfaceSuiteCaseRefMapper;
     @Autowired
+    InterfaceSuiteProcessorService interfaceSuiteProcessorService;
+    @Autowired
     TaskMapper taskMapper;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseSuiteServiceImpl.class);
 
     /**
      * 新增测试套件
      * @param interfaceCaseSuiteDO interfaceCaseSuiteDO
-     * @return 自增对象
+     * @return interfaceCaseSuiteDO
      */
     @Override
     public InterfaceCaseSuiteDO saveInterfaceCaseSuite(InterfaceCaseSuiteDO interfaceCaseSuiteDO) {
@@ -40,13 +44,34 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
     }
 
     /**
-     * 修改测试套件
-     *
-     * @param interfaceCaseSuiteDO interfaceCaseSuiteDO
+     * 新增测试套件及其附表
+     * @param interfaceSuiteInfoDTO interfaceSuiteInfoDTO
      */
     @Override
-    public void modifyInterfaceCaseSuite(InterfaceCaseSuiteDO interfaceCaseSuiteDO) {
-        interfaceCaseSuiteMapper.updateInterfaceCaseSuite(interfaceCaseSuiteDO);
+    public void saveInterfaceCaseSuiteAndProcessor(InterfaceSuiteInfoDTO interfaceSuiteInfoDTO) throws ValidException {
+        // 插入主表
+        InterfaceCaseSuiteDO interfaceCaseSuiteDO = this.saveInterfaceCaseSuite(interfaceSuiteInfoDTO);
+        // 插入附表
+        List<InterfaceSuiteProcessorDO> suiteProcessors = interfaceSuiteInfoDTO.getSuiteProcessors();
+        Date date = new Date();
+        if (suiteProcessors!=null && !suiteProcessors.isEmpty()) {
+            for(InterfaceSuiteProcessorDO interfaceSuiteProcessorDO : suiteProcessors) {
+                interfaceSuiteProcessorDO.setCreatedTime(date);
+                interfaceSuiteProcessorDO.setUpdateTime(date);
+                interfaceSuiteProcessorDO.setSuiteId(interfaceCaseSuiteDO.getSuiteId());
+                interfaceSuiteProcessorService.saveInterfaceSuiteProcessor(interfaceSuiteProcessorDO);
+            }
+        }
+    }
+
+    /**
+     * 修改测试套件
+     *
+     * @param interfaceSuiteInfoDTO interfaceSuiteInfoDTO
+     */
+    @Override
+    public void modifyInterfaceCaseSuite(InterfaceSuiteInfoDTO interfaceSuiteInfoDTO) {
+        interfaceCaseSuiteMapper.updateInterfaceCaseSuite(interfaceSuiteInfoDTO);
     }
 
     /**
@@ -70,7 +95,10 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
             LOG.warn("存在关于该测试套件的定时任务, suiteId={}", suiteId);
             throw new BusinessException("存在关于该测试套件的定时任务");
         }
+        // 删除主表
         interfaceCaseSuiteMapper.deleteInterfaceCaseSuiteById(suiteId);
+        // 删除处理器附表
+        interfaceSuiteProcessorService.removeInterfaceSuiteProcessorBySuiteId(suiteId);
     }
 
     /**

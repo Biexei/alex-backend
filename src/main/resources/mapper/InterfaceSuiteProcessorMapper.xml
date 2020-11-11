@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.InterfaceSuiteProcessorMapper">
+    <insert id="insertInterfaceSuiteProcessor" parameterType="org.alex.platform.pojo.InterfaceSuiteProcessorDO" useGeneratedKeys="true" keyProperty="id">
+        insert into `t_interface_suite_processor`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="suiteId!=null">`suite_id`,</if>
+            <if test="processorType!=null">`processor_type`,</if>
+            <if test="type!=null">`type`,</if>
+            <if test="desc!=null">`desc`,</if>
+            <if test="value!=null">`value`,</if>
+            <if test="createdTime!=null">`created_time`,</if>
+            <if test="updateTime!=null">`update_time`,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="suiteId!=null">#{suiteId},</if>
+            <if test="processorType!=null">#{processorType},</if>
+            <if test="type!=null">#{type},</if>
+            <if test="desc!=null">#{desc},</if>
+            <if test="value!=null">#{value},</if>
+            <if test="createdTime!=null">#{createdTime},</if>
+            <if test="updateTime!=null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <update id="updateInterfaceSuiteProcessor" parameterType="org.alex.platform.pojo.InterfaceSuiteProcessorDO">
+        update `t_interface_suite_processor`
+        <set>
+            `suite_id` = #{suiteId},
+            `processor_type` = #{processorType},
+            `type` = #{type},
+            `desc` = #{desc},
+            `value` = #{value},
+            `created_time` = #{createdTime},
+            <if test="updateTime!=null">`update_time` = #{updateTime},</if>
+        </set>
+        where `id`=#{id}
+    </update>
+    <select id="selectInterfaceSuiteProcessorList" parameterType="org.alex.platform.pojo.InterfaceSuiteProcessorDTO" resultType="org.alex.platform.pojo.InterfaceSuiteProcessorVO">
+        select `id`,`suite_id`,`processor_type`,`type`,`desc`,`value`,`created_time`,`update_time`
+        from `t_interface_suite_processor`
+        <where>
+            <if test="id!=null">`id`=#{id}</if>
+            <if test="suiteId!=null">`suite_id`=#{suiteId}</if>
+            <if test="processorType!=null">`processor_type`=#{processorType}</if>
+            <if test="type!=null">`type`=#{type}</if>
+            <if test="desc!=null">`desc` like concat('%',#{desc},'%')</if>
+            <if test="value!=null">`value` like concat('%',#{value},'%'</if>
+        </where>
+    </select>
+    <select id="selectInterfaceSuiteProcessorById" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceSuiteProcessorVO">
+        select `id`,`suite_id`,`processor_type`,`type`,`desc`,`value`,`created_time`,`update_time`
+        from `t_interface_suite_processor`
+        where `id`=#{id}
+    </select>
+    <select id="selectInterfaceSuiteProcessorBySuiteId" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceSuiteProcessorVO">
+        select `id`,`suite_id`,`processor_type`,`type`,`desc`,`value`,`created_time`,`update_time`
+        from `t_interface_suite_processor`
+        where `suite_id`=#{suiteId}
+    </select>
+    <delete id="deleteInterfaceSuiteProcessorById" parameterType="Integer">
+        delete from `t_interface_suite_processor`
+        where `id`=#{id}
+    </delete>
+    <delete id="deleteInterfaceSuiteProcessorBySuiteId" parameterType="Integer">
+        delete from `t_interface_suite_processor`
+        where `suite_id`=#{suiteId}
+    </delete>
+</mapper>
