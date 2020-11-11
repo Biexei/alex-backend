@@ -62,4 +62,37 @@
             <if test="isRetry!=null">and `is_retry`=#{isRetry}</if>
         </where>
     </select>
+
+    <resultMap id="suiteInfo" type="org.alex.platform.pojo.InterfaceSuiteInfoVO">
+        <result column="suite_id" property="suiteId"></result>
+        <result column="suite_name" property="suiteName"></result>
+        <result column="desc" property="desc"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="update_time" property="updateTime"></result>
+        <result column="creator" property="creator"></result>
+        <result column="execute_type" property="executeType"></result>
+        <result column="run_dev" property="runDev"></result>
+        <result column="is_retry" property="isRetry"></result>
+        <collection property="suiteProcessors" ofType="org.alex.platform.pojo.InterfaceSuiteProcessorVO">
+            <id column="id" property="id"></id>
+            <result column="processor_suite_id" property="suiteId"></result>
+            <result column="processor_type" property="processorType"></result>
+            <result column="type" property="type"></result>
+            <result column="processor_desc" property="desc"></result>
+            <result column="value" property="value"></result>
+            <result column="processor_created_time" property="createdTime"></result>
+            <result column="processor_update_time" property="updateTime"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selectInterfaceCaseSuiteInfoById" parameterType="Integer" resultMap="suiteInfo">
+        select `suite`.`suite_id`,`suite`.`suite_name`,`suite`.`desc`,`suite`.`created_time`,`suite`.`update_time`,
+        `suite`.`creator`,`suite`.`execute_type`, `suite`.`run_dev`, `suite`.`is_retry`,
+        `processor`.`id`,`processor`.`suite_id` as `processor_suite_id`,`processor`.`processor_type`,`processor`.`type`,
+        `processor`.`desc` as `processor_desc`, `processor`.`value`,
+        `processor`.`created_time` as `processor_created_time`,`processor`.`update_time` as `processor_update_time`
+        from `t_interface_case_suite` as `suite`
+        LEFT JOIN `t_interface_suite_processor` as `processor` on `suite`.`suite_id` = `processor`.`suite_id`
+        where `suite`.`suite_id` = #{suiteId}
+    </select>
 </mapper>

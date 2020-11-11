@@ -45,7 +45,7 @@ public class InterfaceCaseSuiteController {
      * @return Result
      */
     @PostMapping("/interface/suite/modify")
-    public Result modifyInterfaceCaseSuite(@RequestBody @Validated InterfaceSuiteInfoDTO interfaceSuiteInfoDTO) {
+    public Result modifyInterfaceCaseSuite(@RequestBody @Validated InterfaceSuiteInfoDTO interfaceSuiteInfoDTO) throws ValidException {
         interfaceSuiteInfoDTO.setUpdateTime(new Date());
         interfaceCaseSuiteService.modifyInterfaceCaseSuite(interfaceSuiteInfoDTO);
         return Result.success("修改成功");
@@ -71,7 +71,7 @@ public class InterfaceCaseSuiteController {
      */
     @GetMapping("/interface/suite/{suiteId}")
     public Result findInterfaceCaseSuiteById(@PathVariable Integer suiteId) {
-        return Result.success(interfaceCaseSuiteService.findInterfaceCaseSuiteById(suiteId));
+        return Result.success(interfaceCaseSuiteService.findInterfaceCaseSuiteInfoById(suiteId));
     }
 
     /**

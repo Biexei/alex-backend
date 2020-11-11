@@ -70,8 +70,23 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
      * @param interfaceSuiteInfoDTO interfaceSuiteInfoDTO
      */
     @Override
-    public void modifyInterfaceCaseSuite(InterfaceSuiteInfoDTO interfaceSuiteInfoDTO) {
+    public void modifyInterfaceCaseSuite(InterfaceSuiteInfoDTO interfaceSuiteInfoDTO) throws ValidException {
+        // 修改主表
         interfaceCaseSuiteMapper.updateInterfaceCaseSuite(interfaceSuiteInfoDTO);
+        // 由于前端不方便传主键ID，删除所有的后置处理器后重新新增
+        Integer suiteId = interfaceSuiteInfoDTO.getSuiteId();
+        interfaceSuiteProcessorService.removeInterfaceSuiteProcessorBySuiteId(suiteId);
+        // 新增测试套件后置处理器
+        Date date = new Date();
+        List<InterfaceSuiteProcessorDO> suiteProcessors = interfaceSuiteInfoDTO.getSuiteProcessors();
+        if (suiteProcessors != null && !suiteProcessors.isEmpty()) {
+            for (InterfaceSuiteProcessorDO interfaceSuiteProcessorDO : suiteProcessors) {
+                interfaceSuiteProcessorDO.setSuiteId(suiteId);
+                interfaceSuiteProcessorDO.setCreatedTime(date);
+                interfaceSuiteProcessorDO.setUpdateTime(date);
+                interfaceSuiteProcessorService.saveInterfaceSuiteProcessor(interfaceSuiteProcessorDO);
+            }
+        }
     }
 
     /**
@@ -110,6 +125,16 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
     @Override
     public InterfaceCaseSuiteVO findInterfaceCaseSuiteById(Integer suiteId) {
         return interfaceCaseSuiteMapper.selectInterfaceCaseSuiteById(suiteId);
+    }
+
+    /**
+     * 获取测试套件详情，包括处理器
+     * @param suiteId suiteId
+     * @return InterfaceSuiteInfoVO
+     */
+    @Override
+    public InterfaceSuiteInfoVO findInterfaceCaseSuiteInfoById(Integer suiteId) {
+        return interfaceCaseSuiteMapper.selectInterfaceCaseSuiteInfoById(suiteId);
     }
 
     /**
