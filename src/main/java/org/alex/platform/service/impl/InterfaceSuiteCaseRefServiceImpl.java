@@ -12,6 +12,7 @@ import org.alex.platform.pojo.*;
 import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.service.InterfaceSuiteCaseRefService;
 import org.alex.platform.service.InterfaceSuiteLogService;
+import org.alex.platform.service.InterfaceSuiteProcessorService;
 import org.alex.platform.util.ExceptionUtil;
 import org.alex.platform.util.NoUtil;
 import org.alex.platform.util.RedisUtil;
@@ -40,6 +41,8 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
     InterfaceSuiteLogService interfaceSuiteLogService;
     @Autowired
     RedisUtil redisUtil;
+    @Autowired
+    InterfaceSuiteProcessorService interfaceSuiteProcessorService;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceSuiteCaseRefServiceImpl.class);
 
     /**
@@ -154,7 +157,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         AtomicInteger totalRetry = new AtomicInteger();
         Date startTime = new Date();
 
-        // 获取测试套件前后置处理器
+        // 获取测试套件前置处理器
 
 
         long begin = System.currentTimeMillis();
@@ -279,5 +282,23 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
 
         // 删除后置处理器缓存
         redisUtil.del(suiteLogDetailNo);
+    }
+
+    private void executeProcessor(Integer suiteId, Byte processorType) {
+        InterfaceSuiteProcessorDTO interfaceSuiteProcessorDTO = new InterfaceSuiteProcessorDTO();
+        interfaceSuiteProcessorDTO.setProcessorType(processorType);
+        interfaceSuiteProcessorDTO.setSuiteId(suiteId);
+        List<InterfaceSuiteProcessorVO> processorList = interfaceSuiteProcessorService.findAllInterfaceSuiteProcessorList(interfaceSuiteProcessorDTO);
+
+        if (processorType == 0) {// 前置处理器
+            for (InterfaceSuiteProcessorVO suiteProcessor : processorList) {
+                Byte type = suiteProcessor.getType(); //0执行依赖1公共头2公共params3公共data，只处理type=0情况，其他情况需要在执行请求时处理
+                if (type == 0) {
+                    //interfaceCaseService.parseRelyData(suiteProcessor.getValue(), )
+                }
+            }
+        } else if (processorType == 1) {// 后置处理器
+
+        }
     }
 }
