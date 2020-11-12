@@ -98,8 +98,8 @@
         <result column="order" property="order"/>
     </resultMap>
 
-    <resultMap id="postProcessorVO" type="org.alex.platform.pojo.PostProcessorVO">
-        <id column="post_processor_id" property="postProcessorId"/>
+    <resultMap id="interfaceProcessorVO" type="org.alex.platform.pojo.InterfaceProcessorVO">
+        <id column="processor_id" property="processorId"/>
         <result column="name" property="name"/>
         <result column="post_case_id" property="caseId"/>
         <result column="post_processor_type" property="type"/>
@@ -126,7 +126,7 @@
         <result column="creater" property="creater"/>
         <result column="created_time" property="createdTime"/>
         <collection property="asserts" ofType="org.alex.platform.pojo.InterfaceAssertVO" resultMap="assertVO"/>
-        <collection property="postProcessors" ofType="org.alex.platform.pojo.PostProcessorDO" resultMap="postProcessorVO"/>
+        <collection property="postProcessors" ofType="org.alex.platform.pojo.InterfaceProcessorDO" resultMap="interfaceProcessorVO"/>
     </resultMap>
 
     <select id="selectInterfaceCaseByCaseId" resultMap="interfaceCaseInfo" parameterType="Integer">
@@ -134,12 +134,12 @@
             `icase`.`level`, `icase`.`doc`, `icase`.`headers`, `icase`.`params`, `icase`.`data`, `icase`.`json`,
             `icase`.`creater`, `icase`.`created_time`, `assert`.`assert_id`, `assert`.`assert_name`, `assert`.`type`, `assert`.`expression`,
             `assert`.`operator`, `assert`.`excepted_result`, `assert`.`order`,
-						`post`.`post_processor_id`, `post`.`name`, `post`.`type` as `post_processor_type`, `post`.`expression` as `post_processor_expression`,
-						`post`.`default_value`, `post`.`have_default_value`, `post`.`case_id` as `post_case_id`,
-						`post`.`created_time` as `post_created_time`,`post`.`update_time` as `post_update_time`
+            `post`.`processor_id`, `post`.`name`, `post`.`type` as `post_processor_type`, `post`.`expression` as `post_processor_expression`,
+            `post`.`default_value`, `post`.`have_default_value`, `post`.`case_id` as `post_case_id`,
+            `post`.`created_time` as `post_created_time`,`post`.`update_time` as `post_update_time`
         from `t_interface_case` as `icase`
         left join `t_interface_assert` as `assert` on `icase`.`case_id` = `assert`.`case_id`
-				left join `t_post_processor` as `post` on `icase`.`case_id` = `post`.`case_id`
+        left join `t_interface_processor` as `post` on `icase`.`case_id` = `post`.`case_id`
         where `icase`.`case_id` = #{caseId}
         order by `assert`.`order` asc
 

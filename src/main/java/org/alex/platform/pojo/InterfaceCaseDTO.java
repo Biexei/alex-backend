@@ -5,13 +5,13 @@ import java.util.List;
 
 public class InterfaceCaseDTO extends InterfaceCaseDO implements Serializable {
     private List<InterfaceAssertDO> asserts;
-    private List<PostProcessorDO> postProcessors;
+    private List<InterfaceProcessorDO> postProcessors;
 
-    public List<PostProcessorDO> getPostProcessors() {
+    public List<InterfaceProcessorDO> getPostProcessors() {
         return postProcessors;
     }
 
-    public void setPostProcessors(List<PostProcessorDO> postProcessors) {
+    public void setPostProcessors(List<InterfaceProcessorDO> postProcessors) {
         this.postProcessors = postProcessors;
     }
 

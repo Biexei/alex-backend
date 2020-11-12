@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.InterfaceProcessorLogMapper">
+
+    <select id="selectInterfaceProcessorLogById" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceProcessorLogVO">
+        select `id`, `processor_id`, `case_id`, `case_execute_log_id`,`name`, `value`,
+        `type`, `expression`, `created_time`, `is_default_value`,`status`, `error_msg`,`wr`
+        from `t_interface_processor_log`
+        where `id`=#{id}
+    </select>
+
+    <select id="selectInterfaceProcessorLogList" parameterType="org.alex.platform.pojo.InterfaceProcessorLogDTO" resultType="org.alex.platform.pojo.InterfaceProcessorLogVO">
+        select `id`, `processor_id`, `case_id`, `case_execute_log_id`,`name`, `value`,
+        `type`, `expression`, `created_time`, `is_default_value`,`status`, `error_msg`,`wr`
+        from `t_interface_processor_log`
+        <where>
+            <if test="id!=null">and `id`=#{id}</if>
+            <if test="processorId!=null">and `processor_id`=#{processorId}</if>
+            <if test="caseId!=null">and `case_id`=#{caseId}</if>
+            <if test="caseExecuteLogId!=null">and `case_execute_log_id`=#{caseExecuteLogId}</if>
+            <if test="name!=null">and `name` like concat('%',#{name},'%')</if>
+            <if test="value!=null">and `value` like concat('%',#{value},'%')</if>
+            <if test="type!=null">and `type`=#{type}</if>
+            <if test="isDefaultValue!=null">and `is_default_value`=#{isDefaultValue}</if>
+            <if test="createdStartTime!=null">and `created_time` &gt;=#{createdStartTime}</if>
+            <if test="createdEndTime!=null">and `created_time` &lt;=#{createdEndTime}</if>
+            <if test="status!=null">and status=#{status}</if>
+            <if test="wr!=null">and wr=#{wr}</if>
+        </where>
+    </select>
+    <insert id="insertInterfaceProcessorLog" parameterType="org.alex.platform.pojo.InterfaceProcessorLogDO" useGeneratedKeys="true" keyProperty="id">
+        insert into `t_interface_processor_log`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="processorId!=null">`processor_id`,</if>
+            <if test="caseId!=null">`case_id`,</if>
+            <if test="caseExecuteLogId!=null">`case_execute_log_id`,</if>
+            <if test="name!=null">`name`,</if>
+            <if test="value!=null">`value`,</if>
+            <if test="type!=null">`type`,</if>
+            <if test="expression!=null">`expression`,</if>
+            <if test="isDefaultValue!=null">`is_default_value`,</if>
+            <if test="createdTime!=null">`created_time`,</if>
+            <if test="status!=null">`status`,</if>
+            <if test="errorMsg!=null">`error_msg`,</if>
+            <if test="wr!=null">`wr`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="processorId!=null">#{processorId},</if>
+            <if test="caseId!=null">#{caseId},</if>
+            <if test="caseExecuteLogId!=null">#{caseExecuteLogId},</if>
+            <if test="name!=null">#{name},</if>
+            <if test="value!=null">#{value},</if>
+            <if test="type!=null">#{type},</if>
+            <if test="expression!=null">#{expression},</if>
+            <if test="isDefaultValue!=null">#{isDefaultValue},</if>
+            <if test="createdTime!=null">#{createdTime},</if>
+            <if test="status!=null">#{status},</if>
+            <if test="errorMsg!=null">#{errorMsg},</if>
+            <if test="wr!=null">#{wr},</if>
+        </trim>
+    </insert>
+    <update id="updateInterfaceProcessorLog" parameterType="org.alex.platform.pojo.InterfaceProcessorLogDO">
+        update `t_interface_processor_log`
+        <set>
+            <if test="processor_id!=null">`processor_id`=#{processorId},</if>
+            <if test="case_id!=null">`case_id`=#{caseId},</if>
+            <if test="case_execute_log_id!=null">`case_execute_log_id`=#{caseExecuteLogId},</if>
+            <if test="name!=null">`name`=#{name},</if>
+            <if test="value!=null">`value`=#{value},</if>
+            <if test="type!=null">`type`=#{type},</if>
+            <if test="expression!=null">`expression`=#{expression},</if>
+            <if test="created_time!=null">`created_time`=#{createdTime},</if>
+            <if test="status!=null">`status!=null`=#{status},</if>
+            <if test="error_msg!=null">`error_msg`=#{errorMsg},</if>
+            <if test="wr!=null">`wr`=#{wr},</if>
+        </set>
+        where `id` = #{id}
+    </update>
+
+</mapper>

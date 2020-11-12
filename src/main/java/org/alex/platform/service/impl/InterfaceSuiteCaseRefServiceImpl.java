@@ -153,6 +153,10 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         AtomicInteger totalError = new AtomicInteger();
         AtomicInteger totalRetry = new AtomicInteger();
         Date startTime = new Date();
+
+        // 获取测试套件前后置处理器
+
+
         long begin = System.currentTimeMillis();
         if (type == 0) { // 异步
             LOG.info("-----------------------开始并行执行测试套件，suiteId={}-----------------------", suiteId);

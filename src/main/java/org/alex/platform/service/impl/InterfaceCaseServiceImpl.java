@@ -57,9 +57,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     @Autowired
     InterfaceCaseSuiteService ifSuiteService;
     @Autowired
-    PostProcessorService postProcessorService;
+    InterfaceProcessorService interfaceProcessorService;
     @Autowired
-    PostProcessorLogService postProcessorLogService;
+    InterfaceProcessorLogService interfaceProcessorLogService;
 
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseServiceImpl.class);
 
@@ -125,11 +125,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             }
         }
         //插入后置处理器表
-        List<PostProcessorDO> postProcessorList = interfaceCaseDTO.getPostProcessors();
+        List<InterfaceProcessorDO> postProcessorList = interfaceCaseDTO.getPostProcessors();
         if (!postProcessorList.isEmpty()) {
-            for (PostProcessorDO postProcessorDO : postProcessorList) {
-                postProcessorDO.setCaseId(caseId);
-                postProcessorService.savePostProcessor(postProcessorDO);
+            for (InterfaceProcessorDO interfaceProcessorDO : postProcessorList) {
+                interfaceProcessorDO.setCaseId(caseId);
+                interfaceProcessorService.saveInterfaceProcessor(interfaceProcessorDO);
             }
         }
     }
@@ -251,31 +251,31 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         }
 
         // 修改后置处理器
-        List<PostProcessorDO> postProcessors = interfaceCaseDTO.getPostProcessors();
-        List<Integer> postProcessorIdList = postProcessorService.findPostProcessorIdByCaseId(interfaceCaseDTO.getCaseId());
+        List<InterfaceProcessorDO> postProcessors = interfaceCaseDTO.getPostProcessors();
+        List<Integer> postProcessorIdList = interfaceProcessorService.findInterfaceProcessorIdByCaseId(interfaceCaseDTO.getCaseId());
         if (postProcessors != null) {
-            for(PostProcessorDO postProcessorDO : postProcessors) {
-                postProcessorDO.setCaseId(interfaceCaseDTO.getCaseId());
+            for(InterfaceProcessorDO interfaceProcessorDO : postProcessors) {
+                interfaceProcessorDO.setCaseId(interfaceCaseDTO.getCaseId());
                 // 1.修改已存在的
-                postProcessorService.modifyPostProcessor(postProcessorDO);
+                interfaceProcessorService.modifyInterfaceProcessor(interfaceProcessorDO);
                 // 2.新增没有postProcessorId的
-                if (postProcessorDO.getPostProcessorId() == null) {
-                    postProcessorService.savePostProcessor(postProcessorDO);
+                if (interfaceProcessorDO.getProcessorId() == null) {
+                    interfaceProcessorService.saveInterfaceProcessor(interfaceProcessorDO);
                 } else {
                     // 3.有就移出此次新增前的id队列
                     for (int i = 0; i < postProcessorIdList.size(); i++) {
-                        if (postProcessorIdList.get(i).equals(postProcessorDO.getPostProcessorId())) {
+                        if (postProcessorIdList.get(i).equals(interfaceProcessorDO.getProcessorId())) {
                             postProcessorIdList.remove(i);
                         }
                     }
                 }
             }
             for (Integer postProcessorId : postProcessorIdList) {
-                postProcessorService.removePostProcessorById(postProcessorId);
+                interfaceProcessorService.removeInterfaceProcessorById(postProcessorId);
             }
         } else {
             // 移除该用例下所有的后置处理器
-            postProcessorService.removePostProcessorByCaseId(caseId);
+            interfaceProcessorService.removeInterfaceProcessorByCaseId(caseId);
         }
     }
 
@@ -317,7 +317,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             // 删除与之相关的断言
             interfaceAssertService.removeAssertByCaseId(interfaceCaseId);
             // 删除与之相关的后置处理器
-            postProcessorService.removePostProcessorByCaseId(interfaceCaseId);
+            interfaceProcessorService.removeInterfaceProcessorByCaseId(interfaceCaseId);
         } else {
             throw new BusinessException(errorMsg);
         }
@@ -567,14 +567,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             // 即type=3request-header/4request-params/5request-data/6request-json的后置处理器
             // 但是response提取必须所有断言执行完成且用例状态为通过才提取
             if (1 == 1) { // 控制作用域 懒得再写。。。
-                PostProcessorDTO postProcessorDTO = new PostProcessorDTO();
-                postProcessorDTO.setCaseId(interfaceCaseId);
-                List<PostProcessorVO> processorList = postProcessorService.findPostProcessorList(postProcessorDTO);
-                PostProcessorLogDO postProcessorLogDO;
+                InterfaceProcessorDTO interfaceProcessorDTO = new InterfaceProcessorDTO();
+                interfaceProcessorDTO.setCaseId(interfaceCaseId);
+                List<InterfaceProcessorVO> processorList = interfaceProcessorService.findInterfaceProcessorList(interfaceProcessorDTO);
+                InterfaceProcessorLogDO interfaceProcessorLogDO;
                 String value = null;
                 if (!processorList.isEmpty()) {
-                    for(PostProcessorVO postProcessorVO : processorList) {
-                        postProcessorLogDO = new PostProcessorLogDO();
+                    for(InterfaceProcessorVO postProcessorVO : processorList) {
+                        interfaceProcessorLogDO = new InterfaceProcessorLogDO();
                         // 提取值
                         Byte type = postProcessorVO.getType();
                         String expression = postProcessorVO.getExpression();
@@ -629,27 +629,27 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 }
                                 LOG.info("提取类型={}，提取表达式={}，写入缓存内容={}", "jsonPath", expression, value);
                             }
-                            postProcessorLogDO = new PostProcessorLogDO();
-                            postProcessorLogDO.setPostProcessorId(postProcessorVO.getPostProcessorId());
-                            postProcessorLogDO.setCaseId(postProcessorVO.getCaseId());
-                            postProcessorLogDO.setCaseExecuteLogId(executedLogId);
-                            postProcessorLogDO.setName(name);
-                            postProcessorLogDO.setType(type);
-                            postProcessorLogDO.setExpression(expression);
-                            postProcessorLogDO.setWr((byte) 1);
+                            interfaceProcessorLogDO = new InterfaceProcessorLogDO();
+                            interfaceProcessorLogDO.setProcessorId(postProcessorVO.getProcessorId());
+                            interfaceProcessorLogDO.setCaseId(postProcessorVO.getCaseId());
+                            interfaceProcessorLogDO.setCaseExecuteLogId(executedLogId);
+                            interfaceProcessorLogDO.setName(name);
+                            interfaceProcessorLogDO.setType(type);
+                            interfaceProcessorLogDO.setExpression(expression);
+                            interfaceProcessorLogDO.setWr((byte) 1);
                             if (!isThrowException) {
                                 // 写入后置处理器记录表
-                                postProcessorLogDO.setIsDefaultValue(isDefaultValue);
-                                postProcessorLogDO.setValue(value);
-                                postProcessorLogDO.setCreatedTime(new Date());
-                                postProcessorLogDO.setStatus(status);
+                                interfaceProcessorLogDO.setIsDefaultValue(isDefaultValue);
+                                interfaceProcessorLogDO.setValue(value);
+                                interfaceProcessorLogDO.setCreatedTime(new Date());
+                                interfaceProcessorLogDO.setStatus(status);
                                 if (status == 0) {
-                                    postProcessorLogDO.setErrorMsg(null);
+                                    interfaceProcessorLogDO.setErrorMsg(null);
                                 } else {
-                                    postProcessorLogDO.setErrorMsg(errorMsg);
+                                    interfaceProcessorLogDO.setErrorMsg(errorMsg);
                                 }
                                 // 写入后置处理器日志表
-                                postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
+                                interfaceProcessorLogService.saveInterfaceProcessorLog(interfaceProcessorLogDO);
                                 LOG.info("写入后置处理器日志表");
                                 // 如果后置处理器出错，那么将用例执行状态重新置为错误
                                 if (status == 1) {
@@ -671,12 +671,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 }
                             } else { // 若解析json、xpath出错
                                 // 写入后置处理器记录表
-                                postProcessorLogDO.setIsDefaultValue(null);
-                                postProcessorLogDO.setValue(null);
-                                postProcessorLogDO.setCreatedTime(new Date());
-                                postProcessorLogDO.setStatus((byte) 1);
-                                postProcessorLogDO.setErrorMsg(exceptionMsg);
-                                postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
+                                interfaceProcessorLogDO.setIsDefaultValue(null);
+                                interfaceProcessorLogDO.setValue(null);
+                                interfaceProcessorLogDO.setCreatedTime(new Date());
+                                interfaceProcessorLogDO.setStatus((byte) 1);
+                                interfaceProcessorLogDO.setErrorMsg(exceptionMsg);
+                                interfaceProcessorLogService.saveInterfaceProcessorLog(interfaceProcessorLogDO);
                                 LOG.warn("后置处理器解析出错，写入后置处理器记录表");
                                 // 重置用例状态
                                 InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
@@ -827,14 +827,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
             // *仅用例执行通过才写入后置处理器记录
             if (updateStatus.getStatus() == 0 ) {
-                PostProcessorDTO postProcessorDTO = new PostProcessorDTO();
-                postProcessorDTO.setCaseId(interfaceCaseId);
-                List<PostProcessorVO> processorList = postProcessorService.findPostProcessorList(postProcessorDTO);
-                PostProcessorLogDO postProcessorLogDO;
+                InterfaceProcessorDTO interfaceProcessorDTO = new InterfaceProcessorDTO();
+                interfaceProcessorDTO.setCaseId(interfaceCaseId);
+                List<InterfaceProcessorVO> processorList = interfaceProcessorService.findInterfaceProcessorList(interfaceProcessorDTO);
+                InterfaceProcessorLogDO interfaceProcessorLogDO;
                 String value = null;
                 if (!processorList.isEmpty()) {
-                    for(PostProcessorVO postProcessorVO : processorList) {
-                        postProcessorLogDO = new PostProcessorLogDO();
+                    for(InterfaceProcessorVO postProcessorVO : processorList) {
+                        interfaceProcessorLogDO = new InterfaceProcessorLogDO();
                         // 提取值
                         Byte type = postProcessorVO.getType();
                         String expression = postProcessorVO.getExpression();
@@ -928,27 +928,27 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             errorMsg = "后置处理器提取类型错误";
                         }
                         if (type <= 2 || type >7 ) { // 3-6时，已在前面写入缓存
-                            postProcessorLogDO = new PostProcessorLogDO();
-                            postProcessorLogDO.setPostProcessorId(postProcessorVO.getPostProcessorId());
-                            postProcessorLogDO.setCaseId(postProcessorVO.getCaseId());
-                            postProcessorLogDO.setCaseExecuteLogId(executedLogId);
-                            postProcessorLogDO.setName(name);
-                            postProcessorLogDO.setType(type);
-                            postProcessorLogDO.setExpression(expression);
+                            interfaceProcessorLogDO = new InterfaceProcessorLogDO();
+                            interfaceProcessorLogDO.setProcessorId(postProcessorVO.getProcessorId());
+                            interfaceProcessorLogDO.setCaseId(postProcessorVO.getCaseId());
+                            interfaceProcessorLogDO.setCaseExecuteLogId(executedLogId);
+                            interfaceProcessorLogDO.setName(name);
+                            interfaceProcessorLogDO.setType(type);
+                            interfaceProcessorLogDO.setExpression(expression);
                             if (!isThrowException) {
                                 // 写入后置处理器记录表
-                                postProcessorLogDO.setIsDefaultValue(isDefaultValue);
-                                postProcessorLogDO.setValue(value);
-                                postProcessorLogDO.setCreatedTime(new Date());
-                                postProcessorLogDO.setStatus(status);
-                                postProcessorLogDO.setWr((byte) 1);
+                                interfaceProcessorLogDO.setIsDefaultValue(isDefaultValue);
+                                interfaceProcessorLogDO.setValue(value);
+                                interfaceProcessorLogDO.setCreatedTime(new Date());
+                                interfaceProcessorLogDO.setStatus(status);
+                                interfaceProcessorLogDO.setWr((byte) 1);
                                 if (status == 0) {
-                                    postProcessorLogDO.setErrorMsg(null);
+                                    interfaceProcessorLogDO.setErrorMsg(null);
                                 } else {
-                                    postProcessorLogDO.setErrorMsg(errorMsg);
+                                    interfaceProcessorLogDO.setErrorMsg(errorMsg);
                                 }
                                 // 写入后置处理器日志表
-                                postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
+                                interfaceProcessorLogService.saveInterfaceProcessorLog(interfaceProcessorLogDO);
                                 LOG.info("写入后置处理器日志表");
                                 // 如果后置处理器出错，那么将用例执行状态重新置为错误
                                 if (status == 1) {
@@ -969,12 +969,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 }
                             } else { // 若解析json、xpath出错
                                 // 写入后置处理器记录表
-                                postProcessorLogDO.setIsDefaultValue(null);
-                                postProcessorLogDO.setValue(null);
-                                postProcessorLogDO.setCreatedTime(new Date());
-                                postProcessorLogDO.setStatus((byte) 1);
-                                postProcessorLogDO.setErrorMsg(exceptionMsg);
-                                postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
+                                interfaceProcessorLogDO.setIsDefaultValue(null);
+                                interfaceProcessorLogDO.setValue(null);
+                                interfaceProcessorLogDO.setCreatedTime(new Date());
+                                interfaceProcessorLogDO.setStatus((byte) 1);
+                                interfaceProcessorLogDO.setErrorMsg(exceptionMsg);
+                                interfaceProcessorLogService.saveInterfaceProcessorLog(interfaceProcessorLogDO);
                                 LOG.warn("后置处理器解析出错，写入后置处理器记录表");
                                 // 重置用例状态
                                 InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
@@ -1398,7 +1398,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         while (matcher.find()) {
             String findStr = matcher.group();
             String postProcessorName = findStr.substring(2, findStr.length() - 1);
-            PostProcessorVO postProcessor = postProcessorService.findPostProcessorByName(postProcessorName);
+            InterfaceProcessorVO postProcessor = interfaceProcessorService.findInterfaceProcessorByName(postProcessorName);
             LOG.info("后置处理器名称={}", postProcessorName);
             Object redisResult;
             if (suiteLogDetailNo == null) {
@@ -1416,13 +1416,13 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             s = s.replace(findStr, redisResultStr);
 
             // 写入后置处理器日志表
-            PostProcessorLogDO postProcessorLogDO = new PostProcessorLogDO();
-            postProcessorLogDO.setName(postProcessor.getName());
-            postProcessorLogDO.setValue(redisResultStr);
-            postProcessorLogDO.setCreatedTime(new Date());
-            postProcessorLogDO.setStatus((byte) 0);
-            postProcessorLogDO.setWr((byte)0);
-            postProcessorLogService.savePostProcessorLog(postProcessorLogDO);
+            InterfaceProcessorLogDO interfaceProcessorLogDO = new InterfaceProcessorLogDO();
+            interfaceProcessorLogDO.setName(postProcessor.getName());
+            interfaceProcessorLogDO.setValue(redisResultStr);
+            interfaceProcessorLogDO.setCreatedTime(new Date());
+            interfaceProcessorLogDO.setStatus((byte) 0);
+            interfaceProcessorLogDO.setWr((byte)0);
+            interfaceProcessorLogService.saveInterfaceProcessorLog(interfaceProcessorLogDO);
         }
         LOG.info("--------------------------------------结束后置处理器提取解析流程--------------------------------------");
         LOG.info("--------------------------------------解析后的字符串为={}", s);

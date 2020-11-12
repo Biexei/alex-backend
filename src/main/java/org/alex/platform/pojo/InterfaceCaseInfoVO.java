@@ -20,13 +20,13 @@ public class InterfaceCaseInfoVO implements Serializable {
     private String creater;
     private Date createdTime;
     private List<InterfaceAssertVO> asserts;
-    private List<PostProcessorDO> postProcessors;
+    private List<InterfaceProcessorDO> postProcessors;
 
-    public List<PostProcessorDO> getPostProcessors() {
+    public List<InterfaceProcessorDO> getPostProcessors() {
         return postProcessors;
     }
 
-    public void setPostProcessors(List<PostProcessorDO> postProcessors) {
+    public void setPostProcessors(List<InterfaceProcessorDO> postProcessors) {
         this.postProcessors = postProcessors;
     }
 

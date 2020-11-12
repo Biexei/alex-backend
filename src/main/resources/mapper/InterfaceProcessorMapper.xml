@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.InterfaceProcessorMapper">
+    <select id="selectInterfaceProcessorByName" parameterType="String" resultType="org.alex.platform.pojo.InterfaceProcessorVO">
+        select `processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`, `have_default_value`, `default_value`
+        from `t_interface_processor`
+        where `name`=#{name}
+    </select>
+    <select id="selectInterfaceProcessorById" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceProcessorVO">
+        select `processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`, `have_default_value`, `default_value`
+        from `t_interface_processor`
+        where `processor_id`=#{processorId}
+    </select>
+    <select id="selectInterfaceProcessorIdByCaseId" parameterType="Integer" resultType="Integer">
+        select `processor_id`
+        from `t_interface_processor`
+        where `case_id`=#{caseId}
+    </select>
+    <select id="checkInterfaceProcessorName" resultType="org.alex.platform.pojo.InterfaceProcessorVO">
+        select `processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`, `have_default_value`, `default_value`
+        from `t_interface_processor`
+        where `processor_id`!=#{processorId} and `name`=#{name}
+    </select>
+    <select id="selectInterfaceProcessorList" parameterType="org.alex.platform.pojo.InterfaceProcessorDTO" resultType="org.alex.platform.pojo.InterfaceProcessorVO">
+        select `processor_id`, `case_id`, `name`, `type`, `expression`, `created_time`, `update_time`, `have_default_value`, `default_value`
+        from `t_interface_processor`
+        <where>
+            <if test="processorId!=null">and `processor_id`=#{processorId}</if>
+            <if test="caseId!=null">and `case_id`=#{caseId}</if>
+            <if test="name!=null">and `name` like concat("%",#{name},"%")</if>
+            <if test="type!=null">and `type`=#{type}</if>
+        </where>
+    </select>
+    <insert id="insertInterfaceProcessor" parameterType="org.alex.platform.pojo.InterfaceProcessorDO" useGeneratedKeys="true" keyProperty="processorId">
+        insert into `t_interface_processor`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="caseId!=null">`case_id`,</if>
+            <if test="name!=null">`name`,</if>
+            <if test="type!=null">`type`,</if>
+            <if test="expression!=null">`expression`,</if>
+            <if test="createdTime!=null">`created_time`,</if>
+            <if test="updateTime!=null">`update_time`,</if>
+            <if test="defaultValue!=null">`default_value`,</if>
+            <if test="haveDefaultValue!=null">`have_default_value`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="caseId!=null">#{caseId},</if>
+            <if test="name!=null">#{name},</if>
+            <if test="type!=null">#{type},</if>
+            <if test="expression!=null">#{expression},</if>
+            <if test="createdTime!=null">#{createdTime},</if>
+            <if test="updateTime!=null">#{updateTime},</if>
+            <if test="defaultValue!=null">#{defaultValue},</if>
+            <if test="haveDefaultValue!=null">#{haveDefaultValue},</if>
+        </trim>
+    </insert>
+    <update id="updateInterfaceProcessor" parameterType="org.alex.platform.pojo.InterfaceProcessorDO">
+        update `t_interface_processor`
+        <set>
+            `case_id`=#{caseId},
+            `name`=#{name},
+            `type`=#{type},
+            `expression`=#{expression},
+            `update_time`=#{updateTime},
+            `default_value`=#{defaultValue},
+            `have_default_value`=#{haveDefaultValue}
+        </set>
+        where `processor_id`=#{processorId}
+    </update>
+    <delete id="deleteInterfaceProcessorById" parameterType="Integer">
+        delete  from `t_interface_processor` where `processor_id`=#{processorId}
+    </delete>
+    <delete id="deleteInterfaceProcessorByCaseId" parameterType="Integer">
+        delete  from `t_interface_processor` where `case_id`=#{caseId}
+    </delete>
+</mapper>
