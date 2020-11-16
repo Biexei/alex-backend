@@ -7,7 +7,6 @@ import com.alibaba.druid.wall.WallFilter;
 import org.alex.platform.exception.SqlException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;

@@ -11,6 +11,7 @@ import org.alex.platform.exception.SqlException;
 import org.alex.platform.mapper.InterfaceCaseRelyDataMapper;
 import org.alex.platform.mapper.RelyDataMapper;
 import org.alex.platform.pojo.*;
+import org.alex.platform.pojo.param.ExecuteInterfaceCaseParam;
 import org.alex.platform.service.InterfaceCaseExecuteLogService;
 import org.alex.platform.service.InterfaceCaseRelyDataService;
 import org.alex.platform.service.InterfaceCaseService;
@@ -197,7 +198,9 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
         LOG.info("根据caseId调用相应case，caseId={}", caseId);
 
         String chainNo = NoUtil.genChainNo();
-        Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, executor, null, chainNo, null, (byte) 1, null);
+        Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId, executor,
+                null, chainNo, null, (byte) 1, null, null,
+                null, null));
         redisUtil.stackPush(chainNo, executeLogId);
 
         LOG.info("调用成功，executeLogId={}", executeLogId);

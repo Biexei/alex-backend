@@ -10,6 +10,7 @@ import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
 import org.alex.platform.mapper.*;
 import org.alex.platform.pojo.*;
+import org.alex.platform.pojo.param.ExecuteInterfaceCaseParam;
 import org.alex.platform.service.*;
 import org.alex.platform.util.*;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
+@SuppressWarnings({"unchecked","rawtypes"})
 public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     @Autowired
     InterfaceCaseMapper interfaceCaseMapper;
@@ -235,7 +237,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     interfaceAssertService.saveAssert(assertDO);
                 } else {
                     // 有就移出此次新增前的id队列
-                    for (int i = 0; i < allAssertId.size(); i++) {
+                    for (int i = allAssertId.size() - 1; i >= 0; i--) {
                         if (allAssertId.get(i).equals(assertDO.getAssertId())) {
                             allAssertId.remove(i);
                         }
@@ -263,7 +265,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     interfaceProcessorService.saveInterfaceProcessor(interfaceProcessorDO);
                 } else {
                     // 3.有就移出此次新增前的id队列
-                    for (int i = 0; i < postProcessorIdList.size(); i++) {
+                    for (int i = postProcessorIdList.size() - 1; i >= 0; i--) {
                         if (postProcessorIdList.get(i).equals(interfaceProcessorDO.getProcessorId())) {
                             postProcessorIdList.remove(i);
                         }
@@ -350,22 +352,19 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
     /**
      * 执行指定用例
-     * @param interfaceCaseId 用例编号
-     * @param executor 执行人，若作为依赖数据应用则应该传参‘系统调度’
-     * @param suiteLogNo 测试套件日志编号 主要为调用入口为测试套件时使用，否则传参null
-     * @param chainNo 调用链路跟踪 每次调用均会将自增日志编号写入缓存，再序列化
-     * @param suiteId 测试套件编号，主要用于调用入口为测试套件时确定运行环境，否则应该传参null
-     * @param isFailedRetry 判断该执行日志是否为失败重试，0是1否，主要用于测试报告统计断言情况
-     * @param suiteLogDetailNo suiteLogNo仅记录重跑和真正运行的，suiteLogDetailNo会包括用例所依赖的case
+     * @param executeInterfaceCaseParam 入参
      * @return 自增日志编号
-     * @throws ParseException ParseException
      * @throws BusinessException BusinessException
-     * @throws SqlException SqlException
      */
     @Override
-    public Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo,
-                                        String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo)
-            throws ParseException, BusinessException, SqlException {
+    public Integer executeInterfaceCase(ExecuteInterfaceCaseParam executeInterfaceCaseParam) throws BusinessException {
+        Integer interfaceCaseId = executeInterfaceCaseParam.getInterfaceCaseId();
+        String executor = executeInterfaceCaseParam.getExecutor();
+        String suiteLogNo = executeInterfaceCaseParam.getSuiteLogNo();
+        String chainNo = executeInterfaceCaseParam.getChainNo();
+        Integer suiteId = executeInterfaceCaseParam.getSuiteId();
+        Byte isFailedRetry = executeInterfaceCaseParam.getIsFailedRetry();
+        String suiteLogDetailNo = executeInterfaceCaseParam.getSuiteLogDetailNo();
         LOG.info("---------------------------------开始执行测试用例：caseId={}---------------------------------", interfaceCaseId);
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
@@ -698,7 +697,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             for (InterfaceAssertVO interfaceAssertVO : asserts) {
                 // 获取断言基本信息
                 // 是否通过 0通过 1失败 2错误
-                Byte assertStatus = 0;
+                byte assertStatus = 0;
                 String assertErrorMessage = null;
                 Integer assertId = interfaceAssertVO.getAssertId();
                 String assertName = interfaceAssertVO.getAssertName();
@@ -1055,8 +1054,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     LOG.info("获取到的用例编号={}", caseId);
                     // 根据caseId调用相应case
-
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
+                            caseId, "系统调度", null, chainNo, suiteId,
+                            isFailedRetry, suiteLogDetailNo, null, null, null));
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
@@ -1309,8 +1309,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 } else {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     // 根据caseId调用相应case
-
-                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(caseId, "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                    Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
+                            "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo,
+                            null, null, null));
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     // 获取case执行结果, 不等于0, 则用例未通过

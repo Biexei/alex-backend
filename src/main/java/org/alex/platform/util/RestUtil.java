@@ -9,8 +9,6 @@ import org.alex.platform.pojo.HttpSettingVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.http.client.ClientHttpRequestExecution;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -21,15 +19,14 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
+@SuppressWarnings({"unchecked","rawtypes"})
 public class RestUtil {
     @Autowired
     HttpSettingMapper httpSettingMapper;
@@ -57,12 +54,12 @@ public class RestUtil {
         // 3.去除code != 200时异常信息
         restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
-            public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
+            public boolean hasError(ClientHttpResponse clientHttpResponse) {
                 return false;
             }
 
             @Override
-            public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
+            public void handleError(ClientHttpResponse clientHttpResponse) {
 
             }
         });
@@ -268,8 +265,8 @@ public class RestUtil {
     /**
      * 获取http响应头
      *
-     * @param response
-     * @return
+     * @param response ResponseEntity
+     * @return http响应头
      */
     public static int code(ResponseEntity response) {
         return response.getStatusCodeValue();
@@ -278,8 +275,8 @@ public class RestUtil {
     /**
      * 获取http响应正文
      *
-     * @param response
-     * @return
+     * @param response ResponseEntity
+     * @return http响应正文
      */
     public static String body(ResponseEntity response) {
         return response.getBody().toString();
@@ -288,8 +285,8 @@ public class RestUtil {
     /**
      * 获取http响应头
      *
-     * @param response
-     * @return
+     * @param response response
+     * @return http响应头
      */
     public static String headers(ResponseEntity response) {
         return JSON.toJSONString(response.getHeaders());
@@ -298,8 +295,8 @@ public class RestUtil {
     /**
      * 获取http响应头
      *
-     * @param response
-     * @return
+     * @param response ResponseEntity
+     * @return http响应头
      */
     public static JSONObject header(ResponseEntity response) {
         return JSON.parseObject(JSON.toJSONString(response.getHeaders()));

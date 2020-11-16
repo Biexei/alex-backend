@@ -5,6 +5,7 @@ import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
 import org.alex.platform.pojo.*;
+import org.alex.platform.pojo.param.ExecuteInterfaceCaseParam;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface InterfaceCaseService {
@@ -24,7 +25,7 @@ public interface InterfaceCaseService {
 
     InterfaceCaseInfoVO findInterfaceCaseByCaseId(Integer caseId);
 
-    Integer executeInterfaceCase(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo) throws ParseException, BusinessException, SqlException;
+    Integer executeInterfaceCase(ExecuteInterfaceCaseParam executeInterfaceCaseParam) throws BusinessException;
 
     String parseRelyData(String s, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException;
 

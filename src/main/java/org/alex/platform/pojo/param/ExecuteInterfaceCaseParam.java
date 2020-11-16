@@ -14,7 +14,8 @@ import java.util.HashMap;
  * globalParams 全局params
  * globalData 全局data
  */
-public class ExecuteInterfaceCaseParams {
+@SuppressWarnings("rawtypes")
+public class ExecuteInterfaceCaseParam {
     private Integer interfaceCaseId;
     private String executor;
     private String suiteLogNo;
@@ -26,9 +27,9 @@ public class ExecuteInterfaceCaseParams {
     private HashMap globalParams;
     private HashMap globalData;
 
-    public ExecuteInterfaceCaseParams(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo,
-                                      Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo,
-                                      HashMap globalHeaders, HashMap globalParams, HashMap globalData) {
+    public ExecuteInterfaceCaseParam(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo,
+                                     Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo,
+                                     HashMap globalHeaders, HashMap globalParams, HashMap globalData) {
         this.interfaceCaseId = interfaceCaseId;
         this.executor = executor;
         this.suiteLogNo = suiteLogNo;

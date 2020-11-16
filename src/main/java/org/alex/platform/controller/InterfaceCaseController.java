@@ -7,6 +7,7 @@ import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
 import org.alex.platform.pojo.InterfaceCaseDTO;
 import org.alex.platform.pojo.InterfaceCaseListDTO;
+import org.alex.platform.pojo.param.ExecuteInterfaceCaseParam;
 import org.alex.platform.service.InterfaceCaseExecuteLogService;
 import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.util.NoUtil;
@@ -105,7 +106,9 @@ public class InterfaceCaseController {
         } catch (Exception e) {
             executor = "";
         }
-        Integer executeLog = interfaceCaseService.executeInterfaceCase(caseId, executor, null, NoUtil.genChainNo(), null, (byte) 1, null);
+        Integer executeLog = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId, executor,
+                null, NoUtil.genChainNo(), null, (byte) 1,
+                null, null, null, null));
         Byte status = executeLogService.findExecute(executeLog).getStatus();
         if (status == 0) {
             return Result.success("执行成功");
