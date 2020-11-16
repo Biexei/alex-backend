@@ -3,6 +3,7 @@ package org.alex.platform.util;
 import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.exception.ParseException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,10 +28,10 @@ public class JsonUtil {
         return var1;
     }
 
-    public static Map jsonString2Map(String jsonString) throws ParseException {
-        Map var1;
+    public static HashMap jsonString2HashMap(String jsonString) throws ParseException {
+        HashMap var1;
         try {
-            var1 = JSONObject.parseObject(jsonString, Map.class);
+            var1 = JSONObject.parseObject(jsonString, HashMap.class);
         } catch (Exception e) {
             throw new ParseException("Json parse to Map exception: " + e.getMessage());
         }

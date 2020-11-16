@@ -171,10 +171,7 @@ public class RestUtil {
         if (headers != null) {
             httpHeaders.setAll(headers);
         }
-        // 2.data和json不能同时存在、不能同时不存在
-//        if (StringUtils.isEmpty(json) && data == null) {
-//            throw new BusinessException("data/json只能任传其一");
-//        }
+
         if (StringUtils.isNotEmpty(json) && data != null) {
             throw new BusinessException("data/json只能任传其一");
         }
@@ -189,6 +186,7 @@ public class RestUtil {
                     formData.add(entry.getKey(), entry.getValue());
                 }
                 //无参数，走data
+                httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                 return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity(formData, httpHeaders), String.class);
             } else { //走json
                 //无参数，走json
@@ -214,6 +212,7 @@ public class RestUtil {
                         formData.add(entry.getKey(), entry.getValue());
                     }
                     //有参数，非rest，走data
+                    httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                     return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity(formData, httpHeaders),
                             String.class);
                 } else { //走json
@@ -249,6 +248,7 @@ public class RestUtil {
                         formData.add(entry.getKey(), entry.getValue());
                     }
                     //有参数，rest，走data
+                    httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                     return restTemplate.exchange(urlAfter, HttpMethod.POST, new HttpEntity(formData, httpHeaders),
                             String.class);
                 } else { //走json

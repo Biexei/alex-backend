@@ -41,12 +41,12 @@
         select `id`,`suite_id`,`processor_type`,`type`,`desc`,`value`,`created_time`,`update_time`
         from `t_interface_suite_processor`
         <where>
-            <if test="id!=null">`id`=#{id}</if>
-            <if test="suiteId!=null">`suite_id`=#{suiteId}</if>
-            <if test="processorType!=null">`processor_type`=#{processorType}</if>
-            <if test="type!=null">`type`=#{type}</if>
-            <if test="desc!=null">`desc` like concat('%',#{desc},'%')</if>
-            <if test="value!=null">`value` like concat('%',#{value},'%'</if>
+            <if test="id!=null">and `id`=#{id}</if>
+            <if test="suiteId!=null">and `suite_id`=#{suiteId}</if>
+            <if test="processorType!=null">and `processor_type`=#{processorType}</if>
+            <if test="type!=null">and `type`=#{type}</if>
+            <if test="desc!=null">and `desc` like concat('%',#{desc},'%')</if>
+            <if test="value!=null">and `value` like concat('%',#{value},'%'</if>
         </where>
     </select>
     <select id="selectInterfaceSuiteProcessorById" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceSuiteProcessorVO">

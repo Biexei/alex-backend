@@ -365,6 +365,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         Integer suiteId = executeInterfaceCaseParam.getSuiteId();
         Byte isFailedRetry = executeInterfaceCaseParam.getIsFailedRetry();
         String suiteLogDetailNo = executeInterfaceCaseParam.getSuiteLogDetailNo();
+        HashMap globalHeaders = executeInterfaceCaseParam.getGlobalHeaders();
+        HashMap globalParams = executeInterfaceCaseParam.getGlobalParams();
+        HashMap globalData = executeInterfaceCaseParam.getGlobalData();
         LOG.info("---------------------------------开始执行测试用例：caseId={}---------------------------------", interfaceCaseId);
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
@@ -421,28 +424,52 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         try {
             // 清洗
             if (null != headers) {
-                headers = this.parseRelyData(headers, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                headers = this.parseRelyData(headers, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
                 LOG.info("清洗headers，清洗前的内容={}", rawHeaders);
                 LOG.info("清洗headers，清洗后的内容={}", headers);
             }
             if (null != params) {
-                params = this.parseRelyData(params, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                params = this.parseRelyData(params, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
                 LOG.info("清洗params，清洗前的内容={}", rawParams);
                 LOG.info("清洗params，清洗后的内容={}", params);
             }
             if (null != data) {
-                data = this.parseRelyData(data, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                data = this.parseRelyData(data, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
                 LOG.info("清洗data，清洗前的内容={}", rawData);
                 LOG.info("清洗data，清洗后的内容={}", data);
             }
             if (null != json) {
-                json = this.parseRelyData(json, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                json = this.parseRelyData(json, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
                 LOG.info("清洗json，清洗前的内容={}", rawJson);
                 LOG.info("清洗json，清洗后的内容={}", json);
             }
 
             HashMap headersMap = JSONObject.parseObject(headers, HashMap.class);
+            // 合并公共headers
+            if (globalHeaders != null) {
+                if (headersMap != null) {
+                    globalHeaders.putAll(headersMap);
+                }
+                headersMap = globalHeaders;
+            }
             HashMap paramsMap = JSONObject.parseObject(params, HashMap.class);
+            // 合并公共params
+            if (globalParams != null) {
+                if (paramsMap != null) {
+                    globalParams.putAll(paramsMap);
+                }
+                paramsMap = globalParams;
+            }
+            HashMap dataMap = JSONObject.parseObject(data, HashMap.class);
+            // 合并公共data
+            if (globalData != null) {
+                if (dataMap == null && json == null) {
+                    dataMap = globalData;
+                } else if (dataMap != null){
+                    globalData.putAll(dataMap);
+                    dataMap = globalData;
+                }
+            }
             if (method == 0) { //get
                 long startTime = System.currentTimeMillis();
                 LOG.info("开始执行GET方法");
@@ -450,7 +477,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 runTime = System.currentTimeMillis() - startTime;
             } else if (method == 1) { //post
                 LOG.info("开始执行POST方法");
-                HashMap dataMap = JSONObject.parseObject(data, HashMap.class);
                 long startTime = System.currentTimeMillis();
                 responseEntity = RestUtil.post(url, headersMap, paramsMap, dataMap, json);
                 runTime = System.currentTimeMillis() - startTime;
@@ -720,7 +746,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     try {
                         // 清洗断言预期结果
                         LOG.info("5.清洗断言预期结果... ... ...");
-                        exceptedResult = this.parseRelyData(exceptedResult, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                        exceptedResult = this.parseRelyData(exceptedResult, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
                         LOG.info("清洗断言，清洗后的结果={}", exceptedResult);
                     } catch (ParseException | BusinessException | SqlException e) {
                         assertErrorMessage = e.getMessage();
@@ -1003,7 +1029,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * @throws BusinessException BusinessException
      * @throws SqlException SqlException
      */
-    public String parseRelyData(String s, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo)
+    public String parseRelyData(String s, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo,
+    HashMap globalHeaders, HashMap globalParams, HashMap globalData)
             throws ParseException, BusinessException, SqlException {
 
         // 解析后置处理器
@@ -1056,7 +1083,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     // 根据caseId调用相应case
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                             caseId, "系统调度", null, chainNo, suiteId,
-                            isFailedRetry, suiteLogDetailNo, null, null, null));
+                            isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData));
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
@@ -1226,7 +1253,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     String sql = relyDataVO.getValue();
                     if (relyDataVO.getValue() != null) {
                         LOG.info("开始解析SQL，解析前SQL={}", sql);
-                        sql = parseRelyData(sql, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                        sql = parseRelyData(sql, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
                         LOG.info("解析SQL完成，解析后SQL={}", sql);
                     }
                     LOG.info("SQL执行参数，SQL={}, params={}", sql, params);
@@ -1298,7 +1325,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             String sql = relyDataVO.getValue();
                             if (relyDataVO.getValue() != null) {
                                 LOG.info("开始解析SQL，解析前SQL={}", sql);
-                                sql = parseRelyData(sql, chainNo, suiteId, isFailedRetry, suiteLogDetailNo);
+                                sql = parseRelyData(sql, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
                                 LOG.info("解析SQL完成，解析后SQL={}", sql);
                             }
                             LOG.info("SQL执行参数，SQL={}", sql);
@@ -1311,7 +1338,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     // 根据caseId调用相应case
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                             "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo,
-                            null, null, null));
+                            globalHeaders, globalParams, globalData));
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     // 获取case执行结果, 不等于0, 则用例未通过

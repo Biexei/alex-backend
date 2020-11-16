@@ -1,7 +1,9 @@
 package org.alex.platform;
 
 import com.alibaba.fastjson.JSONObject;
+import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.ValidException;
+import org.alex.platform.util.JsonUtil;
 import org.alex.platform.util.ValidUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,5 +43,16 @@ public class ValidTest {
         ValidUtil.isWordUnderline("asdv_");
         ValidUtil.isWordUnderline("__");
         ValidUtil.isWordUnderline("123");
+    }
+
+    @Test
+    public void doTest() throws ParseException {
+        HashMap map1 = new HashMap();
+        map1.put("a", "1");
+        HashMap map2 = new HashMap();
+        map2.put("a", "a");
+        map2.put("b", "b");
+        map1.putAll(map2);
+        System.out.println(map1);
     }
 }

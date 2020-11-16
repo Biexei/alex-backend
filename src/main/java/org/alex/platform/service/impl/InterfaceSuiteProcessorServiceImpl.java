@@ -126,7 +126,6 @@ public class InterfaceSuiteProcessorServiceImpl implements InterfaceSuiteProcess
         ValidUtil.size(type, 0, 3, "类型参数错误");
 
         ValidUtil.notNUll(value, "处理器值不能为空");
-        ValidUtil.notEmpty(value, "处理器值不能为空");
         ValidUtil.length(value, 200, "处理器值长度不能超过200");
 
         if (type == 1) {

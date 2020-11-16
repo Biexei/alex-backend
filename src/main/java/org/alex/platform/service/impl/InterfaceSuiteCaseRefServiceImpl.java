@@ -15,6 +15,7 @@ import org.alex.platform.service.InterfaceSuiteCaseRefService;
 import org.alex.platform.service.InterfaceSuiteLogService;
 import org.alex.platform.service.InterfaceSuiteProcessorService;
 import org.alex.platform.util.ExceptionUtil;
+import org.alex.platform.util.JsonUtil;
 import org.alex.platform.util.NoUtil;
 import org.alex.platform.util.RedisUtil;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -130,12 +132,10 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
      * 执行测试套件
      *
      * @param suiteId 测试套件编号
-     * @throws ParseException    ParseException
      * @throws BusinessException BusinessException
-     * @throws SqlException      SqlException
      */
     @Override
-    public void executeSuiteCaseById(Integer suiteId, String executor) throws ParseException, BusinessException, SqlException {
+    public void executeSuiteCaseById(Integer suiteId, String executor) throws BusinessException {
         // 获取测试套件下所有测试用例
         InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO = new InterfaceSuiteCaseRefDTO();
         interfaceSuiteCaseRefDTO.setSuiteId(suiteId);
@@ -157,13 +157,37 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         AtomicInteger totalError = new AtomicInteger();
         AtomicInteger totalRetry = new AtomicInteger();
         Date startTime = new Date();
+        long begin = System.currentTimeMillis();
 
         // 获取测试套件前置处理器
+        LOG.info("-----------------------开始前置处理器依赖执行-----------------------");
+        try {
+            this.executeRely(suiteId, (byte) 0, suiteLogDetailNo);
+        } catch (Exception e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+            throw new BusinessException("前置处理器执行失败");
+        }
+        LOG.info("-----------------------前置处理器依赖执行完成-----------------------");
 
+        HashMap globalHeaders = null;
+        HashMap globalParams = null;
+        HashMap globalData = null;
+        try {
+            globalHeaders = this.globalHeaders(suiteId, suiteLogDetailNo);
+            globalParams = this.globalParams(suiteId, suiteLogDetailNo);
+            globalData = this.globalData(suiteId, suiteLogDetailNo);
+        } catch (Exception e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+            throw new BusinessException("前置处理器执行失败");
+        }
 
-        long begin = System.currentTimeMillis();
         if (type == 0) { // 异步
             LOG.info("-----------------------开始并行执行测试套件，suiteId={}-----------------------", suiteId);
+            HashMap finalGlobalHeaders = globalHeaders;
+            HashMap finalGlobalParams = globalParams;
+            HashMap finalGlobalData = globalData;
             suiteCaseList.parallelStream().forEach(suiteCase -> {
                 Integer caseId = suiteCase.getCaseId();
                 boolean doRetryFlag = false;
@@ -177,7 +201,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                     } else {
                         Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                                 caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
-                                null, null, null));
+                                finalGlobalHeaders, finalGlobalParams, finalGlobalData));
                         InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                         Byte status = interfaceCaseExecuteLogVO.getStatus();
                         if (status == 0) {
@@ -188,7 +212,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                                 totalRetry.getAndIncrement();
                                 Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                                         caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 0, suiteLogDetailNo,
-                                        null, null, null));
+                                        finalGlobalHeaders, finalGlobalParams, finalGlobalData));
                                 InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(retryExecuteLogId);
                                 Byte retryStatus = retryVO.getStatus();
                                 if (retryStatus == 0) {
@@ -226,7 +250,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                 } else {
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                             executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
-                            null, null, null));
+                            globalHeaders, globalParams, globalData));
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                     Byte status = interfaceCaseExecuteLogVO.getStatus();
                     if (status == 0) {
@@ -236,7 +260,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                             totalRetry.getAndIncrement();
                             Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                                     executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 0, suiteLogDetailNo,
-                                    null, null, null));
+                                    globalHeaders, globalParams, globalData));
                             InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(retryExecuteLogId);
                             Byte retryStatus = retryVO.getStatus();
                             if (retryStatus == 0) {
@@ -287,27 +311,74 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         LOG.info("写入测试套件执行日志表，suiteLogNo={}，success={}，failed={}，error={}, skip={}, 运行环境={}, 执行方式={}",
                 suiteLogNo, totalSuccess.intValue(), totalFailed.intValue(), totalError.intValue()
                 , totalSkip.intValue(), type, runDev);
+
+        // 获取测试套件前置处理器
+        LOG.info("-----------------------开始后置处理器依赖执行-----------------------");
+        try {
+            this.executeRely(suiteId, (byte) 1, suiteLogDetailNo);
+        } catch (Exception e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+            throw new BusinessException("后置处理器执行失败");
+        }
+        LOG.info("-----------------------后置处理器依赖执行完成-----------------------");
         LOG.info("-----------------------测试套件执行完成-----------------------");
 
         // 删除后置处理器缓存
         redisUtil.del(suiteLogDetailNo);
     }
 
-    private void executeProcessor(Integer suiteId, Byte processorType) {
+
+    /**
+     * 执行依赖
+     * @param suiteId suiteId
+     * @param processorType processorType 0前置处理器1后置处理器
+     * @param suiteLogDetailNo suiteLogDetailNo
+     * @throws BusinessException BusinessException
+     * @throws ParseException ParseException
+     * @throws SqlException SqlException
+     */
+    private void executeRely(Integer suiteId, Byte processorType, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException {
         InterfaceSuiteProcessorDTO interfaceSuiteProcessorDTO = new InterfaceSuiteProcessorDTO();
         interfaceSuiteProcessorDTO.setProcessorType(processorType);
         interfaceSuiteProcessorDTO.setSuiteId(suiteId);
+        interfaceSuiteProcessorDTO.setType((byte) 0);
         List<InterfaceSuiteProcessorVO> processorList = interfaceSuiteProcessorService.findAllInterfaceSuiteProcessorList(interfaceSuiteProcessorDTO);
-
-        if (processorType == 0) {// 前置处理器
-            for (InterfaceSuiteProcessorVO suiteProcessor : processorList) {
-                Byte type = suiteProcessor.getType(); //0执行依赖1公共头2公共params3公共data，只处理type=0情况，其他情况需要在执行请求时处理
-                if (type == 0) {
-                    //interfaceCaseService.parseRelyData(suiteProcessor.getValue(), )
-                }
-            }
-        } else if (processorType == 1) {// 后置处理器
-
+        if (!processorList.isEmpty()) {
+            InterfaceSuiteProcessorVO interfaceSuiteProcessorVO = processorList.get(0);
+            // 获取依赖表达式
+            String value = interfaceSuiteProcessorVO.getValue();
+            interfaceCaseService.parseRelyData(value, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo, null, null, null);
         }
+    }
+
+    private String getPreProcessor(Integer suiteId, byte type, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException {
+        InterfaceSuiteProcessorDTO interfaceSuiteProcessorDTO = new InterfaceSuiteProcessorDTO();
+        interfaceSuiteProcessorDTO.setProcessorType((byte) 0);
+        interfaceSuiteProcessorDTO.setSuiteId(suiteId);
+        interfaceSuiteProcessorDTO.setType(type);
+        List<InterfaceSuiteProcessorVO> processorList = interfaceSuiteProcessorService.findAllInterfaceSuiteProcessorList(interfaceSuiteProcessorDTO);
+        if (!processorList.isEmpty()) {
+            InterfaceSuiteProcessorVO interfaceSuiteProcessorVO = processorList.get(0);
+            // 获取0执行依赖1公共头2公共params3公共data
+            String value = interfaceSuiteProcessorVO.getValue();
+            if (value != null) {
+                value = interfaceCaseService.parseRelyData(value, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,null, null, null);
+            }
+            return value;
+        }
+        return null;
+    }
+
+    private HashMap globalHeaders(Integer suiteId, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException {
+        return JsonUtil.jsonString2HashMap(this.getPreProcessor(suiteId, (byte) 1, suiteLogDetailNo));
+    }
+
+    private HashMap globalParams(Integer suiteId, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException {
+        return JsonUtil.jsonString2HashMap(this.getPreProcessor(suiteId, (byte) 2, suiteLogDetailNo));
+    }
+
+    private HashMap globalData(Integer suiteId, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException {
+        return JsonUtil.jsonString2HashMap(this.getPreProcessor(suiteId, (byte) 3, suiteLogDetailNo));
     }
 }
