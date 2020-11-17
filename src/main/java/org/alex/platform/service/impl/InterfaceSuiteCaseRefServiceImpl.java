@@ -312,7 +312,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                 suiteLogNo, totalSuccess.intValue(), totalFailed.intValue(), totalError.intValue()
                 , totalSkip.intValue(), type, runDev);
 
-        // 获取测试套件前置处理器
+        // 获取测试套件后置处理器
         LOG.info("-----------------------开始后置处理器依赖执行-----------------------");
         try {
             this.executeRely(suiteId, (byte) 1, suiteLogDetailNo);
@@ -326,6 +326,67 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
 
         // 删除后置处理器缓存
         redisUtil.del(suiteLogDetailNo);
+    }
+
+    /**
+     * 执行测试套件中的某个用例（可以调用依赖）
+     * @param suiteId suiteId
+     * @param caseId caseId
+     * @param executor executor
+     * @return 执行状态
+     * @throws BusinessException BusinessException
+     */
+    @Override
+    public Byte executeCaseInSuite(Integer suiteId, Integer caseId, String executor) throws BusinessException {
+        String suiteLogNo = NoUtil.genSuiteLogNo();
+        String suiteLogDetailNo = NoUtil.genSuiteLogDetailNo(suiteLogNo);
+
+        // 获取测试套件前置处理器
+        LOG.info("-----------------------执行测试套件={}，用例编号={}开始前置处理器依赖执行-----------------------", suiteId, caseId);
+        try {
+            this.executeRely(suiteId, (byte) 0, suiteLogDetailNo);
+        } catch (Exception e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+            throw new BusinessException("前置处理器执行失败");
+        }
+        LOG.info("-----------------------执行测试套件={}，用例编号={}前置处理器依赖执行完成-----------------------", suiteId, caseId);
+
+        HashMap globalHeaders = null;
+        HashMap globalParams = null;
+        HashMap globalData = null;
+        try {
+            globalHeaders = this.globalHeaders(suiteId, suiteLogDetailNo);
+            globalParams = this.globalParams(suiteId, suiteLogDetailNo);
+            globalData = this.globalData(suiteId, suiteLogDetailNo);
+        } catch (Exception e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+            throw new BusinessException("前置处理器执行失败");
+        }
+
+        Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
+                executor, null, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
+                globalHeaders, globalParams, globalData));
+        InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
+        Byte status = interfaceCaseExecuteLogVO.getStatus();
+
+        // 获取测试套件后置处理器
+        LOG.info("-----------------------执行测试套件={}，用例编号={}开始后置处理器依赖执行-----------------------", suiteId, caseId);
+        try {
+            this.executeRely(suiteId, (byte) 1, suiteLogDetailNo);
+        } catch (Exception e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+            throw new BusinessException("后置处理器执行失败");
+        }
+        LOG.info("-----------------------执行测试套件={}，用例编号={}后置处理器依赖执行完成-----------------------", suiteId, caseId);
+        LOG.info("-----------------------测试套件执行完成-----------------------");
+
+        // 删除后置处理器缓存
+        redisUtil.del(suiteLogDetailNo);
+
+        return status;
     }
 
 
@@ -348,10 +409,21 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             InterfaceSuiteProcessorVO interfaceSuiteProcessorVO = processorList.get(0);
             // 获取依赖表达式
             String value = interfaceSuiteProcessorVO.getValue();
-            interfaceCaseService.parseRelyData(value, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo, null, null, null);
+            interfaceCaseService.parseRelyData(value, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
+                    null, null, null);
         }
     }
 
+    /**
+     * 获取前置处理器你
+     * @param suiteId suiteId
+     * @param type type
+     * @param suiteLogDetailNo suiteLogDetailNo
+     * @return value
+     * @throws BusinessException BusinessException
+     * @throws ParseException ParseException
+     * @throws SqlException SqlException
+     */
     private String getPreProcessor(Integer suiteId, byte type, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException {
         InterfaceSuiteProcessorDTO interfaceSuiteProcessorDTO = new InterfaceSuiteProcessorDTO();
         interfaceSuiteProcessorDTO.setProcessorType((byte) 0);
@@ -363,21 +435,49 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             // 获取0执行依赖1公共头2公共params3公共data
             String value = interfaceSuiteProcessorVO.getValue();
             if (value != null) {
-                value = interfaceCaseService.parseRelyData(value, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,null, null, null);
+                value = interfaceCaseService.parseRelyData(value, NoUtil.genChainNo(), suiteId, (byte) 1,
+                        suiteLogDetailNo,null, null, null);
             }
             return value;
         }
         return null;
     }
 
+    /**
+     * 获取global headers hashMap
+     * @param suiteId suiteId
+     * @param suiteLogDetailNo suiteLogDetailNo
+     * @return 获取global headers hashMap
+     * @throws BusinessException BusinessException
+     * @throws ParseException ParseException
+     * @throws SqlException SqlException
+     */
     private HashMap globalHeaders(Integer suiteId, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException {
         return JsonUtil.jsonString2HashMap(this.getPreProcessor(suiteId, (byte) 1, suiteLogDetailNo));
     }
 
+    /**
+     * 获取global params hashMap
+     * @param suiteId suiteId
+     * @param suiteLogDetailNo suiteLogDetailNo
+     * @return 获取global headers hashMap
+     * @throws BusinessException BusinessException
+     * @throws ParseException ParseException
+     * @throws SqlException SqlException
+     */
     private HashMap globalParams(Integer suiteId, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException {
         return JsonUtil.jsonString2HashMap(this.getPreProcessor(suiteId, (byte) 2, suiteLogDetailNo));
     }
 
+    /**
+     * 获取global data hashMap
+     * @param suiteId suiteId
+     * @param suiteLogDetailNo suiteLogDetailNo
+     * @return 获取global headers hashMap
+     * @throws BusinessException BusinessException
+     * @throws ParseException ParseException
+     * @throws SqlException SqlException
+     */
     private HashMap globalData(Integer suiteId, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException {
         return JsonUtil.jsonString2HashMap(this.getPreProcessor(suiteId, (byte) 3, suiteLogDetailNo));
     }

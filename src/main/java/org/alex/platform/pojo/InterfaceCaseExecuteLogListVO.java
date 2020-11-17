@@ -21,6 +21,7 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private String suiteLogDetailNo;
     private String chain;
     private Byte isFailedRetry;
+    private Integer responseCode;
 
     public String getSuiteLogDetailNo() {
         return suiteLogDetailNo;
@@ -56,6 +57,14 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
 
     public Integer getId() {
         return id;
+    }
+
+    public Integer getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(Integer responseCode) {
+        this.responseCode = responseCode;
     }
 
     public void setId(Integer id) {
@@ -170,9 +179,15 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
                 ", moduleName='" + moduleName + '\'' +
                 ", responseBody='" + responseBody + '\'' +
                 ", executer='" + executer + '\'' +
+                ", runTime=" + runTime +
                 ", status=" + status +
                 ", createdTime=" + createdTime +
                 ", errorMessage='" + errorMessage + '\'' +
+                ", suiteLogNo='" + suiteLogNo + '\'' +
+                ", suiteLogDetailNo='" + suiteLogDetailNo + '\'' +
+                ", chain='" + chain + '\'' +
+                ", isFailedRetry=" + isFailedRetry +
+                ", responseCode=" + responseCode +
                 '}';
     }
 }

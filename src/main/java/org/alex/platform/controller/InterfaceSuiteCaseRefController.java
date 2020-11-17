@@ -101,12 +101,10 @@ public class InterfaceSuiteCaseRefController {
      *
      * @param suiteId 测试套件编号
      * @return Result
-     * @throws ParseException    ParseException
      * @throws BusinessException BusinessException
-     * @throws SqlException      SqlException
      */
     @GetMapping("/interface/suite/execute/{suiteId}")
-    public Result executeSuiteCase(@PathVariable Integer suiteId, HttpServletRequest request) throws ParseException, BusinessException, SqlException {
+    public Result executeSuiteCase(@PathVariable Integer suiteId, HttpServletRequest request) throws BusinessException {
         HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
         String executor = null;
         try {
@@ -118,4 +116,33 @@ public class InterfaceSuiteCaseRefController {
         return Result.success("执行成功");
     }
 
+    /**
+     * 执行测试套件中某一个用例
+     * @param request request
+     * @return Result
+     * @throws BusinessException BusinessException
+     */
+    @GetMapping("interface/suite/execute-case")
+    public Result executeCaseInSuite(@RequestParam Integer suiteId, @RequestParam Integer caseId, HttpServletRequest request) throws BusinessException {
+
+        if (caseId == null || suiteId == null) {
+            throw new BusinessException("参数错误");
+        }
+
+        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
+        String executor = null;
+        try {
+            executor = map.get("realName").toString();
+        } catch (Exception e) {
+            executor = "";
+        }
+        Byte status = refService.executeCaseInSuite(suiteId, caseId, executor);
+        if (status == 0) {
+            return Result.success("执行成功");
+        } else if (status == 1) {
+            return Result.fail("执行失败");
+        } else {
+            return Result.fail("执行错误");
+        }
+    }
 }

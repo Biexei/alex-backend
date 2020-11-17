@@ -98,7 +98,7 @@ public class InterfaceCaseController {
      * @return Result
      */
     @GetMapping("/interface/case/execute/{caseId}")
-    public Result executeInterfaceCase(@PathVariable Integer caseId, HttpServletRequest request) throws ParseException, BusinessException, SqlException {
+    public Result executeInterfaceCase(@PathVariable Integer caseId, HttpServletRequest request) throws BusinessException {
         HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
         String executor = null;
         try {

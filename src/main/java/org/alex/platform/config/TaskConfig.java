@@ -54,7 +54,7 @@ public class TaskConfig implements SchedulingConfigurer {
                             try {
                                 interfaceSuiteCaseRefService.executeSuiteCaseById(suiteId, "定时任务");
                                 LOG.info("定时任务测试套件执行完毕，suiteId={}", suiteId);
-                            } catch (ParseException | BusinessException | SqlException e) {
+                            } catch (BusinessException e) {
                                 e.printStackTrace();
                                 LOG.error("定时任务测试套件执行失败，suiteId={}，errorMsg={}", suiteId, ExceptionUtil.msg(e));
                             }

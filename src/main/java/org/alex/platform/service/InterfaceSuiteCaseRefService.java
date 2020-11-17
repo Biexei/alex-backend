@@ -27,6 +27,8 @@ public interface InterfaceSuiteCaseRefService {
 
     List<InterfaceSuiteCaseRefVO> findAllSuiteCase(InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO);
 
-    void executeSuiteCaseById(Integer suiteId, String executor) throws ParseException, BusinessException, SqlException;
+    void executeSuiteCaseById(Integer suiteId, String executor) throws BusinessException;
+
+    Byte executeCaseInSuite(Integer suiteId, Integer caseId, String executor) throws BusinessException;
 
 }

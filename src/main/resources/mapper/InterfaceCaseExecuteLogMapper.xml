@@ -62,7 +62,7 @@
             `project`.`name` as `project_name`, `module`.`module_id`, `module`.`name` as `module_name`,
             `log`.`response_body`, `log`.`executer`, `log`.`run_time`, `log`.`status`, `log`.`created_time`,
             `log`.`error_message`, `log`.`suite_log_no`, `log`.`suite_log_detail_no`,
-            `log`.`chain`, `log`.`is_failed_retry`
+            `log`.`chain`, `log`.`is_failed_retry`, `log`.`response_code`,`log`.`response_body`
         from `t_interface_case_execute_log` as `log`
         LEFT JOIN `t_interface_case` as `case` on `log`.`case_id` = `case`.`case_id`
         LEFT JOIN `t_project` as `project` on `case`.`project_id` = `project`.`project_id`
