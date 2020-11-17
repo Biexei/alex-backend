@@ -2,6 +2,7 @@ package org.alex.platform.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.mapper.HttpSettingMapper;
 import org.alex.platform.pojo.HttpSettingDTO;
@@ -290,6 +291,16 @@ public class RestUtil {
      */
     public static String headers(ResponseEntity response) {
         return JSON.toJSONString(response.getHeaders());
+    }
+
+    /**
+     * 获取http响应头(格式化)
+     *
+     * @param response response
+     * @return http响应头
+     */
+    public static String headersPretty(ResponseEntity response) {
+        return JSON.toJSONString(response.getHeaders(), SerializerFeature.PrettyFormat);
     }
 
     /**

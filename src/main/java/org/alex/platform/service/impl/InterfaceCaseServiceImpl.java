@@ -3,6 +3,7 @@ package org.alex.platform.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
@@ -556,8 +557,15 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         } else { //请求成功记录执行日志和断言日志
             // 只有接口调用未出现异常才统计code、header、body
             responseCode = RestUtil.code(responseEntity);
-            responseHeaders = RestUtil.headers(responseEntity);
+            responseHeaders = RestUtil.headersPretty(responseEntity);
             responseBody = RestUtil.body(responseEntity);
+            String temp = responseBody;
+            try {
+                JSONObject responseBodyObject = JSONObject.parseObject(temp);
+                responseBody = JSON.toJSONString(responseBodyObject, SerializerFeature.PrettyFormat);
+            } catch (Exception e) {
+                responseBody = temp;
+            }
             // 3.保存日志
             InterfaceCaseExecuteLogDO executeLogDO = new InterfaceCaseExecuteLogDO();
             executeLogDO.setCaseId(interfaceCaseId);
