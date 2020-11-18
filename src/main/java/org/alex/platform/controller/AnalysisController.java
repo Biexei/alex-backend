@@ -23,27 +23,27 @@ public class AnalysisController {
      */
     @GetMapping("/count")
     public Result countAll() {
-        LinkedList<HashMap<String, Object>> list = new LinkedList<>();
+        ArrayList<HashMap<String, Object>> list = new ArrayList<>();
         Integer userCount = analysisService.userCount();
         Integer suiteCount = analysisService.suiteCount();
         Integer assertCount = analysisService.assertCount();
         Integer caseCount = analysisService.caseCount();
         HashMap<String, Object> userMap = new HashMap<>();
-        userMap.put("类型", "用户");
-        userMap.put("总数", userCount);
+        userMap.put("type", "用户");
+        userMap.put("total", userCount);
 
 
         HashMap<String, Object> caseMap = new HashMap<>();
-        caseMap.put("类型", "用例");
-        caseMap.put("总数", caseCount);
+        caseMap.put("type", "用例");
+        caseMap.put("total", caseCount);
 
         HashMap<String, Object> suiteMap = new HashMap<>();
-        suiteMap.put("类型", "测试套件");
-        suiteMap.put("总数", suiteCount);
+        suiteMap.put("type", "套件");
+        suiteMap.put("total", suiteCount);
 
         HashMap<String, Object> assertMap = new HashMap<>();
-        assertMap.put("类型", "断言");
-        assertMap.put("总数", assertCount);
+        assertMap.put("type", "断言");
+        assertMap.put("total", assertCount);
 
 
         list.add(userMap);
@@ -52,6 +52,25 @@ public class AnalysisController {
         list.add(suiteMap);
 
         return Result.success(list);
+    }
+
+    /**
+     * 统计数据，用户总数，套件总数，断言总数，用例总数
+     *
+     * @return Result
+     */
+    @GetMapping("/count/group")
+    public Result countGroup() {
+        Integer userCount = analysisService.userCount();
+        Integer suiteCount = analysisService.suiteCount();
+        Integer assertCount = analysisService.assertCount();
+        Integer caseCount = analysisService.caseCount();
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("user", userCount);
+        map.put("ifSuite", suiteCount);
+        map.put("ifAssert", assertCount);
+        map.put("ifCase", caseCount);
+        return Result.success(map);
     }
 
     /**

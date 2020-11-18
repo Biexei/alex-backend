@@ -8,6 +8,7 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
     private Integer caseId;
     private String caseUrl;
     private String caseDesc;
+    private Byte caseMethod;
     private String requestHeaders;
     private String requestParams;
     private String requestData;
@@ -28,6 +29,14 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
     private String rawRequestParams;
     private String rawRequestData;
     private String rawRequestJson;
+
+    public Byte getCaseMethod() {
+        return caseMethod;
+    }
+
+    public void setCaseMethod(Byte caseMethod) {
+        this.caseMethod = caseMethod;
+    }
 
     public String getRawRequestHeaders() {
         return rawRequestHeaders;
@@ -228,6 +237,7 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
                 ", caseId=" + caseId +
                 ", caseUrl='" + caseUrl + '\'' +
                 ", caseDesc='" + caseDesc + '\'' +
+                ", caseMethod=" + caseMethod +
                 ", requestHeaders='" + requestHeaders + '\'' +
                 ", requestParams='" + requestParams + '\'' +
                 ", requestData='" + requestData + '\'' +
@@ -240,6 +250,14 @@ public class InterfaceCaseExecuteLogDO implements Serializable {
                 ", status=" + status +
                 ", createdTime=" + createdTime +
                 ", errorMessage='" + errorMessage + '\'' +
+                ", suiteLogNo='" + suiteLogNo + '\'' +
+                ", suiteLogDetailNo='" + suiteLogDetailNo + '\'' +
+                ", chain='" + chain + '\'' +
+                ", isFailedRetry=" + isFailedRetry +
+                ", rawRequestHeaders='" + rawRequestHeaders + '\'' +
+                ", rawRequestParams='" + rawRequestParams + '\'' +
+                ", rawRequestData='" + rawRequestData + '\'' +
+                ", rawRequestJson='" + rawRequestJson + '\'' +
                 '}';
     }
 }

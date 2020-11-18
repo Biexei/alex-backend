@@ -8,6 +8,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="caseId != null">`case_id`,</if>
             <if test="caseDesc != null">`case_desc`,</if>
+            <if test="caseMethod != null">`case_method`,</if>
             <if test="requestHeaders != null">`request_headers`,</if>
             <if test="requestParams != null">`request_params`,</if>
             <if test="requestData != null">`request_data`,</if>
@@ -33,6 +34,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="caseId != null">#{caseId},</if>
             <if test="caseDesc != null">#{caseDesc},</if>
+            <if test="caseMethod != null">#{caseMethod},</if>
             <if test="requestHeaders != null">#{requestHeaders},</if>
             <if test="requestParams != null">#{requestParams},</if>
             <if test="requestData != null">#{requestData},</if>
@@ -58,7 +60,7 @@
     </insert>
     <select id="selectExecuteList" parameterType="org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO"
             resultType="org.alex.platform.pojo.InterfaceCaseExecuteLogListVO">
-        select `log`.`id`, `case`.`case_id`, `log`.`case_desc` as `case_desc`, `project`.`project_id`,
+        select `log`.`id`, `case`.`case_id`, `log`.`case_method`, `log`.`case_desc` as `case_desc`, `project`.`project_id`,
             `project`.`name` as `project_name`, `module`.`module_id`, `module`.`name` as `module_name`,
             `log`.`response_body`, `log`.`executer`, `log`.`run_time`, `log`.`status`, `log`.`created_time`,
             `log`.`error_message`, `log`.`suite_log_no`, `log`.`suite_log_detail_no`,
@@ -102,6 +104,7 @@
         <id column="id" property="id"/>
         <result column="case_id" property="caseId"/>
         <result column="case_desc" property="caseDesc"/>
+        <result column="case_method" property="caseMethod"/>
         <result column="request_headers" property="requestHeaders"/>
         <result column="request_params" property="requestParams"/>
         <result column="request_data" property="requestData"/>
@@ -127,7 +130,7 @@
     </resultMap>
 
     <select id="selectExecute" parameterType="Integer" resultMap="interfaceCaseExecuteVO">
-        select `elog`.`id`, `elog`.`case_id`, `elog`.`case_url`, `elog`.`case_desc`, `elog`.`request_headers`, `elog`.`request_params`,
+        select `elog`.`id`, `elog`.`case_id`, `elog`.`case_url`, `elog`.`case_method`,`elog`.`case_desc`, `elog`.`request_headers`, `elog`.`request_params`,
         `elog`.`request_data`, `elog`.`request_json`, `elog`.`response_code`, `elog`.`response_headers`,
         `elog`.`response_body`, `elog`.`executer`, `elog`.`status`, `elog`.`created_time`, `elog`.`error_message`,
         `alog`.`assert_name`, `alog`.`type`, `alog`.`expression`, `alog`.`operator`, `alog`.`excepted_result`, `alog`.`order`,
@@ -146,6 +149,7 @@
             <if test="caseId != null">`case_id` = #{caseId},</if>
             <if test="caseDesc != null">`case_desc` = #{caseDesc},</if>
             <if test="caseUrl != null">`case_url` = #{caseUrl},</if>
+            <if test="caseMethod != null">`case_method` = #{caseMethod},</if>
             <if test="requestHeaders != null">`request_headers` = #{requestHeaders},</if>
             <if test="requestParams != null">`request_params` = #{requestParams},</if>
             <if test="requestData != null">`request_data` = #{requestData},</if>

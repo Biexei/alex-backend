@@ -7,6 +7,7 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private Integer id;
     private Integer caseId;
     private String caseDesc;
+    private Byte caseMethod;
     private Integer projectId;
     private String projectName;
     private Integer moduleId;
@@ -22,6 +23,14 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private String chain;
     private Byte isFailedRetry;
     private Integer responseCode;
+
+    public Byte getCaseMethod() {
+        return caseMethod;
+    }
+
+    public void setCaseMethod(Byte caseMethod) {
+        this.caseMethod = caseMethod;
+    }
 
     public String getSuiteLogDetailNo() {
         return suiteLogDetailNo;
@@ -173,6 +182,7 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
                 "id=" + id +
                 ", caseId=" + caseId +
                 ", caseDesc='" + caseDesc + '\'' +
+                ", caseMethod=" + caseMethod +
                 ", projectId=" + projectId +
                 ", projectName='" + projectName + '\'' +
                 ", moduleId=" + moduleId +

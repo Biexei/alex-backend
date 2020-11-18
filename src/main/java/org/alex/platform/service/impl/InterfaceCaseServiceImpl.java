@@ -484,7 +484,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 long startTime = System.currentTimeMillis();
                 responseEntity = RestUtil.post(url, headersMap, paramsMap, dataMap, json);
                 runTime = System.currentTimeMillis() - startTime;
-            } else if (method == 2) { //update
+            } else if (method == 2) { //patch
                 LOG.warn("暂不支持update请求方式");
                 throw new BusinessException("暂不支持update请求方式");
             } else if (method == 3) { //put
@@ -525,9 +525,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             InterfaceCaseExecuteLogDO executeLogDO = new InterfaceCaseExecuteLogDO();
             executeLogDO.setCaseId(interfaceCaseId);
             executeLogDO.setCaseDesc(desc);
-            executeLogDO.setRequestHeaders(JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat));
-            executeLogDO.setRequestParams(JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat));
-            executeLogDO.setRequestData(JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat));
+            executeLogDO.setCaseMethod(method);
+            executeLogDO.setRequestHeaders(JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat, SerializerFeature.WriteNullStringAsEmpty).equals("null") ? "" : JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat));
+            executeLogDO.setRequestParams(JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat, SerializerFeature.WriteNullStringAsEmpty).equals("null") ? "" : JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat));
+            executeLogDO.setRequestData(JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat, SerializerFeature.WriteNullStringAsEmpty).equals("null") ? "" : JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat));
             executeLogDO.setRequestJson(json);
             executeLogDO.setRawRequestHeaders(rawHeaders);
             executeLogDO.setRawRequestParams(rawParams);
@@ -573,9 +574,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             InterfaceCaseExecuteLogDO executeLogDO = new InterfaceCaseExecuteLogDO();
             executeLogDO.setCaseId(interfaceCaseId);
             executeLogDO.setCaseDesc(desc);
-            executeLogDO.setRequestHeaders(JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat));
-            executeLogDO.setRequestParams(JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat));
-            executeLogDO.setRequestData(JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat));
+            executeLogDO.setCaseMethod(method);
+            executeLogDO.setRequestHeaders(JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat));
+            executeLogDO.setRequestParams(JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat));
+            executeLogDO.setRequestData(JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat));
             executeLogDO.setRequestJson(json);
             executeLogDO.setRawRequestHeaders(rawHeaders);
             executeLogDO.setRawRequestParams(rawParams);
