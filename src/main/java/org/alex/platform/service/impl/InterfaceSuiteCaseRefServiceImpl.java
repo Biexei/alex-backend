@@ -201,7 +201,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                     } else {
                         Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                                 caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
-                                finalGlobalHeaders, finalGlobalParams, finalGlobalData, (byte)2));
+                                finalGlobalHeaders, finalGlobalParams, finalGlobalData, (byte)2, null));
                         InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                         Byte status = interfaceCaseExecuteLogVO.getStatus();
                         if (status == 0) {
@@ -212,7 +212,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                                 totalRetry.getAndIncrement();
                                 Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                                         caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 0, suiteLogDetailNo,
-                                        finalGlobalHeaders, finalGlobalParams, finalGlobalData, (byte)2));
+                                        finalGlobalHeaders, finalGlobalParams, finalGlobalData, (byte)2, null));
                                 InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(retryExecuteLogId);
                                 Byte retryStatus = retryVO.getStatus();
                                 if (retryStatus == 0) {
@@ -250,7 +250,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                 } else {
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                             executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
-                            globalHeaders, globalParams, globalData, (byte)2));
+                            globalHeaders, globalParams, globalData, (byte)2, null));
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                     Byte status = interfaceCaseExecuteLogVO.getStatus();
                     if (status == 0) {
@@ -260,7 +260,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                             totalRetry.getAndIncrement();
                             Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                                     executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 0, suiteLogDetailNo,
-                                    globalHeaders, globalParams, globalData, (byte)2));
+                                    globalHeaders, globalParams, globalData, (byte)2, null));
                             InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(retryExecuteLogId);
                             Byte retryStatus = retryVO.getStatus();
                             if (retryStatus == 0) {
@@ -367,7 +367,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
 
         Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                 executor, null, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
-                globalHeaders, globalParams, globalData, (byte)3));
+                globalHeaders, globalParams, globalData, (byte)3, null));
         InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
         Byte status = interfaceCaseExecuteLogVO.getStatus();
 
@@ -410,7 +410,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             // 获取依赖表达式
             String value = interfaceSuiteProcessorVO.getValue();
             interfaceCaseService.parseRelyData(value, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
-                    null, null, null);
+                    null, null, null, null);
         }
     }
 
@@ -436,7 +436,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             String value = interfaceSuiteProcessorVO.getValue();
             if (value != null) {
                 value = interfaceCaseService.parseRelyData(value, NoUtil.genChainNo(), suiteId, (byte) 1,
-                        suiteLogDetailNo,null, null, null);
+                        suiteLogDetailNo,null, null, null, null);
             }
             return value;
         }

@@ -74,7 +74,7 @@ public class RedisUtil {
 
     public void hashPut(String key, String hashKey, Object value) {
         redisTemplate.opsForHash().put(key, hashKey, value);
-        redisTemplate.expire(key, 60*60, TimeUnit.SECONDS);
+        redisTemplate.expire(key, 24*60*60, TimeUnit.SECONDS);
     }
 
     public Object hashGet(String key, Object hashKey) {

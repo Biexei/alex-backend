@@ -152,6 +152,20 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             LOG.error("参数错误，缺少caseId");
             throw new BusinessException("参数错误，缺少caseId");
         }
+
+        String preCaseListJson = interfaceCaseDTO.getPreCaseList();
+        ArrayList preCaseList;
+        try {
+            preCaseList = JSONObject.parseObject(preCaseListJson, ArrayList.class);
+            if (preCaseList != null) {
+                if (preCaseList.contains(caseId)) {
+                    throw new BusinessException("前置用例不能包含本身");
+                }
+            }
+        } catch (Exception e) {
+            LOG.warn("pre case list parse error!");
+        }
+
         Date updateTime = new Date();
         interfaceCaseDTO.setUpdateTime(updateTime);
         InterfaceCaseDO interfaceCaseDO = new InterfaceCaseDO();
@@ -370,6 +384,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         HashMap globalParams = executeInterfaceCaseParam.getGlobalParams();
         HashMap globalData = executeInterfaceCaseParam.getGlobalData();
         Byte source = executeInterfaceCaseParam.getSource();
+        String casePreNo = executeInterfaceCaseParam.getCasePreNo();
         LOG.info("---------------------------------开始执行测试用例：caseId={}---------------------------------", interfaceCaseId);
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
@@ -419,6 +434,42 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         LOG.info("1.获取case详情，caseId={}，用例详情={}", interfaceCaseId, interfaceCaseInfoVO);
         long runTime = 0;
 
+
+        // 执行前置用例
+        String preCaseListJsonStr = interfaceCaseInfoVO.getPreCaseList();
+        ArrayList preCaseList;
+        try {
+            preCaseList = JSONObject.parseObject(preCaseListJsonStr, ArrayList.class);
+        } catch (Exception e) {
+            preCaseList = null;
+        }
+        if (preCaseList != null) {
+            if (!preCaseList.isEmpty()) {
+                String no = NoUtil.genCasePreNo();
+                // 重置casePreNo
+                casePreNo = no;
+                for(Object caseId : preCaseList) {
+                    LOG.info("开始执行执行前置用例{}", caseId);
+                    executeInterfaceCaseParam.setSource((byte)5);
+                    executeInterfaceCaseParam.setCasePreNo(no);
+                    executeInterfaceCaseParam.setExecutor("前置用例");
+                    executeInterfaceCaseParam.setSuiteLogNo(null); // 把前置用例作为中间依赖case处理
+                    executeInterfaceCaseParam.setInterfaceCaseId((Integer) caseId);
+                    try {
+                        Integer preCaseLogId = this.executeInterfaceCase(executeInterfaceCaseParam);
+                        redisUtil.stackPush(chainNo, preCaseLogId);
+                    } catch (BusinessException e) {
+                        caseStatus = 2;
+                        e.printStackTrace();
+                        LOG.error("前置用例执行失败!" + ExceptionUtil.msg(e));
+                        exceptionMessage = "前置用例执行失败!" + ExceptionUtil.msg(e);
+                    }
+                    LOG.info("前置用例{}执行完成", caseId);
+                }
+            }
+        }
+
+
         // 2.执行case
         LOG.info("2.执行case，caseId={}", interfaceCaseId);
         // a.获取请求方式  0get,1post,2update,3put,4delete
@@ -429,22 +480,22 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         try {
             // 清洗
             if (null != headers) {
-                headers = this.parseRelyData(headers, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
+                headers = this.parseRelyData(headers, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
                 LOG.info("清洗headers，清洗前的内容={}", rawHeaders);
                 LOG.info("清洗headers，清洗后的内容={}", headers);
             }
             if (null != params) {
-                params = this.parseRelyData(params, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
+                params = this.parseRelyData(params, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
                 LOG.info("清洗params，清洗前的内容={}", rawParams);
                 LOG.info("清洗params，清洗后的内容={}", params);
             }
             if (null != data) {
-                data = this.parseRelyData(data, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
+                data = this.parseRelyData(data, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
                 LOG.info("清洗data，清洗前的内容={}", rawData);
                 LOG.info("清洗data，清洗后的内容={}", data);
             }
             if (null != json) {
-                json = this.parseRelyData(json, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
+                json = this.parseRelyData(json, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
                 LOG.info("清洗json，清洗前的内容={}", rawJson);
                 LOG.info("清洗json，清洗后的内容={}", json);
             }
@@ -701,13 +752,17 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
                                     LOG.info("后置处理器运行错误，主动将用例执行状态置为错误");
                                 } else {
-                                    // 写入redis
-                                    if (suiteLogDetailNo == null) { // 不存在则写入临时域
-                                        redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
-                                        LOG.info("写入后置处理器，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
-                                    } else { // 否则写入测试套件域
-                                        redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
-                                        LOG.info("写入后置处理器，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
+                                    if (casePreNo != null) { //如果为前置用例，仅写入前置用例域，
+                                        redisUtil.hashPut(casePreNo, name, value);
+                                        LOG.info("写入后置处理器-前置用例域，key={}，hashKey={}，value={}", casePreNo, name, value);
+                                    } else {
+                                        if (suiteLogDetailNo == null) { // 不存在则写入临时域
+                                            redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
+                                            LOG.info("写入后置处理器-临时域，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
+                                        } else { // 否则写入测试套件域
+                                            redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
+                                            LOG.info("写入后置处理器-测试套件域，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
+                                        }
                                     }
                                 }
                             } else { // 若解析json、xpath出错
@@ -762,7 +817,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     try {
                         // 清洗断言预期结果
                         LOG.info("5.清洗断言预期结果... ... ...");
-                        exceptedResult = this.parseRelyData(exceptedResult, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
+                        exceptedResult = this.parseRelyData(exceptedResult, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
                         LOG.info("清洗断言，清洗后的结果={}", exceptedResult);
                     } catch (ParseException | BusinessException | SqlException e) {
                         assertErrorMessage = e.getMessage();
@@ -1000,12 +1055,17 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
                                     LOG.info("后置处理器运行错误，主动将用例执行状态置为错误");
                                 } else {
-                                    if (suiteLogDetailNo == null) { // 不存在则写入临时域
-                                        redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
-                                        LOG.info("写入后置处理器，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
-                                    } else { // 否则写入测试套件域
-                                        redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
-                                        LOG.info("写入后置处理器，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
+                                    if (casePreNo != null) { //如果为前置用例，仅写入前置用例域，
+                                        redisUtil.hashPut(casePreNo, name, value);
+                                        LOG.info("写入后置处理器-前置用例域，key={}，hashKey={}，value={}", casePreNo, name, value);
+                                    } else {
+                                        if (suiteLogDetailNo == null) { // 不存在则写入临时域
+                                            redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
+                                            LOG.info("写入后置处理器-临时域，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
+                                        } else { // 否则写入测试套件域
+                                            redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
+                                            LOG.info("写入后置处理器-测试套件域，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
+                                        }
                                     }
                                 }
                             } else { // 若解析json、xpath出错
@@ -1046,11 +1106,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * @throws SqlException SqlException
      */
     public String parseRelyData(String s, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo,
-    HashMap globalHeaders, HashMap globalParams, HashMap globalData)
+    HashMap globalHeaders, HashMap globalParams, HashMap globalData, String casePreNo)
             throws ParseException, BusinessException, SqlException {
 
         // 解析后置处理器
-        s = parsePostProcessor(s, suiteLogDetailNo);
+        s = parsePostProcessor(s, suiteLogDetailNo, casePreNo);
 
         LOG.info("--------------------------------------开始字符串解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
@@ -1099,7 +1159,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     // 根据caseId调用相应case
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                             caseId, "系统调度", null, chainNo, suiteId,
-                            isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, (byte)4));
+                            isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, (byte)4, casePreNo));
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
@@ -1269,7 +1329,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     String sql = relyDataVO.getValue();
                     if (relyDataVO.getValue() != null) {
                         LOG.info("开始解析SQL，解析前SQL={}", sql);
-                        sql = parseRelyData(sql, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
+                        sql = parseRelyData(sql, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
                         LOG.info("解析SQL完成，解析后SQL={}", sql);
                     }
                     LOG.info("SQL执行参数，SQL={}, params={}", sql, params);
@@ -1341,7 +1401,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             String sql = relyDataVO.getValue();
                             if (relyDataVO.getValue() != null) {
                                 LOG.info("开始解析SQL，解析前SQL={}", sql);
-                                sql = parseRelyData(sql, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData);
+                                sql = parseRelyData(sql, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
                                 LOG.info("解析SQL完成，解析后SQL={}", sql);
                             }
                             LOG.info("SQL执行参数，SQL={}", sql);
@@ -1354,7 +1414,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     // 根据caseId调用相应case
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                             "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo,
-                            globalHeaders, globalParams, globalData, (byte)4));
+                            globalHeaders, globalParams, globalData, (byte)4, casePreNo));
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     // 获取case执行结果, 不等于0, 则用例未通过
@@ -1430,11 +1490,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * 解析后置处理器
      * @param s 原文
      * @param suiteLogDetailNo 非空时使用测试套件域，否则使用临时域
+     * @param casePreNo 组合用例的前置用例缓存redis hash key
      * @return 解析后的字符串
      * @throws ParseException 找不到后置处理器
      */
     @Override
-    public String parsePostProcessor(String s, String suiteLogDetailNo) throws ParseException {
+    public String parsePostProcessor(String s, String suiteLogDetailNo, String casePreNo) throws ParseException {
         LOG.info("--------------------------------------开始后置处理器提取解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
         Pattern pattern = Pattern.compile("#\\{.+?\\}");
@@ -1445,12 +1506,21 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             InterfaceProcessorVO postProcessor = interfaceProcessorService.findInterfaceProcessorByName(postProcessorName);
             LOG.info("后置处理器名称={}", postProcessorName);
             Object redisResult;
-            if (suiteLogDetailNo == null) {
-                LOG.info("suiteLogDetailNo == null，使用临时变量域");
-                redisResult = redisUtil.hashGet(NoUtil.TEMP_POST_PROCESSOR_NO, postProcessorName);
+            if (casePreNo == null) {
+                if (suiteLogDetailNo == null) {
+                    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~111111111");
+                    LOG.info("suiteLogDetailNo == null && casePreNo == null，使用临时变量域");
+                    redisResult = redisUtil.hashGet(NoUtil.TEMP_POST_PROCESSOR_NO, postProcessorName);
+                } else {
+                    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~22222222");
+                    LOG.info("suiteLogDetailNo != null && casePreNo == null，使用测试套件域");
+                    redisResult = redisUtil.hashGet(suiteLogDetailNo, postProcessorName);
+                }
             } else {
-                LOG.info("suiteLogDetailNo != null，使用测试套件域");
-                redisResult = redisUtil.hashGet(suiteLogDetailNo, postProcessorName);
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~3333333333");
+                System.out.println(casePreNo + "" + postProcessorName);
+                LOG.info("casePreNo != null，使用前置用例域");
+                redisResult = redisUtil.hashGet(casePreNo, postProcessorName);
             }
             if (redisResult == null) {
                 LOG.error("未找到后置处理器" + postProcessorName);

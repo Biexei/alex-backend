@@ -14,6 +14,7 @@ import java.util.HashMap;
  * globalParams 全局params
  * globalData 全局data
  * source 来源（0用例调试 1依赖调试 2运行整个测试套件 3测试套件单个用例调试 4依赖解析 5综合用例-前置用例）
+ * casePreNo 前置用例的参数缓存用的key，为了防止异步执行用例时，tempPostProcessor key被覆盖， 仅前置用例执行时，需要该参数
  */
 @SuppressWarnings("rawtypes")
 public class ExecuteInterfaceCaseParam {
@@ -28,10 +29,12 @@ public class ExecuteInterfaceCaseParam {
     private HashMap globalParams;
     private HashMap globalData;
     private Byte source;
+    private String casePreNo;
 
     public ExecuteInterfaceCaseParam(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo,
                                      Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo,
-                                     HashMap globalHeaders, HashMap globalParams, HashMap globalData, Byte source) {
+                                     HashMap globalHeaders, HashMap globalParams, HashMap globalData, Byte source,
+                                     String casePreNo) {
         this.interfaceCaseId = interfaceCaseId;
         this.executor = executor;
         this.suiteLogNo = suiteLogNo;
@@ -43,6 +46,15 @@ public class ExecuteInterfaceCaseParam {
         this.globalParams = globalParams;
         this.globalData = globalData;
         this.source = source;
+        this.casePreNo = casePreNo;
+    }
+
+    public String getCasePreNo() {
+        return casePreNo;
+    }
+
+    public void setCasePreNo(String casePreNo) {
+        this.casePreNo = casePreNo;
     }
 
     public ExecuteInterfaceCaseParam() {

@@ -29,8 +29,9 @@ public interface InterfaceCaseService {
 
     Integer executeInterfaceCase(ExecuteInterfaceCaseParam executeInterfaceCaseParam) throws BusinessException;
 
-    String parseRelyData(String s, String chainNo, Integer suiteId, Byte isFailedRetry,
-                         String suiteLogDetailNo, HashMap globalHeaders, HashMap globalParams, HashMap globalData) throws BusinessException, ParseException, SqlException;
+    String parseRelyData(String s, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo,
+                         HashMap globalHeaders, HashMap globalParams, HashMap globalData, String casePreNo)
+            throws BusinessException, ParseException, SqlException;
 
-    String parsePostProcessor(String s, String suiteLogDetailNo) throws ParseException;
+    String parsePostProcessor(String s, String suiteLogDetailNo, String casePreNo) throws ParseException;
 }
