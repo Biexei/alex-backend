@@ -42,4 +42,13 @@ public class NoUtil {
     public static String genChainNo() {
         return "CN" + UUID.randomUUID().toString();
     }
+
+    /**
+     * 综合用例的前置用例缓存redis hash key
+     * @param caseId 用例编号
+     * @return 综合用例的前置用例缓存redis hash key
+     */
+    public static String genCasePreNo(Integer caseId) {
+        return "PC" + caseId + UUID.randomUUID().toString();
+    }
 }

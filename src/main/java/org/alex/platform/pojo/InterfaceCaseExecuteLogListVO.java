@@ -23,6 +23,15 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private String chain;
     private Byte isFailedRetry;
     private Integer responseCode;
+    private Byte source;
+
+    public Byte getSource() {
+        return source;
+    }
+
+    public void setSource(Byte source) {
+        this.source = source;
+    }
 
     public Byte getCaseMethod() {
         return caseMethod;

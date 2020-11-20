@@ -369,6 +369,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         HashMap globalHeaders = executeInterfaceCaseParam.getGlobalHeaders();
         HashMap globalParams = executeInterfaceCaseParam.getGlobalParams();
         HashMap globalData = executeInterfaceCaseParam.getGlobalData();
+        Byte source = executeInterfaceCaseParam.getSource();
         LOG.info("---------------------------------开始执行测试用例：caseId={}---------------------------------", interfaceCaseId);
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
@@ -547,6 +548,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setSuiteLogNo(suiteLogNo);
             executeLogDO.setSuiteLogDetailNo(suiteLogDetailNo);
             executeLogDO.setIsFailedRetry(isFailedRetry);
+            executeLogDO.setSource(source);
             InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
             // 返回自增id
             Integer executeLogId = executedLogDO.getId();
@@ -594,6 +596,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setSuiteLogNo(suiteLogNo);
             executeLogDO.setSuiteLogDetailNo(suiteLogDetailNo);
             executeLogDO.setIsFailedRetry(isFailedRetry);
+            executeLogDO.setSource(source);
             InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
             // 4.保存断言日志表，获取运行日志自增id然后在断言日志表中写入断言信息，断言日志都成功后再将日志修改状态为0成功
             // 日志自增id
@@ -1096,7 +1099,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     // 根据caseId调用相应case
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                             caseId, "系统调度", null, chainNo, suiteId,
-                            isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData));
+                            isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, (byte)4));
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
@@ -1351,7 +1354,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     // 根据caseId调用相应case
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                             "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo,
-                            globalHeaders, globalParams, globalData));
+                            globalHeaders, globalParams, globalData, (byte)4));
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     // 获取case执行结果, 不等于0, 则用例未通过

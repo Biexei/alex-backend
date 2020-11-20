@@ -200,8 +200,8 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
         String chainNo = NoUtil.genChainNo();
         Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId, executor,
                 null, chainNo, null, (byte) 1, null, null,
-                null, null));
-        redisUtil.stackPush(chainNo, executeLogId);
+                null, null, (byte)1));
+        // redisUtil.stackPush(chainNo, executeLogId); delete
 
         LOG.info("调用成功，executeLogId={}", executeLogId);
         // 获取case执行结果, 不等于0, 则用例未通过

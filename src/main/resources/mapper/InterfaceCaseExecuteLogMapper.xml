@@ -30,6 +30,7 @@
             <if test="rawRequestParams != null">`raw_request_params`,</if>
             <if test="rawRequestData != null">`raw_request_data`,</if>
             <if test="rawRequestJson != null">`raw_request_json`,</if>
+            <if test="source != null">`source`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="caseId != null">#{caseId},</if>
@@ -56,6 +57,7 @@
             <if test="rawRequestParams != null">#{rawRequestParams},</if>
             <if test="rawRequestData != null">#{rawRequestData},</if>
             <if test="rawRequestJson != null">#{rawRequestJson},</if>
+            <if test="source != null">#{source},</if>
         </trim>
     </insert>
     <select id="selectExecuteList" parameterType="org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO"
@@ -63,7 +65,7 @@
         select `log`.`id`, `case`.`case_id`, `log`.`case_method`, `log`.`case_desc` as `case_desc`, `project`.`project_id`,
             `project`.`name` as `project_name`, `module`.`module_id`, `module`.`name` as `module_name`,
             `log`.`response_body`, `log`.`executer`, `log`.`run_time`, `log`.`status`, `log`.`created_time`,
-            `log`.`error_message`, `log`.`suite_log_no`, `log`.`suite_log_detail_no`,
+            `log`.`error_message`, `log`.`suite_log_no`, `log`.`suite_log_detail_no`, `log`.`source`,
             `log`.`chain`, `log`.`is_failed_retry`, `log`.`response_code`,`log`.`response_body`
         from `t_interface_case_execute_log` as `log`
         LEFT JOIN `t_interface_case` as `case` on `log`.`case_id` = `case`.`case_id`
@@ -126,12 +128,13 @@
         <result column="suite_log_detail_no" property="suiteLogDetailNo"/>
         <result column="chain" property="chain"/>
         <result column="is_failed_retry" property="isFailedRetry"/>
+        <result column="source" property="source"/>
         <collection property="assertList" resultMap="assertList" ofType="org.alex.platform.pojo.InterfaceAssertLogListVO"/>
     </resultMap>
 
     <select id="selectExecute" parameterType="Integer" resultMap="interfaceCaseExecuteVO">
         select `elog`.`id`, `elog`.`case_id`, `elog`.`case_url`, `elog`.`case_method`,`elog`.`case_desc`, `elog`.`request_headers`, `elog`.`request_params`,
-        `elog`.`request_data`, `elog`.`request_json`, `elog`.`response_code`, `elog`.`response_headers`,
+        `elog`.`request_data`, `elog`.`request_json`, `elog`.`response_code`, `elog`.`response_headers`,`elog`.`source`,
         `elog`.`response_body`, `elog`.`executer`, `elog`.`status`, `elog`.`created_time`, `elog`.`error_message`,
         `alog`.`assert_name`, `alog`.`type`, `alog`.`expression`, `alog`.`operator`, `alog`.`excepted_result`, `alog`.`order`,
         `alog`.`actual_result`, `alog`.`status` as `assert_status`, `alog`.`error_message` as `assert_error_message` ,
@@ -170,6 +173,7 @@
             <if test="rawRequestParams != null">`raw_request_params` = #{rawRequestParams},</if>
             <if test="rawRequestData != null">`raw_request_data` = #{rawRequestData},</if>
             <if test="rawRequestJson != null">`raw_request_json` = #{rawRequestJson},</if>
+            <if test="source != null">`source` = #{source},</if>
         </set>
         where `id` = #{id}
     </update>

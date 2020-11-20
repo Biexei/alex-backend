@@ -13,6 +13,7 @@ import java.util.HashMap;
  * globalHeaders 全局headers
  * globalParams 全局params
  * globalData 全局data
+ * source 来源（0用例调试 1依赖调试 2运行整个测试套件 3测试套件单个用例调试 4依赖解析 5综合用例-前置用例）
  */
 @SuppressWarnings("rawtypes")
 public class ExecuteInterfaceCaseParam {
@@ -26,10 +27,11 @@ public class ExecuteInterfaceCaseParam {
     private HashMap globalHeaders;
     private HashMap globalParams;
     private HashMap globalData;
+    private Byte source;
 
     public ExecuteInterfaceCaseParam(Integer interfaceCaseId, String executor, String suiteLogNo, String chainNo,
                                      Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo,
-                                     HashMap globalHeaders, HashMap globalParams, HashMap globalData) {
+                                     HashMap globalHeaders, HashMap globalParams, HashMap globalData, Byte source) {
         this.interfaceCaseId = interfaceCaseId;
         this.executor = executor;
         this.suiteLogNo = suiteLogNo;
@@ -40,6 +42,19 @@ public class ExecuteInterfaceCaseParam {
         this.globalHeaders = globalHeaders;
         this.globalParams = globalParams;
         this.globalData = globalData;
+        this.source = source;
+    }
+
+    public ExecuteInterfaceCaseParam() {
+
+    }
+
+    public Byte getSource() {
+        return source;
+    }
+
+    public void setSource(Byte source) {
+        this.source = source;
     }
 
     public HashMap getGlobalHeaders() {

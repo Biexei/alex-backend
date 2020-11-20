@@ -19,5 +19,12 @@ public class FastJsonTest {
     public void doTest(){
         String s = "[]";
         System.out.println(JSONObject.parseObject(s, ArrayList.class));
+
+        String s1 = "";
+        System.out.println(JSONObject.parseObject(s1, ArrayList.class));
+
+        String s2 = null;
+        System.out.println(JSONObject.parseObject(s2, ArrayList.class));
+
     }
 }
