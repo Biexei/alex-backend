@@ -15,7 +15,7 @@ public interface InterfaceCaseService {
     InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException;
 
     @Transactional(rollbackFor = Exception.class)
-    void saveInterfaceCaseAndAssertAndPostProcessor(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;
+    void saveInterfaceCaseAndAssertAndPostProcessorAndPreCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;
 
     @Transactional(rollbackFor = Exception.class)
     void modifyInterfaceCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException;

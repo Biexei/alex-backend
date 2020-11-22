@@ -20,4 +20,6 @@ public interface InterfaceCaseMapper {
 
     InterfaceCaseInfoVO selectInterfaceCaseByCaseId(Integer caseId);
 
+    InterfaceCaseDO selectInterfaceCase(Integer caseId);
+
 }

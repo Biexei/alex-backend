@@ -63,6 +63,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     InterfaceProcessorService interfaceProcessorService;
     @Autowired
     InterfaceProcessorLogService interfaceProcessorLogService;
+    @Autowired
+    InterfacePreCaseService interfacePreCaseService;
 
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseServiceImpl.class);
 
@@ -116,7 +118,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      * @throws BusinessException BusinessException
      */
     @Override
-    public void saveInterfaceCaseAndAssertAndPostProcessor(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
+    public void saveInterfaceCaseAndAssertAndPostProcessorAndPreCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
         //插入用例详情表，获取自增用例编号
         Integer caseId = this.saveInterfaceCase(interfaceCaseDTO).getCaseId();
         //插入断言表
@@ -135,6 +137,18 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 interfaceProcessorService.saveInterfaceProcessor(interfaceProcessorDO);
             }
         }
+        //插入前置用例表
+        List<InterfacePreCaseDO> preCases = interfaceCaseDTO.getPreCases();
+        if (!preCases.isEmpty()) {
+            for (InterfacePreCaseDO interfacePreCaseDO : preCases) {
+                if (interfacePreCaseDO.getPreCaseId().equals(caseId)) {
+                    LOG.error("系统疑似受到攻击, 前置用例编号等于当前自增用例编号");
+                    throw new BusinessException("参数非法");
+                }
+                interfacePreCaseDO.setParentCaseId(caseId);
+                interfacePreCaseService.saveInterfacePreCase(interfacePreCaseDO);
+            }
+        }
     }
 
     /**
@@ -151,19 +165,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         if (caseId == null) {
             LOG.error("参数错误，缺少caseId");
             throw new BusinessException("参数错误，缺少caseId");
-        }
-
-        String preCaseListJson = interfaceCaseDTO.getPreCaseList();
-        ArrayList preCaseList;
-        try {
-            preCaseList = JSONObject.parseObject(preCaseListJson, ArrayList.class);
-            if (preCaseList != null) {
-                if (preCaseList.contains(caseId)) {
-                    throw new BusinessException("前置用例不能包含本身");
-                }
-            }
-        } catch (Exception e) {
-            LOG.warn("pre case list parse error!");
         }
 
         Date updateTime = new Date();
@@ -294,6 +295,34 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             // 移除该用例下所有的后置处理器
             interfaceProcessorService.removeInterfaceProcessorByCaseId(caseId);
         }
+
+        // 修改前置用例
+        List<InterfacePreCaseDO> preCases = interfaceCaseDTO.getPreCases();
+        List<Integer> preIdList = interfacePreCaseService.findInterfacePreCaseIdByParentId(interfaceCaseDTO.getCaseId());
+        if (preCases != null) {
+            for(InterfacePreCaseDO interfacePreCaseDO : preCases) {
+                interfacePreCaseDO.setParentCaseId(interfaceCaseDTO.getCaseId());
+                // 1.修改已存在的
+                interfacePreCaseService.modifyInterfacePreCase(interfacePreCaseDO);
+                // 2.新增没有自增Id的
+                if (interfacePreCaseDO.getId() == null) {
+                    interfacePreCaseService.saveInterfacePreCase(interfacePreCaseDO);
+                } else {
+                    // 3.有就移出此次新增前的id队列
+                    for (int i = preIdList.size() - 1; i >= 0; i--) {
+                        if (preIdList.get(i).equals(interfacePreCaseDO.getId())) {
+                            preIdList.remove(i);
+                        }
+                    }
+                }
+            }
+            for (Integer id : preIdList) {
+                interfacePreCaseService.removeInterfacePreCaseById(id);
+            }
+        } else {
+            // 移除该用例下所有的前置用例
+            interfacePreCaseService.removeInterfacePreCaseByParentId(caseId);
+        }
     }
 
     /**
@@ -335,6 +364,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             interfaceAssertService.removeAssertByCaseId(interfaceCaseId);
             // 删除与之相关的后置处理器
             interfaceProcessorService.removeInterfaceProcessorByCaseId(interfaceCaseId);
+            // 删除与之相关的前置用例
+            interfacePreCaseService.removeInterfacePreCaseByParentId(interfaceCaseId);
         } else {
             throw new BusinessException(errorMsg);
         }
@@ -436,36 +467,29 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
 
         // 执行前置用例
-        String preCaseListJsonStr = interfaceCaseInfoVO.getPreCaseList();
-        ArrayList preCaseList;
-        try {
-            preCaseList = JSONObject.parseObject(preCaseListJsonStr, ArrayList.class);
-        } catch (Exception e) {
-            preCaseList = null;
-        }
-        if (preCaseList != null) {
-            if (!preCaseList.isEmpty()) {
-                String no = NoUtil.genCasePreNo();
-                // 重置casePreNo
-                casePreNo = no;
-                for(Object caseId : preCaseList) {
-                    LOG.info("开始执行执行前置用例{}", caseId);
-                    executeInterfaceCaseParam.setSource((byte)5);
-                    executeInterfaceCaseParam.setCasePreNo(no);
-                    executeInterfaceCaseParam.setExecutor("前置用例");
-                    executeInterfaceCaseParam.setSuiteLogNo(null); // 把前置用例作为中间依赖case处理
-                    executeInterfaceCaseParam.setInterfaceCaseId((Integer) caseId);
-                    try {
-                        Integer preCaseLogId = this.executeInterfaceCase(executeInterfaceCaseParam);
-                        redisUtil.stackPush(chainNo, preCaseLogId);
-                    } catch (BusinessException e) {
-                        caseStatus = 2;
-                        e.printStackTrace();
-                        LOG.error("前置用例执行失败!" + ExceptionUtil.msg(e));
-                        exceptionMessage = "前置用例执行失败!" + ExceptionUtil.msg(e);
-                    }
-                    LOG.info("前置用例{}执行完成", caseId);
+        List<InterfacePreCaseDO> preCaseList = interfacePreCaseService.findInterfacePreCaseByParentId(interfaceCaseId);
+        if (!preCaseList.isEmpty()) {
+            String no = NoUtil.genCasePreNo();
+            // 重置casePreNo
+            casePreNo = no;
+            for(InterfacePreCaseDO preCase : preCaseList) {
+                Integer caseId = preCase.getPreCaseId();
+                LOG.info("开始执行执行前置用例{}", caseId);
+                executeInterfaceCaseParam.setSource((byte)5);
+                executeInterfaceCaseParam.setCasePreNo(no);
+                executeInterfaceCaseParam.setExecutor("前置用例");
+                executeInterfaceCaseParam.setSuiteLogNo(null); // 把前置用例作为中间依赖case处理
+                executeInterfaceCaseParam.setInterfaceCaseId(caseId);
+                try {
+                    Integer preCaseLogId = this.executeInterfaceCase(executeInterfaceCaseParam);
+                    redisUtil.stackPush(chainNo, preCaseLogId);
+                } catch (BusinessException e) {
+                    caseStatus = 2;
+                    e.printStackTrace();
+                    LOG.error("前置用例执行失败!" + ExceptionUtil.msg(e));
+                    exceptionMessage = "前置用例执行失败!" + ExceptionUtil.msg(e);
                 }
+                LOG.info("前置用例{}执行完成", caseId);
             }
         }
 

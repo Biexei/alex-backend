@@ -3,8 +3,6 @@ package org.alex.platform.controller;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
-import org.alex.platform.exception.ParseException;
-import org.alex.platform.exception.SqlException;
 import org.alex.platform.pojo.InterfaceCaseDTO;
 import org.alex.platform.pojo.InterfaceCaseListDTO;
 import org.alex.platform.pojo.param.ExecuteInterfaceCaseParam;
@@ -36,7 +34,7 @@ public class InterfaceCaseController {
      */
     @PostMapping("/interface/case/save")
     public Result saveInterfaceCase(@RequestBody @Validated InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
-        interfaceCaseService.saveInterfaceCaseAndAssertAndPostProcessor(interfaceCaseDTO);
+        interfaceCaseService.saveInterfaceCaseAndAssertAndPostProcessorAndPreCase(interfaceCaseDTO);
         return Result.success("新增成功");
     }
 

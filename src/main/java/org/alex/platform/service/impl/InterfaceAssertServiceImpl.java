@@ -39,10 +39,6 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
         InterfaceAssertDO assertDO = new InterfaceAssertDO();
         assertDO.setOrder(interfaceAssertDO.getOrder());
         assertDO.setCaseId(interfaceAssertDO.getCaseId());
-        if (!interfaceAssertMapper.selectAssertList(assertDO).isEmpty()) {
-            LOG.warn("新增断言，断言排序重复");
-            throw new BusinessException("断言排序重复");
-        }
         //判断caseId是否存在
         if (interfaceCaseMapper.selectInterfaceCaseByCaseId(caseId) == null) {
             LOG.warn("新增断言，用例编号不存在，caseId={}", caseId);
@@ -73,11 +69,6 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
         if (interfaceCaseMapper.selectInterfaceCaseByCaseId(caseId) == null) {
             LOG.warn("修改断言，用例编号不存在，caseId={}", caseId);
             throw new BusinessException("用例编号不存在");
-        }
-        //判断排序重复
-        if (!interfaceAssertMapper.checkAssertType(interfaceAssertDO).isEmpty()) {
-            LOG.warn("新增断言，断言排序重复");
-            throw new BusinessException("断言排序重复");
         }
         if (interfaceAssertDO.getType() == 3) { //提取数据类型   0json/1html/2header/3responseCode
             interfaceAssertDO.setExpression(null);

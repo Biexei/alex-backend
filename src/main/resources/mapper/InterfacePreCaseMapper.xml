@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.InterfacePreCaseMapper">
+    <insert id="insertInterfacePreCase" parameterType="org.alex.platform.pojo.InterfacePreCaseDO">
+        insert into `t_interface_pre_case`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            `parent_case_id`,
+            `pre_case_id`,
+            `order`,
+            `status`,
+            `created_time`,
+            `update_time`,
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            #{parentCaseId},
+            #{preCaseId},
+            #{order},
+            #{status},
+            #{createdTime},
+            #{updateTime},
+        </trim>
+    </insert>
+
+    <update id="updateInterfacePreCase" parameterType="org.alex.platform.pojo.InterfacePreCaseDO">
+        update `t_interface_pre_case`
+        <set>
+            <if test="parentCaseId!=null">`parent_case_id` = #{parentCaseId},</if>
+            <if test="preCaseId!=null">`pre_case_id` = #{preCaseId},</if>
+            <if test="order!=null">`order` = #{order},</if>
+            <if test="status!=null">`status` = #{status},</if>
+            <if test="createdTime!=null">`created_time` = #{createdTime},</if>
+            <if test="updateTime!=null">`update_time` = #{updateTime},</if>
+        </set>
+        where `id` = #{id}
+    </update>
+
+    <select id="selectInterfacePreCaseByParentId" parameterType="Integer" resultType="org.alex.platform.pojo.InterfacePreCaseDO">
+        select `id`, `parent_case_id`, `pre_case_id`, `order`, `status`, `created_time`, `update_time`
+        from `t_interface_pre_case`
+        where `parent_case_id` = #{parentCaseId} and `status`=0
+        order by `status` asc
+    </select>
+
+    <select id="selectInterfacePreCaseIdByParentId" parameterType="Integer" resultType="Integer">
+        select `id`
+        from `t_interface_pre_case`
+        where `parent_case_id` = #{parentCaseId}
+    </select>
+
+    <delete id="deleteInterfacePreCaseById" parameterType="Integer">
+        delete from `t_interface_pre_case` where `id` = #{id}
+    </delete>
+
+    <delete id="deleteInterfacePreCaseByParentId" parameterType="Integer">
+        delete from `t_interface_pre_case` where `parent_case_id` = #{parentCaseId}
+    </delete>
+</mapper>

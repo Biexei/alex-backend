@@ -19,16 +19,16 @@ public class InterfaceCaseInfoVO implements Serializable {
     private String json;
     private String creater;
     private Date createdTime;
-    private String preCaseList;
     private List<InterfaceAssertVO> asserts;
     private List<InterfaceProcessorDO> postProcessors;
+    private List<InterfacePreCaseVO> preCases;
 
-    public String getPreCaseList() {
-        return preCaseList;
+    public List<InterfacePreCaseVO> getPreCases() {
+        return preCases;
     }
 
-    public void setPreCaseList(String preCaseList) {
-        this.preCaseList = preCaseList;
+    public void setPreCases(List<InterfacePreCaseVO> preCases) {
+        this.preCases = preCases;
     }
 
     public List<InterfaceProcessorDO> getPostProcessors() {

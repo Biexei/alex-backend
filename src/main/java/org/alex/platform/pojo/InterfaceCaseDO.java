@@ -43,15 +43,6 @@ public class InterfaceCaseDO implements Serializable {
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
-    private String preCaseList;
-
-    public String getPreCaseList() {
-        return preCaseList;
-    }
-
-    public void setPreCaseList(String preCaseList) {
-        this.preCaseList = preCaseList;
-    }
 
     public Integer getModuleId() {
         return moduleId;

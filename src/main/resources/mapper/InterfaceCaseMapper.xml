@@ -20,7 +20,6 @@
             <if test="creater != null">`creater`,</if>
             <if test="createdTime != null">`created_time`,</if>
             <if test="updateTime != null">`update_time`,</if>
-            <if test="preCaseList != null">`pre_case_list`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="projectId != null">#{projectId},</if>
@@ -37,7 +36,6 @@
             <if test="creater != null">#{creater},</if>
             <if test="createdTime != null">#{createdTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
-            <if test="preCaseList != null">#{preCaseList},</if>
         </trim>
     </insert>
 
@@ -56,7 +54,6 @@
             `data` = #{data},
             `json` = #{json},
             `creater` = #{creater},
-            `pre_case_list` = #{preCaseList},
             <if test="createdTime != null">`created_time` = #{createdTime},</if>
             <if test="updateTime != null">`update_time` = #{updateTime},</if>
         </set>
@@ -69,8 +66,7 @@
 
     <select id="selectInterfaceCaseList" parameterType="org.alex.platform.pojo.InterfaceCaseListDTO" resultType="org.alex.platform.pojo.InterfaceCaseListVO">
         select `icase`.`case_id`, `icase`.`project_id` `project_id`, `icase`.`module_id` `module_id`, `project`.`name` `project_name`,
-        `module`.`name` `module_name`,`icase`.`desc`,`icase`.`method`, `icase`.`url`, `icase`.`level`, `icase`.`creater`, `icase`.`created_time`,
-        `icase`.`pre_case_list`
+        `module`.`name` `module_name`,`icase`.`desc`,`icase`.`method`, `icase`.`url`, `icase`.`level`, `icase`.`creater`, `icase`.`created_time`
         from `t_interface_case` as `icase`
 --         LEFT JOIN `t_interface_assert` as `assert` on `icase`.`case_id` = `assert`.`case_id`
         LEFT JOIN `t_module` as `module` on `icase`.`module_id` = `module`.`module_id`
@@ -114,6 +110,16 @@
         <result column="post_update_time" property="updateTime"/>
     </resultMap>
 
+    <resultMap id="preCaseVO" type="org.alex.platform.pojo.InterfacePreCaseVO">
+        <id column="pre_id" property="id"/>
+        <result column="pre_case_id" property="preCaseId"/>
+        <result column="pre_order" property="order"/>
+        <result column="pre_status" property="status"/>
+        <result column="pre_created_time" property="createdTime"/>
+        <result column="pre_update_time" property="updateTime"/>
+        <result column="p_case_desc" property="preCaseDesc"/>
+    </resultMap>
+
     <resultMap id="interfaceCaseInfo" type="org.alex.platform.pojo.InterfaceCaseInfoVO">
         <result column="project_id" property="projectId"/>
         <result column="module_id" property="moduleId"/>
@@ -129,24 +135,35 @@
         <result column="json" property="json"/>
         <result column="creater" property="creater"/>
         <result column="created_time" property="createdTime"/>
-        <result column="pre_case_list" property="preCaseList"/>
         <collection property="asserts" ofType="org.alex.platform.pojo.InterfaceAssertVO" resultMap="assertVO"/>
-        <collection property="postProcessors" ofType="org.alex.platform.pojo.InterfaceProcessorDO" resultMap="interfaceProcessorVO"/>
+        <collection property="postProcessors" ofType="org.alex.platform.pojo.InterfaceProcessorVO" resultMap="interfaceProcessorVO"/>
+        <collection property="preCases" ofType="org.alex.platform.pojo.InterfacePreCaseVO" resultMap="preCaseVO"/>
     </resultMap>
 
     <select id="selectInterfaceCaseByCaseId" resultMap="interfaceCaseInfo" parameterType="Integer">
         select `icase`.`project_id`, `icase`.`module_id`, `icase`.`case_id`, `icase`.`url`, `icase`.method, `icase`.`desc`,
-            `icase`.`level`, `icase`.`doc`, `icase`.`headers`, `icase`.`params`, `icase`.`data`, `icase`.`json`,`icase`.`pre_case_list`,
+            `icase`.`level`, `icase`.`doc`, `icase`.`headers`, `icase`.`params`, `icase`.`data`, `icase`.`json`,
             `icase`.`creater`, `icase`.`created_time`, `assert`.`assert_id`, `assert`.`assert_name`, `assert`.`type`, `assert`.`expression`,
             `assert`.`operator`, `assert`.`excepted_result`, `assert`.`order`,
             `post`.`processor_id`, `post`.`name`, `post`.`type` as `post_processor_type`, `post`.`expression` as `post_processor_expression`,
             `post`.`default_value`, `post`.`have_default_value`, `post`.`case_id` as `post_case_id`,
-            `post`.`created_time` as `post_created_time`,`post`.`update_time` as `post_update_time`
+            `post`.`created_time` as `post_created_time`,`post`.`update_time` as `post_update_time`,
+            `pre`.`id` as `pre_id`,`pre`.`pre_case_id`,`pre`.`order` as `pre_order`,`pre`.`status` as `pre_status`,
+            `pre`.`created_time` as `pre_created_time`,`pre`.`update_time` as `pre_update_time`,
+            `pcase`.`desc` as `p_case_desc`
         from `t_interface_case` as `icase`
         left join `t_interface_assert` as `assert` on `icase`.`case_id` = `assert`.`case_id`
         left join `t_interface_processor` as `post` on `icase`.`case_id` = `post`.`case_id`
+        left join `t_interface_pre_case` as `pre` on `icase`.`case_id` = `pre`.`parent_case_id`
+        left join `t_interface_case` as `pcase` on `pre`.`pre_case_id` = `pcase`.`case_id`
         where `icase`.`case_id` = #{caseId}
-        order by `assert`.`order` asc
+        order by `assert`.`order` asc, `pre`.`status` asc
+    </select>
 
+    <select id="selectInterfaceCase" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceCaseDO">
+        select `project_id`,`module_id`,`case_id`,`url`,`method`,`desc`,`level`,`doc`,
+        `headers`,`params`,`data`,`json`,`creater`,`created_time`,`update_time`
+        from `t_interface_case`
+        where `case_id` = #{caseId}
     </select>
 </mapper>
