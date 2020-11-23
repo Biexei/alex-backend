@@ -1,11 +1,13 @@
 package org.alex.platform.service.impl;
 
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.mapper.InterfacePreCaseMapper;
 import org.alex.platform.pojo.InterfaceCaseDO;
 import org.alex.platform.pojo.InterfacePreCaseDO;
 import org.alex.platform.service.InterfacePreCaseService;
+import org.alex.platform.util.ValidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
      */
     @Override
     public void saveInterfacePreCase(InterfacePreCaseDO interfacePreCaseDO) throws BusinessException {
+        this.checkDO(interfacePreCaseDO);
         // 查询是否存在于用例表
         Integer preCaseId = interfacePreCaseDO.getPreCaseId();
         InterfaceCaseDO interfaceCaseDO = interfaceCaseMapper.selectInterfaceCase(preCaseId);
@@ -47,6 +50,7 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
      */
     @Override
     public void modifyInterfacePreCase(InterfacePreCaseDO interfacePreCaseDO) throws BusinessException {
+        this.checkDO(interfacePreCaseDO);
         // 查询是否存在于用例表
         Integer preCaseId = interfacePreCaseDO.getPreCaseId();
         InterfaceCaseDO interfaceCaseDO = interfaceCaseMapper.selectInterfaceCase(preCaseId);
@@ -93,5 +97,9 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
     @Override
     public List<Integer> findInterfacePreCaseIdByParentId(Integer id) {
         return interfacePreCaseMapper.selectInterfacePreCaseIdByParentId(id);
+    }
+
+    private void checkDO(InterfacePreCaseDO interfacePreCaseDO) throws ValidException {
+        ValidUtil.notNUll(interfacePreCaseDO.getPreCaseId(), "前置用例编号不能为空");
     }
 }
