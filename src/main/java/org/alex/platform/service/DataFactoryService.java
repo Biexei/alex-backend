@@ -7,8 +7,6 @@ import org.alex.platform.pojo.DataFactoryDO;
 import org.alex.platform.pojo.DataFactoryDTO;
 import org.alex.platform.pojo.DataFactoryVO;
 
-import java.util.HashMap;
-
 
 public interface DataFactoryService {
     void saveDataFactory(DataFactoryDO dataFactoryDO) throws ValidException;
