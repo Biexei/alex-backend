@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.DataFactoryMapper">
+    <insert id="insertDataFactory" parameterType="org.alex.platform.pojo.DataFactoryDO">
+        insert into `t_data_factory`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            `name`,`type`,`times`,`failed_stop`,`sql_run_dev`,`sql_db_id`,`sql_str`,`interface_suite_id`,`ui_suite_id`,
+            `created_time`,`update_time`
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            #{name},#{type},#{times},#{failedStop},#{sqlRunDev},#{sqlDbId},#{sqlStr},#{interfaceSuiteId},#{uiSuiteId},
+            #{createdTime},#{updateTime}
+        </trim>
+    </insert>
+
+    <update id="updateDataFactory" parameterType="org.alex.platform.pojo.DataFactoryDO">
+        update `t_data_factory`
+        <set>
+            `name`=#{name},`type`=#{type},`times`=#{times},`failed_stop`=#{failedStop},`sql_run_dev`=#{sqlRunDev},
+            `sql_db_id`=#{sqlDbId},`sql_str`=#{sqlStr},`interface_suite_id`=#{interfaceSuiteId},`ui_suite_id`=#{uiSuiteId},
+            `created_time`=#{createdTime},`update_time`=#{updateTime}
+        </set>
+        where `id` =#{id}
+    </update>
+
+    <delete id="deleteDataFactoryById" parameterType="Integer">
+        delete from `t_data_factory` where `id` =#{id}
+    </delete>
+
+    <select id="selectDataFactoryById" parameterType="Integer" resultType="org.alex.platform.pojo.DataFactoryVO">
+        select `id`, `name`,`type`,`times`,`failed_stop`,`sql_run_dev`,`sql_db_id`,`sql_str`,`interface_suite_id`,
+        `ui_suite_id`,`created_time`,`update_time`
+        from `t_data_factory`
+        where `id`=#{id}
+    </select>
+
+    <select id="selectDataFactoryList" parameterType="org.alex.platform.pojo.DataFactoryDTO" resultType="org.alex.platform.pojo.DataFactoryVO">
+        select `id`, `name`,`type`,`times`,`failed_stop`,`sql_run_dev`,`sql_db_id`,`sql_str`,`interface_suite_id`,
+        `ui_suite_id`,`created_time`,`update_time`
+        from `t_data_factory`
+        <where>
+            <if test="name!=null">and `name` like concat('%',#{name},'%')</if>
+            <if test="type!=null">and `type` = #{type}</if>
+        </where>
+    </select>
+</mapper>

@@ -153,7 +153,17 @@ public class InterfaceCaseSuiteServiceImpl implements InterfaceCaseSuiteService 
     }
 
     /**
-     * 辅助测试套件
+     * 获取测试套件列表 不分页
+     * @param interfaceCaseSuiteDTO interfaceCaseSuiteDTO
+     * @return List<InterfaceCaseSuiteVO>
+     */
+    @Override
+    public List<InterfaceCaseSuiteVO> findInterfaceCaseSuiteAll(InterfaceCaseSuiteDTO interfaceCaseSuiteDTO) {
+        return interfaceCaseSuiteMapper.selectInterfaceCaseSuite(interfaceCaseSuiteDTO);
+    }
+
+    /**
+     * 复制测试套件
      *
      * @param suiteId 被复制的测试套件编号
      * @param creator 创建人

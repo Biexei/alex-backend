@@ -90,6 +90,17 @@ public class InterfaceCaseSuiteController {
     }
 
     /**
+     * 查看测试套件列表，不分页
+     *
+     * @param interfaceCaseSuiteDTO interfaceCaseSuiteDTO
+     * @return Result
+     */
+    @GetMapping("/interface/suiteAll")
+    public Result findInterfaceCaseSuiteAll(InterfaceCaseSuiteDTO interfaceCaseSuiteDTO) {
+        return Result.success(interfaceCaseSuiteService.findInterfaceCaseSuiteAll(interfaceCaseSuiteDTO));
+    }
+
+    /**
      * 复制测试套件
      * @param suiteId 被复制测试套件编号
      * @param request 获取测试套件添加人

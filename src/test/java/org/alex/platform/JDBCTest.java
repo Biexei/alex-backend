@@ -85,4 +85,13 @@ public class JDBCTest {
         }
         return result;
     }
+
+    @Test
+    public void doSqlScript() throws Exception {
+        String url = "jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8&tinyInt1isBit=false&transformedBitIsBoolean=false";
+        String username = "root";
+        String password = "root";
+        DruidDataSource dataSource = JdbcUtil.getDruidDataSource(url, username, password);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 }

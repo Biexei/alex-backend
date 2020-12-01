@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +39,8 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
             LOG.error("参数非法,前置用例={}不存在", preCaseId);
             throw new BusinessException("参数非法,前置用例不存在");
         }
+        // 校验前置用例合法性
+        this.validatePreCase(interfacePreCaseDO);
         Date date = new Date();
         interfacePreCaseDO.setCreatedTime(date);
         interfacePreCaseDO.setUpdateTime(date);
@@ -59,10 +62,12 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
             throw new BusinessException("参数非法,前置用例不存在");
         }
         interfacePreCaseDO.setUpdateTime(new Date());
-        if(interfacePreCaseDO.getPreCaseId().equals(interfacePreCaseDO.getParentCaseId())) {
+        if (interfacePreCaseDO.getPreCaseId().equals(interfacePreCaseDO.getParentCaseId())) {
             LOG.warn("前置用例应不能等于用例自身编号");
-            throw new BusinessException("请重新选择前置用例编号");
+            throw new BusinessException("前置用例不能为本身，请重新选择前置用例");
         }
+        // 校验前置用例合法性
+        this.validatePreCase(interfacePreCaseDO);
         interfacePreCaseMapper.updateInterfacePreCase(interfacePreCaseDO);
     }
 
@@ -94,12 +99,63 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
         interfacePreCaseMapper.deleteInterfacePreCaseByParentId(parentCaseId);
     }
 
+    /**
+     * 查询用例的前置用例关联表自增编号集合
+     * @param parentCaseId 用例编号
+     * @return 前置用例集合
+     */
     @Override
-    public List<Integer> findInterfacePreCaseIdByParentId(Integer id) {
-        return interfacePreCaseMapper.selectInterfacePreCaseIdByParentId(id);
+    public List<Integer> findInterfacePreIdByParentId(Integer parentCaseId) {
+        return interfacePreCaseMapper.selectInterfacePreIdByParentId(parentCaseId);
+    }
+
+    /**
+     * 查询用例的前置用例编号集合
+     * @param parentCaseId 用例编号
+     * @return 前置用例集合
+     */
+    @Override
+    public List<Integer> findInterfacePreCaseIdByParentId(Integer parentCaseId) {
+        return interfacePreCaseMapper.selectInterfacePreCaseIdByParentId(parentCaseId);
+    }
+
+    /**
+     * 递归获取所有的前置用例（含前置用例包含的前置用例）集合
+     * @param returnResult 用来接收返回数据的集合
+     * @param parentCaseId 父用例编号
+     * @return 取所有的前置用例（含前置用例包含的前置用例）集合
+     */
+    public List<Integer> recursionPreCase(List<Integer> returnResult, Integer parentCaseId) {
+        List<Integer> list = this.findInterfacePreCaseIdByParentId(parentCaseId);
+        returnResult.addAll(list);
+        for (Integer pId : list) {
+            List<Integer> l = recursionPreCase(new ArrayList<Integer>(), pId);
+            returnResult.addAll(l);
+        }
+        return returnResult;
     }
 
     private void checkDO(InterfacePreCaseDO interfacePreCaseDO) throws ValidException {
         ValidUtil.notNUll(interfacePreCaseDO.getPreCaseId(), "前置用例编号不能为空");
+    }
+
+    /**
+     * 校验前置用例（含前置用例的前置用例）是否包含自身
+     * @param interfacePreCaseDO interfacePreCaseDO
+     * @throws BusinessException 前置用例（含前置用例的前置用例）不能包含本身
+     */
+    private void validatePreCase(InterfacePreCaseDO interfacePreCaseDO) throws BusinessException {
+        Integer parentCase = interfacePreCaseDO.getParentCaseId();
+        Integer preCase = interfacePreCaseDO.getPreCaseId();
+        // 校验父节点
+        List<Integer> allPreCase1 = this.recursionPreCase(new ArrayList<Integer>(), parentCase);
+        if (allPreCase1.contains(preCase)) {
+            throw new BusinessException("前置用例（含前置用例的前置用例）不能包含本身");
+        }
+        // 校验自身节点
+        List<Integer> allPreCase2 = this.recursionPreCase(new ArrayList<Integer>(), preCase);
+        if (allPreCase2.contains(parentCase)) {
+            throw new BusinessException("前置用例（含前置用例的前置用例）不能包含本身");
+        }
     }
 }

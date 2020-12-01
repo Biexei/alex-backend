@@ -16,5 +16,9 @@ public interface InterfacePreCaseService {
 
     void removeInterfacePreCaseByParentId(Integer parentCaseId);
 
+    List<Integer> findInterfacePreIdByParentId(Integer parentCaseId);
+
     List<Integer> findInterfacePreCaseIdByParentId(Integer parentCaseId);
+
+    List<Integer> recursionPreCase(List<Integer> returnResult, Integer parentCaseId);
 }

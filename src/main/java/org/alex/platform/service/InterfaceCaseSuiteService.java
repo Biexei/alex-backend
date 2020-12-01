@@ -7,6 +7,7 @@ import org.alex.platform.pojo.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 public interface InterfaceCaseSuiteService {
@@ -26,6 +27,8 @@ public interface InterfaceCaseSuiteService {
     InterfaceSuiteInfoVO findInterfaceCaseSuiteInfoById(Integer suiteId);
 
     PageInfo<InterfaceCaseSuiteVO> findInterfaceCaseSuite(InterfaceCaseSuiteDTO interfaceCaseSuiteDTO, Integer pageNum, Integer pageSize);
+
+    List<InterfaceCaseSuiteVO> findInterfaceCaseSuiteAll(InterfaceCaseSuiteDTO interfaceCaseSuiteDTO);
 
     @Transactional(rollbackFor = Exception.class)
     HashMap<String, Integer> copyInterfaceCaseSuiteById(Integer suiteId, String creator);

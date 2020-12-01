@@ -121,6 +121,18 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     public void saveInterfaceCaseAndAssertAndPostProcessorAndPreCase(InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
         //插入用例详情表，获取自增用例编号
         Integer caseId = this.saveInterfaceCase(interfaceCaseDTO).getCaseId();
+        //插入前置用例表
+        List<InterfacePreCaseDO> preCases = interfaceCaseDTO.getPreCases();
+        if (!preCases.isEmpty()) {
+            for (InterfacePreCaseDO interfacePreCaseDO : preCases) {
+                if (interfacePreCaseDO.getPreCaseId().equals(caseId)) {
+                    LOG.error("系统疑似受到攻击, 前置用例编号等于当前自增用例编号");
+                    throw new BusinessException("参数非法");
+                }
+                interfacePreCaseDO.setParentCaseId(caseId);
+                interfacePreCaseService.saveInterfacePreCase(interfacePreCaseDO);
+            }
+        }
         //插入断言表
         List<InterfaceAssertDO> assertList = interfaceCaseDTO.getAsserts();
         if (!assertList.isEmpty()) {
@@ -135,18 +147,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             for (InterfaceProcessorDO interfaceProcessorDO : postProcessorList) {
                 interfaceProcessorDO.setCaseId(caseId);
                 interfaceProcessorService.saveInterfaceProcessor(interfaceProcessorDO);
-            }
-        }
-        //插入前置用例表
-        List<InterfacePreCaseDO> preCases = interfaceCaseDTO.getPreCases();
-        if (!preCases.isEmpty()) {
-            for (InterfacePreCaseDO interfacePreCaseDO : preCases) {
-                if (interfacePreCaseDO.getPreCaseId().equals(caseId)) {
-                    LOG.error("系统疑似受到攻击, 前置用例编号等于当前自增用例编号");
-                    throw new BusinessException("参数非法");
-                }
-                interfacePreCaseDO.setParentCaseId(caseId);
-                interfacePreCaseService.saveInterfacePreCase(interfacePreCaseDO);
             }
         }
     }
@@ -268,6 +268,34 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             interfaceAssertService.removeAssertByCaseId(caseId);
         }
 
+        // 修改前置用例
+        List<InterfacePreCaseDO> preCases = interfaceCaseDTO.getPreCases();
+        List<Integer> preIdList = interfacePreCaseService.findInterfacePreIdByParentId(interfaceCaseDTO.getCaseId());
+        if (preCases != null) {
+            for(InterfacePreCaseDO interfacePreCaseDO : preCases) {
+                interfacePreCaseDO.setParentCaseId(interfaceCaseDTO.getCaseId());
+                // 1.修改已存在的
+                interfacePreCaseService.modifyInterfacePreCase(interfacePreCaseDO);
+                // 2.新增没有自增Id的
+                if (interfacePreCaseDO.getId() == null) {
+                    interfacePreCaseService.saveInterfacePreCase(interfacePreCaseDO);
+                } else {
+                    // 3.有就移出此次新增前的id队列
+                    for (int i = preIdList.size() - 1; i >= 0; i--) {
+                        if (preIdList.get(i).equals(interfacePreCaseDO.getId())) {
+                            preIdList.remove(i);
+                        }
+                    }
+                }
+            }
+            for (Integer id : preIdList) {
+                interfacePreCaseService.removeInterfacePreCaseById(id);
+            }
+        } else {
+            // 移除该用例下所有的前置用例
+            interfacePreCaseService.removeInterfacePreCaseByParentId(caseId);
+        }
+
         // 修改后置处理器
         List<InterfaceProcessorDO> postProcessors = interfaceCaseDTO.getPostProcessors();
         List<Integer> postProcessorIdList = interfaceProcessorService.findInterfaceProcessorIdByCaseId(interfaceCaseDTO.getCaseId());
@@ -294,34 +322,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         } else {
             // 移除该用例下所有的后置处理器
             interfaceProcessorService.removeInterfaceProcessorByCaseId(caseId);
-        }
-
-        // 修改前置用例
-        List<InterfacePreCaseDO> preCases = interfaceCaseDTO.getPreCases();
-        List<Integer> preIdList = interfacePreCaseService.findInterfacePreCaseIdByParentId(interfaceCaseDTO.getCaseId());
-        if (preCases != null) {
-            for(InterfacePreCaseDO interfacePreCaseDO : preCases) {
-                interfacePreCaseDO.setParentCaseId(interfaceCaseDTO.getCaseId());
-                // 1.修改已存在的
-                interfacePreCaseService.modifyInterfacePreCase(interfacePreCaseDO);
-                // 2.新增没有自增Id的
-                if (interfacePreCaseDO.getId() == null) {
-                    interfacePreCaseService.saveInterfacePreCase(interfacePreCaseDO);
-                } else {
-                    // 3.有就移出此次新增前的id队列
-                    for (int i = preIdList.size() - 1; i >= 0; i--) {
-                        if (preIdList.get(i).equals(interfacePreCaseDO.getId())) {
-                            preIdList.remove(i);
-                        }
-                    }
-                }
-            }
-            for (Integer id : preIdList) {
-                interfacePreCaseService.removeInterfacePreCaseById(id);
-            }
-        } else {
-            // 移除该用例下所有的前置用例
-            interfacePreCaseService.removeInterfacePreCaseByParentId(caseId);
         }
     }
 
@@ -1357,7 +1357,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         LOG.info("解析SQL完成，解析后SQL={}", sql);
                     }
                     LOG.info("SQL执行参数，SQL={}, params={}", sql, params);
-                    String sqlResult = JdbcUtil.selectFirstColumn(url, username, password, sql, params);
+                    String sqlResult = JdbcUtil.selectFirst(url, username, password, sql, params);
                     s = s.replace(findStr, sqlResult);
                 }
 
@@ -1429,7 +1429,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 LOG.info("解析SQL完成，解析后SQL={}", sql);
                             }
                             LOG.info("SQL执行参数，SQL={}", sql);
-                            String sqlResult = JdbcUtil.selectFirstColumn(url, username, password, sql);
+                            String sqlResult = JdbcUtil.selectFirst(url, username, password, sql);
                             s = s.replace(findStr, sqlResult);
                         }
                     }
