@@ -96,7 +96,7 @@ public class DataFactoryServiceImpl implements DataFactoryService {
             InterfaceCaseSuiteVO suite = interfaceCaseSuiteService.findInterfaceCaseSuiteById(suiteId);
             name = suite.getSuiteName();
         } else if (type == 2) { // ui
-
+            System.out.println("待补充");
         }
         dataFactoryVO.setElementName(name);
         return dataFactoryVO;
@@ -126,6 +126,7 @@ public class DataFactoryServiceImpl implements DataFactoryService {
         DataFactoryVO factoryVO = this.findDataFactoryById(id);
         Byte type = factoryVO.getType();
         boolean failedStop = factoryVO.getFailedStop() == 0;
+        Byte executeType = factoryVO.getExecuteType(); // 执行方式 0并行1串行
         int times = factoryVO.getTimes();
         if (type == 0) { // sql
             // 获取运行环境
@@ -161,27 +162,44 @@ public class DataFactoryServiceImpl implements DataFactoryService {
                 throw new BusinessException("数据源确定运行环境时出错");
             }
             long begin = System.currentTimeMillis();
-            ArrayList<Object> list = new ArrayList<>(10);
             for (int i = 0; i < times; i++) {
                 this.runScript(sql, url, username, password, failedStop);
             }
             long end = System.currentTimeMillis();
             return end - begin;
+
         } else if (type == 1) { // 接口
             Integer suiteId = factoryVO.getInterfaceSuiteId();
-            long begin = System.currentTimeMillis();
-            for (int i = 0; i < times; i++) {
-                try {
-                    ifSuite.executeSuiteCaseById(suiteId, executor);
-                } catch (BusinessException e) {
-                    if (failedStop) {
-                        LOG.error("执行至" + i + "出错");
-                        throw new BusinessException("执行至" + i + "出错");
+            if (executeType == 1) { // 串行
+                long begin = System.currentTimeMillis();
+                for (int i = 0; i < times; i++) {
+                    try {
+                        ifSuite.executeSuiteCaseById(suiteId, executor);
+                    } catch (BusinessException e) {
+                        if (failedStop) {
+                            LOG.error("执行至" + i + "出错");
+                            throw new BusinessException("执行至" + i + "出错");
+                        }
                     }
                 }
+                long end = System.currentTimeMillis();
+                return end - begin;
+            } else { // 并行
+                ArrayList<Integer> list = new ArrayList<>();
+                for (int i = 0; i < times; i++) {
+                    list.add(suiteId);
+                }
+                long begin = System.currentTimeMillis();
+                list.parallelStream().forEach(suite -> {
+                    try {
+                        ifSuite.executeSuiteCaseById(suite, executor);
+                    } catch (BusinessException e) {
+                        throw new RuntimeException("测试套件执行出错");
+                    }
+                });
+                long end = System.currentTimeMillis();
+                return end - begin;
             }
-            long end = System.currentTimeMillis();
-            return end - begin;
         } else if (type == 2) { // ui
             System.out.println("暂不支持");
         }

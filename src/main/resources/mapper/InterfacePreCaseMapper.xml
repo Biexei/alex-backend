@@ -43,8 +43,14 @@
         order by `status` asc
     </select>
 
-    <select id="selectInterfacePreCaseIdByParentId" parameterType="Integer" resultType="Integer">
+    <select id="selectInterfacePreIdByParentId" parameterType="Integer" resultType="Integer">
         select `id`
+        from `t_interface_pre_case`
+        where `parent_case_id` = #{parentCaseId}
+    </select>
+
+    <select id="selectInterfacePreCaseIdByParentId" parameterType="Integer" resultType="Integer">
+        select `pre_case_id`
         from `t_interface_pre_case`
         where `parent_case_id` = #{parentCaseId}
     </select>

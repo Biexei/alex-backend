@@ -32,6 +32,18 @@ public class DataFactoryDO implements Serializable {
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    @NotNull(message = "执行方式不能为空")
+    @Min(value = 0, message = "执行方式只能为0~1")
+    @Max(value = 1, message = "执行方式只能为0~1")
+    private Byte executeType;
+
+    public Byte getExecuteType() {
+        return executeType;
+    }
+
+    public void setExecuteType(Byte executeType) {
+        this.executeType = executeType;
+    }
 
     public Integer getId() {
         return id;

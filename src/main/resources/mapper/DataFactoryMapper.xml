@@ -7,11 +7,11 @@
         insert into `t_data_factory`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             `name`,`type`,`times`,`failed_stop`,`sql_run_dev`,`sql_db_id`,`sql_str`,`interface_suite_id`,`ui_suite_id`,
-            `created_time`,`update_time`
+            `created_time`,`update_time`, `execute_type`
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             #{name},#{type},#{times},#{failedStop},#{sqlRunDev},#{sqlDbId},#{sqlStr},#{interfaceSuiteId},#{uiSuiteId},
-            #{createdTime},#{updateTime}
+            #{createdTime},#{updateTime},#{executeType}
         </trim>
     </insert>
 
@@ -20,7 +20,7 @@
         <set>
             `name`=#{name},`type`=#{type},`times`=#{times},`failed_stop`=#{failedStop},`sql_run_dev`=#{sqlRunDev},
             `sql_db_id`=#{sqlDbId},`sql_str`=#{sqlStr},`interface_suite_id`=#{interfaceSuiteId},`ui_suite_id`=#{uiSuiteId},
-            `created_time`=#{createdTime},`update_time`=#{updateTime}
+            `created_time`=#{createdTime},`update_time`=#{updateTime},`execute_type`=#{executeType}
         </set>
         where `id` =#{id}
     </update>
@@ -31,14 +31,14 @@
 
     <select id="selectDataFactoryById" parameterType="Integer" resultType="org.alex.platform.pojo.DataFactoryVO">
         select `id`, `name`,`type`,`times`,`failed_stop`,`sql_run_dev`,`sql_db_id`,`sql_str`,`interface_suite_id`,
-        `ui_suite_id`,`created_time`,`update_time`
+        `ui_suite_id`,`created_time`,`update_time`, `execute_type`
         from `t_data_factory`
         where `id`=#{id}
     </select>
 
     <select id="selectDataFactoryList" parameterType="org.alex.platform.pojo.DataFactoryDTO" resultType="org.alex.platform.pojo.DataFactoryVO">
         select `id`, `name`,`type`,`times`,`failed_stop`,`sql_run_dev`,`sql_db_id`,`sql_str`,`interface_suite_id`,
-        `ui_suite_id`,`created_time`,`update_time`
+        `ui_suite_id`,`created_time`,`update_time`, `execute_type`
         from `t_data_factory`
         <where>
             <if test="name!=null">and `name` like concat('%',#{name},'%')</if>
