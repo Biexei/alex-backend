@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class DataFactoryDO implements Serializable {
     private Integer id;
+    @Size(message = "名称长度不能超过100")
     private String name;
     @NotNull(message = "类型不能为空")
     @Min(value = 0, message = "类型只能为0~2")

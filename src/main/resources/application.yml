@@ -33,4 +33,8 @@ logging:
     name: src/main/resources/log/log.log
   level:
     root: info
+driver:
+  chrome: src/main/resources/driver/chrome-86.exe
+  firefox: src/main/resources/driver/chrome-86.exe
+  ie: src/main/resources/driver/chrome-86.exe
 
