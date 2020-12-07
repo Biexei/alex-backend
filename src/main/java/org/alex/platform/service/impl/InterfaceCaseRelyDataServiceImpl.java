@@ -226,8 +226,10 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                     throw new ParseException(expression + "提取内容为空");
                 }
                 if (jsonPathArray.size() == 1) {
-                    LOG.info("提取内容为：{}",jsonPathArray.get(0).toString());
-                    return jsonPathArray.get(0).toString();
+                    Object o = jsonPathArray.get(0);
+                    String s = o == null ? null : o.toString();
+                    LOG.info("提取内容为：{}",s);
+                    return s;
                 } else {
                     LOG.info("提取内容为：{}", JSON.toJSONString(jsonPathArray));
                     return JSON.toJSONString(jsonPathArray);
@@ -240,8 +242,10 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                     throw new ParseException(expression + "提取内容为空");
                 }
                 if (xpathArray.size() == 1) {
-                    LOG.info("提取内容为：{}",xpathArray.get(0).toString());
-                    return xpathArray.get(0).toString();
+                    Object o = xpathArray.get(0);
+                    String s = o == null ? null : o.toString();
+                    LOG.info("提取内容为：{}",s);
+                    return s;
                 } else {
                     LOG.info("提取内容为：{}", JSON.toJSONString(xpathArray));
                     return JSON.toJSONString(xpathArray);
@@ -255,8 +259,10 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
                     throw new ParseException("未找到请求头:" + expression);
                 } else {
                     if (headerArray.size() == 1) {
-                        LOG.info("提取内容为：{}",headerArray.get(0).toString());
-                        return headerArray.get(0).toString();
+                        Object o = headerArray.get(0);
+                        String s = o == null ? null : o.toString();
+                        LOG.info("提取内容为：{}",s);
+                        return s;
                     } else {
                         LOG.info("提取内容为：{}", JSON.toJSONString(headerArray));
                         return JSON.toJSONString(headerArray);

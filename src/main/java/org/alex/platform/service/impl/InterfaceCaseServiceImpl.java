@@ -643,7 +643,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             String temp = responseBody;
             try {
                 JSONObject responseBodyObject = JSONObject.parseObject(temp);
-                responseBody = JSON.toJSONString(responseBodyObject, SerializerFeature.PrettyFormat);
+                responseBody = JSON.toJSONString(responseBodyObject, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue);
             } catch (Exception e) {
                 responseBody = temp;
             }
@@ -739,7 +739,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             } else {
                                 isDefaultValue = 1;
                                 if (jsonPathArray.size() == 1) {
-                                    value = jsonPathArray.get(0).toString();
+                                    Object o = jsonPathArray.get(0);
+                                    value = o == null ? null : o.toString();
+                                    //value = jsonPathArray.get(0).toString();
                                 } else {
                                     value = JSON.toJSONString(jsonPathArray);
                                 }
@@ -890,7 +892,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     LOG.info("实际结果={}", actualResult);
                     if (type != 3) {
                         if (resultList.size() == 1) {
-                            actualResult = resultList.get(0).toString();
+                            Object o = resultList.get(0);
+                            actualResult = o == null ? null : o.toString();
+                            //actualResult = resultList.get(0).toString();
                         } else {
                             actualResult = JSON.toJSONString(resultList);
                         }
@@ -988,7 +992,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             } else {
                                 isDefaultValue = 1;
                                 if (jsonPathArray.size() == 1) {
-                                    value = jsonPathArray.get(0).toString();
+                                    Object o = jsonPathArray.get(0);
+                                    value = o == null ? null : o.toString();
+                                    //value = jsonPathArray.get(0).toString();
                                 } else {
                                     value = JSON.toJSONString(jsonPathArray);
                                 }
@@ -1016,7 +1022,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             } else {
                                 isDefaultValue = 1;
                                 if (xpathArray.size() == 1) {
-                                    value = xpathArray.get(0).toString();
+                                    Object o = xpathArray.get(0);
+                                    value = o == null ? null : o.toString();
+                                    //value = xpathArray.get(0).toString();
                                 } else {
                                     value = JSON.toJSONString(xpathArray);
                                 }
@@ -1037,7 +1045,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             } else {
                                 isDefaultValue = 1;
                                 if (headerArray.size() == 1) {
-                                    value = headerArray.get(0).toString();
+                                    Object o = headerArray.get(0);
+                                    value = o == null ? null : o.toString();
+                                    //value = headerArray.get(0).toString();
                                 } else {
                                     value = JSON.toJSONString(headerArray);
                                 }
@@ -1463,7 +1473,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 throw new ParseException(expression + "提取内容为空");
                             }
                             if (jsonPathArray.size() == 1) {
-                                s = s.replace(findStr, jsonPathArray.get(0).toString());
+                                Object o = jsonPathArray.get(0);
+                                if (o == null) {
+                                    throw new BusinessException(jsonPathArray + "提取内容为空");
+                                }
+                                s = s.replace(findStr, o.toString());
                             } else {
                                 s = s.replace(findStr, JSON.toJSONString(jsonPathArray));
                             }
@@ -1475,7 +1489,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 throw new ParseException(expression + "提取内容为空");
                             }
                             if (xpathArray.size() == 1) {
-                                s = s.replace(findStr, xpathArray.get(0).toString());
+                                Object o = xpathArray.get(0);
+                                if (o == null) {
+                                    throw new BusinessException(xpathArray + "提取内容为空");
+                                }
+                                s = s.replace(findStr, o.toString());
                             } else {
                                 s = s.replace(findStr, JSON.toJSONString(xpathArray));
                             }
@@ -1488,7 +1506,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 throw new ParseException("未找到请求头:" + expression);
                             } else {
                                 if (headerArray.size() == 1) {
-                                    s = s.replace(findStr, headerArray.get(0).toString());
+                                    Object o = headerArray.get(0);
+                                    if (o == null) {
+                                        throw new BusinessException(headerArray + "提取内容为空");
+                                    }
+                                    s = s.replace(findStr, o.toString());
                                 } else {
                                     s = s.replace(findStr, JSON.toJSONString(headerArray));
                                 }

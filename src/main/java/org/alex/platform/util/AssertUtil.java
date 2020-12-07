@@ -6,16 +6,16 @@ import java.math.BigDecimal;
 
 public class AssertUtil {
 
-    //  0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re
+    //  操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re、8/isNull、9/notNull
 
     /**
      * 断言工具类
      *
-     * @param result
-     * @param operator
-     * @param exceptedResult
-     * @return
-     * @throws BusinessException
+     * @param result 结果
+     * @param operator 操作符
+     * @param exceptedResult 预期结果
+     * @return 断言结果
+     * @throws BusinessException 字符串不支持<、>、<=、>=操作
      */
     public static boolean asserts(String result, int operator, String exceptedResult) throws BusinessException {
         if (1 <= operator && operator <= 4) {
@@ -83,6 +83,14 @@ public class AssertUtil {
             // re
             case 7: {
                 flag = result.matches(exceptedResult);
+                break;
+            }
+            case 8: {
+                flag = result == null;
+                break;
+            }
+            case 9: {
+                flag = result != null;
                 break;
             }
             default:
