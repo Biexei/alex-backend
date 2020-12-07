@@ -602,9 +602,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogDO.setCaseId(interfaceCaseId);
             executeLogDO.setCaseDesc(desc);
             executeLogDO.setCaseMethod(method);
-            executeLogDO.setRequestHeaders(JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat, SerializerFeature.WriteNullStringAsEmpty).equals("null") ? "" : JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat));
-            executeLogDO.setRequestParams(JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat, SerializerFeature.WriteNullStringAsEmpty).equals("null") ? "" : JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat));
-            executeLogDO.setRequestData(JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat, SerializerFeature.WriteNullStringAsEmpty).equals("null") ? "" : JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat));
+            executeLogDO.setRequestHeaders(JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat));
+            executeLogDO.setRequestParams(JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat));
+            executeLogDO.setRequestData(JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat));
             executeLogDO.setRequestJson(json);
             executeLogDO.setRawRequestHeaders(rawHeaders);
             executeLogDO.setRawRequestParams(rawParams);
