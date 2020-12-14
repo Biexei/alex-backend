@@ -552,23 +552,23 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             }
             if (method == 0) { //get
                 long startTime = System.currentTimeMillis();
-                LOG.info("开始执行GET方法");
                 responseEntity = RestUtil.get(url, headersMap, paramsMap);
                 runTime = System.currentTimeMillis() - startTime;
             } else if (method == 1) { //post
-                LOG.info("开始执行POST方法");
                 long startTime = System.currentTimeMillis();
                 responseEntity = RestUtil.post(url, headersMap, paramsMap, dataMap, json);
                 runTime = System.currentTimeMillis() - startTime;
             } else if (method == 2) { //patch
-                LOG.warn("暂不支持update请求方式");
-                throw new BusinessException("暂不支持update请求方式");
+                LOG.warn("暂不支持patch请求方式");
+                throw new BusinessException("暂不支持patch请求方式");
             } else if (method == 3) { //put
-                LOG.warn("暂不支持put请求方式");
-                throw new BusinessException("暂不支持put请求方式");
+                long startTime = System.currentTimeMillis();
+                responseEntity = RestUtil.put(url, headersMap, paramsMap, dataMap, json);
+                runTime = System.currentTimeMillis() - startTime;
             } else if (method == 4) { //delete
-                LOG.warn("暂不支持delete请求方式");
-                throw new BusinessException("暂不支持delete请求方式");
+                long startTime = System.currentTimeMillis();
+                responseEntity = RestUtil.delete(url, headersMap, paramsMap, dataMap, json);
+                runTime = System.currentTimeMillis() - startTime;
             } else {
                 LOG.error("不支持的请求方式");
                 throw new BusinessException("不支持的请求方式");
@@ -690,7 +690,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 String value = null;
                 if (!processorList.isEmpty()) {
                     for(InterfaceProcessorVO postProcessorVO : processorList) {
-                        interfaceProcessorLogDO = new InterfaceProcessorLogDO();
                         // 提取值
                         Byte type = postProcessorVO.getType();
                         String expression = postProcessorVO.getExpression();

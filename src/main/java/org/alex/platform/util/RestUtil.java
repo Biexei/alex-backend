@@ -14,7 +14,6 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,7 +21,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.annotation.PostConstruct;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +41,6 @@ public class RestUtil {
     public static RestTemplate getInstance() {
         RestTemplate restTemplate = SingleRestTemplate.INSTANCE;
         SimpleClientHttpRequestFactory sh = new SimpleClientHttpRequestFactory();
-        // 1.设置代理
         HttpSettingVO proxy = getProxy();
         if (proxy != null) {
             String[] domain = proxy.getValue().split(":");
@@ -48,11 +48,9 @@ public class RestUtil {
             int port = Integer.parseInt(domain[1]);
             sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port)));
         }
-        // 2.设置超时时长
-        sh.setConnectTimeout(10 * 1000);
-        sh.setReadTimeout(10 * 1000);
+        sh.setConnectTimeout(20 * 1000);
+        sh.setReadTimeout(20 * 1000);
         restTemplate.setRequestFactory(sh);
-        // 3.去除code != 200时异常信息
         restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
             public boolean hasError(ClientHttpResponse clientHttpResponse) {
@@ -87,10 +85,10 @@ public class RestUtil {
     }
 
     /**
-     * get请求,支持动态url,如http://www.baidu.com/name/{name}/{class}
-     * @param url 请求地址，不允许为空
-     * @param headers 请求头，可为空
-     * @param params 请求参数，可为空
+     * get
+     * @param url 请求地址
+     * @param headers 请求头
+     * @param params 请求参数
      * @return 响应实体
      * @throws BusinessException 业务异常
      */
@@ -100,168 +98,159 @@ public class RestUtil {
         RestTemplate restTemplate = RestUtil.getInstance();
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        // 0.检查url
         if (StringUtils.isEmpty(url)) {
-            throw new BusinessException("url不能为空");
+            throw new BusinessException("url should not be empty or null");
         }
-        // 1.判断是否存在头
         if (headers != null) {
             httpHeaders.setAll(headers);
         }
-        // 2.判断是否有参数
-        if (params == null) { // 若无参数
+        if (params == null) {
             return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity(httpHeaders), String.class);
-        } else { // 存在参数
-            // 判断url是否为restful风格，如http://www.baidu.com/name/{name}/{class}
-            Pattern p = Pattern.compile("\\{(\\w)+\\}");
-            Matcher m = p.matcher(url);
-
-            if (m.groupCount() == 0) { // 如果未匹配到，则直接通过params方式发送get请求
-                MultiValueMap paramsMap = new LinkedMultiValueMap<String, String>();
-                for (Map.Entry<String, String> entry : params.entrySet()) {
-                    paramsMap.add(entry.getKey(), entry.getValue());
-                }
-                UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(paramsMap);
-                return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, new HttpEntity(httpHeaders),
-                        String.class);
-            } else { // 匹配到rest风格
-                String urlAfter = url;
-                while (m.find()) {
-                    String pathVariable = m.group();
-                    // 判断params中是否存在pathVariable
-                    if (!params.containsKey(pathVariable.substring(1, pathVariable.length() - 1))) {
-                        throw new BusinessException("params未找到该pathVariable");
-                    } else {
-                        // 将params字典移除匹配到的字段，并把url替换
-                        urlAfter = urlAfter.replace(pathVariable, params.remove(pathVariable.substring(1,
-                                pathVariable.length() - 1)));
-                    }
-                }
-                MultiValueMap paramsMap = new LinkedMultiValueMap<String, String>();
-                for (Map.Entry<String, String> entry : params.entrySet()) {
-                    paramsMap.add(entry.getKey(), entry.getValue());
-                }
-                UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(urlAfter).queryParams(paramsMap);
-                return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, new HttpEntity(httpHeaders),
-                        String.class);
-            }
+        } else {
+            HashMap<String, Object> urlParamsWrapper = urlParamsWrapper(url, params);
+            url = (String) urlParamsWrapper.get("url");
+            params = (HashMap<String, String>) urlParamsWrapper.get("params");
+            return restTemplate.exchange(UriComponentsBuilder.fromHttpUrl(url).queryParams(hashMap2LinkedMultiValueMap(params))
+                            .toUriString(), HttpMethod.GET, new HttpEntity(httpHeaders), String.class);
         }
     }
 
     /**
-     * post请求,支持动态url,如http://www.baidu.com/name/{name}/{class}
-     * @param url 请求地址，不能为空
-     * @param headers 请求头，可为空
-     * @param params 请求参数，可为空
-     * @param data 请求data，可为空，不能和json字段同时为空或同时不为空
-     * @param json 请求json，可为空，不能和data字段同时为空或同时不为空
+     * post
+     * @param url url
+     * @param headers 求头
+     * @param params 请求参数
+     * @param data 请求data
+     * @param json 请求json
      * @return 响应实体
      * @throws BusinessException 业务异常
      */
     public static ResponseEntity post(String url, HashMap<String, String> headers, HashMap<String, String> params,
-                               HashMap<String, String> data, String json) throws BusinessException {
+                                      HashMap<String, String> data, String json) throws BusinessException {
+        return notGetRequest(HttpMethod.POST, url, headers, params, data, json);
+    }
+
+    /**
+     * put
+     * @param url url
+     * @param headers 求头
+     * @param params 请求参数
+     * @param data 请求data
+     * @param json 请求json
+     * @return 响应实体
+     * @throws BusinessException 业务异常
+     */
+    public static ResponseEntity put(String url, HashMap<String, String> headers, HashMap<String, String> params,
+                                      HashMap<String, String> data, String json) throws BusinessException {
+        return notGetRequest(HttpMethod.PUT, url, headers, params, data, json);
+    }
+
+    /**
+     * delete
+     * @param url url
+     * @param headers 求头
+     * @param params 请求参数
+     * @param data 请求data
+     * @param json 请求json
+     * @return 响应实体
+     * @throws BusinessException 业务异常
+     */
+    public static ResponseEntity delete(String url, HashMap<String, String> headers, HashMap<String, String> params,
+                                     HashMap<String, String> data, String json) throws BusinessException {
+        return notGetRequest(HttpMethod.DELETE, url, headers, params, data, json);
+    }
+
+    /**
+     * @param httpMethod 请求方式（post/put/delete）
+     * @param url 请求地址
+     * @param headers 请求头
+     * @param params 请求参数
+     * @param data 请求data
+     * @param json 请求json
+     * @return 响应实体
+     * @throws BusinessException 业务异常
+     */
+    private static ResponseEntity notGetRequest(HttpMethod httpMethod, String url, HashMap<String, String> headers,
+                                                HashMap<String, String> params, HashMap<String, String> data, String json)
+            throws BusinessException {
 
         RestTemplate restTemplate = RestUtil.getInstance();
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        // 0.检查url
         if (StringUtils.isEmpty(url)) {
-            throw new BusinessException("url不能为空");
+            throw new BusinessException("url should not be empty or null");
         }
-        // 1.判断是否存在头
         if (headers != null) {
             httpHeaders.setAll(headers);
         }
-
         if (StringUtils.isNotEmpty(json) && data != null) {
-            throw new BusinessException("data/json只能任传其一");
+            throw new BusinessException("data or json ?");
         }
 
-        // 3.判断是否有参数
-        if (params == null) { // 若无参数
-            // 判断发送data还是json
-            if (data != null) { //走data
-                //此处只能使用LinkedMultiValueMap，若使用HashMap则不会对请求表单进行编码
-                LinkedMultiValueMap formData = new LinkedMultiValueMap();
-                for (Map.Entry<String, String> entry : data.entrySet()) {
-                    formData.add(entry.getKey(), entry.getValue());
-                }
-                //无参数，走data
-                httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity(formData, httpHeaders), String.class);
-            } else { //走json
-                //无参数，走json
-                httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-                return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity(json, httpHeaders), String.class);
-            }
-        } else { // 存在参数
-            // 判断url是否为restful风格，如http://www.baidu.com/name/{name}/{class}
-            Pattern p = Pattern.compile("\\{(\\w)+\\}");
-            Matcher m = p.matcher(url);
-            if (m.groupCount() == 0) { // 如果未匹配到，则url无需替换
-                MultiValueMap paramsMap = new LinkedMultiValueMap<String, String>();
-                for (Map.Entry<String, String> entry : params.entrySet()) {
-                    paramsMap.add(entry.getKey(), entry.getValue());
-                }
-                UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(paramsMap);
-                url = builder.toUriString();
-                // 判断发送data还是json
-                if (data != null) { //走data
-                    //此处只能使用LinkedMultiValueMap，若使用HashMap则不会对请求表单进行编码
-                    LinkedMultiValueMap formData = new LinkedMultiValueMap();
-                    for (Map.Entry<String, String> entry : data.entrySet()) {
-                        formData.add(entry.getKey(), entry.getValue());
-                    }
-                    //有参数，非rest，走data
-                    httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                    return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity(formData, httpHeaders),
-                            String.class);
-                } else { //走json
-                    //有参数，非rest，走json
-                    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-                    return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity(json, httpHeaders),
-                            String.class);
-                }
-            } else { // 匹配到rest风格，则url需要替换
-                String urlAfter = url;
-                while (m.find()) {
-                    String pathVariable = m.group();
-                    // 判断params中是否存在pathVariable
-                    if (!params.containsKey(pathVariable.substring(1, pathVariable.length() - 1))) {
-                        throw new BusinessException("params未找到该pathVariable");
-                    } else {
-                        // 将params字典移除匹配到的字段，并把url替换
-                        urlAfter = urlAfter.replace(pathVariable, params.remove(pathVariable.substring(1,
-                                pathVariable.length() - 1)));
-                    }
-                }
-                MultiValueMap paramsMap = new LinkedMultiValueMap<String, String>();
-                for (Map.Entry<String, String> entry : params.entrySet()) {
-                    paramsMap.add(entry.getKey(), entry.getValue());
-                }
-                UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(urlAfter).queryParams(paramsMap);
-                urlAfter = builder.toUriString();
-                // 判断发送data还是json
-                if (data != null) { //走data
-                    //此处只能使用LinkedMultiValueMap，若使用HashMap则不会对请求表单进行编码
-                    LinkedMultiValueMap formData = new LinkedMultiValueMap();
-                    for (Map.Entry<String, String> entry : data.entrySet()) {
-                        formData.add(entry.getKey(), entry.getValue());
-                    }
-                    //有参数，rest，走data
-                    httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                    return restTemplate.exchange(urlAfter, HttpMethod.POST, new HttpEntity(formData, httpHeaders),
-                            String.class);
-                } else { //走json
-                    //有参数，rest，走json
-                    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-                    return restTemplate.exchange(urlAfter, HttpMethod.POST, new HttpEntity(json, httpHeaders),
-                            String.class);
-                }
-            }
+        HashMap<String, Object> urlParamsWrapper = urlParamsWrapper(url, params);
+        url = (String) urlParamsWrapper.get("url");
+        params = (HashMap<String, String>) urlParamsWrapper.get("params");
+
+        if (params != null && !params.isEmpty()) {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(hashMap2LinkedMultiValueMap(params));
+            url = builder.toUriString();
+        }
+        if (data != null) {
+            LinkedMultiValueMap<String, String> formData = hashMap2LinkedMultiValueMap(data);
+            httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            return restTemplate.exchange(url, httpMethod, new HttpEntity(formData, httpHeaders), String.class);
+        } else {
+            httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+            return restTemplate.exchange(url, httpMethod, new HttpEntity(json, httpHeaders), String.class);
         }
     }
 
+    /**
+     * 解析url参数
+     * @param url url
+     * @param params params
+     * @return 返回解析后的url和params字典
+     * @throws BusinessException 解析失败 未找到key
+     */
+    private static HashMap<String, Object> urlParamsWrapper(String url, HashMap<String, String> params) throws BusinessException {
+        Pattern p = Pattern.compile("\\{(\\w)+}");
+        Matcher m = p.matcher(url);
+        HashMap<String, Object> result = new HashMap<>();
+        while (m.find()) {
+            String pathVariable = m.group();
+            String key = pathVariable.substring(1, pathVariable.length() - 1);
+            if (params == null || params.isEmpty()) {
+                throw new BusinessException("url parse failed, params is empty or null");
+            }
+            if (!params.containsKey(key)) {
+                throw new BusinessException("url parse failed, '" + key + "' not found");
+            } else {
+                url = url.replace(pathVariable, params.remove(pathVariable.substring(1, pathVariable.length() - 1)));
+            }
+        }
+        result.put("url", url);
+        result.put("params", params);
+        return result;
+    }
+
+    /**
+     * HashMap2LinkedMultiValueMap
+     * @param hashMap hashMap
+     * @return inkedMultiValueMap
+     */
+    private static <K, V> LinkedMultiValueMap hashMap2LinkedMultiValueMap(HashMap<K, V> hashMap) {
+        LinkedMultiValueMap<K, V> result = new LinkedMultiValueMap<>();
+        if (hashMap == null) {
+            return null;
+        }
+        if (hashMap.isEmpty()) {
+            return result;
+        }
+        for (Map.Entry<K, V> entry : hashMap.entrySet()) {
+            result.add(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }
 
     /**
      * 获取http响应头
@@ -280,7 +269,11 @@ public class RestUtil {
      * @return http响应正文
      */
     public static String body(ResponseEntity response) {
-        return response.getBody().toString();
+        if (response.getBody() != null) {
+            return response.getBody().toString();
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -337,5 +330,4 @@ public class RestUtil {
         httpSettingDTO.setType((byte)1);
         return restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO);
     }
-
 }
