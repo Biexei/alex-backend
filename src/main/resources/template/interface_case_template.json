@@ -1,0 +1,48 @@
+[
+	{
+		"projectId": Number项目编号,
+		"moduleId": Number模块编号,
+		"url": String"请求地址",
+		"method": String"请求方式",
+		"desc": String"用例描述",
+		"level": String"用例等级",
+		"doc": String"接口文档地址（可选）",
+		"headers": String"",
+		"params": String"",
+		"data": String"",
+		"json": String"",
+		"asserts": [
+			{
+				"order": Number排序,
+				"assertName": String"断言名称",
+				"type": String"提取类型",
+				"expression": String"提取表达式",
+				"operator": String"操作符",
+				"exceptedResult": String"预期结果",
+			}
+		]
+	},
+	{
+		"projectId": ,
+		"moduleId": ,
+		"url": "",
+		"method": "",
+		"desc": "",
+		"level": "",
+		"doc": "",
+		"headers": "",
+		"params": "",
+		"data": "",
+		"json": "",
+		"asserts": [
+			{
+				"order": ,
+				"assertName": "",
+				"type": "",
+				"expression": "",
+				"operator": "",
+				"exceptedResult": ""
+			}
+		]
+	}
+]
