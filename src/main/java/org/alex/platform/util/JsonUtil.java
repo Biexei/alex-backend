@@ -5,7 +5,6 @@ import org.alex.platform.exception.ParseException;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class JsonUtil {
     public static List jsonString2List(String jsonString) throws ParseException {
