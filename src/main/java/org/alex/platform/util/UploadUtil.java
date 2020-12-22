@@ -1,6 +1,6 @@
 package org.alex.platform.util;
 
-import org.alex.platform.enums.WhiteList;
+import org.alex.platform.enums.FileWhiteList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,10 +30,10 @@ public class UploadUtil {
      * @param file file
      * @param filePath 路径
      * @param fileName 文件名称，可为空。为空时获取源文件名称
-     * @param whiteList 白名单类型
+     * @param fileWhiteList 白名单类型
      * @return 成功or失败
      */
-    public static boolean upload(MultipartFile file, String filePath, String fileName, WhiteList whiteList) {
+    public static boolean upload(MultipartFile file, String filePath, String fileName, FileWhiteList fileWhiteList) {
         if (fileName == null || fileName.isEmpty()) {
             fileName = file.getOriginalFilename();
         }
@@ -41,27 +41,27 @@ public class UploadUtil {
             return false;
         }
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-        if (whiteList == WhiteList.IMPORT_CASE) {
+        if (fileWhiteList == FileWhiteList.IMPORT_CASE) {
             if (!Arrays.asList(IMPORT_CASE).contains(fileType)) {
                 return false;
             }
-        } else if (whiteList == WhiteList.CSV) {
+        } else if (fileWhiteList == FileWhiteList.CSV) {
             if (!CSV.equals(fileType)) {
                 return false;
             }
-        } else if (whiteList == WhiteList.JSON) {
+        } else if (fileWhiteList == FileWhiteList.JSON) {
             if (!JSON.equals(fileType)) {
                 return false;
             }
-        } else if (whiteList == WhiteList.EXCEL) {
+        } else if (fileWhiteList == FileWhiteList.EXCEL) {
             if (!Arrays.asList(EXCEL).contains(fileType)) {
                 return false;
             }
-        } else if (whiteList == WhiteList.YAML) {
+        } else if (fileWhiteList == FileWhiteList.YAML) {
             if (!YAML.equals(fileType)) {
                 return false;
             }
-        } else if (whiteList == WhiteList.IMAGE) {
+        } else if (fileWhiteList == FileWhiteList.IMAGE) {
             if (!Arrays.asList(IMAGE).contains(fileType)) {
                 return false;
             }
