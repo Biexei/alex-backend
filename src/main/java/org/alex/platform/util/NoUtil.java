@@ -51,4 +51,12 @@ public class NoUtil {
     public static String genCasePreNo() {
         return "PC" + UUID.randomUUID().toString();
     }
+
+    /**
+     * 接口测试用例导入编号
+     * @return 生成导入编号
+     */
+    public static String genIfImportNo() {
+        return "IFI" + UUID.randomUUID().toString();
+    }
 }

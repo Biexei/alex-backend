@@ -18,14 +18,23 @@ public class InterfaceCaseListVO implements Serializable {
     private String creater;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
-    private String preCaseList;
+    private Byte source;
+    private String importNo;
 
-    public String getPreCaseList() {
-        return preCaseList;
+    public Byte getSource() {
+        return source;
     }
 
-    public void setPreCaseList(String preCaseList) {
-        this.preCaseList = preCaseList;
+    public void setSource(Byte source) {
+        this.source = source;
+    }
+
+    public String getImportNo() {
+        return importNo;
+    }
+
+    public void setImportNo(String importNo) {
+        this.importNo = importNo;
     }
 
     public Date getCreatedTime() {

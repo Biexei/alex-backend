@@ -43,6 +43,24 @@ public class InterfaceCaseDO implements Serializable {
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    private Byte source;
+    private String importNo;
+
+    public Byte getSource() {
+        return source;
+    }
+
+    public void setSource(Byte source) {
+        this.source = source;
+    }
+
+    public String getImportNo() {
+        return importNo;
+    }
+
+    public void setImportNo(String importNo) {
+        this.importNo = importNo;
+    }
 
     public Integer getModuleId() {
         return moduleId;

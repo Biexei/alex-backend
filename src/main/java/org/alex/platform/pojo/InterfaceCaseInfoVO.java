@@ -19,9 +19,27 @@ public class InterfaceCaseInfoVO implements Serializable {
     private String json;
     private String creater;
     private Date createdTime;
+    private Byte source;
+    private String importNo;
     private List<InterfaceAssertVO> asserts;
     private List<InterfaceProcessorDO> postProcessors;
     private List<InterfacePreCaseVO> preCases;
+
+    public Byte getSource() {
+        return source;
+    }
+
+    public void setSource(Byte source) {
+        this.source = source;
+    }
+
+    public String getImportNo() {
+        return importNo;
+    }
+
+    public void setImportNo(String importNo) {
+        this.importNo = importNo;
+    }
 
     public List<InterfacePreCaseVO> getPreCases() {
         return preCases;

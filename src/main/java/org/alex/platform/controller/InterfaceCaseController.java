@@ -34,6 +34,8 @@ public class InterfaceCaseController {
      */
     @PostMapping("/interface/case/save")
     public Result saveInterfaceCase(@RequestBody @Validated InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
+        interfaceCaseDTO.setSource((byte)0);
+        interfaceCaseDTO.setImportNo(null);
         interfaceCaseService.saveInterfaceCaseAndAssertAndPostProcessorAndPreCase(interfaceCaseDTO);
         return Result.success("新增成功");
     }
@@ -47,6 +49,9 @@ public class InterfaceCaseController {
      */
     @PostMapping("/interface/case/modify")
     public Result modifyInterfaceCase(@RequestBody @Validated InterfaceCaseDTO interfaceCaseDTO) throws BusinessException {
+        // 由于是动态sql，手动置为null，防止导入方式被篡改
+        interfaceCaseDTO.setSource(null);
+        interfaceCaseDTO.setImportNo(null);
         interfaceCaseService.modifyInterfaceCase(interfaceCaseDTO);
         return Result.success("修改成功");
     }
