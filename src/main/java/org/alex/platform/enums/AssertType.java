@@ -2,15 +2,29 @@ package org.alex.platform.enums;
 
 public enum AssertType {
 
-    JSON("json", 0),
-    HTML("html", 1),
-    HEADER("header", 2),
-    RESPONSE_CODE("responseCode", 3);
+    JSON("json", (byte)0),
+    HTML("html", (byte)1),
+    HEADER("header", (byte)2),
+    RESPONSE_CODE("responseCode", (byte)3),
+
+    //兼容模式
+    HEADER_("head", (byte)2),
+    HEADER__("headers", (byte)2),
+    RESPONSE_CODE_("code", (byte)3);
 
     private final String assertTypeName;
-    private final Integer assertTypeNum;
+    private final Byte assertTypeNum;
 
-    AssertType(String assertTypeName, Integer assertTypeNum) {
+    public static Byte getAssertTypeKey(String assertTypeName) {
+        for(AssertType assertType : AssertType.values()) {
+            if (assertType.assertTypeName.equalsIgnoreCase(assertTypeName)) {
+                return assertType.assertTypeNum;
+            }
+        }
+        return 0;
+    }
+
+    AssertType(String assertTypeName, Byte assertTypeNum) {
         this.assertTypeName = assertTypeName;
         this.assertTypeNum = assertTypeNum;
     }

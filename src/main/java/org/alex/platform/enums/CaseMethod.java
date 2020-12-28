@@ -5,16 +5,25 @@ package org.alex.platform.enums;
  */
 public enum CaseMethod {
 
-    GET("get", 0),
-    POST("post", 1),
-    PATCH("patch", 2),
-    PUT("put", 3),
-    DELETE("delete", 4);
+    GET("get", (byte)0),
+    POST("post", (byte)1),
+    PATCH("patch", (byte)2),
+    PUT("put", (byte)3),
+    DELETE("delete", (byte)4);
 
     private final String methodName;
-    private final Integer methodNum;
+    private final Byte methodNum;
 
-    CaseMethod(String methodName, Integer methodNum) {
+    public static Byte getMethodKey(String methodName) {
+        for(CaseMethod caseMethod : CaseMethod.values()) {
+            if (caseMethod.methodName.equalsIgnoreCase(methodName)) {
+                return caseMethod.methodNum;
+            }
+        }
+        return 0;
+    }
+
+    CaseMethod(String methodName, Byte methodNum) {
         this.methodName = methodName;
         this.methodNum = methodNum;
     }
