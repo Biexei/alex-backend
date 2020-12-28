@@ -87,10 +87,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         String params = interfaceCaseDO.getParams();
         String data = interfaceCaseDO.getData();
         String json = interfaceCaseDO.getJson();
-        ValidUtil.isJsonObject(headers, "请检查header格式");
-        ValidUtil.isJsonObject(params, "请检查params格式");
-        ValidUtil.isJsonObject(data, "请检查data格式");
-        ValidUtil.isJson(json, "请检查json格式");
 
         //data json 只能任传其一
         if (data != null && json != null) {
@@ -189,10 +185,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         String params = interfaceCaseDO.getParams();
         String data = interfaceCaseDO.getData();
         String json = interfaceCaseDO.getJson();
-        ValidUtil.isJsonObject(headers, "请检查header格式");
-        ValidUtil.isJsonObject(params, "请检查params格式");
-        ValidUtil.isJsonObject(data, "请检查data格式");
-        ValidUtil.isJson(json, "请检查json格式");
 
         // 编辑的时候如果注入依赖为接口依赖，并且依赖接口为当前接口，应该禁止，避免造成死循环
         String checkStr = headers + " " + params + " " + data + " " + json + " ";
@@ -559,8 +551,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 responseEntity = RestUtil.post(url, headersMap, paramsMap, dataMap, json);
                 runTime = System.currentTimeMillis() - startTime;
             } else if (method == 2) { //patch
-                LOG.warn("暂不支持patch请求方式");
-                throw new BusinessException("暂不支持patch请求方式");
+                long startTime = System.currentTimeMillis();
+                responseEntity = RestUtil.patch(url, headersMap, paramsMap, dataMap, json);
+                runTime = System.currentTimeMillis() - startTime;
             } else if (method == 3) { //put
                 long startTime = System.currentTimeMillis();
                 responseEntity = RestUtil.put(url, headersMap, paramsMap, dataMap, json);
