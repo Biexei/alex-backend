@@ -108,13 +108,7 @@ public class InterfaceCaseSuiteController {
      */
     @GetMapping("/interface/suite/copy/{suiteId}")
     public Result copyInterfaceCaseSuiteById(@PathVariable Integer suiteId, HttpServletRequest request) {
-        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
-        String creator;
-        try {
-            creator = map.get("realName").toString();
-        } catch (Exception e) {
-            creator = "";
-        }
+        String creator = loginUserInfo.getRealName(request);
         return Result.success(interfaceCaseSuiteService.copyInterfaceCaseSuiteById(suiteId, creator));
     }
 }

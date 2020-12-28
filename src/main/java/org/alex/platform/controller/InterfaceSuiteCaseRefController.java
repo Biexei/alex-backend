@@ -105,13 +105,7 @@ public class InterfaceSuiteCaseRefController {
      */
     @GetMapping("/interface/suite/execute/{suiteId}")
     public Result executeSuiteCase(@PathVariable Integer suiteId, HttpServletRequest request) throws BusinessException {
-        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
-        String executor = null;
-        try {
-            executor = map.get("realName").toString();
-        } catch (Exception e) {
-            executor = "";
-        }
+        String executor = loginUserInfo.getRealName(request);
         refService.executeSuiteCaseById(suiteId, executor);
         return Result.success("执行成功");
     }
@@ -129,13 +123,7 @@ public class InterfaceSuiteCaseRefController {
             throw new BusinessException("参数错误");
         }
 
-        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
-        String executor = null;
-        try {
-            executor = map.get("realName").toString();
-        } catch (Exception e) {
-            executor = "";
-        }
+        String executor = loginUserInfo.getRealName(request);
         Byte status = refService.executeCaseInSuite(suiteId, caseId, executor);
         if (status == 0) {
             return Result.success("执行成功");

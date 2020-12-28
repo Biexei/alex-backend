@@ -92,13 +92,7 @@ public class DataFactoryController {
      */
     @GetMapping("/data/factory/execute/{id}")
     Result executeDataFactory(@PathVariable Integer id, HttpServletRequest request) throws BusinessException {
-        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
-        String executor = null;
-        try {
-            executor = map.get("realName").toString();
-        } catch (Exception e) {
-            executor = "";
-        }
+        String executor = loginUserInfo.getRealName(request);
         long runTime = service.executeDataFactory(id, executor);
         return Result.success(runTime);
     }

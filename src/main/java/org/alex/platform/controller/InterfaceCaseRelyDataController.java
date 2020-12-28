@@ -105,13 +105,7 @@ public class InterfaceCaseRelyDataController {
      */
     @GetMapping("/interface/rely/check/{relyId}")
     public Result checkIfRelyData(@PathVariable Integer relyId, HttpServletRequest request) throws ParseException, BusinessException, SqlException {
-        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
-        String executor = null;
-        try {
-            executor = map.get("realName").toString();
-        } catch (Exception e) {
-            executor = "";
-        }
+        String executor = loginUserInfo.getRealName(request);
         String result = ifCaseService.checkRelyResult(relyId, executor);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("result", result);
