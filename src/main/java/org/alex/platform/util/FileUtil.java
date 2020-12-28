@@ -3,11 +3,15 @@ package org.alex.platform.util;
 import com.csvreader.CsvReader;
 import org.alex.platform.enums.ExcelType;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.service.impl.InterfaceAssertServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -19,7 +23,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings({"unchecked","rawtypes"})
 public class FileUtil {
-
+    private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
     /**
      * 通过NIO读取文件
      * @param fullPath 全路径
@@ -46,12 +50,14 @@ public class FileUtil {
                 sb.append(s);
             }
         } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
         } finally {
             if (channel != null) {
                 try {
                     channel.close();
                 } catch (IOException e) {
+                    LOG.error(ExceptionUtil.msg(e));
                     e.printStackTrace();
                 }
             }
@@ -83,6 +89,7 @@ public class FileUtil {
                 sb.append(s);
             }
         } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
         } finally {
             closeStream(fis, bis);
@@ -112,6 +119,7 @@ public class FileUtil {
                 sb.append(s);
             }
         } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
         } finally {
             closeStream(fis, bis);
@@ -141,6 +149,7 @@ public class FileUtil {
                 sb.append(s);
             }
         } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
         } finally {
             closeStream(fis, null);
@@ -168,6 +177,7 @@ public class FileUtil {
                 sb.append(s);
             }
         } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
         } finally {
             closeStream(fis, null);
@@ -398,6 +408,38 @@ public class FileUtil {
             }
         }
         return result;
+    }
+
+    /**
+     * 文件下载
+     * @param fullPath 待下载文件全路径
+     * @param charset 编码
+     * @param response HttpServletResponse
+     */
+    public static void download(String fullPath, Charset charset, HttpServletResponse response) {
+        OutputStream outputStream = null;
+        try {
+            outputStream = response.getOutputStream();
+        } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+        }
+        String s = readByBuffer(fullPath, charset);
+        try {
+            if (outputStream != null && s != null) {
+                outputStream.write(s.getBytes(charset));
+            }
+        } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+        }
+        if (outputStream != null) {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

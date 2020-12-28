@@ -7,13 +7,18 @@ import org.alex.platform.pojo.InterfaceCaseDTO;
 import org.alex.platform.pojo.InterfaceCaseListDTO;
 import org.alex.platform.pojo.param.ExecuteInterfaceCaseParam;
 import org.alex.platform.service.InterfaceCaseExecuteLogService;
+import org.alex.platform.service.InterfaceCaseImportService;
 import org.alex.platform.service.InterfaceCaseService;
+import org.alex.platform.util.FileUtil;
 import org.alex.platform.util.NoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 @RestController
@@ -24,6 +29,8 @@ public class InterfaceCaseController {
     InterfaceCaseExecuteLogService executeLogService;
     @Autowired
     LoginUserInfo loginUserInfo;
+    @Autowired
+    InterfaceCaseImportService interfaceCaseImportService;
 
     /**
      * 插入接口测试用例
@@ -38,6 +45,50 @@ public class InterfaceCaseController {
         interfaceCaseDTO.setImportNo(null);
         interfaceCaseService.saveInterfaceCaseAndAssertAndPostProcessorAndPreCase(interfaceCaseDTO);
         return Result.success("新增成功");
+    }
+
+    /**
+     * 导入接口测试用例
+     * @param file file
+     * @param request request
+     * @return Result
+     * @throws BusinessException 业务异常
+     */
+    @PostMapping("/interface/case/import")
+    public Result importInterfaceCase(@RequestParam MultipartFile file, HttpServletRequest request) throws BusinessException {
+        HashMap<String, Integer> result = interfaceCaseImportService.importCase(file, request);
+        return Result.success(result);
+    }
+
+    /**
+     * 接口用例模版下载
+     * @param type 类型
+     * @param response response
+     */
+    @GetMapping("/interface/template/download/{type}")
+    public void downloadTemplate(@PathVariable Integer type, HttpServletResponse response) {
+        String basePath = "src\\main\\resources\\template\\";
+        String excel = "interface_case_template.xlsx";
+        String json = "interface_case_template.json";
+        String csv = "interface_case_template.csv";
+        String yaml = "interface_case_template.yaml";
+        if (type == 1) {
+            response.setHeader("Content-type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment;filename=" + excel);
+            FileUtil.download(basePath + excel, StandardCharsets.ISO_8859_1, response);
+        } else if (type == 2) {
+            response.setHeader("Content-type", "text/csv");
+            response.setHeader("Content-Disposition", "attachment;filename=" + csv);
+            FileUtil.download(basePath + csv, StandardCharsets.ISO_8859_1, response);
+        } else if (type == 3) {
+            response.setHeader("Content-type", "text/json");
+            response.setHeader("Content-Disposition", "attachment;filename=" + json);
+            FileUtil.download(basePath + json, StandardCharsets.UTF_8, response);
+        } else if (type == 4) {
+            response.setHeader("Content-type", "text/yaml");
+            response.setHeader("Content-Disposition", "attachment;filename=" + yaml);
+            FileUtil.download(basePath + yaml, StandardCharsets.UTF_8, response);
+        }
     }
 
     /**
@@ -102,13 +153,7 @@ public class InterfaceCaseController {
      */
     @GetMapping("/interface/case/execute/{caseId}")
     public Result executeInterfaceCase(@PathVariable Integer caseId, HttpServletRequest request) throws BusinessException {
-        HashMap<String, Object> map = (HashMap)loginUserInfo.getLoginUserInfo(request);
-        String executor = null;
-        try {
-            executor = map.get("realName").toString();
-        } catch (Exception e) {
-            executor = "";
-        }
+        String executor = loginUserInfo.getRealName(request);
         Integer executeLog = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId, executor,
                 null, NoUtil.genChainNo(), null, (byte) 1,
                 null, null, null, null, (byte)0, null));
