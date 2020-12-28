@@ -424,7 +424,7 @@ public class FileUtil {
             LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
         }
-        String s = readByBuffer(fullPath, charset);
+        String s = readByNIO(fullPath, charset);
         try {
             if (outputStream != null && s != null) {
                 outputStream.write(s.getBytes(charset));
