@@ -315,6 +315,8 @@ public class FileUtil {
                         } else {
                             rowData.add("error! unknown format");
                         }
+                    } else {
+                        rowData.add(null);
                     }
                 }
                 result.add(rowData);
