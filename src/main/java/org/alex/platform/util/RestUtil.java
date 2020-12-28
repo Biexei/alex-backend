@@ -146,6 +146,21 @@ public class RestUtil {
     }
 
     /**
+     * patch
+     * @param url url
+     * @param headers 求头
+     * @param params 请求参数
+     * @param data 请求data
+     * @param json 请求json
+     * @return 响应实体
+     * @throws BusinessException 业务异常
+     */
+    public static ResponseEntity patch(String url, HashMap<String, String> headers, HashMap<String, String> params,
+                                     HashMap<String, String> data, String json) throws BusinessException {
+        return notGetRequest(HttpMethod.PATCH, url, headers, params, data, json);
+    }
+
+    /**
      * delete
      * @param url url
      * @param headers 求头
