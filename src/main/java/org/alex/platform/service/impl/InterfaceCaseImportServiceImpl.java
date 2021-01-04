@@ -37,14 +37,16 @@ import java.util.List;
 public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportService {
     @Autowired
     InterfaceCaseService interfaceCaseService;
+    @Autowired
     InterfaceAssertService assertService;
+    @Autowired
     LoginUserInfo userInfo;
 
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseImportServiceImpl.class);
 
     @Override
     @SuppressWarnings({"rawtypes"})
-    public HashMap<String, Integer> importCase(MultipartFile file, HttpServletRequest request) throws BusinessException {
+    public HashMap<String, Integer> importCase(MultipartFile file, Integer requestImportType, HttpServletRequest request) throws BusinessException {
         String creator = userInfo.getRealName(request);
         String importNum = NoUtil.genIfImportNo();
 
@@ -73,7 +75,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
             throw new BusinessException("excel文件解析异常");
         }
         String type = filename.substring(filename.lastIndexOf(".") + 1);
-        if (type.equalsIgnoreCase("xls") || type.equalsIgnoreCase("xlsx")) {
+        if ((type.equalsIgnoreCase("xls") || type.equalsIgnoreCase("xlsx")) && requestImportType == 1 ) {
             LOG.info("导入方式：excel");
             ArrayList<List> result;
             try {
@@ -100,7 +102,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
                     LOG.error(ExceptionUtil.msg(e));
                 }
             }
-        } else if (type.equalsIgnoreCase("csv")) {
+        } else if (type.equalsIgnoreCase("csv") && requestImportType == 2 ) {
             LOG.info("导入方式：csv");
             ArrayList<List<String>> result;
             try {
@@ -123,7 +125,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
                     LOG.error(ExceptionUtil.msg(e));
                 }
             }
-        } else if (type.equalsIgnoreCase("json")) {
+        } else if (type.equalsIgnoreCase("json") && requestImportType == 3 ) {
             LOG.info("导入方式：json");
             JSONArray caseArray;
             String fileContent = FileUtil.readByBuffer(fis, StandardCharsets.UTF_8);
@@ -147,7 +149,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
                     LOG.error(ExceptionUtil.msg(e));
                 }
             }
-        } else if (type.equalsIgnoreCase("yaml")) {
+        } else if (type.equalsIgnoreCase("yaml")  && requestImportType == 4 ) {
             LOG.info("导入方式：yaml");
             Yaml yaml = new Yaml();
         } else {

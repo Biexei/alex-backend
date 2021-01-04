@@ -55,8 +55,8 @@ public class InterfaceCaseController {
      * @throws BusinessException 业务异常
      */
     @PostMapping("/interface/case/import")
-    public Result importInterfaceCase(@RequestParam MultipartFile file, HttpServletRequest request) throws BusinessException {
-        HashMap<String, Integer> result = interfaceCaseImportService.importCase(file, request);
+    public Result importInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer type, HttpServletRequest request) throws BusinessException {
+        HashMap<String, Integer> result = interfaceCaseImportService.importCase(file, type, request);
         return Result.success(result);
     }
 
@@ -73,19 +73,15 @@ public class InterfaceCaseController {
         String csv = "interface_case_template.csv";
         String yaml = "interface_case_template.yaml";
         if (type == 1) {
-            response.setHeader("Content-type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment;filename=" + excel);
             FileUtil.download(basePath + excel, StandardCharsets.ISO_8859_1, response);
         } else if (type == 2) {
-            response.setHeader("Content-type", "text/csv");
             response.setHeader("Content-Disposition", "attachment;filename=" + csv);
             FileUtil.download(basePath + csv, StandardCharsets.ISO_8859_1, response);
         } else if (type == 3) {
-            response.setHeader("Content-type", "text/json");
             response.setHeader("Content-Disposition", "attachment;filename=" + json);
             FileUtil.download(basePath + json, StandardCharsets.UTF_8, response);
         } else if (type == 4) {
-            response.setHeader("Content-type", "text/yaml");
             response.setHeader("Content-Disposition", "attachment;filename=" + yaml);
             FileUtil.download(basePath + yaml, StandardCharsets.UTF_8, response);
         }

@@ -9,5 +9,5 @@ import java.util.HashMap;
 
 public interface InterfaceCaseImportService {
     @Transactional(rollbackFor = Exception.class)
-    HashMap<String, Integer> importCase(MultipartFile file, HttpServletRequest request) throws BusinessException;
+    HashMap<String, Integer> importCase(MultipartFile file, Integer requestImportType, HttpServletRequest request) throws BusinessException;
 }
