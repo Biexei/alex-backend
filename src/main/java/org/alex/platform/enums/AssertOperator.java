@@ -13,6 +13,7 @@ public enum AssertOperator {
 
     //兼容模式
     EQ_("eq",(byte)0),
+    EQ__("==",(byte)0),
     LT_("lt",(byte)1),
     GT_("gt",(byte)2),
     LE_("le",(byte)3),
