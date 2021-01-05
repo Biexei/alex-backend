@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 
 public interface InterfaceCaseService {
-    @Transactional(rollbackFor = Exception.class)
+//    @Transactional(rollbackFor = Exception.class)
     InterfaceCaseDO saveInterfaceCase(InterfaceCaseDO interfaceCaseDO) throws BusinessException;
 
     @Transactional(rollbackFor = Exception.class)
