@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
@@ -106,7 +107,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
             LOG.info("导入方式：csv");
             ArrayList<List<String>> result;
             try {
-                result = FileUtil.readCsv(fis, true, StandardCharsets.ISO_8859_1);
+                result = FileUtil.readCsv(fis, false, true, Charset.forName("gb2312"));
             } catch (Exception e) {
                 LOG.error(ExceptionUtil.msg(e));
                 throw new BusinessException("csv文件读取异常");
@@ -153,7 +154,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
             LOG.info("导入方式：yaml");
             Yaml yaml = new Yaml();
         } else {
-            throw new BusinessException("不支持此类型文件");
+            throw new BusinessException("不支持此类型文件/文件类型不匹配");
         }
         LOG.info("用例导入流程完成，总记录：{}，成功：{}，失败：{}", totalNum, successNum, failedNum);
         return importResult(totalNum, successNum, failedNum);
@@ -202,6 +203,9 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
         headers = (String)row.get(7);
         params = (String)row.get(8);
         data = (String)row.get(9);
+        if (data != null && data.isEmpty()) {
+            data = null;
+        }
         json = (String)row.get(10);
         assertStr = (String)row.get(11);
 
