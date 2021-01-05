@@ -339,12 +339,13 @@ public class FileUtil {
     /**
      * CSV解析
      * @param fullPath 全路径（含文件名称）
-     * @param ignoreEmptyRecord 是否忽略空记录
+     * @param ignoreEmptyCell 是否忽略空单元格
+     * @param empty2null 是否将空字符串转为null, ignoreEmptyCell == true 时，该字段无效
      * @param charset 字符编码，推荐gb2312，否则乱码
      * @return 二维list
      * @throws Exception 解析异常
      */
-    public static ArrayList<List<String>> readCsv(String fullPath, boolean ignoreEmptyRecord, Charset charset)
+    public static ArrayList<List<String>> readCsv(String fullPath, boolean ignoreEmptyCell, boolean empty2null, Charset charset)
             throws Exception {
 
         if (StringUtils.isEmpty(fullPath)) {
@@ -363,8 +364,13 @@ public class FileUtil {
         ArrayList<List<String>> result = new ArrayList<>();
         csvReader.readHeaders();
         while (csvReader.readRecord()) {
-            if (!ignoreEmptyRecord) {
-                result.add(Arrays.asList(csvReader.getValues()));
+            if (!ignoreEmptyCell) {
+                String[] rowArray = csvReader.getValues();
+                if (empty2null) {
+                    result.add(Arrays.stream(rowArray).map(e->e.isEmpty() ? null : e).collect(Collectors.toList()));
+                } else {
+                    result.add(Arrays.asList(rowArray));
+                }
             } else {
                 List<String> collect = Arrays.stream(csvReader.getValues()).filter(
                         (e) -> !e.isEmpty()).collect(Collectors.toList());
@@ -379,12 +385,13 @@ public class FileUtil {
     /**
      * CSV解析
      * @param fis 文件输入流
-     * @param ignoreEmptyRecord 是否忽略空记录
+     * @param ignoreEmptyCell 是否忽略空单元格
+     * @param empty2null 是否将空字符串转为null, ignoreEmptyCell == true 时，该字段无效
      * @param charset 字符编码，推荐gb2312，否则乱码
      * @return 二维list
      * @throws Exception 解析异常
      */
-    public static ArrayList<List<String>> readCsv(FileInputStream fis, boolean ignoreEmptyRecord, Charset charset)
+    public static ArrayList<List<String>> readCsv(FileInputStream fis, boolean ignoreEmptyCell, boolean empty2null, Charset charset)
             throws Exception {
 
         if (fis == null) {
@@ -397,8 +404,13 @@ public class FileUtil {
         ArrayList<List<String>> result = new ArrayList<>();
         csvReader.readHeaders();
         while (csvReader.readRecord()) {
-            if (!ignoreEmptyRecord) {
-                result.add(Arrays.asList(csvReader.getValues()));
+            if (!ignoreEmptyCell) {
+                String[] rowArray = csvReader.getValues();
+                if (empty2null) {
+                    result.add(Arrays.stream(rowArray).map(e->e.isEmpty() ? null : e).collect(Collectors.toList()));
+                } else {
+                    result.add(Arrays.asList(rowArray));
+                }
             } else {
                 List<String> collect = Arrays.stream(csvReader.getValues()).filter(
                         (e) -> !e.isEmpty()).collect(Collectors.toList());
