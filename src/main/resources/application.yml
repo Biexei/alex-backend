@@ -1,6 +1,9 @@
 server:
   port: 7777
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
   mail:
     host: smtp.163.com
     port: 25
