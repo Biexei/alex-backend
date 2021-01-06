@@ -1,0 +1,20 @@
+-
+   projectId: 
+   moduleId:
+   url:
+   method:
+   desc:
+   level:
+   doc:
+   headers:
+   params:
+   json:
+   data:
+   asserts:
+      -
+         order:
+         desc:
+         type:
+         expression:
+         operator:
+         exceptedResult:
