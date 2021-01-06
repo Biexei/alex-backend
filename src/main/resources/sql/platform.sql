@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2020-12-23 16:37:45
+Date: 2021-01-06 16:46:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -118,13 +118,13 @@ CREATE TABLE `t_interface_assert` (
   `created_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`assert_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert
 -- ----------------------------
-INSERT INTO `t_interface_assert` VALUES ('54', '状态码=200', '69', '3', null, '0', '200', '0', null, '2020-11-09 12:18:40');
-INSERT INTO `t_interface_assert` VALUES ('55', 'username=123', '69', '0', '$..data.list[0].username', '0', '123', '1', null, '2020-11-09 12:18:40');
+INSERT INTO `t_interface_assert` VALUES ('54', '状态码=200', '69', '3', null, '0', '200', '0', null, '2020-12-24 14:49:59');
+INSERT INTO `t_interface_assert` VALUES ('55', 'username=123', '69', '0', '$..data.list[0].username', '0', '123', '1', null, '2020-12-24 14:49:59');
 INSERT INTO `t_interface_assert` VALUES ('56', '状态码=200', '70', '3', null, '0', '200', '0', null, '2020-11-20 15:46:21');
 INSERT INTO `t_interface_assert` VALUES ('57', 'code=200', '70', '0', '$..code', '0', '200', '1', null, '2020-11-20 15:46:21');
 INSERT INTO `t_interface_assert` VALUES ('58', '状态码=200', '71', '3', null, '0', '200', '0', null, '2020-11-19 11:30:27');
@@ -166,7 +166,7 @@ CREATE TABLE `t_interface_assert_log` (
   `error_message` mediumtext COMMENT '断言出错异常信息',
   `created_time` datetime DEFAULT NULL,
   PRIMARY KEY (`assert_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3008 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3014 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert_log
@@ -3178,6 +3178,12 @@ INSERT INTO `t_interface_assert_log` VALUES ('3004', '1692', '54', '状态码=20
 INSERT INTO `t_interface_assert_log` VALUES ('3005', '1692', '55', 'username=123', '69', '0', '$..data.list[0].username', '0', '123', '123', '1', '123', '0', null, '2020-12-22 15:48:39');
 INSERT INTO `t_interface_assert_log` VALUES ('3006', '1694', '67', 'http code == 200', '75', '3', null, '0', '200', '200', '0', '200', '0', null, '2020-12-23 15:44:33');
 INSERT INTO `t_interface_assert_log` VALUES ('3007', '1694', '68', 'sub code == 200', '75', '0', '$..code', '0', '200', '200', '1', '200', '0', null, '2020-12-23 15:44:33');
+INSERT INTO `t_interface_assert_log` VALUES ('3008', '1698', '54', '状态码=200', '69', '3', null, '0', '200', '200', '0', '200', '0', null, '2020-12-24 14:50:02');
+INSERT INTO `t_interface_assert_log` VALUES ('3009', '1698', '55', 'username=123', '69', '0', '$..data.list[0].username', '0', '123', '123', '1', '[]', '1', null, '2020-12-24 14:50:02');
+INSERT INTO `t_interface_assert_log` VALUES ('3010', '1699', '67', 'http code == 200', '75', '3', null, '0', '200', '200', '0', '200', '0', null, '2020-12-30 12:47:44');
+INSERT INTO `t_interface_assert_log` VALUES ('3011', '1699', '68', 'sub code == 200', '75', '0', '$..code', '0', '200', '200', '1', '200', '0', null, '2020-12-30 12:47:44');
+INSERT INTO `t_interface_assert_log` VALUES ('3012', '1700', '58', '状态码=200', '71', '3', null, '0', '200', '200', '0', '200', '0', null, '2020-12-30 12:47:44');
+INSERT INTO `t_interface_assert_log` VALUES ('3013', '1700', '59', 'code=200', '71', '0', '$..code', '0', '200', '200', '1', '200', '0', null, '2020-12-30 12:47:44');
 
 -- ----------------------------
 -- Table structure for t_interface_case
@@ -3202,12 +3208,12 @@ CREATE TABLE `t_interface_case` (
   `source` tinyint DEFAULT NULL COMMENT '来源0新增1excel导入2csv导入3json导入4yaml导入',
   `import_no` varchar(100) DEFAULT NULL COMMENT '导入编号',
   PRIMARY KEY (`case_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=276 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case
 -- ----------------------------
-INSERT INTO `t_interface_case` VALUES ('4', '6', '69', '/user/list', '0', '查看所有的用户列表', '1', null, '{\"Token\":\"${Token}\"}', '', null, null, '1', '2020-09-26 21:14:31', '2020-11-09 12:18:40', '0', null);
+INSERT INTO `t_interface_case` VALUES ('4', '6', '69', '/user/list', '0', '查看所有的用户列表', '1', null, '{\"Token\":\"${md5(\"#{token}\")}\"}', '', null, null, '1', '2020-09-26 21:14:31', '2020-12-24 14:49:59', '0', null);
 INSERT INTO `t_interface_case` VALUES ('4', '6', '70', '/user/save', '1', '添加用户', '0', null, '{\"Token\":\"${Token}\"}', '', '{\"username\":\"${timestamp()}\",\"password\":\"123\",\"sex\":0,\"realName\":\"${timestamp()}\"}', null, '1', '2020-09-26 21:19:49', '2020-11-20 15:46:21', '0', null);
 INSERT INTO `t_interface_case` VALUES ('4', '7', '71', '/project/list', '0', '查看项目列表', '0', null, '{\"Token\":\"${Token}\"}', '', null, null, '1', '2020-09-26 21:29:42', '2020-11-19 11:30:27', '0', null);
 INSERT INTO `t_interface_case` VALUES ('4', '7', '73', '/project/info', '0', '查看项目详情', '1', null, '{\"Token\":\"${Token}\"}', '{\"projectId\":\"4\"}', null, null, '1', '2020-10-01 21:56:05', '2020-11-09 12:18:29', '0', null);
@@ -3257,7 +3263,7 @@ CREATE TABLE `t_interface_case_execute_log` (
   `is_failed_retry` tinyint DEFAULT NULL COMMENT '是否为失败重跑用例0是1否',
   `source` tinyint DEFAULT NULL COMMENT '来源（0用例调试 1依赖调试 2运行整个测试套件 3测试套件单个用例调试 4依赖解析 5综合用例-前置用例）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1695 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1702 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case_execute_log
@@ -4956,6 +4962,13 @@ INSERT INTO `t_interface_case_execute_log` VALUES ('1691', '75', '用户登录',
 INSERT INTO `t_interface_case_execute_log` VALUES ('1692', '69', '查看所有的用户列表', 'http://localhost:7777/user/list', '0', '{\n	\"Token\":\"0c65c329-09fa-4227-8d78-927a51928135\"\n}', '', '', null, '{\"Token\":\"${Token}\"}', '', null, null, '200', '{\n	\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\n	\"Content-Type\":[\"application/json\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Date\":[\"Tue, 22 Dec 2020 07:48:38 GMT\"],\n	\"Keep-Alive\":[\"timeout=60\"],\n	\"Connection\":[\"keep-alive\"]\n}', '{\n	\"msg\":\"操作成功\",\n	\"code\":200,\n	\"data\":{\n		\"startRow\":1,\n		\"navigatepageNums\":[\n			1,\n			2,\n			3,\n			4,\n			5,\n			6,\n			7,\n			8\n		],\n		\"lastPage\":8,\n		\"prePage\":0,\n		\"hasNextPage\":true,\n		\"nextPage\":2,\n		\"pageSize\":10,\n		\"endRow\":10,\n		\"list\":[\n			{\n				\"realName\":\"系统管理员\",\n				\"password\":null,\n				\"roleId\":null,\n				\"sex\":1,\n				\"createdTime\":\"2020-11-18 14:45:32\",\n				\"updateTime\":null,\n				\"userId\":1,\n				\"jobNumber\":null,\n				\"username\":\"123\",\n				\"isEnable\":1\n			},\n			{\n				\"realName\":\"1607050839024\",\n				\"password\":null,\n				\"roleId\":null,\n				\"sex\":0,\n				\"createdTime\":\"2020-12-04 11:00:39\",\n				\"updateTime\":null,\n				\"userId\":441,\n				\"jobNumber\":null,\n				\"username\":\"1607050839024\",\n				\"isEnable\":1\n			},\n			{\n				\"realName\":\"1607330803575\",\n				\"password\":null,\n				\"roleId\":null,\n				\"sex\":0,\n				\"createdTime\":\"2020-12-07 16:46:44\",\n				\"updateTime\":null,\n				\"userId\":442,\n				\"jobNumber\":null,\n				\"username\":\"1607330803575\",\n				\"isEnable\":1\n			},\n			{\n				\"realName\":\"1607330803722\",\n				\"password\":null,\n				\"roleId\":null,\n				\"sex\":0,\n				\"createdTime\":\"2020-12-07 16:46:44\",\n				\"updateTime\":null,\n				\"userId\":443,\n				\"jobNumber\":null,\n				\"username\":\"1607330803722\",\n				\"isEnable\":1\n			},\n			{\n				\"realName\":\"1607330803930\",\n				\"password\":null,\n				\"roleId\":null,\n				\"sex\":0,\n				\"createdTime\":\"2020-12-07 16:46:44\",\n				\"updateTime\":null,\n				\"userId\":444,\n				\"jobNumber\":null,\n				\"username\":\"1607330803930\",\n				\"isEnable\":1\n			},\n			{\n				\"realName\":\"1607330803944\",\n				\"password\":null,\n				\"roleId\":null,\n				\"sex\":0,\n				\"createdTime\":\"2020-12-07 16:46:44\",\n				\"updateTime\":null,\n				\"userId\":445,\n				\"jobNumber\":null,\n				\"username\":\"1607330803944\",\n				\"isEnable\":1\n			},\n			{\n				\"realName\":\"1607330803984\",\n				\"password\":null,\n				\"roleId\":null,\n				\"sex\":0,\n				\"createdTime\":\"2020-12-07 16:46:44\",\n				\"updateTime\":null,\n				\"userId\":446,\n				\"jobNumber\":null,\n				\"username\":\"1607330803984\",\n				\"isEnable\":1\n			},\n			{\n				\"realName\":\"1607666429569\",\n				\"password\":null,\n				\"roleId\":null,\n				\"sex\":0,\n				\"createdTime\":\"2020-12-11 14:00:30\",\n				\"updateTime\":null,\n				\"userId\":447,\n				\"jobNumber\":null,\n				\"username\":\"1607666429569\",\n				\"isEnable\":1\n			},\n			{\n				\"realName\":\"1607909771370\",\n				\"password\":null,\n				\"roleId\":null,\n				\"sex\":0,\n				\"createdTime\":\"2020-12-14 09:36:11\",\n				\"updateTime\":null,\n				\"userId\":448,\n				\"jobNumber\":null,\n				\"username\":\"1607909771370\",\n				\"isEnable\":1\n			},\n			{\n				\"realName\":\"1607927115408\",\n				\"password\":null,\n				\"roleId\":null,\n				\"sex\":0,\n				\"createdTime\":\"2020-12-14 14:25:16\",\n				\"updateTime\":null,\n				\"userId\":449,\n				\"jobNumber\":null,\n				\"username\":\"1607927115408\",\n				\"isEnable\":1\n			}\n		],\n		\"pageNum\":1,\n		\"navigatePages\":8,\n		\"total\":110,\n		\"navigateFirstPage\":1,\n		\"pages\":11,\n		\"size\":10,\n		\"firstPage\":1,\n		\"isLastPage\":false,\n		\"hasPreviousPage\":false,\n		\"navigateLastPage\":8,\n		\"isFirstPage\":true\n	}\n}', '9', '系统管理员', '0', '2020-12-22 15:48:39', null, null, null, '[1691]', '1', '0');
 INSERT INTO `t_interface_case_execute_log` VALUES ('1693', '138', '用户登录', 'https://jiajie.newcapec.cn/api/getLoginType', '1', '', '{\n	\"password\":\"123\",\n	\"username\":\"123\"\n}', '', '{\n    \"data\": {\n        \"username\": \"13633841517\",\n        \"deviceid\": \"2139821839218\",\n        \"ip\": \"219.156.88.112\"\n    }\n}', '', '{\"username\":\"123\",\"password\":\"123\"}', null, '{\n    \"data\": {\n        \"username\": \"13633841517\",\n        \"deviceid\": \"2139821839218\",\n        \"ip\": \"219.156.88.112\"\n    }\n}', '200', '{\n	\"Date\":[\"Tue, 22 Dec 2020 07:48:58 GMT\"],\n	\"Content-Type\":[\"application/json;charset=UTF-8\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Connection\":[\"keep-alive\"],\n	\"Set-Cookie\":[\"SERVERID=913b9979b77392b9e7df0253237fd2f0|1608623338|1608623338;Path=/\"]\n}', '{\n	\"result\":true,\n	\"code\":\"0\",\n	\"data\":{\n		\"isOpenPwdLogin\":true,\n		\"loginType\":\"1\",\n		\"isNew\":false\n	},\n	\"message\":\"成功\"\n}', '227', '系统管理员', '0', '2020-12-22 15:48:58', null, null, null, '[]', '1', '0');
 INSERT INTO `t_interface_case_execute_log` VALUES ('1694', '75', '用户登录', 'http://localhost:7777/user/login', '1', '', '{\n	\"password\":\"123\",\n	\"username\":\"123\"\n}', '', null, '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '200', '{\n	\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\n	\"Content-Type\":[\"application/json\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Date\":[\"Wed, 23 Dec 2020 07:44:32 GMT\"],\n	\"Keep-Alive\":[\"timeout=60\"],\n	\"Connection\":[\"keep-alive\"]\n}', '{\n	\"msg\":\"登录成功\",\n	\"code\":200,\n	\"data\":{\n		\"realName\":\"系统管理员\",\n		\"userId\":1,\n		\"token\":\"9f859be6-9185-4c43-bd3a-09cc0fec7e17\",\n		\"username\":\"123\",\n		\"isEnable\":1\n	}\n}', '79', '系统管理员', '0', '2020-12-23 15:44:33', null, null, null, '[]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('1695', '69', '查看所有的用户列表', 'http://localhost:7777/user/list', '0', '', '', '', null, '{\"Token\":\"${md5(${Token})}\"}', '', null, null, null, null, null, '0', '系统管理员', '2', '2020-12-24 14:46:03', '未找到该依赖数值', null, null, '[]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('1696', '69', '查看所有的用户列表', 'http://localhost:7777/user/list', '0', '', '', '', null, '{\"Token\":\"${md5(#{token})}\"}', '', null, null, null, null, null, '0', '系统管理员', '2', '2020-12-24 14:48:26', '未找到该依赖数值', null, null, '[]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('1697', '69', '查看所有的用户列表', 'http://localhost:7777/user/list', '0', '', '', '', null, '{\"Token\":\"${md5(#{token})}\"}', '', null, null, null, null, null, '0', '系统管理员', '2', '2020-12-24 14:48:48', '未找到该依赖数值', null, null, '[]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('1698', '69', '查看所有的用户列表', 'http://localhost:7777/user/list', '0', '{\n	\"Token\":\"f82b0e137d65d8ad71f0fe1801de126f\"\n}', '', '', null, '{\"Token\":\"${md5(\"#{token}\")}\"}', '', null, null, '200', '{\n	\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\n	\"Content-Type\":[\"application/json\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Date\":[\"Thu, 24 Dec 2020 06:50:01 GMT\"],\n	\"Keep-Alive\":[\"timeout=60\"],\n	\"Connection\":[\"keep-alive\"]\n}', '{\n	\"msg\":\"登录已经过期，请重新登录\",\n	\"code\":400,\n	\"data\":{}\n}', '55', '系统管理员', '1', '2020-12-24 14:50:02', null, null, null, '[]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('1699', '75', '用户登录', 'http://localhost:7777/user/login', '1', '', '{\n	\"password\":\"123\",\n	\"username\":\"123\"\n}', '', null, '', '{\"username\":\"123\",\"password\":\"123\"}', '', null, '200', '{\n	\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\n	\"Content-Type\":[\"application/json\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Date\":[\"Wed, 30 Dec 2020 04:47:43 GMT\"],\n	\"Keep-Alive\":[\"timeout=60\"],\n	\"Connection\":[\"keep-alive\"]\n}', '{\n	\"msg\":\"登录成功\",\n	\"code\":200,\n	\"data\":{\n		\"realName\":\"系统管理员\",\n		\"userId\":1,\n		\"token\":\"96f51b66-0d3a-4a80-8fbe-7d1d121e1b1e\",\n		\"username\":\"123\",\n		\"isEnable\":1\n	}\n}', '97', '系统调度', '0', '2020-12-30 12:47:44', null, null, 'SND20201230124743IDAIB16788', '[]', '1', '4');
+INSERT INTO `t_interface_case_execute_log` VALUES ('1700', '71', '查看项目列表', 'http://localhost:7777/project/list', '0', '{\n	\"Token\":\"96f51b66-0d3a-4a80-8fbe-7d1d121e1b1e\"\n}', '', '', null, '{\"Token\":\"${Token}\"}', '', null, null, '200', '{\n	\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\n	\"Content-Type\":[\"application/json\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Date\":[\"Wed, 30 Dec 2020 04:47:43 GMT\"],\n	\"Keep-Alive\":[\"timeout=60\"],\n	\"Connection\":[\"keep-alive\"]\n}', '{\n	\"msg\":\"操作成功\",\n	\"code\":200,\n	\"data\":{\n		\"startRow\":1,\n		\"navigatepageNums\":[\n			1\n		],\n		\"lastPage\":1,\n		\"prePage\":0,\n		\"hasNextPage\":false,\n		\"nextPage\":0,\n		\"pageSize\":10,\n		\"endRow\":5,\n		\"list\":[\n			{\n				\"devDomain\":\"http://localhost:7777\",\n				\"domain\":\"http://localhost:7777\",\n				\"name\":\"自动化平台接口\",\n				\"createdTime\":\"2020-07-29 16:26:54\",\n				\"stgDomain\":\"http://localhost:7777\",\n				\"updateTime\":\"2020-07-29 16:26:58\",\n				\"projectId\":4,\n				\"prodDomain\":\"http://localhost:7777\",\n				\"desc\":\"描述\",\n				\"testDomain\":\"http://localhost:7777\"\n			},\n			{\n				\"devDomain\":\"http://www.meidekan.com\",\n				\"domain\":\"http://www.meidekan.com\",\n				\"name\":\"美德网\",\n				\"createdTime\":null,\n				\"stgDomain\":\"http://www.meidekan.com\",\n				\"updateTime\":null,\n				\"projectId\":19,\n				\"prodDomain\":\"http://www.meidekan.com\",\n				\"desc\":\"http://www.meidekan.com\",\n				\"testDomain\":\"http://www.meidekan.com\"\n			},\n			{\n				\"devDomain\":\"https://www.baidu.com\",\n				\"domain\":\"https://www.baidu.com\",\n				\"name\":\"百度\",\n				\"createdTime\":null,\n				\"stgDomain\":\"https://www.baidu.com\",\n				\"updateTime\":null,\n				\"projectId\":20,\n				\"prodDomain\":\"https://www.baidu.com\",\n				\"desc\":\"\",\n				\"testDomain\":\"https://www.baidu.com\"\n			},\n			{\n				\"devDomain\":\"http://2wmdz.hncsga.cn:8090\",\n				\"domain\":\"http://2wmdz.hncsga.cn:8090\",\n				\"name\":\"二维码系统\",\n				\"createdTime\":null,\n				\"stgDomain\":\"http://2wmdz.hncsga.cn:8090\",\n				\"updateTime\":null,\n				\"projectId\":22,\n				\"prodDomain\":\"http://2wmdz.hncsga.cn:8090\",\n				\"desc\":null,\n				\"testDomain\":\"http://2wmdz.hncsga.cn:8090\"\n			},\n			{\n				\"devDomain\":\"https://jiajie.newcapec.cn\",\n				\"domain\":\"https://jiajie.newcapec.cn\",\n				\"name\":\"嘉杰\",\n				\"createdTime\":null,\n				\"stgDomain\":\"https://jiajie.newcapec.cn\",\n				\"updateTime\":null,\n				\"projectId\":23,\n				\"prodDomain\":\"https://jiajie.newcapec.cn\",\n				\"desc\":null,\n				\"testDomain\":\"https://jiajie.newcapec.cn\"\n			}\n		],\n		\"pageNum\":1,\n		\"navigatePages\":8,\n		\"total\":5,\n		\"navigateFirstPage\":1,\n		\"pages\":1,\n		\"size\":5,\n		\"firstPage\":1,\n		\"isLastPage\":true,\n		\"hasPreviousPage\":false,\n		\"navigateLastPage\":1,\n		\"isFirstPage\":true\n	}\n}', '14', '', '0', '2020-12-30 12:47:44', null, null, 'SND20201230124743IDAIB16788', '[1699]', '1', '3');
+INSERT INTO `t_interface_case_execute_log` VALUES ('1701', '138', '用户登录', 'https://jiajie.newcapec.cn/api/getLoginType', '1', '', '{\n	\"password\":\"123\",\n	\"username\":\"123\"\n}', '', '{\n    \"data\": {\n        \"username\": \"13633841517\",\n        \"deviceid\": \"2139821839218\",\n        \"ip\": \"219.156.88.112\"\n    }\n}', '', '{\"username\":\"123\",\"password\":\"123\"}', null, '{\n    \"data\": {\n        \"username\": \"13633841517\",\n        \"deviceid\": \"2139821839218\",\n        \"ip\": \"219.156.88.112\"\n    }\n}', '200', '{\n	\"Date\":[\"Tue, 05 Jan 2021 08:46:59 GMT\"],\n	\"Content-Type\":[\"application/json;charset=UTF-8\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Connection\":[\"keep-alive\"],\n	\"Set-Cookie\":[\"SERVERID=24415ca98fcb599eda692828af06a15f|1609836419|1609836419;Path=/\"]\n}', '{\n	\"result\":true,\n	\"code\":\"0\",\n	\"data\":{\n		\"isOpenPwdLogin\":true,\n		\"loginType\":\"1\",\n		\"isNew\":false\n	},\n	\"message\":\"成功\"\n}', '256', '系统管理员', '0', '2021-01-05 16:46:59', null, null, null, '[]', '1', '0');
 
 -- ----------------------------
 -- Table structure for t_interface_case_rely_data
@@ -5073,7 +5086,7 @@ CREATE TABLE `t_interface_processor_log` (
   `error_msg` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '失败时错误日志',
   `wr` tinyint DEFAULT NULL COMMENT '读/写 0读1写',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1111 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1115 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_processor_log
@@ -6188,6 +6201,10 @@ INSERT INTO `t_interface_processor_log` VALUES ('1107', null, null, null, 'userI
 INSERT INTO `t_interface_processor_log` VALUES ('1108', '36', '75', '1687', 'token', '1', 'eacd17a9-dd63-4525-82cd-39458596f0f5', '0', '$..token', '2020-12-16 13:39:43', '0', null, '1');
 INSERT INTO `t_interface_processor_log` VALUES ('1109', '36', '75', '1691', 'token', '1', '0c65c329-09fa-4227-8d78-927a51928135', '0', '$..token', '2020-12-22 15:48:39', '0', null, '1');
 INSERT INTO `t_interface_processor_log` VALUES ('1110', '36', '75', '1694', 'token', '1', '9f859be6-9185-4c43-bd3a-09cc0fec7e17', '0', '$..token', '2020-12-23 15:44:33', '0', null, '1');
+INSERT INTO `t_interface_processor_log` VALUES ('1111', null, null, null, 'token', null, '9f859be6-9185-4c43-bd3a-09cc0fec7e17', null, null, '2020-12-24 14:48:26', '0', null, '0');
+INSERT INTO `t_interface_processor_log` VALUES ('1112', null, null, null, 'token', null, '9f859be6-9185-4c43-bd3a-09cc0fec7e17', null, null, '2020-12-24 14:48:48', '0', null, '0');
+INSERT INTO `t_interface_processor_log` VALUES ('1113', null, null, null, 'token', null, '9f859be6-9185-4c43-bd3a-09cc0fec7e17', null, null, '2020-12-24 14:50:02', '0', null, '0');
+INSERT INTO `t_interface_processor_log` VALUES ('1114', '36', '75', '1699', 'token', '1', '96f51b66-0d3a-4a80-8fbe-7d1d121e1b1e', '0', '$..token', '2020-12-30 12:47:44', '0', null, '1');
 
 -- ----------------------------
 -- Table structure for t_interface_suite_case_ref
