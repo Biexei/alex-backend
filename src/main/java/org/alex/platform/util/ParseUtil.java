@@ -1,19 +1,8 @@
 package org.alex.platform.util;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jayway.jsonpath.JsonPath;
-import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Node;
-import org.dom4j.io.SAXReader;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.TagNode;
-import org.htmlcleaner.XPatherException;
 import org.seimicrawler.xpath.JXDocument;
 import org.seimicrawler.xpath.JXNode;
 import org.slf4j.Logger;
@@ -21,23 +10,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+@SuppressWarnings({"rawtypes"})
 public class ParseUtil {
+
     private static final Logger LOG = LoggerFactory.getLogger(ParseUtil.class);
+
+
     /**
      * xpath解析
      *
-     * @param xmlText
-     * @param xpath
-     * @return
-     * @throws ParseException
+     * @param xmlText  xml string
+     * @param xpath xpath
+     * @return 提取表达式
+     * @throws ParseException 解析异常
      */
     public static String parseXml(String xmlText, String xpath) throws ParseException {
-        // 使用更强大JsoupXpath取代dom4j
         try {
             JXDocument document = JXDocument.create(xmlText);
             List<JXNode> nodes = document.selN(xpath);
@@ -69,8 +59,8 @@ public class ParseUtil {
     /**
      * 解析http状态码
      *
-     * @param entity
-     * @return
+     * @param entity ResponseEntity
+     * @return http 状态码
      */
     public static int parseHttpCode(ResponseEntity entity) {
         return entity.getStatusCodeValue();
@@ -79,10 +69,10 @@ public class ParseUtil {
     /**
      * 解析请求头
      *
-     * @param entity
-     * @param headerName
-     * @return
-     * @throws ParseException
+     * @param entity ResponseEntity
+     * @param headerName headerName
+     * @return 请求头
+     * @throws ParseException 解析异常
      */
     public static String parseHttpHeader(ResponseEntity entity, String headerName) throws ParseException {
         HttpHeaders headerMap = entity.getHeaders();
@@ -96,9 +86,9 @@ public class ParseUtil {
     /**
      * 解析json
      *
-     * @param jsonText
-     * @param jsonPath
-     * @return
+     * @param jsonText json string
+     * @param jsonPath json path
+     * @return 提取结果
      */
     public static String parseJson(String jsonText, String jsonPath) throws ParseException {
         try {

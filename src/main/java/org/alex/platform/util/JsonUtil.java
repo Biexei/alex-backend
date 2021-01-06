@@ -6,6 +6,7 @@ import org.alex.platform.exception.ParseException;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings({"rawtypes"})
 public class JsonUtil {
     public static List jsonString2List(String jsonString) throws ParseException {
         List var1;

@@ -4,24 +4,24 @@ import java.security.MessageDigest;
 
 public class MD5Util {
 
-    private static final String hexDigIts[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
+    private static final String[] HEX_DIG_ITS = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
     /**
      * MD5加密
      *
      * @param origin      字符
-     * @param charsetname 编码
-     * @return
+     * @param charsetName 编码
+     * @return md5结果
      */
-    public static String MD5Encode(String origin, String charsetname) {
-        String resultString = null;
+    public static String MD5Encode(String origin, String charsetName) {
+        String resultString;
         try {
             resultString = origin;
             MessageDigest md = MessageDigest.getInstance("MD5");
-            if (null == charsetname || "".equals(charsetname)) {
+            if (null == charsetName || "".equals(charsetName)) {
                 resultString = byteArrayToHexString(md.digest(resultString.getBytes()));
             } else {
-                resultString = byteArrayToHexString(md.digest(resultString.getBytes(charsetname)));
+                resultString = byteArrayToHexString(md.digest(resultString.getBytes(charsetName)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -31,12 +31,12 @@ public class MD5Util {
     }
 
 
-    public static String byteArrayToHexString(byte b[]) {
-        StringBuffer resultSb = new StringBuffer();
-        for (int i = 0; i < b.length; i++) {
-            resultSb.append(byteToHexString(b[i]));
+    public static String byteArrayToHexString(byte[] b) {
+        StringBuilder sb = new StringBuilder();
+        for (byte value : b) {
+            sb.append(byteToHexString(value));
         }
-        return resultSb.toString();
+        return sb.toString();
     }
 
     public static String byteToHexString(byte b) {
@@ -46,7 +46,7 @@ public class MD5Util {
         }
         int d1 = n / 16;
         int d2 = n % 16;
-        return hexDigIts[d1] + hexDigIts[d2];
+        return HEX_DIG_ITS[d1] + HEX_DIG_ITS[d2];
     }
 
 }
