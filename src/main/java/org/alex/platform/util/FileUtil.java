@@ -3,7 +3,6 @@ package org.alex.platform.util;
 import com.csvreader.CsvReader;
 import org.alex.platform.enums.ExcelType;
 import org.alex.platform.exception.BusinessException;
-import org.alex.platform.service.impl.InterfaceAssertServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -379,6 +378,7 @@ public class FileUtil {
                 }
             }
         }
+        csvReader.close();
         return result;
     }
 
@@ -419,6 +419,7 @@ public class FileUtil {
                 }
             }
         }
+        csvReader.close();
         return result;
     }
 
