@@ -2,6 +2,7 @@ package org.alex.platform.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.serializer.SerializeConfig;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.enums.*;
 import org.alex.platform.exception.BusinessException;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -49,7 +51,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
         InputStream is;
         FileInputStream fis;
 
-        LOG.info("开始文件导入流程");
+        LOG.info("开始文件导入流程, 文件导入批次={}", importNum);
 
         try {
             is= file.getInputStream();
@@ -141,10 +143,31 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
                     LOG.error(ExceptionUtil.msg(e));
                 }
             }
-            failedNum = totalNum - successNum;
         } else if (type.equalsIgnoreCase("yaml")  && requestImportType == 4 ) {
             LOG.info("导入方式：yaml");
+            JSONArray caseArray;
             Yaml yaml = new Yaml();
+            try {
+                ArrayList fileContent = yaml.loadAs(is, ArrayList.class);
+                caseArray = JSONArray.parseArray(JSON.toJSONString(fileContent));
+            } catch (Exception e) {
+                LOG.error(ExceptionUtil.msg(e));
+                throw new BusinessException("yaml文件读取异常");
+            }
+            totalNum = caseArray.size();
+            LOG.info("总行数：{}", totalNum);
+            LOG.info("开始解析yaml对象并新增");
+            for (int i = 0; i < caseArray.size(); i++) {
+                try {
+                    Integer caseId = importCaseService.insertCaseByJson(caseArray.getJSONObject(i), creator, importNum);
+                    successNum++;
+                    LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
+                } catch (Exception e) {
+                    failedNum++;
+                    LOG.error("新增失败，当前索引值：{}", i);
+                    LOG.error(ExceptionUtil.msg(e));
+                }
+            }
         } else {
             throw new BusinessException("不支持此类型文件/文件类型不匹配");
         }

@@ -177,7 +177,7 @@ public class ImportCaseServiceImpl implements ImportCaseService {
                     Byte type = assertType2key(assertObject.getString("type"));
                     String expression = assertObject.getString("expression");
                     Byte operator = assertOperator2key(assertObject.getString("operator"));
-                    String exceptedResult = assertObject.getString("exceptedResult");
+                    String exceptedResult = assertObject.getString("expect");
                     assertDO.setAssertName(assertName);
                     assertDO.setCaseId(caseId);
                     assertDO.setType(type);

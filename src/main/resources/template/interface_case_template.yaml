@@ -17,4 +17,4 @@
          type:
          expression:
          operator:
-         exceptedResult:
+         expect:

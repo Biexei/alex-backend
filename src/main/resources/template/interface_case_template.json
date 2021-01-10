@@ -18,7 +18,7 @@
 				"type": String"提取类型",
 				"expression": String"提取表达式",
 				"operator": String"操作符",
-				"exceptedResult": String"预期结果",
+				"expect": String,"预期结果",
 			}
 		]
 	},
