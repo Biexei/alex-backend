@@ -32,14 +32,15 @@ public class ImportCaseServiceImpl implements ImportCaseService {
     LoginUserInfo userInfo;
 
     /**
-     * 根据excel导入插入用例
+     * 根据json/yaml导入插入用例
      * @param jsonObject json对象
      * @param creator 创建人
+     * @param source 来源 3json 4yaml
      * @param importNum 导入编号
      * @return 自增用例编号
      */
     @Override
-    public Integer insertCaseByJson(JSONObject jsonObject, String creator, String importNum) throws BusinessException {
+    public Integer insertCaseByJsonYaml(JSONObject jsonObject, String creator, byte source, String importNum) throws BusinessException {
 
         ImportCaseTemplate template = new ImportCaseTemplate();
         Date date = new Date();
@@ -74,7 +75,7 @@ public class ImportCaseServiceImpl implements ImportCaseService {
         template.setCreater(creator);
         template.setCreatedTime(date);
         template.setUpdateTime(date);
-        template.setSource((byte) 3);
+        template.setSource(source);
         template.setImportNo(importNum);
         InterfaceCaseDO interfaceCaseDO = interfaceCaseService.saveInterfaceCase(template);
         Integer caseId = interfaceCaseDO.getCaseId();
@@ -95,7 +96,7 @@ public class ImportCaseServiceImpl implements ImportCaseService {
      */
     @SuppressWarnings({"rawtypes"})
     @Override
-    public Integer insertCaseByOffice(List row, String creator, Byte source, String importNum) throws BusinessException {
+    public Integer insertCaseByOffice(List row, String creator, byte source, String importNum) throws BusinessException {
         ImportCaseTemplate template = new ImportCaseTemplate();
         Date date = new Date();
 

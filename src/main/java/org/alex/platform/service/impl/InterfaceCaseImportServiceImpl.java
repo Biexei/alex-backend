@@ -2,7 +2,6 @@ package org.alex.platform.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.serializer.SerializeConfig;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.enums.*;
 import org.alex.platform.exception.BusinessException;
@@ -22,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -134,7 +132,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
             LOG.info("开始解析json对象并新增");
             for (int i = 0; i < caseArray.size(); i++) {
                 try {
-                    Integer caseId = importCaseService.insertCaseByJson(caseArray.getJSONObject(i), creator, importNum);
+                    Integer caseId = importCaseService.insertCaseByJsonYaml(caseArray.getJSONObject(i), creator, (byte) 3, importNum);
                     successNum++;
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
                 } catch (Exception e) {
@@ -159,7 +157,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
             LOG.info("开始解析yaml对象并新增");
             for (int i = 0; i < caseArray.size(); i++) {
                 try {
-                    Integer caseId = importCaseService.insertCaseByJson(caseArray.getJSONObject(i), creator, importNum);
+                    Integer caseId = importCaseService.insertCaseByJsonYaml(caseArray.getJSONObject(i), creator, (byte) 4, importNum);
                     successNum++;
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
                 } catch (Exception e) {

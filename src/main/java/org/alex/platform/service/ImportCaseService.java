@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface ImportCaseService {
     @Transactional(rollbackFor = Exception.class)
-    Integer insertCaseByJson(JSONObject jsonObject, String creator, String importNum) throws BusinessException;
+    Integer insertCaseByJsonYaml(JSONObject jsonObject, String creator, byte source, String importNum) throws BusinessException;
 
     @Transactional(rollbackFor = Exception.class)
     @SuppressWarnings({"rawtypes"})
-    Integer insertCaseByOffice(List row, String creator, Byte source, String importNum) throws BusinessException;
+    Integer insertCaseByOffice(List row, String creator, byte source, String importNum) throws BusinessException;
 }
