@@ -2,6 +2,9 @@ package org.alex.platform.enums;
 
 import org.alex.platform.exception.ValidException;
 
+/**
+ * 导入case schema 字段类型枚举
+ */
 public enum FieldType {
     STRING("string","string"),
     STRING_("str","string"),
@@ -15,12 +18,15 @@ public enum FieldType {
     INTEGER("integer","integer"),
     INTEGER_("int","integer"),
 
-    FLOAT_("float","float"),
+    FLOAT("float","float"),
 
     IN_DB("inDb","inDb"),
     NOT_IN_DB("notInDb","notInDb"),
 
     CONST("const","const"),
+
+    IN_ARRAY("inArray","inArray"),
+    NOT_IN_ARRAY("notInArray","notInArray"),
     ;
 
     private String type;

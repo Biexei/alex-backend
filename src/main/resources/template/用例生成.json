@@ -1,0 +1,59 @@
+{
+	"property": {
+		"projectId": ,
+		"moduleId": ,
+		"url": "",
+		"method": "",
+		"desc": "",
+		"level": "",
+		"doc": "",
+		"headers": "",
+	}
+	"paramsSchema": [
+		{
+			"name": "",
+			"desc": "",
+			"type": "String、Number、Integer、Float、InDb、NotInDb、Const、InArray、NotInArray",
+			"globalConfig": {
+				"allowNull": true,
+				"allowRepeat": false,
+			},
+			"stringConfig": {
+				"pattern": "\w+"
+				"allowIllegal": true,
+				"allEmpty": true,
+				"minLen": 1,
+				"maxLen": 10,
+			},
+			"floatConfig": {
+				"allowZero": true,
+				"allowStartsWithZero": true,
+				"minIntLen": 1,
+				"maxIntLen": 10,
+				"minDecLen": 1,
+				"maxDecLen": 10,
+			},
+			"numberConfig": {
+				"minIntLen": 1,
+				"maxIntLen": 10,
+				"minDecLen": 1,
+				"maxDecLen": 10, 
+			},
+			"dbConfig": {
+				"dbId": 1,
+				"table": "t_user",
+				"column": {
+					"name": "username",
+					"type": "String、Number、Boolean、Integer、Float",
+				}
+			},
+			"constConfig": {
+				"value": "#{timestamp()}"
+			},
+			"AnyOfConfig": {
+				"type": "String、Number、Boolean、Integer、Float",
+				"value": []
+			},
+		}
+	]
+}

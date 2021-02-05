@@ -3,6 +3,7 @@ package org.alex.platform.util;
 import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.exception.ValidException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -218,5 +219,17 @@ public class ValidUtil {
 
     public static void isWordUnderline(String s) throws ValidException {
         isWordUnderline(s, null);
+    }
+
+    public static void isGreaterThanOrEqualsZero(Integer value, String msg) throws ValidException {
+        if (value.compareTo(0) < 0) {
+            throw new ValidException(msg);
+        }
+    }
+
+    public static void isGreaterThanOrEqualsZero(BigDecimal value, String msg) throws ValidException {
+        if (value.compareTo(new BigDecimal(0)) < 0) {
+            throw new ValidException(msg);
+        }
     }
 }
