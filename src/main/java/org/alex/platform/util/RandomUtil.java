@@ -1,5 +1,7 @@
 package org.alex.platform.util;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Random;
 
 public class RandomUtil {
@@ -7,7 +9,7 @@ public class RandomUtil {
     private static final String legalString = "123456790abcdefghijklmnopqrstuvwxyz";
 
     /**
-     * 指定长度区间的的随机数
+     * 指定范围的的随机数
      * @param minimum 最小值
      * @param maximum 最大值
      * @return 随机数
@@ -72,7 +74,51 @@ public class RandomUtil {
         return sb.toString();
     }
 
+    /**
+     * 生成随机BigDecimal数
+     * @param min 最小值
+     * @param max 最大值
+     * @return 随机数
+     */
+    public static BigDecimal randomBigDecimal(BigDecimal min, BigDecimal max) {
+        int minInt = min.intValue();
+        int maxInt = max.intValue();
+
+        String minStr = min.toString();
+        String maxStr = max.toString();
+
+        int minPointIndex = minStr.indexOf(".");
+        int maxPointIndex = maxStr.indexOf(".");
+
+        if (minPointIndex == -1 && maxPointIndex == -1) {
+            return BigDecimal.valueOf(RandomUtil.randomInt(min.intValue(), max.intValue()));
+        } else {
+            int minDecimalLen = minPointIndex == -1 ? 0 : minStr.substring(minPointIndex).length() - 1;
+            int maxDecimalLen = maxPointIndex == -1 ? 0 : maxStr.substring(maxPointIndex).length() - 1;
+
+            int decimal = Math.max(minDecimalLen, maxDecimalLen);
+            StringBuilder patten = new StringBuilder(".");
+            for (int i = 0; i < decimal; i++) {
+                patten.append(new Random().nextInt(10));
+            }
+
+            int value = RandomUtil.randomInt(minInt, maxInt);
+            BigDecimal bigDecimalValue = new BigDecimal(value + patten.toString());
+            while (bigDecimalValue.compareTo(min) < 0 || bigDecimalValue.compareTo(max) > 0) {
+                patten = new StringBuilder(".");
+                for (int i = 0; i < decimal; i++) {
+                    patten.append(new Random().nextInt(10));
+                }
+                value = RandomUtil.randomInt(minInt, maxInt);
+                bigDecimalValue = new BigDecimal(value + patten.toString());
+            }
+            return bigDecimalValue;
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(RandomUtil.randomIllegalStringByLength(10));
+        BigDecimal min = new BigDecimal("0.11");
+        BigDecimal max = new BigDecimal("0.12");
+        System.out.println(RandomUtil.randomBigDecimal(min, max));
     }
 }

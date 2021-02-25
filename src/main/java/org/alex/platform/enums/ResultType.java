@@ -3,34 +3,34 @@ package org.alex.platform.enums;
 import org.alex.platform.exception.ValidException;
 
 /**
- * 导入case schema 字段类型枚举
+ * 返回值字段类型枚举
  */
-public enum FieldType {
+public enum ResultType {
     STRING("string","string"),
     STRING_("str","string"),
 
     NUMBER("number","number"),
     NUMBER_("num","number"),
+    NUMBER__("bigDecimal","number"),
 
-    IN_DB("inDb","inDb"),
-    NOT_IN_DB("notInDb","notInDb"),
+    INTEGER("integer","integer"),
+    INTEGER_("int","integer"),
 
-    CONST("const","const"),
+    FLOAT("float","float"),
 
-    IN_ARRAY("inArray","inArray"),
-    NOT_IN_ARRAY("notInArray","notInArray"),
+    DOUBLE("double","double")
     ;
 
     private String type;
     private String value;
 
-    FieldType(String type, String value) {
+    ResultType(String type, String value) {
         this.type = type;
         this.value = value;
     }
 
-    public static String getFieldType(String type) throws ValidException {
-        for(FieldType fieldType : FieldType.values()) {
+    public static String getResultType(String type) throws ValidException {
+        for(ResultType fieldType : ResultType.values()) {
             if (fieldType.type.equalsIgnoreCase(type)) {
                 return fieldType.value;
             }

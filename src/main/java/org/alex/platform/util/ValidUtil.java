@@ -1,5 +1,6 @@
 package org.alex.platform.util;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.exception.ValidException;
 
@@ -128,6 +129,13 @@ public class ValidUtil {
     public static <E> void notEmpty(List<E> l, String msg) throws ValidException {
         notNUll(l, "ValidUtil.notEmpty param 'List l' is null");
         if (l.isEmpty()) {
+            throw new ValidException(msg);
+        }
+    }
+
+    public static void notEmpty(JSONArray array, String msg) throws ValidException {
+        notNUll(array, "ValidUtil.notEmpty param 'JSONArray array' is null");
+        if (array.isEmpty()) {
             throw new ValidException(msg);
         }
     }

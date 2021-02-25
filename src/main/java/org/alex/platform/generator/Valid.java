@@ -2,6 +2,7 @@ package org.alex.platform.generator;
 
 import com.alibaba.fastjson.JSONArray;
 import org.alex.platform.enums.FieldType;
+import org.alex.platform.enums.ResultType;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.service.DbService;
 import org.alex.platform.util.ValidUtil;
@@ -30,69 +31,20 @@ public class Valid {
         }
     }
 
-    public void valid4Number(BigDecimal minimum, BigDecimal maximum,
-                                Integer minIntLen, Integer maxIntLen, Integer minDecLen, Integer maxDecLen) throws ValidException {
-        if ((minimum == null || maximum == null) && (minIntLen != null && maxIntLen != null && minDecLen != null && maxDecLen != null)) {
-            ValidUtil.isGreaterThanOrEqualsZero(minIntLen, "type of Number field valid error, minIntLen must greater than or equals 0");
-            ValidUtil.isGreaterThanOrEqualsZero(maxIntLen, "type of Number field valid error, maxIntLen must greater than or equals 0");
-            ValidUtil.isGreaterThanOrEqualsZero(minDecLen, "type of Number field valid error, minDecLen must greater than or equals 0");
-            ValidUtil.isGreaterThanOrEqualsZero(maxDecLen, "type of Number field valid error, maxDecLen must greater than or equals 0");
-            if (minIntLen.compareTo(maxIntLen) > 0) {
-                throw new ValidException("type of Number field valid error, maxIntLen should greater than or equals minIntLen");
-            }
-            if (minDecLen.compareTo(maxDecLen) > 0) {
-                throw new ValidException("type of Number field valid error, maxDecLen should greater than or equals minDecLen");
-            }
-        } else if ((minIntLen == null || maxIntLen == null || minDecLen == null || maxDecLen == null) && (minimum != null && maximum != null)) {
-            ValidUtil.isGreaterThanOrEqualsZero(minimum, "type of Number field valid error, minimum must greater than or equals 0");
-            ValidUtil.isGreaterThanOrEqualsZero(maximum, "type of Number field valid error, maximum must greater than or equals 0");
-            if (minimum.compareTo(maximum) > 0) {
-                throw new ValidException("type of Number field valid error, maximum should greater than or equals minimum");
-            }
-        } else {
-            throw new ValidException("type of Number field valid error, confirm generate by size or length");
+    public void valid4Number(BigDecimal min, BigDecimal max) throws ValidException {
+        ValidUtil.notNUll(min, "type of Number field valid error, min should not be null");
+        ValidUtil.notNUll(max, "type of Number field valid error, max should not be null");
+        if (min.compareTo(max) > 0) {
+            throw new ValidException("type of Number field valid error, max should greater than or equals min");
         }
     }
 
-    public void valid4Integer(Integer minimum, Integer maximum) throws ValidException {
-        ValidUtil.isGreaterThanOrEqualsZero(minimum, "type of Integer field valid error, minimum must greater than or equals 0");
-        ValidUtil.isGreaterThanOrEqualsZero(maximum, "type of Integer field valid error, maximum must greater than or equals 0");
-        if (minimum.compareTo(maximum) > 0) {
-            throw new ValidException("type of Integer field valid error, maximum should greater than or equals minimum");
-        }
-    }
-
-    public void valid4Float(BigDecimal minimum, BigDecimal maximum,
-                            Integer minIntLen, Integer maxIntLen, Integer minDecLen, Integer maxDecLen) throws ValidException {
-        if ((minimum == null || maximum == null) && (minIntLen != null && maxIntLen != null && minDecLen != null && maxDecLen != null)) {
-            ValidUtil.isGreaterThanOrEqualsZero(minIntLen, "type of Float field valid error, minIntLen must greater than or equals 0");
-            ValidUtil.isGreaterThanOrEqualsZero(maxIntLen, "type of Float field valid error, maxIntLen must greater than or equals 0");
-            ValidUtil.isGreaterThanOrEqualsZero(minDecLen, "type of Float field valid error, minDecLen must greater than or equals 0");
-            ValidUtil.isGreaterThanOrEqualsZero(maxDecLen, "type of Float field valid error, maxDecLen must greater than or equals 0");
-            if (minIntLen.compareTo(maxIntLen) > 0) {
-                throw new ValidException("type of Float field valid error, maxIntLen should greater than or equals minIntLen");
-            }
-            if (minDecLen.compareTo(maxDecLen) > 0) {
-                throw new ValidException("type of Float field valid error, maxDecLen should greater than or equals minDecLen");
-            }
-        } else if ((minIntLen == null || maxIntLen == null || minDecLen == null || maxDecLen == null) && (minimum != null && maximum != null)) {
-            ValidUtil.isGreaterThanOrEqualsZero(minimum, "type of Float field valid error, minimum must greater than or equals 0");
-            ValidUtil.isGreaterThanOrEqualsZero(maximum, "type of Float field valid error, maximum must greater than or equals 0");
-            if (minimum.compareTo(maximum) > 0) {
-                throw new ValidException("type of Float field valid error, maximum should greater than or equals minimum");
-            }
-        } else {
-            throw new ValidException("type of Float field valid error, confirm generate by size or length");
-        }
-    }
-
-    public void valid4DbData(Integer dbId, String table, String columnName, String columnType) throws ValidException {
+    public void valid4DbData(Integer dbId, String sql, String elementType) throws ValidException {
         ValidUtil.notNUll(dbId, "type of DbData field valid error, dbId should not be null");
-        ValidUtil.notNUll(table, "type of DbData field valid error, table should not be null");
-        ValidUtil.notNUll(columnName, "type of DbData field valid error, column.name should not be null");
-        ValidUtil.notNUll(columnType, "type of DbData field valid error, column.type should not be null");
+        ValidUtil.notNUll(sql, "type of DbData field valid error, sql should not be null");
+        ValidUtil.notNUll(elementType, "type of DbData field valid error, elementType should not be null");
         // 检查查询返回值类型是否在枚举范围
-        FieldType.getFieldType(columnType);
+        ResultType.getResultType(elementType);
         // 检查DbID是否存在于数据源管理表
         ValidUtil.notNUll(dbService.findDbById(dbId), "type of DbData field valid error, dbId not found");
     }
@@ -102,10 +54,11 @@ public class Valid {
     }
 
     public void valid4ArrayData(String arrayType, JSONArray arrayValue) throws ValidException {
-        ValidUtil.notNUll(arrayType, "type of ArrayData field valid error, type should not be null");
+        ValidUtil.notNUll(arrayType, "type of ArrayData field valid error, elementType should not be null");
+        ValidUtil.notEmpty(arrayValue, "type of ArrayData field valid error, value should not be empty");
         ValidUtil.notNUll(arrayValue, "type of ArrayData field valid error, value should not be null");
         // 检查数组元素类型是否在枚举范围
-        FieldType.getFieldType(arrayType);
+        ResultType.getResultType(arrayType);
     }
 
     public void valid4GlobalConfig(Boolean allowNull, Boolean allowRepeat) throws ValidException{

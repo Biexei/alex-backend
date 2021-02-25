@@ -22,8 +22,6 @@ public class FastJsonTest {
 
         Integer minIntLen = 1;
         Integer maxIntLen = 1;
-        Integer minDecLen = 1;
-        Integer maxDecLen = 1;
-        valid.valid4Number(minimum, maximum, minIntLen, maxIntLen, minDecLen, maxDecLen);
+        valid.valid4Number(minimum, maximum);
     }
 }

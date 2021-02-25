@@ -94,4 +94,13 @@ public class JDBCTest {
         DruidDataSource dataSource = JdbcUtil.getDruidDataSource(url, username, password);
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
+    @Test
+    public void doTets1() throws Exception {
+        String url = "jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8&tinyInt1isBit=false&transformedBitIsBoolean=false";
+        String username = "root";
+        String password = "root";
+        List<Integer> result = JdbcUtil.queryForList(url, username, password, "select `desc` from t_db where id = 1", Integer.class);
+        System.out.println(result);
+    }
 }

@@ -127,7 +127,7 @@ public class JdbcUtil {
      * @throws SqlException 数据库异常
      */
     public static String selectFirst(String url, String username, String password, String sql, String[] params) throws SqlException {
-        String resultStr = "";
+        String resultStr;
         try {
             resultStr = "";
 
@@ -149,6 +149,23 @@ public class JdbcUtil {
             throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
         }
         return resultStr;
+    }
+
+    /**
+     * 查询单列结果值
+     * @param url jdbc url
+     * @param username 用户名
+     * @param password 密码
+     * @param sql sql
+     * @param elementType 元素类型
+     * @param <T> 枚举
+     * @return list
+     * @throws Exception 异常
+     */
+    public static <T> List<T> queryForList(String url, String username, String password, String sql, Class<T> elementType) throws Exception {
+        DruidDataSource druidDataSource = getDruidDataSource(url, username, password);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(druidDataSource);
+        return jdbcTemplate.queryForList(sql, elementType);
     }
 
     /**

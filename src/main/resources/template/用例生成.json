@@ -1,14 +1,14 @@
 {
 	"property": {
-		"projectId": ,
-		"moduleId": ,
+		"projectId": 1,
+		"moduleId": 1,
 		"url": "",
 		"method": "",
 		"desc": "",
 		"level": "",
 		"doc": "",
-		"headers": "",
-	}
+		"headers": ""
+	},
 	"paramsSchema": [
 		{
 			"name": "",
@@ -16,44 +16,30 @@
 			"type": "String、Number、Integer、Float、InDb、NotInDb、Const、InArray、NotInArray",
 			"globalConfig": {
 				"allowNull": true,
-				"allowRepeat": false,
+				"allowRepeat": false
 			},
 			"stringConfig": {
-				"pattern": "\w+"
 				"allowIllegal": true,
 				"allEmpty": true,
 				"minLen": 1,
-				"maxLen": 10,
-			},
-			"floatConfig": {
-				"allowZero": true,
-				"allowStartsWithZero": true,
-				"minIntLen": 1,
-				"maxIntLen": 10,
-				"minDecLen": 1,
-				"maxDecLen": 10,
+				"maxLen": 10
 			},
 			"numberConfig": {
-				"minIntLen": 1,
-				"maxIntLen": 10,
-				"minDecLen": 1,
-				"maxDecLen": 10, 
+				"min": 1.0,
+				"max": 2.0
 			},
 			"dbConfig": {
 				"dbId": 1,
-				"table": "t_user",
-				"column": {
-					"name": "username",
-					"type": "String、Number、Boolean、Integer、Float",
-				}
+				"sql":,
+				"elementType": "String、Number、Integer、Float、Double"
 			},
 			"constConfig": {
 				"value": "#{timestamp()}"
 			},
 			"AnyOfConfig": {
-				"type": "String、Number、Boolean、Integer、Float",
-				"value": []
-			},
+				"value": [],
+				"elementType": "String、Number、Integer、Float、Double"
+			}
 		}
 	]
 }
