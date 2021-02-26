@@ -1,7 +1,9 @@
 package org.alex.platform.generator;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,16 +52,26 @@ public class Main {
         }
 
         // 接口总字段数
-        int propSize = dataResult.size();..
+        int propSize = dataResult.size();
 
+        // 每个字段数，乘积
+        int itemSizeTotal = 1;
         // 每个字段数，生成的条件总数总集合
-        int itemSize = 1;
+        ArrayList<Integer> itemSizeList = new ArrayList<>();
         for (int i = 0; i < propSize; i++) {
-            itemSize *= dataResult.getJSONArray(i).size();
+            int size = dataResult.getJSONArray(i).size();
+            itemSizeTotal *= size;
+            itemSizeList.add(size);
         }
 
         System.out.println(propSize); // 3
-        System.out.println(itemSize); // 4*9*9
+        System.out.println(itemSizeTotal); // 4*9*9=324
+        System.out.println(itemSizeList); // [4, 9, 9]
+
+        int currentIndex = 0;
+
+        dic(0, itemSizeList, dataResult, new JSONArray());
+
 
 //        for (int i = 0; i < size; i++) {
 //            JSONArray singleFieldArray = dataResult.getJSONArray(i);
@@ -74,5 +86,30 @@ public class Main {
 //            }
 //        }
         return caseList;
+    }
+
+    public JSONArray dic(int currentIndex, ArrayList<Integer> itemSizeList, JSONArray data, JSONArray result) {
+        int nextIndex = currentIndex + 1;
+        itemSizeList.remove(currentIndex);
+        itemSizeList.remove(nextIndex);
+
+        JSONArray currentNode = data.getJSONArray(currentIndex);
+        JSONArray nextNode = data.getJSONArray(nextIndex);
+        data.remove(currentIndex);
+        data.remove(nextIndex);
+
+        for (int i = 0; i < currentNode.size(); i++) {..
+            JSONArray var2 = new JSONArray();
+            for (int j = 0; j < nextNode.size(); j++) {
+                JSONArray var3 = new JSONArray();
+                var3.add(currentNode.getJSONObject(i));
+                var3.add(nextNode.getJSONObject(j));
+                var2.add(var3);
+            }
+            result.add(var2);
+        }
+        System.out.println(JSON.toJSONString(result, SerializerFeature.DisableCircularReferenceDetect));
+        currentIndex = nextIndex + 1;
+        return result;
     }
 }
