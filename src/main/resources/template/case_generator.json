@@ -5,49 +5,55 @@
 		"url": "/user/register",
 		"method": "post",
 		"desc": "用户注册接口",
-		"level": "中",
 		"doc": "",
 		"headers": "",
-		"validEquivalenceClassAsserts": [
-			{
-				"order": 1,
-				"desc": "http状态码需等于200",
-				"type": "code",
-				"operator": "=",
-				"expect": 200
-			},
-			{
-				"order": 2,
-				"desc": "接口状态码需等于200",
-				"type": "jsonPath",
-				"expression": "$..code",
-				"operator": "=",
-				"expect": 200
-			}
-		],
-		"invalidEquivalenceClassAsserts": [
-			{
-				"order": 1,
-				"desc": "http状态码需等于200",
-				"type": "code",
-				"operator": "==",
-				"expect": 200
-			},
-			{
-				"order": 2,
-				"desc": "接口状态码不能等于200",
-				"type": "jsonPath",
-				"expression": "$..code",
-				"operator": "!=",
-				"expect": 200
-			}
-		]
+		"schemaType": "data",
+		"validEquivalenceClass": {
+			"caseLevel": "高",
+			"asserts": [
+				{
+					"order": 1,
+					"desc": "http状态码需等于200",
+					"type": "code",
+					"operator": "=",
+					"expect": 200
+				},
+				{
+					"order": 2,
+					"desc": "接口状态码需等于200",
+					"type": "jsonPath",
+					"expression": "$..code",
+					"operator": "=",
+					"expect": 200
+				}
+			]
+		},
+		"invalidEquivalenceClass": {
+			"caseLevel": "中",
+			"asserts": [
+				{
+					"order": 1,
+					"desc": "http状态码需等于200",
+					"type": "code",
+					"operator": "=",
+					"expect": 200
+				},
+				{
+					"order": 2,
+					"desc": "接口状态码不等于200",
+					"type": "jsonPath",
+					"expression": "$..code",
+					"operator": "!=",
+					"expect": 200
+				}
+			]
+		}
 	},
-	"dataSchema": [
+	"schema": [
 		{
 			"name": "username",
 			"desc": "用户名",
-			"type": "notInDb",
+			"type": "NotInDb",
 			"globalConfig": {
 				"allowNull": false,
 				"allowRepeat": false
@@ -86,6 +92,19 @@
 				"allowEmpty": true,
 				"minLen": 1,
 				"maxLen": 10
+			}
+		},
+		{
+			"name": "sex",
+			"desc": "性别",
+			"type": "InArray",
+			"globalConfig": {
+				"allowNull": false,
+				"allowRepeat": true
+			},
+			"privateConfig": {
+				"value": [0, 1],
+				"elementType": "Integer"
 			}
 		}
 	]

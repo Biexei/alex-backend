@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ValidTest {
+public class FilterTest {
     @Test
     public void testValidJsonPath() throws ValidException {
         ValidUtil.isJsonPath("$['store']['book'][0]['title']");

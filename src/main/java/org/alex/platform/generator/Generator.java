@@ -21,7 +21,7 @@ import java.util.Random;
 @Component
 public class Generator {
     @Autowired
-    Valid valid;
+    Filter filter;
     @Autowired
     Description description;
     @Autowired
@@ -32,45 +32,50 @@ public class Generator {
 
         Boolean allowNull = publicConfig.getBoolean("allowNull");
         Boolean allowRepeat = publicConfig.getBoolean("allowRepeat");
-        valid.valid4GlobalConfig(allowNull, allowRepeat);
+        filter.valid4GlobalConfig(allowNull, allowRepeat);
 
-        if (type.equals("string")) {
-            Boolean allowIllegal = privateConfig.getBoolean("allowIllegal");
-            Boolean allowEmpty = privateConfig.getBoolean("allowEmpty");
-            Integer minLen = privateConfig.getInteger("minLen");
-            Integer maxLen = privateConfig.getInteger("maxLen");
-            valid.valid4String(allowIllegal, allowEmpty, minLen, maxLen);
-            return genString(key, desc, publicConfig, allowIllegal, allowEmpty, minLen, maxLen);
-        } else if (type.equals("number")) {
-            BigDecimal min = privateConfig.getBigDecimal("min");
-            BigDecimal max = privateConfig.getBigDecimal("max");
-            valid.valid4Number(min, max);
-            return genNumber(key, desc, publicConfig, min, max);
-        } else if (type.equals("inDb") || type.equals("notInDb")) {
-            Integer dbId = privateConfig.getInteger("dbId");
-            String sql = privateConfig.getString("sql");
-            String elementType = privateConfig.getString("elementType");
-            valid.valid4DbData(dbId, sql, elementType);
-            if (type.equals("inDb")) {
-                return genInDb(key, desc, publicConfig, dbId, sql, elementType);
-            } else {
-                return genNotInDb(key, desc, publicConfig, dbId, sql, elementType);
+        switch (type) {
+            case "string":
+                Boolean allowIllegal = privateConfig.getBoolean("allowIllegal");
+                Boolean allowEmpty = privateConfig.getBoolean("allowEmpty");
+                Integer minLen = privateConfig.getInteger("minLen");
+                Integer maxLen = privateConfig.getInteger("maxLen");
+                filter.valid4String(allowIllegal, allowEmpty, minLen, maxLen);
+                return genString(key, desc, publicConfig, allowIllegal, allowEmpty, minLen, maxLen);
+            case "number":
+                BigDecimal min = privateConfig.getBigDecimal("min");
+                BigDecimal max = privateConfig.getBigDecimal("max");
+                filter.valid4Number(min, max);
+                return genNumber(key, desc, publicConfig, min, max);
+            case "inDb":
+            case "notInDb": {
+                Integer dbId = privateConfig.getInteger("dbId");
+                String sql = privateConfig.getString("sql");
+                String elementType = privateConfig.getString("elementType");
+                filter.valid4DbData(dbId, sql, elementType);
+                if (type.equals("inDb")) {
+                    return genInDb(key, desc, publicConfig, dbId, sql, elementType);
+                } else {
+                    return genNotInDb(key, desc, publicConfig, dbId, sql, elementType);
+                }
             }
-        } else if (type.equals("const")) {
-            Object value = privateConfig.get("value");
-            valid.valid4Const(value);
-            return genConst(key, desc, publicConfig, value);
-        } else if (type.equals("inArray") || type.equals("notInArray")) {
-            String elementType = privateConfig.getString("elementType");
-            JSONArray arrayValue = privateConfig.getJSONArray("value");
-            valid.valid4ArrayData(elementType, arrayValue);
-            if (type.equals("inArray")) {
-                return genInArray(key, desc, publicConfig, arrayValue, elementType);
-            } else {
-                return genNotInArray(key, desc, publicConfig, arrayValue, elementType);
+            case "const":
+                Object value = privateConfig.get("value");
+                filter.valid4Const(value);
+                return genConst(key, desc, publicConfig, value);
+            case "inArray":
+            case "notInArray": {
+                String elementType = privateConfig.getString("elementType");
+                JSONArray arrayValue = privateConfig.getJSONArray("value");
+                filter.valid4ArrayData(elementType, arrayValue);
+                if (type.equals("inArray")) {
+                    return genInArray(key, desc, publicConfig, arrayValue, elementType);
+                } else {
+                    return genNotInArray(key, desc, publicConfig, arrayValue, elementType);
+                }
             }
-        } else {
-            throw new ValidException("unknown type : " + type);
+            default:
+                throw new ValidException("unknown type : " + type);
         }
     }
 
@@ -135,9 +140,9 @@ public class Generator {
 
         //4.非法字符
         if (allowIllegal) {
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4Length(key, desc, minLen, maxLen), RandomUtil.randomIllegalString(minLen, maxLen), key));
+            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4IllegalLength(key, desc, minLen, maxLen), RandomUtil.randomIllegalString(minLen, maxLen), key));
         } else {
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4Length(key, desc, minLen, maxLen), RandomUtil.randomIllegalString(minLen, maxLen), key));
+            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4IllegalLength(key, desc, minLen, maxLen), RandomUtil.randomIllegalString(minLen, maxLen), key));
         }
 
         //5.重复
@@ -245,113 +250,124 @@ public class Generator {
             result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4Null(key, desc), null, key));
         }
 
-        if (resultType.equals("string")) {
-            List<String> rows = JdbcUtil.queryForList(url, username, password, sql, String.class);
-            if (rows.isEmpty()) {
-                throw new BusinessException("查询结果为空");
+        switch (resultType) {
+            case "string": {
+                List<String> rows = JdbcUtil.queryForList(url, username, password, sql, String.class);
+                if (rows.isEmpty()) {
+                    throw new BusinessException("查询结果为空");
+                }
+                String randomRow = rows.get(new Random().nextInt(rows.size()));
+                // 1.有效等价类-在表内
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
+                // 2.无效等价类-不在表内
+                String invalidStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+                while (randomRow.equals(invalidStr)) {
+                    invalidStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+                }
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidStr, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
-            String randomRow = rows.get(new Random().nextInt(rows.size()));
-            // 1.有效等价类-在表内
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
-            // 2.无效等价类-不在表内
-            String invalidStr = RandomUtil.randomLegalStringByLength(randomRow.length());
-            while (randomRow.equals(invalidStr)) {
-                invalidStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+            case "number": {
+                List<BigDecimal> rows = JdbcUtil.queryForList(url, username, password, sql, BigDecimal.class);
+                if (rows.isEmpty()) {
+                    throw new BusinessException("查询结果为空");
+                }
+                BigDecimal randomRow = rows.get(new Random().nextInt(rows.size()));
+                // 1.有效等价类-在表内
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
+                // 2.无效等价类-不在表内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal invalidNum = RandomUtil.randomBigDecimal(min, max);
+                while (randomRow.equals(invalidNum)) {
+                    invalidNum = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidNum, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidStr, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+            case "integer": {
+                List<Integer> rows = JdbcUtil.queryForList(url, username, password, sql, Integer.class);
+                if (rows.isEmpty()) {
+                    throw new BusinessException("查询结果为空");
+                }
+                Integer randomRow = rows.get(new Random().nextInt(rows.size()));
+                // 1.有效等价类-在表内
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
+                // 2.无效等价类-不在表内
+                int min = 0;
+                int max = 999999;
+                int invalidInt = RandomUtil.randomInt(min, max);
+                while (randomRow.equals(invalidInt)) {
+                    invalidInt = RandomUtil.randomInt(min, max);
+                }
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidInt, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
-        } else if (resultType.equals("number")) {
-            List<BigDecimal> rows = JdbcUtil.queryForList(url, username, password, sql, BigDecimal.class);
-            if (rows.isEmpty()) {
-                throw new BusinessException("查询结果为空");
+            case "float": {
+                List<Float> rows = JdbcUtil.queryForList(url, username, password, sql, Float.class);
+                if (rows.isEmpty()) {
+                    throw new BusinessException("查询结果为空");
+                }
+                Float randomRow = rows.get(new Random().nextInt(rows.size()));
+                // 1.有效等价类-在表内
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
+                // 2.无效等价类-不在表内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal invalidFloat = RandomUtil.randomBigDecimal(min, max);
+                while (randomRow.equals(invalidFloat.floatValue())) {
+                    invalidFloat = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidFloat, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
-            BigDecimal randomRow = rows.get(new Random().nextInt(rows.size()));
-            // 1.有效等价类-在表内
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
-            // 2.无效等价类-不在表内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal invalidNum = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(invalidNum)) {
-                invalidNum = RandomUtil.randomBigDecimal(min, max);
-            }
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidNum, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-            }
-        } else if (resultType.equals("integer")) {
-            List<Integer> rows = JdbcUtil.queryForList(url, username, password, sql, Integer.class);
-            if (rows.isEmpty()) {
-                throw new BusinessException("查询结果为空");
-            }
-            Integer randomRow = rows.get(new Random().nextInt(rows.size()));
-            // 1.有效等价类-在表内
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
-            // 2.无效等价类-不在表内
-            int min = 0;
-            int max = 999999;
-            int invalidInt = RandomUtil.randomInt(min, max);
-            while (randomRow.equals(invalidInt)) {
-                invalidInt = RandomUtil.randomInt(min, max);
-            }
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidInt, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-            }
-        } else if (resultType.equals("float")) {
-            List<Float> rows = JdbcUtil.queryForList(url, username, password, sql, Float.class);
-            if (rows.isEmpty()) {
-                throw new BusinessException("查询结果为空");
-            }
-            Float randomRow = rows.get(new Random().nextInt(rows.size()));
-            // 1.有效等价类-在表内
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
-            // 2.无效等价类-不在表内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal invalidFloat = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(invalidFloat.floatValue())) {
-                invalidFloat = RandomUtil.randomBigDecimal(min, max);
-            }
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidFloat, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-            }
-        } else {
-            List<Double> rows = JdbcUtil.queryForList(url, username, password, sql, Double.class);
-            if (rows.isEmpty()) {
-                throw new BusinessException("查询结果为空");
-            }
-            Double randomRow = rows.get(new Random().nextInt(rows.size()));
-            // 1.有效等价类-在表内
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
-            // 2.无效等价类-不在表内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal invalidDouble = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(invalidDouble.doubleValue())) {
-                invalidDouble = RandomUtil.randomBigDecimal(min, max);
-            }
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidDouble, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+            default: {
+                List<Double> rows = JdbcUtil.queryForList(url, username, password, sql, Double.class);
+                if (rows.isEmpty()) {
+                    throw new BusinessException("查询结果为空");
+                }
+                Double randomRow = rows.get(new Random().nextInt(rows.size()));
+                // 1.有效等价类-在表内
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
+                // 2.无效等价类-不在表内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal invalidDouble = RandomUtil.randomBigDecimal(min, max);
+                while (randomRow.equals(invalidDouble.doubleValue())) {
+                    invalidDouble = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidDouble, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
         }
         return result;
@@ -389,113 +405,124 @@ public class Generator {
             result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4Null(key, desc), null, key));
         }
 
-        if (resultType.equals("string")) {
-            List<String> rows = JdbcUtil.queryForList(url, username, password, sql, String.class);
-            if (rows.isEmpty()) {
-                throw new BusinessException("查询结果为空");
+        switch (resultType) {
+            case "string": {
+                List<String> rows = JdbcUtil.queryForList(url, username, password, sql, String.class);
+                if (rows.isEmpty()) {
+                    throw new BusinessException("查询结果为空");
+                }
+                String randomRow = rows.get(new Random().nextInt(rows.size()));
+                // 1.无效等价类-在表内
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
+                // 2.有效等价类-不在表内
+                String validStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+                while (randomRow.equals(validStr)) {
+                    validStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+                }
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validStr, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validStr, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validStr, key));
+                }
+                break;
             }
-            String randomRow = rows.get(new Random().nextInt(rows.size()));
-            // 1.无效等价类-在表内
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
-            // 2.有效等价类-不在表内
-            String validStr = RandomUtil.randomLegalStringByLength(randomRow.length());
-            while (randomRow.equals(validStr)) {
-                validStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+            case "number": {
+                List<BigDecimal> rows = JdbcUtil.queryForList(url, username, password, sql, BigDecimal.class);
+                if (rows.isEmpty()) {
+                    throw new BusinessException("查询结果为空");
+                }
+                BigDecimal randomRow = rows.get(new Random().nextInt(rows.size()));
+                // 1.无效等价类-在表内
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
+                // 2.有效等价类-不在表内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal validNum = RandomUtil.randomBigDecimal(min, max);
+                while (randomRow.equals(validNum)) {
+                    validNum = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validNum, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validNum, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validNum, key));
+                }
+                break;
             }
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validStr, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validStr, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validStr, key));
+            case "integer": {
+                List<Integer> rows = JdbcUtil.queryForList(url, username, password, sql, Integer.class);
+                if (rows.isEmpty()) {
+                    throw new BusinessException("查询结果为空");
+                }
+                Integer randomRow = rows.get(new Random().nextInt(rows.size()));
+                // 1.无效等价类-在表内
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
+                // 2.有效等价类-不在表内
+                int min = 0;
+                int max = 999999;
+                int validInt = RandomUtil.randomInt(min, max);
+                while (randomRow.equals(validInt)) {
+                    validInt = RandomUtil.randomInt(min, max);
+                }
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validInt, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validInt, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validInt, key));
+                }
+                break;
             }
-        } else if (resultType.equals("number")) {
-            List<BigDecimal> rows = JdbcUtil.queryForList(url, username, password, sql, BigDecimal.class);
-            if (rows.isEmpty()) {
-                throw new BusinessException("查询结果为空");
+            case "float": {
+                List<Float> rows = JdbcUtil.queryForList(url, username, password, sql, Float.class);
+                if (rows.isEmpty()) {
+                    throw new BusinessException("查询结果为空");
+                }
+                Float randomRow = rows.get(new Random().nextInt(rows.size()));
+                // 1.无效等价类-在表内
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
+                // 2.有效等价类-不在表内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal validFloat = RandomUtil.randomBigDecimal(min, max);
+                while (randomRow.equals(validFloat.floatValue())) {
+                    validFloat = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validFloat, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validFloat, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validFloat, key));
+                }
+                break;
             }
-            BigDecimal randomRow = rows.get(new Random().nextInt(rows.size()));
-            // 1.无效等价类-在表内
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
-            // 2.有效等价类-不在表内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal validNum = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(validNum)) {
-                validNum = RandomUtil.randomBigDecimal(min, max);
-            }
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validNum, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validNum, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validNum, key));
-            }
-        } else if (resultType.equals("integer")) {
-            List<Integer> rows = JdbcUtil.queryForList(url, username, password, sql, Integer.class);
-            if (rows.isEmpty()) {
-                throw new BusinessException("查询结果为空");
-            }
-            Integer randomRow = rows.get(new Random().nextInt(rows.size()));
-            // 1.无效等价类-在表内
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
-            // 2.有效等价类-不在表内
-            int min = 0;
-            int max = 999999;
-            int validInt = RandomUtil.randomInt(min, max);
-            while (randomRow.equals(validInt)) {
-                validInt = RandomUtil.randomInt(min, max);
-            }
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validInt, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validInt, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validInt, key));
-            }
-        } else if (resultType.equals("float")) {
-            List<Float> rows = JdbcUtil.queryForList(url, username, password, sql, Float.class);
-            if (rows.isEmpty()) {
-                throw new BusinessException("查询结果为空");
-            }
-            Float randomRow = rows.get(new Random().nextInt(rows.size()));
-            // 1.无效等价类-在表内
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
-            // 2.有效等价类-不在表内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal validFloat = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(validFloat.floatValue())) {
-                validFloat = RandomUtil.randomBigDecimal(min, max);
-            }
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validFloat, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validFloat, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validFloat, key));
-            }
-        } else {
-            List<Double> rows = JdbcUtil.queryForList(url, username, password, sql, Double.class);
-            if (rows.isEmpty()) {
-                throw new BusinessException("查询结果为空");
-            }
-            Double randomRow = rows.get(new Random().nextInt(rows.size()));
-            // 1.无效等价类-在表内
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
-            // 2.有效等价类-不在表内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal validDouble = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(validDouble.doubleValue())) {
-                validDouble = RandomUtil.randomBigDecimal(min, max);
-            }
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validDouble, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validDouble, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+            default: {
+                List<Double> rows = JdbcUtil.queryForList(url, username, password, sql, Double.class);
+                if (rows.isEmpty()) {
+                    throw new BusinessException("查询结果为空");
+                }
+                Double randomRow = rows.get(new Random().nextInt(rows.size()));
+                // 1.无效等价类-在表内
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InDb(key, desc), randomRow, key));
+                // 2.有效等价类-不在表内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal validDouble = RandomUtil.randomBigDecimal(min, max);
+                while (randomRow.equals(validDouble.doubleValue())) {
+                    validDouble = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validDouble, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validDouble, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
         }
         return result;
@@ -552,93 +579,104 @@ public class Generator {
 
         String resultType = ResultType.getResultType(elementType);
 
-        if (resultType.equals("string")) {
-            String randomRow = array.getString(new Random().nextInt(array.size()));
-            // 1.有效等价类-在数组内
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
-            // 2.无效等价类-不在数组内
-            String invalidStr = RandomUtil.randomLegalStringByLength(randomRow.length());
-            while (randomRow.equals(invalidStr)) {
-                invalidStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+        switch (resultType) {
+            case "string": {
+                String randomRow = array.getString(new Random().nextInt(array.size()));
+                // 1.有效等价类-在数组内
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
+                // 2.无效等价类-不在数组内
+                String invalidStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+                while (array.contains(invalidStr)) {
+                    invalidStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+                }
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidStr, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidStr, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+            case "number": {
+                BigDecimal randomRow = array.getBigDecimal(new Random().nextInt(array.size()));
+                // 1.有效等价类-在数组内
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
+                // 2.无效等价类-不在数组内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal invalidNum = RandomUtil.randomBigDecimal(min, max);
+                while (array.contains(invalidNum)) {
+                    invalidNum = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidNum, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
-        } else if (resultType.equals("number")) {
-            BigDecimal randomRow = array.getBigDecimal(new Random().nextInt(array.size()));
-            // 1.有效等价类-在数组内
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
-            // 2.无效等价类-不在数组内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal invalidNum = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(invalidNum)) {
-                invalidNum = RandomUtil.randomBigDecimal(min, max);
+            case "integer": {
+                Integer randomRow = array.getInteger(new Random().nextInt(array.size()));
+                // 1.有效等价类-在数组内
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
+                // 2.无效等价类-不在数组内
+                int min = 0;
+                int max = 999999;
+                int invalidInt = RandomUtil.randomInt(min, max);
+                while (array.contains(invalidInt)) {
+                    invalidInt = RandomUtil.randomInt(min, max);
+                }
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidInt, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidNum, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+            case "float": {
+                Float randomRow = array.getFloat(new Random().nextInt(array.size()));
+                // 1.有效等价类-在表内
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
+                // 2.无效等价类-不在表内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal invalidFloat = RandomUtil.randomBigDecimal(min, max);
+                while (array.contains(invalidFloat.floatValue())) {
+                    invalidFloat = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidFloat, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
-        } else if (resultType.equals("integer")) {
-            Integer randomRow = array.getInteger(new Random().nextInt(array.size()));
-            // 1.有效等价类-在数组内
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
-            // 2.无效等价类-不在数组内
-            int min = 0;
-            int max = 999999;
-            int invalidInt = RandomUtil.randomInt(min, max);
-            while (randomRow.equals(invalidInt)) {
-                invalidInt = RandomUtil.randomInt(min, max);
-            }
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidInt, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-            }
-        } else if (resultType.equals("float")) {
-            Float randomRow = array.getFloat(new Random().nextInt(array.size()));
-            // 1.有效等价类-在表内
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
-            // 2.无效等价类-不在表内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal invalidFloat = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(invalidFloat.floatValue())) {
-                invalidFloat = RandomUtil.randomBigDecimal(min, max);
-            }
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidFloat, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-            }
-        } else  {
-            Double randomRow = array.getDouble(new Random().nextInt(array.size()));
-            // 1.有效等价类-在表内
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
-            // 2.无效等价类-不在表内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal invalidDouble = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(invalidDouble.doubleValue())) {
-                invalidDouble = RandomUtil.randomBigDecimal(min, max);
-            }
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidDouble, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+            default: {
+                Double randomRow = array.getDouble(new Random().nextInt(array.size()));
+                // 1.有效等价类-在表内
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
+                // 2.无效等价类-不在表内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal invalidDouble = RandomUtil.randomBigDecimal(min, max);
+                while (array.contains(invalidDouble.floatValue())) {
+                    invalidDouble = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidDouble, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                }
+                break;
             }
         }
         return result;
@@ -667,93 +705,104 @@ public class Generator {
 
         String resultType = ResultType.getResultType(elementType);
 
-        if (resultType.equals("string")) {
-            String randomRow = array.getString(new Random().nextInt(array.size()));
-            // 1.无效等价类-在数组内
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
-            // 2.有效等价类-不在数组内
-            String validStr = RandomUtil.randomLegalStringByLength(randomRow.length());
-            while (randomRow.equals(validStr)) {
-                validStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+        switch (resultType) {
+            case "string": {
+                String randomRow = array.getString(new Random().nextInt(array.size()));
+                // 1.无效等价类-在数组内
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
+                // 2.有效等价类-不在数组内
+                String validStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+                while (array.contains(validStr)) {
+                    validStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+                }
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validStr, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validStr, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validStr, key));
+                }
+                break;
             }
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validStr, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validStr, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validStr, key));
+            case "number": {
+                BigDecimal randomRow = array.getBigDecimal(new Random().nextInt(array.size()));
+                // 1.无效等价类-在数组内
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
+                // 2.有效等价类-不在数组内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal validNum = RandomUtil.randomBigDecimal(min, max);
+                while (array.contains(validNum)) {
+                    validNum = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validNum, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validNum, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validNum, key));
+                }
+                break;
             }
-        } else if (resultType.equals("number")) {
-            BigDecimal randomRow = array.getBigDecimal(new Random().nextInt(array.size()));
-            // 1.无效等价类-在数组内
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
-            // 2.有效等价类-不在数组内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal validNum = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(validNum)) {
-                validNum = RandomUtil.randomBigDecimal(min, max);
+            case "integer": {
+                Integer randomRow = array.getInteger(new Random().nextInt(array.size()));
+                // 1.无效等价类-在数组内
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
+                // 2.有效等价类-不在数组内
+                int min = 0;
+                int max = 999999;
+                int validInt = RandomUtil.randomInt(min, max);
+                while (array.contains(validInt)) {
+                    validInt = RandomUtil.randomInt(min, max);
+                }
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validInt, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validInt, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validInt, key));
+                }
+                break;
             }
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validNum, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validNum, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validNum, key));
+            case "float": {
+                Float randomRow = array.getFloat(new Random().nextInt(array.size()));
+                // 1.无效等价类-在表内
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
+                // 2.有效等价类-不在表内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal validFloat = RandomUtil.randomBigDecimal(min, max);
+                while (array.contains(validFloat.floatValue())) {
+                    validFloat = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validFloat, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validFloat, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validFloat, key));
+                }
+                break;
             }
-        } else if (resultType.equals("integer")) {
-            Integer randomRow = array.getInteger(new Random().nextInt(array.size()));
-            // 1.无效等价类-在数组内
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
-            // 2.有效等价类-不在数组内
-            int min = 0;
-            int max = 999999;
-            int validInt = RandomUtil.randomInt(min, max);
-            while (randomRow.equals(validInt)) {
-                validInt = RandomUtil.randomInt(min, max);
-            }
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validInt, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validInt, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validInt, key));
-            }
-        } else if (resultType.equals("float")) {
-            Float randomRow = array.getFloat(new Random().nextInt(array.size()));
-            // 1.无效等价类-在表内
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
-            // 2.有效等价类-不在表内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal validFloat = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(validFloat.floatValue())) {
-                validFloat = RandomUtil.randomBigDecimal(min, max);
-            }
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validFloat, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validFloat, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validFloat, key));
-            }
-        } else  {
-            Double randomRow = array.getDouble(new Random().nextInt(array.size()));
-            // 1.有效等价类-在表内
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
-            // 2.无效等价类-不在表内
-            BigDecimal min = new BigDecimal("0.00");
-            BigDecimal max = new BigDecimal("99999.99");
-            BigDecimal validDouble = RandomUtil.randomBigDecimal(min, max);
-            while (randomRow.equals(validDouble.doubleValue())) {
-                validDouble = RandomUtil.randomBigDecimal(min, max);
-            }
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validDouble, key));
-            // 3.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validDouble, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validDouble, key));
+            default: {
+                Double randomRow = array.getDouble(new Random().nextInt(array.size()));
+                // 1.有效等价类-在表内
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4InArray(key, desc), randomRow, key));
+                // 2.无效等价类-不在表内
+                BigDecimal min = new BigDecimal("0.00");
+                BigDecimal max = new BigDecimal("99999.99");
+                BigDecimal validDouble = RandomUtil.randomBigDecimal(min, max);
+                while (array.contains(validDouble.doubleValue())) {
+                    validDouble = RandomUtil.randomBigDecimal(min, max);
+                }
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validDouble, key));
+                // 3.重复
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validDouble, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validDouble, key));
+                }
+                break;
             }
         }
         return result;
@@ -778,7 +827,6 @@ public class Generator {
         jsonObject.put("key", key);
         return jsonObject;
     }
-
 
     /**
      * 生成边界值

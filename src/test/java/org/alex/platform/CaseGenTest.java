@@ -4,10 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.alex.platform.enums.CaseRule;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.generator.Generator;
 import org.alex.platform.generator.Main;
+import org.alex.platform.util.CommandUtil;
 import org.alex.platform.util.FileUtil;
+import org.alex.platform.util.JsonUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,11 +107,25 @@ public class CaseGenTest {
     public void testMain() throws Exception {
         String jsonStr = FileUtil.readByBuffer("C:\\Users\\beix\\IdeaProjects\\platform\\src\\main\\resources\\template\\case_generator.json", StandardCharsets.UTF_8);
         JSONObject schema = JSONObject.parseObject(jsonStr);
-        System.out.println(main.generateCase(schema));
+        System.out.println(JSON.toJSONString(main.generateCase(schema, CaseRule.CARTESIAN),
+                SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteMapNullValue));
     }
 
     @Test
     public void test1() throws Exception {
-        doInDbTest();
+        JSONObject object = new JSONObject();
+        object.put("123", "123");
+        JSONArray array = new JSONArray();
+        array.add(object);
+        System.out.println(array);
+        object = null;
+        System.out.println(array);
+    }
+
+    @Test
+    public void test2() {
+        String cmd = "python src\\main\\resources\\python\\ort.py";
+        System.out.println(CommandUtil.exec(cmd));
     }
 }

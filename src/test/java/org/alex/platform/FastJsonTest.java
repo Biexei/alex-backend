@@ -1,7 +1,7 @@
 package org.alex.platform;
 
 import org.alex.platform.exception.ValidException;
-import org.alex.platform.generator.Valid;
+import org.alex.platform.generator.Filter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @SpringBootTest
 public class FastJsonTest {
     @Autowired
-    Valid valid;
+    Filter filter;
     @Test
     public void doTest() throws ValidException {
         BigDecimal minimum = new BigDecimal(1);
@@ -22,6 +22,6 @@ public class FastJsonTest {
 
         Integer minIntLen = 1;
         Integer maxIntLen = 1;
-        valid.valid4Number(minimum, maximum);
+        filter.valid4Number(minimum, maximum);
     }
 }

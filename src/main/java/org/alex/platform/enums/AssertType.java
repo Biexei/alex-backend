@@ -10,7 +10,8 @@ public enum AssertType {
     //兼容模式
     HEADER_("head", (byte)2),
     HEADER__("headers", (byte)2),
-    RESPONSE_CODE_("code", (byte)3);
+    RESPONSE_CODE_("code", (byte)3),
+    RESPONSE_CODE__("response_code", (byte)3);
 
     private final String assertTypeName;
     private final Byte assertTypeNum;

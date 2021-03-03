@@ -15,11 +15,16 @@ public enum FieldType {
     IN_DB("inDb","inDb"),
     NOT_IN_DB("notInDb","notInDb"),
 
+    IN_DB_("in_db","inDb"),
+    NOT_IN_DB_("not_in_db","notInDb"),
+
     CONST("const","const"),
 
     IN_ARRAY("inArray","inArray"),
     NOT_IN_ARRAY("notInArray","notInArray"),
-    ;
+
+    IN_ARRAY_("in_array","inArray"),
+    NOT_IN_ARRAY_("not_in_array","notInArray");
 
     private String type;
     private String value;

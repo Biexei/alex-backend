@@ -59,4 +59,12 @@ public class NoUtil {
     public static String genIfImportNo() {
         return "IFI" + UUID.randomUUID().toString();
     }
+
+    /**
+     * 调用python正交算法
+     * @return 生成redis key
+     */
+    public static String genPyOrtNo() {
+        return "PY-ORT" + UUID.randomUUID().toString();
+    }
 }

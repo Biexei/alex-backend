@@ -1,7 +1,6 @@
 package org.alex.platform.generator;
 
 import com.alibaba.fastjson.JSONArray;
-import org.alex.platform.enums.FieldType;
 import org.alex.platform.enums.ResultType;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.service.DbService;
@@ -15,7 +14,7 @@ import java.math.BigDecimal;
  * 检查各类型输入数据的完整性
  */
 @Component
-public class Valid {
+public class Filter {
     @Autowired
     DbService dbService;
 
