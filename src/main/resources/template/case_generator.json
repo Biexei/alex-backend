@@ -21,7 +21,7 @@
 				{
 					"order": 2,
 					"desc": "接口状态码需等于200",
-					"type": "jsonPath",
+					"type": "json",
 					"expression": "$..code",
 					"operator": "=",
 					"expect": 200
@@ -41,7 +41,7 @@
 				{
 					"order": 2,
 					"desc": "接口状态码不等于200",
-					"type": "jsonPath",
+					"type": "json",
 					"expression": "$..code",
 					"operator": "!=",
 					"expect": 200

@@ -8,6 +8,9 @@ public enum AssertType {
     RESPONSE_CODE("responseCode", (byte)3),
 
     //兼容模式
+    JSON_("jsonPath", (byte)0),
+    JSON__("json_path", (byte)0),
+    HTML_("xpath", (byte)1),
     HEADER_("head", (byte)2),
     HEADER__("headers", (byte)2),
     RESPONSE_CODE_("code", (byte)3),
