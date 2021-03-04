@@ -120,7 +120,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
         } else if (type.equalsIgnoreCase("json") && requestImportType == 3 ) {
             LOG.info("导入方式：json");
             JSONArray caseArray;
-            String fileContent = FileUtil.readByBuffer(fis, StandardCharsets.UTF_8);
+            String fileContent = FileUtil.readByBufferReader(fis, StandardCharsets.UTF_8);
             try {
                 caseArray = JSON.parseArray(fileContent);
             } catch (Exception e) {

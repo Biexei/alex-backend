@@ -127,6 +127,36 @@ public class FileUtil {
     }
 
     /**
+     * 通过缓冲流读取文件
+     * @param fis 文件输入流
+     * @param charset 字符集
+     * @return 文件内容
+     */
+    public static String readByBufferReader(FileInputStream fis, Charset charset) {
+        if (fis == null) {
+            throw new RuntimeException("FileInputStream should not be null");
+        }
+        StringBuilder sb = null;
+        BufferedReader br = null;
+        InputStreamReader isr = null;
+        try {
+            isr = new InputStreamReader(fis, charset);
+            sb = new StringBuilder();
+            br = new BufferedReader(isr);
+            String line;
+            while ((line = br.readLine())!= null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+        } finally {
+            closeStreamReader(fis, br, isr);
+        }
+        return sb.toString();
+    }
+
+    /**
      * 通过IO读取文件
      * @param fullPath 全路径
      * @param charset 字符集
@@ -471,6 +501,35 @@ public class FileUtil {
         if (fis != null) {
             try {
                 fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 关闭流
+     * @param fis FileInputStream
+     * @param br BufferedReader
+     */
+    private static void closeStreamReader(FileInputStream fis, BufferedReader br, InputStreamReader isr) {
+        if (br != null) {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (fis != null) {
+            try {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (isr != null) {
+            try {
+                isr.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
