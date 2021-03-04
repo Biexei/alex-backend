@@ -19,7 +19,7 @@ public class InterfaceCaseDO implements Serializable {
     @Min(value = 0, message = "请求方式必须为0~4")
     @NotNull(message = "请求方式不能为空")
     private Byte method;
-    @Size(max = 100, message = "用例描述长度必须小于等于100")
+    @Size(max = 1000, message = "用例描述长度必须小于等于1000")
     private String desc;
     @NotNull(message = "用例等级不能为空")
     @Max(value = 2, message = "用例等级必须为0~4")
@@ -36,7 +36,7 @@ public class InterfaceCaseDO implements Serializable {
     @Size(max = 1000, message = "请求json数据长度必须小于等于1000")
     private String json;
     @NotNull(message = "创建者不能为空")
-    @Size(min = 1, max = 20, message = "帐号名称长度必须为1~20")
+    @Size(min = 1, max = 20, message = "创建者长度必须为1~20")
     @NotNull(message = "创建者不能为空")
     private String creater;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -1,12 +1,12 @@
 {
 	"property": {
 		"projectId": 4,
-		"moduleId": 5,
+		"moduleId": 6,
 		"url": "/user/register",
 		"method": "post",
 		"desc": "用户注册接口",
 		"doc": "",
-		"headers": "",
+		"headers": "{'Token':'${token}'}",
 		"schemaType": "data",
 		"validEquivalenceClass": {
 			"caseLevel": "高",

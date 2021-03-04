@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-01-06 16:46:52
+Date: 2021-03-04 14:33:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -3238,7 +3238,7 @@ DROP TABLE IF EXISTS `t_interface_case_execute_log`;
 CREATE TABLE `t_interface_case_execute_log` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '用例执行日志id',
   `case_id` int DEFAULT NULL COMMENT '用例id',
-  `case_desc` varchar(100) DEFAULT NULL COMMENT '用例描述',
+  `case_desc` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用例描述',
   `case_url` varchar(300) DEFAULT NULL COMMENT '请求地址',
   `case_method` tinyint DEFAULT NULL COMMENT '0get,1post,2patch,3put,4delete',
   `request_headers` varchar(1000) DEFAULT NULL COMMENT '请求头',

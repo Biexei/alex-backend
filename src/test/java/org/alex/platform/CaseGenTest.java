@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -107,9 +109,12 @@ public class CaseGenTest {
     public void testMain() throws Exception {
         String jsonStr = FileUtil.readByBuffer("C:\\Users\\beix\\IdeaProjects\\platform\\src\\main\\resources\\template\\case_generator.json", StandardCharsets.UTF_8);
         JSONObject schema = JSONObject.parseObject(jsonStr);
-        System.out.println(JSON.toJSONString(main.generateCase(schema, CaseRule.ORT),
-                SerializerFeature.DisableCircularReferenceDetect,
-                SerializerFeature.WriteMapNullValue));
+//        System.out.println(JSON.toJSONString(main.generateCase(schema, CaseRule.ORT),
+//                SerializerFeature.DisableCircularReferenceDetect,
+//                SerializerFeature.WriteMapNullValue));
+        FileOutputStream fileOutputStream = new FileOutputStream(new File("C:\\Users\\beix\\Desktop\\1.json"));
+        JSON.writeJSONString(fileOutputStream, main.generateCase(schema, CaseRule.ORT), SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteMapNullValue, SerializerFeature.PrettyFormat);
     }
 
     @Test
