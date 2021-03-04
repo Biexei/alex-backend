@@ -3195,7 +3195,7 @@ CREATE TABLE `t_interface_case` (
   `case_id` int NOT NULL AUTO_INCREMENT COMMENT '用例编号',
   `url` varchar(200) DEFAULT NULL COMMENT '请求地址',
   `method` tinyint(1) DEFAULT NULL COMMENT '请求方式  0get,1post,2patch,3put,4delete',
-  `desc` varchar(100) DEFAULT NULL COMMENT '用例描述',
+  `desc` varchar(1000) DEFAULT NULL COMMENT '用例描述',
   `level` tinyint DEFAULT NULL COMMENT '用例级别0高，1中，2低',
   `doc` varchar(200) DEFAULT NULL COMMENT '接口文档地址',
   `headers` varchar(1000) DEFAULT NULL COMMENT '请求头',
