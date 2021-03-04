@@ -23,21 +23,25 @@ public class Rule {
      */
     public JSONArray cartesian(ArrayList<Integer> itemSizeList, JSONArray itemList, JSONArray result) {
         JSONArray var1 = new JSONArray();
-        // 将最小item由object转成array包装object
-        for (int i = 0; i < itemList.size(); i++) {
-            JSONArray var2 = new JSONArray();
-            JSONArray singleFieldArray = itemList.getJSONArray(i);
-            for (int j = 0; j < singleFieldArray.size(); j++) {
-                JSONArray var3 = new JSONArray();
-                var3.add(singleFieldArray.getJSONObject(j));
-                var2.add(var3);
-            }
-            var1.add(var2);
-        }
-        if (var1.size() <= 1) {
-            return var1;
+        if (itemList.size() < 2) {
+            return itemList;
         } else {
-            return cartesianWrapper(itemSizeList, var1, result);
+            // 将最小item由object转成array包装object
+            for (int i = 0; i < itemList.size(); i++) {
+                JSONArray var2 = new JSONArray();
+                JSONArray singleFieldArray = itemList.getJSONArray(i);
+                for (int j = 0; j < singleFieldArray.size(); j++) {
+                    JSONArray var3 = new JSONArray();
+                    var3.add(singleFieldArray.getJSONObject(j));
+                    var2.add(var3);
+                }
+                var1.add(var2);
+            }
+            if (var1.size() <= 1) {
+                return var1;
+            } else {
+                return cartesianWrapper(itemSizeList, var1, result);
+            }
         }
     }
 
@@ -48,7 +52,7 @@ public class Rule {
      * @return 正交法
      */
     public JSONArray ort(String key, JSONArray itemList) throws BusinessException {
-        if (itemList.size() <= 1) {
+        if (itemList.size() < 2) {
             return itemList;
         }
         redisUtil.set(key, itemList);

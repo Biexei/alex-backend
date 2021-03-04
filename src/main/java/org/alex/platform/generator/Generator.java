@@ -85,7 +85,7 @@ public class Generator {
      * @param desc 字段描述
      * @param publicConfig 全局配置
      * @param allowIllegal 是否允许非法字符
-     * @param allowEmpty 是否运行为空
+     * @param allowEmpty 是否允许为空
      * @param minLen 最小长度
      * @param maxLen 最大长度
      * @return 字段用例
@@ -538,6 +538,7 @@ public class Generator {
      */
     private JSONArray genConst(String key, String desc, JSONObject publicConfig, Object value) {
         Boolean allowNull = publicConfig.getBoolean("allowNull");
+        Boolean allowRepeat = publicConfig.getBoolean("allowRepeat");
 
         JSONArray result = new JSONArray();
 
@@ -551,8 +552,16 @@ public class Generator {
         // 有效等价类
         result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4Const(key, desc, value), value, key));
 
-        // 不考虑无效等价类以及重复值
-
+        // 不考虑无效等价类
+        if (value instanceof String) {
+            if (!(((String) value).startsWith("#{") && !(((String) value).startsWith("${")))) {
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ConstRepeat(key, desc), value, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ConstRepeat(key, desc), value, key));
+                }
+            }
+        }
         return result;
     }
 

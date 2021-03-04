@@ -104,4 +104,8 @@ public class Description {
     protected String desc4Const(String key, String desc, Object value) {
         return String.format("%s<%s>值为常量%s", desc, key, value);
     }
+
+    protected String desc4ConstRepeat(String key, String desc) {
+        return String.format("%s<%s>常量值-重复", desc, key);
+    }
 }
