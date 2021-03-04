@@ -12,6 +12,8 @@ import java.util.List;
 public interface InterfaceSuiteCaseRefMapper {
     void insertSuiteCase(List<InterfaceSuiteCaseRefDO> interfaceSuiteCaseRefDOList);
 
+    void insertSuiteCaseSingle(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO);
+
     void modifySuiteCase(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO);
 
     void deleteSuiteCase(Integer incrementKey);

@@ -5,8 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.enums.*;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.pojo.InterfaceSuiteCaseRefDO;
 import org.alex.platform.service.ImportCaseService;
 import org.alex.platform.service.InterfaceCaseImportService;
+import org.alex.platform.service.InterfaceCaseSuiteService;
+import org.alex.platform.service.InterfaceSuiteCaseRefService;
 import org.alex.platform.util.ExceptionUtil;
 import org.alex.platform.util.FileUtil;
 import org.alex.platform.util.NoUtil;
@@ -33,12 +36,17 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
     ImportCaseService importCaseService;
     @Autowired
     LoginUserInfo userInfo;
+    @Autowired
+    InterfaceCaseSuiteService interfaceCaseSuiteService;
+    @Autowired
+    InterfaceSuiteCaseRefService interfaceSuiteCaseRefService;
 
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseImportServiceImpl.class);
 
     @Override
     @SuppressWarnings({"rawtypes"})
-    public HashMap<String, Integer> importCase(MultipartFile file, Integer requestImportType, HttpServletRequest request) throws BusinessException {
+    public HashMap<String, Integer> importCase(MultipartFile file, Integer requestImportType, Integer suiteId,
+                                               HttpServletRequest request) throws BusinessException {
         String creator = userInfo.getRealName(request);
         String importNum = NoUtil.genIfImportNo();
 
@@ -87,6 +95,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
                 try {
                     Integer caseId = importCaseService.insertCaseByOffice(result.get(i), creator, (byte) 1, importNum);
                     successNum++;
+                    addCase2Suite(caseId, suiteId);
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
                 } catch (Exception e) {
                     failedNum++;
@@ -110,6 +119,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
                 try {
                     Integer caseId = importCaseService.insertCaseByOffice(result.get(i), creator, (byte) 2, importNum);
                     successNum++;
+                    addCase2Suite(caseId, suiteId);
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
                 } catch (Exception e) {
                     failedNum++;
@@ -134,6 +144,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
                 try {
                     Integer caseId = importCaseService.insertCaseByJsonYaml(caseArray.getJSONObject(i), creator, (byte) 3, importNum);
                     successNum++;
+                    addCase2Suite(caseId, suiteId);
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
                 } catch (Exception e) {
                     failedNum++;
@@ -159,6 +170,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
                 try {
                     Integer caseId = importCaseService.insertCaseByJsonYaml(caseArray.getJSONObject(i), creator, (byte) 4, importNum);
                     successNum++;
+                    addCase2Suite(caseId, suiteId);
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
                 } catch (Exception e) {
                     failedNum++;
@@ -186,5 +198,23 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
         result.put("success", successNum);
         result.put("failed", failedNum);
         return result;
+    }
+
+    /**
+     * 将用例加入测试套件
+     * @param caseId 测试用例编号
+     * @param suiteId 测试套件编号
+     */
+    private void addCase2Suite(Integer caseId, Integer suiteId) {
+        if (suiteId != null) {
+            if (interfaceCaseSuiteService.findInterfaceCaseSuiteById(suiteId) != null) {
+                InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO = new InterfaceSuiteCaseRefDO();
+                interfaceSuiteCaseRefDO.setSuiteId(suiteId);
+                interfaceSuiteCaseRefDO.setCaseId(caseId);
+                interfaceSuiteCaseRefDO.setCaseStatus((byte)0);
+                interfaceSuiteCaseRefDO.setOrder(1);
+                interfaceSuiteCaseRefService.saveSuiteCaseSingle(interfaceSuiteCaseRefDO);
+            }
+        }
     }
 }

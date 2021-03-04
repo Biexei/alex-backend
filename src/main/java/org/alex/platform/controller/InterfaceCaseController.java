@@ -51,12 +51,14 @@ public class InterfaceCaseController {
      * 导入接口测试用例
      * @param file file
      * @param request request
+     * @param suiteId suiteId
      * @return Result
      * @throws BusinessException 业务异常
      */
     @PostMapping("/interface/case/import")
-    public Result importInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer type, HttpServletRequest request) throws BusinessException {
-        HashMap<String, Integer> result = interfaceCaseImportService.importCase(file, type, request);
+    public Result importInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer type,
+                                      @RequestParam Integer suiteId, HttpServletRequest request) throws BusinessException {
+        HashMap<String, Integer> result = interfaceCaseImportService.importCase(file, type, suiteId, request);
         return Result.success(result);
     }
 

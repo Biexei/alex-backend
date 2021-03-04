@@ -113,7 +113,7 @@ public class CaseGenTest {
 //                SerializerFeature.DisableCircularReferenceDetect,
 //                SerializerFeature.WriteMapNullValue));
         FileOutputStream fileOutputStream = new FileOutputStream(new File("C:\\Users\\beix\\Desktop\\1.json"));
-        JSON.writeJSONString(fileOutputStream, main.generateCase(schema, CaseRule.CARTESIAN), SerializerFeature.DisableCircularReferenceDetect,
+        JSON.writeJSONString(fileOutputStream, main.generateCase(schema, CaseRule.ORT), SerializerFeature.DisableCircularReferenceDetect,
                 SerializerFeature.WriteMapNullValue, SerializerFeature.PrettyFormat);
     }
 

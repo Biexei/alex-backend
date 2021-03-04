@@ -74,6 +74,15 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
     }
 
     /**
+     * 插入单条记录
+     * @param interfaceSuiteCaseRefDO interfaceSuiteCaseRefDO
+     */
+    @Override
+    public void saveSuiteCaseSingle(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO) {
+        interfaceSuiteCaseRefMapper.insertSuiteCaseSingle(interfaceSuiteCaseRefDO);
+    }
+
+    /**
      * 修改测试套件的用例
      *
      * @param interfaceSuiteCaseRefDO interfaceSuiteCaseRefDO

@@ -16,6 +16,8 @@ import java.util.List;
 public interface InterfaceSuiteCaseRefService {
     void saveSuiteCase(List<InterfaceSuiteCaseRefDO> interfaceSuiteCaseRefDOList);
 
+    void saveSuiteCaseSingle(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO);
+
     void modifySuiteCase(InterfaceSuiteCaseRefDO interfaceSuiteCaseRefDO);
 
     void removeSuiteCase(Integer incrementKey);

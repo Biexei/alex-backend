@@ -15,6 +15,16 @@
             )
         </foreach>
     </insert>
+    <insert id="insertSuiteCaseSingle" parameterType="org.alex.platform.pojo.InterfaceSuiteCaseRefDO">
+        insert into `t_interface_suite_case_ref` (`case_id`, `suite_id`, `case_status`, `order`)
+        values
+            (
+            #{caseId},
+            #{suiteId},
+            #{caseStatus},
+            #{order}
+            )
+    </insert>
     <update id="modifySuiteCase" parameterType="org.alex.platform.pojo.InterfaceSuiteCaseRefDO">
         update `t_interface_suite_case_ref`
         <set>
