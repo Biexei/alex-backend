@@ -2,6 +2,7 @@ package org.alex.platform.controller;
 
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
+import org.alex.platform.enums.CaseRule;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.pojo.InterfaceCaseDTO;
 import org.alex.platform.pojo.InterfaceCaseListDTO;
@@ -63,6 +64,23 @@ public class InterfaceCaseController {
     }
 
     /**
+     * 上传约束文件自动生成测试用例并下载
+     * @param file  约束文件
+     * @param type  1正交法 2笛卡尔积
+     * @param response 文件下载输入
+     * @throws BusinessException 业务异常
+     */
+    @PostMapping("/interface/case/generator")
+    public void generatorInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer type,
+                                         HttpServletResponse response) throws Exception {
+        CaseRule caseRule = type == 1 ? CaseRule.ORT : CaseRule.CARTESIAN;
+        String s = interfaceCaseImportService.generatorInterfaceCase(file, caseRule, response);
+        response.setHeader("Content-Disposition", "attachment;filename=" +
+                new String("生成结果.json".getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+        FileUtil.downloadString(s, StandardCharsets.UTF_8, response);
+    }
+
+    /**
      * 接口用例模版下载
      * @param type 类型
      * @param response response
@@ -74,6 +92,10 @@ public class InterfaceCaseController {
         String json = "interface_case_template.json";
         String csv = "interface_case_template.csv";
         String yaml = "interface_case_template.yaml";
+        String caseGeneratorTemplate = "用户注册接口自动生成用例约束示例.json";
+
+        String readMeBasePath = "src\\main\\resources\\readme\\";
+        String caseGeneratorIntroduce = "用例生成介绍.md";
         if (type == 1) {
             response.setHeader("Content-Disposition", "attachment;filename=" + excel);
             FileUtil.download(basePath + excel, StandardCharsets.ISO_8859_1, response);
@@ -86,6 +108,14 @@ public class InterfaceCaseController {
         } else if (type == 4) {
             response.setHeader("Content-Disposition", "attachment;filename=" + yaml);
             FileUtil.download(basePath + yaml, StandardCharsets.UTF_8, response);
+        } else if (type == 5) {
+            response.setHeader("Content-Disposition", "attachment;filename=" +
+                    new String(caseGeneratorTemplate.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+            FileUtil.download(basePath + caseGeneratorTemplate, StandardCharsets.UTF_8, response);
+        } else if (type == 6) {
+            response.setHeader("Content-Disposition", "attachment;filename=" +
+                    new String(caseGeneratorIntroduce.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+            FileUtil.download(readMeBasePath + caseGeneratorIntroduce, StandardCharsets.UTF_8, response);
         }
     }
 

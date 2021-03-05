@@ -2,9 +2,12 @@ package org.alex.platform.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.enums.*;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.generator.Main;
 import org.alex.platform.pojo.InterfaceSuiteCaseRefDO;
 import org.alex.platform.service.ImportCaseService;
 import org.alex.platform.service.InterfaceCaseImportService;
@@ -21,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +44,8 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
     InterfaceCaseSuiteService interfaceCaseSuiteService;
     @Autowired
     InterfaceSuiteCaseRefService interfaceSuiteCaseRefService;
+    @Autowired
+    Main main;
 
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseImportServiceImpl.class);
 
@@ -68,11 +74,11 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
         if (is instanceof FileInputStream) {
             fis = (FileInputStream)is;
         } else {
-            throw new BusinessException("excel文件解析异常");
+            throw new BusinessException("文件解析异常");
         }
         String filename = file.getOriginalFilename();
         if (filename == null) {
-            throw new BusinessException("excel文件解析异常");
+            throw new BusinessException("文件解析异常");
         }
         String type = filename.substring(filename.lastIndexOf(".") + 1);
         if ((type.equalsIgnoreCase("xls") || type.equalsIgnoreCase("xlsx")) && requestImportType == 1 ) {
@@ -183,6 +189,35 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
         }
         LOG.info("用例导入流程完成，总记录：{}，成功：{}，失败：{}", totalNum, successNum, failedNum);
         return importResult(totalNum, successNum, failedNum);
+    }
+
+    @Override
+    public String generatorInterfaceCase(MultipartFile file, CaseRule caseRule, HttpServletResponse response) throws Exception {
+
+        InputStream is;
+        FileInputStream fis;
+        LOG.info("开始批量生成测试用例流程");
+        try {
+            is= file.getInputStream();
+        } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
+            throw new BusinessException("文件上传异常");
+        }
+        if (is instanceof FileInputStream) {
+            fis = (FileInputStream)is;
+        } else {
+            throw new BusinessException("文件解析异常");
+        }
+        String fileContent = FileUtil.readByBufferReader(fis, StandardCharsets.UTF_8);
+        JSONObject fileContentObj = JSONObject.parseObject(fileContent);
+        JSONArray resultArray = main.generateCase(fileContentObj, caseRule);
+        String resultString = JSON.toJSONString(resultArray, SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteMapNullValue, SerializerFeature.PrettyFormat);
+        LOG.info("批量生成用例共" + resultArray.size() + "条");
+        LOG.info("-----------生成的用例为-----------");
+        LOG.info(resultString);
+        LOG.info("-----------生成的用例为-----------");
+        return resultString;
     }
 
     /**

@@ -107,7 +107,7 @@ public class CaseGenTest {
 
     @Test
     public void testMain() throws Exception {
-        String jsonStr = FileUtil.readByBuffer("C:\\Users\\beix\\IdeaProjects\\platform\\src\\main\\resources\\template\\case_generator.json", StandardCharsets.UTF_8);
+        String jsonStr = FileUtil.readByBuffer("C:\\Users\\beix\\IdeaProjects\\platform\\src\\main\\resources\\template\\用户注册接口自动生成用例约束示例.json", StandardCharsets.UTF_8);
         JSONObject schema = JSONObject.parseObject(jsonStr);
 //        System.out.println(JSON.toJSONString(main.generateCase(schema, CaseRule.ORT),
 //                SerializerFeature.DisableCircularReferenceDetect,

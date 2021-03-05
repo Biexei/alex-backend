@@ -486,6 +486,37 @@ public class FileUtil {
     }
 
     /**
+     * 文件下载
+     * @param fileContentString 文件内容
+     * @param charset 编码
+     * @param response HttpServletResponse
+     */
+    public static void downloadString(String fileContentString, Charset charset, HttpServletResponse response) {
+        OutputStream outputStream = null;
+        try {
+            outputStream = response.getOutputStream();
+        } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+        }
+        try {
+            if (outputStream != null) {
+                outputStream.write(fileContentString.getBytes(charset));
+            }
+        } catch (IOException e) {
+            LOG.error(ExceptionUtil.msg(e));
+            e.printStackTrace();
+        }
+        if (outputStream != null) {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * 关闭流
      * @param fis FileInputStream
      * @param bis BufferedInputStream
