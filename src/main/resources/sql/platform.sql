@@ -4977,7 +4977,7 @@ DROP TABLE IF EXISTS `t_interface_case_rely_data`;
 CREATE TABLE `t_interface_case_rely_data` (
   `rely_id` int NOT NULL AUTO_INCREMENT COMMENT ' 自增主键',
   `rely_case_id` int DEFAULT NULL COMMENT '依赖用例编号',
-  `rely_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '依赖名称,通过${name}引用',
+  `rely_name` varchar(100) BINARY CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '依赖名称,通过${name}引用',
   `rely_desc` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '依赖描述',
   `content_type` tinyint DEFAULT NULL COMMENT '提取数据类型   0json/1html/2header/',
   `extract_expression` varchar(50) DEFAULT NULL COMMENT '提取表达式',

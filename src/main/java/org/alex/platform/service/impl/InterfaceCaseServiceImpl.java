@@ -1178,7 +1178,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = ifCaseRelyDataService.findIfRelyDataByName(relyName);
                     if (null == interfaceCaseRelyDataVO) {
                         LOG.warn("未找到对应的用例信息，relyName={}", relyName);
-                        throw new ParseException("未找到该依赖数值");
+                        throw new ParseException("未找到该依赖数值, ${" + relyName + "}");
                     }
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     LOG.info("获取到的用例编号={}", caseId);
@@ -1376,7 +1376,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     // 判断是否在t_rely_data
                     if (null == relyDataVO) {
                         LOG.warn("未找到该依赖数值，relyName={}", relyName);
-                        throw new ParseException("未找到该依赖数值");
+                        throw new ParseException("未找到该依赖数值, ${" + relyName + "}");
                     } else {
                         // 此处不考虑反射函数类型，已经在${xx()}步骤处理
                         // 依赖类型 0固定值 1反射方法 2sql
