@@ -1546,23 +1546,20 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             Object redisResult;
             if (casePreNo == null) {
                 if (suiteLogDetailNo == null) {
-                    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~111111111");
                     LOG.info("suiteLogDetailNo == null && casePreNo == null，使用临时变量域");
                     redisResult = redisUtil.hashGet(NoUtil.TEMP_POST_PROCESSOR_NO, postProcessorName);
                 } else {
-                    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~22222222");
                     LOG.info("suiteLogDetailNo != null && casePreNo == null，使用测试套件域");
                     redisResult = redisUtil.hashGet(suiteLogDetailNo, postProcessorName);
                 }
             } else {
-                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~3333333333");
                 System.out.println(casePreNo + "" + postProcessorName);
                 LOG.info("casePreNo != null，使用前置用例域");
                 redisResult = redisUtil.hashGet(casePreNo, postProcessorName);
             }
             if (redisResult == null) {
-                LOG.error("未找到后置处理器" + postProcessorName);
-                throw new ParseException("未找到后置处理器" + postProcessorName);
+                LOG.error("未找到后置处理器#{" + postProcessorName + "}");
+                throw new ParseException("未找到后置处理器#{" + postProcessorName + "}");
             }
             String redisResultStr = redisResult.toString();
             s = s.replace(findStr, redisResultStr);
