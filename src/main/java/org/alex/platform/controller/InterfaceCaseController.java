@@ -59,7 +59,7 @@ public class InterfaceCaseController {
      */
     @PostMapping("/interface/case/import")
     public Result importInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer type,
-                                      @RequestParam Integer suiteId, HttpServletRequest request) throws BusinessException {
+                                      @RequestParam(required = false) Integer suiteId, HttpServletRequest request) throws BusinessException {
         HashMap<String, Integer> result = interfaceCaseImportService.importCase(file, type, suiteId, request);
         return Result.success(result);
     }
