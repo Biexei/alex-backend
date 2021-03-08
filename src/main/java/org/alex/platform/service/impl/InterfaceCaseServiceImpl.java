@@ -695,12 +695,13 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         boolean isThrowException = false;
                         String exceptionMsg = "";
                         if (type >= 3 && type <= 6) { // 3request-header/4request-params/5request-data/6request-json
-                            // 均使用jsonPath提取表达式
                             String s = "[]";
                             try {
                                 switch (type) {
                                     case 3:
-                                        s = ParseUtil.parseJson(headers, expression);
+                                        s = ParseUtil.parseHttpHeader(responseEntity, expression);
+                                        // 2021.03.08 将header调整为用key取值而不是jsonPath
+                                        //s = ParseUtil.parseJson(headers, expression);
                                         break;
                                     case 4:
                                         s = ParseUtil.parseJson(params, expression);
