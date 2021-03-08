@@ -13,7 +13,7 @@ public class RelyDataDO implements Serializable {
     private Integer id;
     @NotEmpty(message = "依赖名称不允许为空")
     @Size(min = 1, max = 100, message = "依赖名称长度必须为[1,100]")
-    @Pattern(regexp = "[a-zA-Z]+", message = "依赖名称必须为英文")
+    @Pattern(regexp = "\\w+", message = "依赖名称必须为字母数字下划线")
     private String name;
     @NotEmpty(message = "固定值/方法声明/SQL不允许为空")
     @Size(min = 1, max = 100, message = "固定值/方法声明/SQL长度必须为[1,100]")

@@ -200,26 +200,28 @@ public class InterfaceProcessorServiceImpl implements InterfaceProcessorService 
         ValidUtil.notNUll(caseId, "用例编号不能为空");
 
         String name = interfaceProcessorDO.getName();
-        ValidUtil.notNUll(name, "后置处理器名称不能为空");
-        ValidUtil.notEmpty(name, "后置处理器名称不能为空");
-        ValidUtil.length(name, 50, "后置处理器名称必须小于等于50");
-        // 名称必须为英文
-        ValidUtil.isWord(name, "后置处理器名称必须为英文");
+        ValidUtil.notNUll(name, "处理器名称不能为空");
+        ValidUtil.notEmpty(name, "处理器名称不能为空");
+        ValidUtil.length(name, 50, "处理器名称必须小于等于50");
+        // 名称必须为字母数字下划线
+        if (!name.matches("\\w+")) {
+            throw new ValidException("处理器名称必须为字母数字下划线");
+        }
 
         Byte type = interfaceProcessorDO.getType();
-        ValidUtil.notNUll(type, "后置处理器提取类型不能为空");
-        ValidUtil.size(type, 0, 6, "后置处理器提取类型方式为0~6");
+        ValidUtil.notNUll(type, "处理器提取类型不能为空");
+        ValidUtil.size(type, 0, 6, "处理器提取类型方式为0~6");
 
         String expression = interfaceProcessorDO.getExpression();
-        ValidUtil.notNUll(expression, "后置处理器提取表达式不能为空");
-        ValidUtil.notEmpty(expression, "后置处理器提取表达式不能为空");
-        ValidUtil.length(expression, 50, "后置处理器提取表达式必须小于等于50");
+        ValidUtil.notNUll(expression, "处理器提取表达式不能为空");
+        ValidUtil.notEmpty(expression, "处理器提取表达式不能为空");
+        ValidUtil.length(expression, 50, "处理器提取表达式必须小于等于50");
 
         if (type == 0) {
             ValidUtil.isJsonPath(expression);
         } else if (type == 1) {
             ValidUtil.isXpath(expression);
-        } else if (type >= 3 && type <= 6) {
+        } else if (type >= 4 && type <= 6) {
             ValidUtil.isJsonPath(expression);
         }
     }
