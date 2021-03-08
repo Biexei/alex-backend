@@ -1,5 +1,6 @@
 package org.alex.platform.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.enums.CaseRule;
@@ -71,13 +72,11 @@ public class InterfaceCaseController {
      * @throws BusinessException 业务异常
      */
     @PostMapping("/interface/case/generator")
-    public void generatorInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer type,
+    public Result generatorInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer type,
                                          HttpServletResponse response) throws Exception {
         CaseRule caseRule = type == 1 ? CaseRule.ORT : CaseRule.CARTESIAN;
-        String s = interfaceCaseImportService.generatorInterfaceCase(file, caseRule, response);
-        response.setHeader("Content-Disposition", "attachment;filename=" +
-                new String("生成结果.json".getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
-        FileUtil.downloadString(s, StandardCharsets.UTF_8, response);
+        JSONArray array = interfaceCaseImportService.generatorInterfaceCase(file, caseRule, response);
+        return Result.success(String.format("成功生成%s条用例", array.size()), array);
     }
 
     /**

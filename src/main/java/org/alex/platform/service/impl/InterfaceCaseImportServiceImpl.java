@@ -192,7 +192,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
     }
 
     @Override
-    public String generatorInterfaceCase(MultipartFile file, CaseRule caseRule, HttpServletResponse response) throws Exception {
+    public JSONArray generatorInterfaceCase(MultipartFile file, CaseRule caseRule, HttpServletResponse response) throws Exception {
 
         InputStream is;
         FileInputStream fis;
@@ -217,7 +217,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
         LOG.info("-----------生成的用例为-----------");
         LOG.info(resultString);
         LOG.info("-----------生成的用例为-----------");
-        return resultString;
+        return resultArray;
     }
 
     /**
