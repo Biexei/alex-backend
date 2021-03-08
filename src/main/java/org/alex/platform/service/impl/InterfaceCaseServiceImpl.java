@@ -1264,7 +1264,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     throw new ParseException("数组下标只能为数字");
                 }
 // 进入预置函数模式
-            } else if (Pattern.matches("\\w+\\((,?|(\\\".+\\\")?|\\s?)+\\)$", relyName)) {
+            } else if (Pattern.matches("\\w+\\((,?|(\\\".*\\\")?|\\s?)+\\)$", relyName)) {
                 LOG.info("--------------------------------------进入预置方法/动态SQL模式");
                 // } else if (relyName.indexOf("(") != -1 && relyName.endsWith(")")) {
                 // 判断出现次数,首次出现和最后一次出现位置不一致，则说明(>1 )>1
@@ -1309,9 +1309,13 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     }
                 } else if (relyDataVO.getType() == 2) { //sql
                     LOG.info("--------------------------------------进入动态SQL模式");
-                    for (int i = 0; i < params.length; i++) {
-                        // 去除首尾引号
-                        params[i] = params[i].substring(1, params[i].length() - 1);
+                    if (params.length == 1 && "".equals(params[0])) {
+                        params = null;
+                    } else {
+                        for (int i = 0; i < params.length; i++) {
+                            // 去除首尾引号
+                            params[i] = params[i].substring(1, params[i].length() - 1);
+                        }
                     }
                     Integer datasourceId = relyDataVO.getDatasourceId();
                     if (null == datasourceId) {
@@ -1432,7 +1436,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 LOG.info("解析SQL完成，解析后SQL={}", sql);
                             }
                             LOG.info("SQL执行参数，SQL={}", sql);
-                            String sqlResult = JdbcUtil.selectFirst(url, username, password, sql);
+                            String sqlResult = JdbcUtil.selectFirst(url, username, password, sql, null);
                             s = s.replace(findStr, sqlResult);
                         }
                     }

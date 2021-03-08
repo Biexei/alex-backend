@@ -5,17 +5,19 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.alibaba.druid.wall.WallConfig;
 import com.alibaba.druid.wall.WallFilter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.alex.platform.exception.SqlException;
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+@SuppressWarnings({"rawtypes", "uncheck"})
 public class JdbcUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(JdbcUtil.class);
@@ -71,62 +73,16 @@ public class JdbcUtil {
     }
 
     /**
-     * 查询首行首列
-     * @param url 数据库url
-     * @param username 连接用户名
-     * @param password 连接密码
-     * @param sql sql预计
-     * @return 查询首行首列
-     */
-    public static String selectFirst(String url, String username, String password, String sql) throws SqlException {
-        String resultStr;
-        try {
-            resultStr = "";
-
-            DruidDataSource druidDataSource = getDruidDataSource(url, username, password);
-            JdbcTemplate jdbcTemplate = new JdbcTemplate(druidDataSource);
-
-            resultStr = getFirstRowColumn(sql, resultStr, jdbcTemplate);
-            druidDataSource.close();
-        } catch (Exception e) {
-            LOG.error("JDBC TEMPLATE 连接失败， errorMsg={}", ExceptionUtil.msg(e));
-            throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
-        }
-        return resultStr;
-    }
-
-    /**
-     * 获取首行首列
-     * @param sql 查询语句
-     * @param resultStr 返回结果
-     * @param jdbcTemplate  jdbcTemplate
-     * @return resultStr
-     * @throws SqlException SqlException
-     */
-    private static String getFirstRowColumn(String sql, String resultStr, JdbcTemplate jdbcTemplate) throws SqlException {
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-        if (list.isEmpty()) {
-            throw new SqlException("查询结果为空");
-        }
-        Map result = list.get(0);
-        for (Object key : result.keySet()) {
-            resultStr = result.get(key).toString();
-            break;
-        }
-        return resultStr;
-    }
-
-    /**
      * 查询首行首列，带参数
      * @param url 数据库url
      * @param username 连接用户名
      * @param password 连接密码
      * @param sql sql预计
-     * @param params 参数
+     * @param params 参数，第一个参数为json path表达式，如果为空或者大小为0，那么返回首行首列结果
      * @return 查询结果
      * @throws SqlException 数据库异常
      */
-    public static String selectFirst(String url, String username, String password, String sql, String[] params) throws SqlException {
+    public static String selectFirst(String url, String username, String password, String sql, Object[] params) throws SqlException {
         String resultStr;
         try {
             resultStr = "";
@@ -134,19 +90,40 @@ public class JdbcUtil {
             DruidDataSource druidDataSource = getDruidDataSource(url, username, password);
             JdbcTemplate jdbcTemplate = new JdbcTemplate(druidDataSource);
 
-            List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
-            if (list.isEmpty()) {
-                throw new SqlException("查询结果为空");
-            }
-            Map result = list.get(0);
-            for (Object key : result.keySet()) {
-                resultStr = result.get(key).toString();
-                break;
+            if (null == params || params.length == 0) {
+                List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, params);
+                if (list.isEmpty()) {
+                    throw new SqlException("查询结果为空");
+                }
+                Map result = list.get(0);
+                for (Object key : result.keySet()) {
+                    resultStr = result.get(key).toString();
+                    break;
+                }
+            } else {
+                String jsonPath = (String) params[0];
+                Object[] removeAfterParams = ArrayUtils.remove(params, 0);
+                List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, removeAfterParams);
+                ArrayList sqlResultArray = JSONObject.parseObject(ParseUtil.parseJson(JSON.toJSONString(list, SerializerFeature.WriteMapNullValue), jsonPath), ArrayList.class);
+                if (sqlResultArray.isEmpty()) {
+                    LOG.warn("sql语句提取参数为空, sql={}, json path={}, params={}", sql, jsonPath, removeAfterParams);
+                    throw new SqlException(String.format("sql语句提取参数为空, sql=%s, json path=%s, params=%s", sql, jsonPath, Arrays.toString(removeAfterParams)));
+                }
+                if (sqlResultArray.size() == 1) {
+                    Object o = sqlResultArray.get(0);
+                    if (o == null) {
+                        LOG.warn("sql语句提取参数为空, sql={}, json path={}, params={}", sql, jsonPath, removeAfterParams);
+                        throw new SqlException(String.format("sql语句提取参数为空, sql=%s, json path=%s, params=%s", sql, jsonPath, Arrays.toString(removeAfterParams)));
+                    }
+                    return o.toString();
+                } else {
+                    return JSON.toJSONString(sqlResultArray);
+                }
             }
             druidDataSource.close();
         } catch (Exception e) {
             LOG.error("JDBC TEMPLATE 连接失败， errorMsg={}", ExceptionUtil.msg(e));
-            throw new SqlException("数据库连接异常/SQL语句错误/非查询语句/查询结果为空");
+            throw new SqlException("SQL执行异常，" + e.getMessage());
         }
         return resultStr;
     }
