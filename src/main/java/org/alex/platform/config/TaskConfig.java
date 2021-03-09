@@ -62,12 +62,14 @@ public class TaskConfig implements SchedulingConfigurer {
                             if (emailList != null) {
                                 String[] emails = new String[emailList.size()];
                                 emailList.toArray(emails);
-                                try {
-                                    mailService.send("测试套件执行定时任务执行完成", "测试套件执行定时任务执行完成", emails);
-                                    LOG.info("定时任务执行邮件发送成功");
-                                } catch (BusinessException e) {
-                                    LOG.error("定时任务执行邮件发送失败，errorMsg={}", e.getMessage());
-                                    e.printStackTrace();
+                                if (emails.length > 0) {
+                                    try {
+                                        mailService.send("测试套件执行定时任务执行完成", "测试套件执行定时任务执行完成", emails);
+                                        LOG.info("定时任务执行邮件发送成功");
+                                    } catch (BusinessException e) {
+                                        LOG.error("定时任务执行邮件发送失败，errorMsg={}", e.getMessage());
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         },

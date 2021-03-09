@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-03-09 09:36:59
+Date: 2021-03-09 17:03:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -39,7 +39,7 @@ CREATE TABLE `t_data_factory` (
 -- ----------------------------
 -- Records of t_data_factory
 -- ----------------------------
-INSERT INTO `t_data_factory` VALUES ('1', '执行平台测试套件', '1', '100', '1', null, null, null, '6', null, '2020-11-30 16:34:30', '2020-12-16 13:37:03', '0');
+INSERT INTO `t_data_factory` VALUES ('1', '执行平台测试套件', '1', '100', '1', null, null, null, '35', null, '2020-11-30 16:34:30', '2020-12-16 13:37:03', '0');
 
 -- ----------------------------
 -- Table structure for t_db
@@ -151,7 +151,7 @@ CREATE TABLE `t_interface_assert_log` (
   `error_message` mediumtext COMMENT '断言出错异常信息',
   `created_time` datetime DEFAULT NULL,
   PRIMARY KEY (`assert_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3165 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3195 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert_log
@@ -190,37 +190,6 @@ INSERT INTO `t_interface_case` VALUES ('24', '14', '279', '/interface/case/list'
 INSERT INTO `t_interface_case` VALUES ('24', '14', '280', '/interface/case/info/{id}', '0', '查看用例详情', '0', null, '{\"Token\":\"${Token}\"}', '{\"id\":\"277\"}', null, null, '超级管理员', '2021-03-08 15:34:20', '2021-03-09 09:27:29', '0', null);
 
 -- ----------------------------
--- Table structure for t_interface_case_copy
--- ----------------------------
-DROP TABLE IF EXISTS `t_interface_case_copy`;
-CREATE TABLE `t_interface_case_copy` (
-  `project_id` int DEFAULT NULL COMMENT '项目名称',
-  `module_id` int DEFAULT NULL COMMENT '模块编号',
-  `case_id` int NOT NULL AUTO_INCREMENT COMMENT '用例编号',
-  `url` varchar(200) DEFAULT NULL COMMENT '请求地址',
-  `method` tinyint(1) DEFAULT NULL COMMENT '请求方式  0get,1post,2patch,3put,4delete',
-  `desc` varchar(1000) DEFAULT NULL COMMENT '用例描述',
-  `level` tinyint DEFAULT NULL COMMENT '用例级别0高，1中，2低',
-  `doc` varchar(200) DEFAULT NULL COMMENT '接口文档地址',
-  `headers` varchar(1000) DEFAULT NULL COMMENT '请求头',
-  `params` varchar(1000) DEFAULT NULL COMMENT '请求参数',
-  `data` varchar(1000) DEFAULT NULL COMMENT '请求formdata',
-  `json` varchar(1000) DEFAULT NULL COMMENT '请求json',
-  `creater` varchar(20) DEFAULT NULL COMMENT '用例创建人',
-  `created_time` datetime DEFAULT NULL COMMENT '创建日期',
-  `update_time` datetime DEFAULT NULL COMMENT '修改日期',
-  `source` tinyint DEFAULT NULL COMMENT '来源0新增1excel导入2csv导入3json导入4yaml导入',
-  `import_no` varchar(100) DEFAULT NULL COMMENT '导入编号',
-  PRIMARY KEY (`case_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=279 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_interface_case_copy
--- ----------------------------
-INSERT INTO `t_interface_case_copy` VALUES ('24', '14', '277', '/user/login', '1', '用户登录', '0', null, '', '', '{\"username\":\"123\",\"password\":\"123\"}', null, '系统管理员', '2021-03-08 15:25:56', '2021-03-08 15:25:56', '0', null);
-INSERT INTO `t_interface_case_copy` VALUES ('24', '14', '278', '/interface/case/list', '0', '查看项目列表', '0', null, '{\"Token\":\"${Token}\"}', '', null, null, '超级管理员', '2021-03-08 15:29:20', '2021-03-08 15:29:43', '0', null);
-
--- ----------------------------
 -- Table structure for t_interface_case_execute_log
 -- ----------------------------
 DROP TABLE IF EXISTS `t_interface_case_execute_log`;
@@ -252,11 +221,12 @@ CREATE TABLE `t_interface_case_execute_log` (
   `is_failed_retry` tinyint DEFAULT NULL COMMENT '是否为失败重跑用例0是1否',
   `source` tinyint DEFAULT NULL COMMENT '来源（0用例调试 1依赖调试 2运行整个测试套件 3测试套件单个用例调试 4依赖解析 5综合用例-前置用例）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1771 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1785 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case_execute_log
 -- ----------------------------
+INSERT INTO `t_interface_case_execute_log` VALUES ('1771', '277', '用户登录', 'http://localhost:7777/user/login', '1', '', '', '{\n	\"password\":\"123\",\n	\"username\":\"123\"\n}', null, '', '', '{\"username\":\"123\",\"password\":\"123\"}', null, '200', '{\n	\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\n	\"Content-Type\":[\"application/json\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Date\":[\"Tue, 09 Mar 2021 02:34:04 GMT\"],\n	\"Keep-Alive\":[\"timeout=60\"],\n	\"Connection\":[\"keep-alive\"]\n}', '{\n	\"msg\":\"登录成功\",\n	\"code\":200,\n	\"data\":{\n		\"realName\":\"超级管理员\",\n		\"userId\":1,\n		\"token\":\"49825cba-ab3c-4459-a9d8-58bcab8c89e2\",\n		\"username\":\"123\",\n		\"isEnable\":1\n	}\n}', '9', '超级管理员', '0', '2021-03-09 10:34:05', null, 'SN20210309103404QOYCE87664', 'SND20210309103404QOYCE87664', '[]', '1', '2');
 
 -- ----------------------------
 -- Table structure for t_interface_case_rely_data
@@ -295,11 +265,12 @@ CREATE TABLE `t_interface_case_suite` (
   `run_dev` tinyint DEFAULT NULL COMMENT '0dev1test2stg3prod4debug',
   `is_retry` tinyint DEFAULT NULL COMMENT '是否失败重新 0是1否',
   PRIMARY KEY (`suite_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case_suite
 -- ----------------------------
+INSERT INTO `t_interface_case_suite` VALUES ('35', '测试', null, '2021-03-09 10:33:55', '2021-03-09 10:33:55', '超级管理员', '1', '4', '1');
 
 -- ----------------------------
 -- Table structure for t_interface_pre_case
@@ -362,7 +333,7 @@ CREATE TABLE `t_interface_processor_log` (
   `error_msg` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '失败时错误日志',
   `wr` tinyint DEFAULT NULL COMMENT '读/写 0读1写',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1146 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1149 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_processor_log
@@ -379,11 +350,12 @@ CREATE TABLE `t_interface_suite_case_ref` (
   `case_status` tinyint DEFAULT NULL COMMENT '用例状态0启用 1禁用',
   `order` int DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=189 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_suite_case_ref
 -- ----------------------------
+INSERT INTO `t_interface_suite_case_ref` VALUES ('189', '277', '35', '0', '1');
 
 -- ----------------------------
 -- Table structure for t_interface_suite_log
@@ -409,11 +381,23 @@ CREATE TABLE `t_interface_suite_log` (
   `is_retry` tinyint DEFAULT NULL COMMENT '是否失败重新 0是1否',
   PRIMARY KEY (`id`),
   UNIQUE KEY `suite_log_no` (`suite_log_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_suite_log
 -- ----------------------------
+INSERT INTO `t_interface_suite_log` VALUES ('111', '35', 'SN20210309103404QOYCE87664', '72', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:34:05', '2021-03-09 10:34:05', '1', '4', '超级管理员', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('112', '35', 'SN20210309103515OHDWM38266', '275', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:35:15', '2021-03-09 10:35:15', '1', '4', '定时任务', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('113', '35', 'SN20210309103535IRMDA48650', '71', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:35:35', '2021-03-09 10:35:35', '1', '4', '定时任务', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('114', '35', 'SN20210309103555WQOWF33518', '56', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:35:55', '2021-03-09 10:35:55', '1', '4', '定时任务', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('115', '35', 'SN20210309103640JOILC23147', '745', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:36:40', '2021-03-09 10:36:41', '1', '4', '定时任务', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('116', '35', 'SN20210309103645SFKRD15346', '71', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:36:45', '2021-03-09 10:36:45', '1', '4', '定时任务', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('117', '35', 'SN20210309103650DCQHC01510', '54', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:36:50', '2021-03-09 10:36:50', '1', '4', '定时任务', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('118', '35', 'SN20210309103655AICCC01585', '53', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:36:55', '2021-03-09 10:36:55', '1', '4', '定时任务', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('119', '35', 'SN20210309103700MYVEE62410', '48', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:37:00', '2021-03-09 10:37:00', '1', '4', '定时任务', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('120', '35', 'SN20210309103705MNIHI58317', '48', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:37:05', '2021-03-09 10:37:05', '1', '4', '定时任务', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('121', '35', 'SN20210309103710LDADY12661', '63', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:37:10', '2021-03-09 10:37:10', '1', '4', '定时任务', '1');
+INSERT INTO `t_interface_suite_log` VALUES ('122', '35', 'SN20210309103715BGKQE85866', '54', '1', '1', '0', '1', '0', '0', null, '2021-03-09 10:37:15', '2021-03-09 10:37:15', '1', '4', '定时任务', '1');
 
 -- ----------------------------
 -- Table structure for t_interface_suite_processor
@@ -453,6 +437,40 @@ CREATE TABLE `t_module` (
 -- Records of t_module
 -- ----------------------------
 INSERT INTO `t_module` VALUES ('24', '14', '用户管理', null, '2021-03-08 15:24:31', '2021-03-08 15:24:31');
+
+-- ----------------------------
+-- Table structure for t_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `t_permission`;
+CREATE TABLE `t_permission` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `permission_code` varchar(255) DEFAULT NULL COMMENT '权限编号 对应代码中@RequiresPermissions 的value',
+  `permission_name` varchar(255) DEFAULT NULL COMMENT '权限名称',
+  `menu_code` varchar(255) DEFAULT NULL COMMENT '菜单编号',
+  `menu_name` varchar(255) DEFAULT NULL COMMENT '菜单名称',
+  `required` tinyint DEFAULT NULL COMMENT '是否必选0是1否',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_permission
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_permission_role_ref
+-- ----------------------------
+DROP TABLE IF EXISTS `t_permission_role_ref`;
+CREATE TABLE `t_permission_role_ref` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `permission_id` int DEFAULT NULL COMMENT '权限ID',
+  `role_id` int DEFAULT NULL COMMENT '权限编号',
+  `status` tinyint DEFAULT NULL COMMENT '状态0启用1禁用',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_permission_role_ref
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_project
@@ -530,6 +548,21 @@ INSERT INTO `t_rely_data` VALUES ('40', 'ipv6', 'ipv6()', '随机ipv6地址，�
 INSERT INTO `t_rely_data` VALUES ('41', 'InterfaceCaseTable', 'select * from t_interface_case where case_id = ?', '查询根据用例编号查询t_interface_case', '2', '1', '2021-03-08 15:32:57', '2021-03-08 15:47:17');
 
 -- ----------------------------
+-- Table structure for t_role
+-- ----------------------------
+DROP TABLE IF EXISTS `t_role`;
+CREATE TABLE `t_role` (
+  `role_id` int NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(20) DEFAULT NULL COMMENT '角色名称',
+  `status` tinyint DEFAULT NULL COMMENT '状态0启用1禁用',
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_role
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for t_task
 -- ----------------------------
 DROP TABLE IF EXISTS `t_task`;
@@ -544,11 +577,12 @@ CREATE TABLE `t_task` (
   `suite_id` int DEFAULT NULL COMMENT '测试套件编号',
   `status` tinyint DEFAULT NULL COMMENT '状态0启用1禁用',
   PRIMARY KEY (`task_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_task
 -- ----------------------------
+INSERT INTO `t_task` VALUES ('119', '定时任务', '*/5 * * * * ?', '2021-03-09 10:37:20', '2021-03-09 10:34:23', '2021-03-09 10:37:15', '0', '35', '1');
 
 -- ----------------------------
 -- Table structure for t_task_email_ref
@@ -628,4 +662,4 @@ CREATE TABLE `t_user` (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1', '123', '123', null, '1', '1', '2020-11-18 14:45:32', '2020-11-18 14:45:32', '超级管理员', '2');
+INSERT INTO `t_user` VALUES ('1', '123', '123', null, '1', '1', null, null, '123', '0');
