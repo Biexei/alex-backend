@@ -108,10 +108,10 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
 
         Byte type = interfaceAssertDO.getType();
         ValidUtil.notNUll(type, "提取数据类型不能为空");
-        ValidUtil.size(type, 0, 3,"提取数据类型必须为0~3");
+        ValidUtil.size(type, 0, 4,"提取数据类型必须为0~4");
 
         String expression = interfaceAssertDO.getExpression();
-        if (type != 3) { // 提取数据类型   0json/1html/2header/3responseCode
+        if (type < 3) { // 提取数据类型   0json/1html/2header/3responseCode/4runtime
             ValidUtil.notNUll(expression, "提取表达式不能为空");
             ValidUtil.notEmpty(expression, "提取表达式不能为空");
             ValidUtil.length(expression, 50, "提取表达式长度必须小于50");

@@ -6,6 +6,7 @@ public enum AssertType {
     HTML("html", (byte)1),
     HEADER("header", (byte)2),
     RESPONSE_CODE("responseCode", (byte)3),
+    RUNTIME("runtime", (byte)4),
 
     //兼容模式
     JSON_("jsonPath", (byte)0),
@@ -14,7 +15,8 @@ public enum AssertType {
     HEADER_("head", (byte)2),
     HEADER__("headers", (byte)2),
     RESPONSE_CODE_("code", (byte)3),
-    RESPONSE_CODE__("response_code", (byte)3);
+    RESPONSE_CODE__("response_code", (byte)3),
+    RUNTIME_("time", (byte)4),;
 
     private final String assertTypeName;
     private final Byte assertTypeNum;

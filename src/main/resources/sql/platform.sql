@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-03-08 16:54:03
+Date: 2021-03-09 09:36:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -109,7 +109,7 @@ CREATE TABLE `t_interface_assert` (
   `assert_id` int NOT NULL AUTO_INCREMENT COMMENT '断言编号',
   `assert_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '断言名称',
   `case_id` int DEFAULT NULL COMMENT '用例编号',
-  `type` tinyint DEFAULT NULL COMMENT '提取数据类型   0json/1html/2header/3responsecode',
+  `type` tinyint DEFAULT NULL COMMENT '提取数据类型   0json/1html/2header/3responsecode/4runtime',
   `expression` varchar(50) DEFAULT NULL COMMENT '提取表达式',
   `operator` tinyint DEFAULT NULL COMMENT '操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re、8/isNull、9/notNull',
   `excepted_result` varchar(1000) DEFAULT NULL COMMENT '预期结果',
@@ -117,7 +117,7 @@ CREATE TABLE `t_interface_assert` (
   `created_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`assert_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=274 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert
@@ -125,10 +125,10 @@ CREATE TABLE `t_interface_assert` (
 INSERT INTO `t_interface_assert` VALUES ('265', 'HTTP响应状态码', '277', '3', null, '0', '200', '0', '2021-03-08 15:25:56', '2021-03-08 15:25:56');
 INSERT INTO `t_interface_assert` VALUES ('266', '接口状态码', '277', '0', '$..code', '0', '200', '1', '2021-03-08 15:25:56', '2021-03-08 15:25:56');
 INSERT INTO `t_interface_assert` VALUES ('268', '接口状态码', '279', '0', '$..code', '0', '200', '0', '2021-03-08 15:33:36', '2021-03-08 15:33:36');
-INSERT INTO `t_interface_assert` VALUES ('269', '接口状态码', '280', '0', '$..code', '0', '200', '0', '2021-03-08 15:34:20', '2021-03-08 16:12:55');
-INSERT INTO `t_interface_assert` VALUES ('270', 'url', '280', '0', '$..data.url', '0', '${InterfaceCaseTable(\"$..url\",\"#{id}\")}', '1', '2021-03-08 15:36:25', '2021-03-08 16:12:55');
-INSERT INTO `t_interface_assert` VALUES ('272', 'level', '280', '0', '$..data.level', '0', '${InterfaceCaseTable(\"$..level\",\"#{id}\")}', '2', '2021-03-08 16:12:12', '2021-03-08 16:12:55');
-INSERT INTO `t_interface_assert` VALUES ('273', 'test', '280', '0', '$..code', '0', '${select()}', '3', '2021-03-08 16:12:55', '2021-03-08 16:12:55');
+INSERT INTO `t_interface_assert` VALUES ('269', '接口状态码', '280', '0', '$..code', '0', '200', '0', '2021-03-08 15:34:20', '2021-03-09 09:27:29');
+INSERT INTO `t_interface_assert` VALUES ('270', 'url', '280', '0', '$..data.url', '0', '${InterfaceCaseTable(\"$..url\",\"#{id}\")}', '1', '2021-03-08 15:36:25', '2021-03-09 09:27:29');
+INSERT INTO `t_interface_assert` VALUES ('272', 'level', '280', '0', '$..data.level', '0', '${InterfaceCaseTable(\"$..level\",\"#{id}\")}', '2', '2021-03-08 16:12:12', '2021-03-09 09:27:29');
+INSERT INTO `t_interface_assert` VALUES ('281', '执行耗时', '280', '4', null, '1', '5', '3', '2021-03-09 09:22:25', '2021-03-09 09:27:29');
 
 -- ----------------------------
 -- Table structure for t_interface_assert_log
@@ -140,7 +140,7 @@ CREATE TABLE `t_interface_assert_log` (
   `assert_id` int DEFAULT NULL COMMENT '断言id',
   `assert_name` varchar(100) DEFAULT NULL COMMENT '断言名称',
   `case_id` int DEFAULT NULL COMMENT '测试用例编号id',
-  `type` tinyint DEFAULT NULL COMMENT '提取数据类型   0json/1html/2header/3responsecode',
+  `type` tinyint DEFAULT NULL COMMENT '提取数据类型   0json/1html/2header/3responsecode/4runtime',
   `expression` varchar(50) DEFAULT NULL COMMENT '提取表达式',
   `operator` tinyint DEFAULT NULL COMMENT '操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re、8/isNull、9/notNull',
   `excepted_result` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '预期结果',
@@ -151,7 +151,7 @@ CREATE TABLE `t_interface_assert_log` (
   `error_message` mediumtext COMMENT '断言出错异常信息',
   `created_time` datetime DEFAULT NULL,
   PRIMARY KEY (`assert_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3130 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3165 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert_log
@@ -180,14 +180,14 @@ CREATE TABLE `t_interface_case` (
   `source` tinyint DEFAULT NULL COMMENT '来源0新增1excel导入2csv导入3json导入4yaml导入',
   `import_no` varchar(100) DEFAULT NULL COMMENT '导入编号',
   PRIMARY KEY (`case_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=281 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case
 -- ----------------------------
 INSERT INTO `t_interface_case` VALUES ('24', '14', '277', '/user/login', '1', '用户登录', '0', null, '', '', '{\"username\":\"123\",\"password\":\"123\"}', null, '系统管理员', '2021-03-08 15:25:56', '2021-03-08 15:25:56', '0', null);
 INSERT INTO `t_interface_case` VALUES ('24', '14', '279', '/interface/case/list', '0', '查看用例列表', '0', null, '{\"Token\":\"${Token}\"}', '', null, null, '超级管理员', '2021-03-08 15:33:36', '2021-03-08 15:33:36', '0', null);
-INSERT INTO `t_interface_case` VALUES ('24', '14', '280', '/interface/case/info/{id}', '0', '查看用例详情', '0', null, '{\"Token\":\"${Token}\"}', '{\"id\":\"277\"}', null, null, '超级管理员', '2021-03-08 15:34:20', '2021-03-08 16:12:55', '0', null);
+INSERT INTO `t_interface_case` VALUES ('24', '14', '280', '/interface/case/info/{id}', '0', '查看用例详情', '0', null, '{\"Token\":\"${Token}\"}', '{\"id\":\"277\"}', null, null, '超级管理员', '2021-03-08 15:34:20', '2021-03-09 09:27:29', '0', null);
 
 -- ----------------------------
 -- Table structure for t_interface_case_copy
@@ -252,7 +252,7 @@ CREATE TABLE `t_interface_case_execute_log` (
   `is_failed_retry` tinyint DEFAULT NULL COMMENT '是否为失败重跑用例0是1否',
   `source` tinyint DEFAULT NULL COMMENT '来源（0用例调试 1依赖调试 2运行整个测试套件 3测试套件单个用例调试 4依赖解析 5综合用例-前置用例）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1759 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1771 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case_execute_log
@@ -341,7 +341,7 @@ CREATE TABLE `t_interface_processor` (
 -- ----------------------------
 -- Records of t_interface_processor
 -- ----------------------------
-INSERT INTO `t_interface_processor` VALUES ('56', '280', 'id', '4', '$..id', null, '1', '2021-03-08 16:11:19', '2021-03-08 16:12:55');
+INSERT INTO `t_interface_processor` VALUES ('56', '280', 'id', '4', '$..id', null, '1', '2021-03-08 16:11:19', '2021-03-09 09:27:29');
 
 -- ----------------------------
 -- Table structure for t_interface_processor_log
@@ -362,7 +362,7 @@ CREATE TABLE `t_interface_processor_log` (
   `error_msg` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '失败时错误日志',
   `wr` tinyint DEFAULT NULL COMMENT '读/写 0读1写',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1128 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1146 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_processor_log
@@ -528,7 +528,6 @@ INSERT INTO `t_rely_data` VALUES ('38', 'privateIpv4', 'privateIpv4()', '随机�
 INSERT INTO `t_rely_data` VALUES ('39', 'publicIpv4', 'publicIpv4()', '随机公有ipv4地址，引用方式示例：${publicIpv4()}', '1', null, '2020-10-21 16:16:44', null);
 INSERT INTO `t_rely_data` VALUES ('40', 'ipv6', 'ipv6()', '随机ipv6地址，引用方式示例：${ipv6()}', '1', null, '2020-10-21 16:16:47', null);
 INSERT INTO `t_rely_data` VALUES ('41', 'InterfaceCaseTable', 'select * from t_interface_case where case_id = ?', '查询根据用例编号查询t_interface_case', '2', '1', '2021-03-08 15:32:57', '2021-03-08 15:47:17');
-INSERT INTO `t_rely_data` VALUES ('43', '123', '123', '123', '2', '1', '2021-03-08 16:41:36', '2021-03-08 16:41:36');
 
 -- ----------------------------
 -- Table structure for t_task

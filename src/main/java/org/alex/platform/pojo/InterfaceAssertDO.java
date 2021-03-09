@@ -14,8 +14,8 @@ public class InterfaceAssertDO implements Serializable {
     @NotNull(message = "用例编号不能为空")
     private Integer caseId;
     @NotNull(message = "提取数据类型不能为空")
-    @Max(value = 3, message = "提取数据类型必须为0~3")
-    @Min(value = 0, message = "提取数据类型必须为0~3")
+    @Max(value = 3, message = "提取数据类型必须为0~4")
+    @Min(value = 0, message = "提取数据类型必须为0~4")
     private Byte type;
     @NotNull(message = "提取表达式不能为空")
     @NotEmpty(message = "提取表达式不能为空")

@@ -877,13 +877,16 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     } else if (type == 3) { // responseCode
                         actualResult = String.valueOf(ParseUtil.parseHttpCode(responseEntity));
                         LOG.info("断言实际结果={}, 类型={}, 响应code={}, 提取表达式={}", actualResult, "code", ParseUtil.parseHttpCode(responseEntity), expression);
+                    } else if (type == 4) { // runtime
+                        actualResult = String.valueOf(runTime);
+                        LOG.info("断言实际结果={}, 类型={}, 执行耗时={}, 提取表达式={}", actualResult, "runtime", actualResult, expression);
                     } else {
                         throw new BusinessException("不支持的断言方式");
                     }
                     LOG.info("预期结果={}", exceptedResult);
                     LOG.info("操作符={}", operator);
                     LOG.info("实际结果={}", actualResult);
-                    if (type != 3) {
+                    if (type < 3) { // 0json/1html/2header/3responseCode/4runtime
                         if (resultList.size() == 1) {
                             Object o = resultList.get(0);
                             actualResult = o == null ? null : o.toString();
