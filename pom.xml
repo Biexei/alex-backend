@@ -158,9 +158,7 @@
             <artifactId>snakeyaml</artifactId>
             <version>1.25</version>
         </dependency>
-
     </dependencies>
-1
     <build>
         <plugins>
             <plugin>
@@ -169,5 +167,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
