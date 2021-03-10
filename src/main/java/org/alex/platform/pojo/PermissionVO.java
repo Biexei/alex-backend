@@ -1,14 +1,14 @@
 package org.alex.platform.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class PermissionVO implements Serializable {
     private Integer id;
     private String permissionCode;
     private String permissionName;
-    private String menuCode;
-    private String menuName;
-    private Byte required;
+    private Integer parentId;
+    private List<PermissionVO> nodeList;
 
     public Integer getId() {
         return id;
@@ -34,27 +34,19 @@ public class PermissionVO implements Serializable {
         this.permissionName = permissionName;
     }
 
-    public String getMenuCode() {
-        return menuCode;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setMenuCode(String menuCode) {
-        this.menuCode = menuCode;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
-    public String getMenuName() {
-        return menuName;
+    public List<PermissionVO> getNodeList() {
+        return nodeList;
     }
 
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
-    public Byte getRequired() {
-        return required;
-    }
-
-    public void setRequired(Byte required) {
-        this.required = required;
+    public void setNodeList(List<PermissionVO> nodeList) {
+        this.nodeList = nodeList;
     }
 }

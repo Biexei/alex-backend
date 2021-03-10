@@ -44,6 +44,13 @@
         </set>
         where user_id = #{userId}
     </update>
+    <update id="pwdReset">
+        update t_user
+        <set>
+            password = #{password}
+        </set>
+        where user_id = #{userId}
+    </update>
     <insert id="insertUser" parameterType="org.alex.platform.pojo.UserDO">
         insert into t_user
         <trim prefix="(" suffix=")" suffixOverrides=",">

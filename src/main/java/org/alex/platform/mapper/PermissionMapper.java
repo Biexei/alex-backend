@@ -9,8 +9,7 @@ import java.util.List;
 
 @Repository
 public interface PermissionMapper {
-    PermissionVO selectPermissionById(Integer roleId);
-    List<PermissionVO> selectPermission(PermissionDTO permissionDTO);
+    List<PermissionVO> selectPermissionByParentId(Integer parentId);
     void insertPermission(PermissionDO permissionDO);
     void updatePermission(PermissionDO permissionDO);
     void deletePermissionById(Integer permissionId);

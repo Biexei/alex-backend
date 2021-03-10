@@ -20,4 +20,6 @@ public interface UserService {
     UserVO findUserById(Integer userId);
 
     void removeUserById(Integer userId) throws BusinessException;
+
+    void pwdReset(Integer userId, String password) throws BusinessException;
 }

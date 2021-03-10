@@ -1,5 +1,6 @@
 package org.alex.platform.service.impl;
 
+import org.alex.platform.common.Key;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.mapper.UserMapper;
@@ -135,5 +136,19 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException("内置用户禁止删除");
         }
         userMapper.deleteUser(userId);
+    }
+
+    /**
+     * 重置密码
+     * @param userId 用户id
+     * @param password 密码
+     * @throws BusinessException 异常
+     */
+    @Override
+    public void pwdReset(Integer userId, String password) throws BusinessException {
+        if (userId == 1) {
+            throw new BusinessException("内置用户禁止修改");
+        }
+        userMapper.pwdReset(userId, password);
     }
 }

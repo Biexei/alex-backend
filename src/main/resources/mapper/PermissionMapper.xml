@@ -3,37 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.alex.platform.mapper.PermissionMapper">
-    <select id="selectPermissionById" parameterType="Integer" resultType="org.alex.platform.pojo.PermissionVO">
-        select `id`, `permission_code`, `permission_name`, `menu_code`, `menu_name`, `required`
-        from `t_permission`
-        where `id`=#{id}
-    </select>
-    <select id="selectPermission" parameterType="org.alex.platform.pojo.PermissionDTO" resultType="org.alex.platform.pojo.PermissionVO">
-        select `id`, `permission_code`, `permission_name`, `menu_code`, `menu_name`, `required`
-        from `t_permission`
-        <where>
-            <if test="id != null">and `id`=#{id}</if>
-            <if test="permissionCode != null">and `permission_code`=#{permissionCode}</if>
-            <if test="permissionName != null">and `permission_name`=#{permissionName}</if>
-            <if test="menuCode != null">and `menu_code`=#{menuCode}</if>
-            <if test="menuName != null">and `menu_name`=#{menuName}</if>
-            <if test="required != null">and `required`=#{required}</if>
-        </where>
-    </select>
     <insert id="insertPermission" parameterType="org.alex.platform.pojo.PermissionDO">
         insert into `t_permission`
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            `permission_code`, `permission_name`, `menu_code`, `menu_name`, `required`,
+            `permission_code`, `permission_name`, `parent_id`
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            #{permissionCode}, #{permissionName}, #{menuCode}, #{menuName}, #{required},
+            #{permissionCode}, #{permissionName}, #{parentId}
         </trim>
     </insert>
     <update id="updatePermission" parameterType="org.alex.platform.pojo.RoleDO">
         update `t_permission`
         <set>
-            `permission_code`=#{permissionCode},`permission_name`=#{permissionName},
-            `menu_code`=#{menuCode},`menu_name`=#{menuName},`required`=#{required},
+            `permission_code`=#{permissionCode},`permission_name`=#{permissionName},`parent_id`=#{parentId}
         </set>
         where `id` = #{id}
     </update>
@@ -41,4 +23,18 @@
         delete from `t_permission`
         where `id` = #{id}
     </delete>
+
+<!--    递归查询树结构, parentId必须为变量-->
+    <resultMap id="nodes" type="org.alex.platform.pojo.PermissionVO">
+        <id column="id" property="id"/>
+        <result column="permission_code" property="permissionCode"/>
+        <result column="permission_name" property="permissionName"/>
+        <result column="parent_id" property="parentId"/>
+        <collection property="nodeList" column="id" ofType="org.alex.platform.pojo.PermissionVO" select="selectPermissionByParentId"/>
+    </resultMap>
+    <select id="selectPermissionByParentId" resultMap="nodes">
+        select `permission_name`, `parent_id`, `id`,`permission_code`
+        from `t_permission`
+        where parent_id = #{parentId}
+    </select>
 </mapper>

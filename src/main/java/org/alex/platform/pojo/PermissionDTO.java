@@ -6,9 +6,7 @@ public class PermissionDTO implements Serializable {
     private Integer id;
     private String permissionCode;
     private String permissionName;
-    private String menuCode;
-    private String menuName;
-    private Byte required;
+    private Integer parentId;
 
     public Integer getId() {
         return id;
@@ -34,27 +32,11 @@ public class PermissionDTO implements Serializable {
         this.permissionName = permissionName;
     }
 
-    public String getMenuCode() {
-        return menuCode;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setMenuCode(String menuCode) {
-        this.menuCode = menuCode;
-    }
-
-    public String getMenuName() {
-        return menuName;
-    }
-
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
-    public Byte getRequired() {
-        return required;
-    }
-
-    public void setRequired(Byte required) {
-        this.required = required;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 }

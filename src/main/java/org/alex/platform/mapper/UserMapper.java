@@ -2,8 +2,10 @@ package org.alex.platform.mapper;
 
 import org.alex.platform.pojo.UserDO;
 import org.alex.platform.pojo.UserVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -23,5 +25,7 @@ public interface UserMapper {
     UserVO selectUserById(Integer userId);
 
     UserDO selectUserByName(String username);
+
+    void pwdReset(@Param("userId") Integer userId, @Param("password") String password);
 
 }

@@ -13,18 +13,7 @@ public class PermissionDO implements Serializable {
     @NotEmpty(message = "权限名称不能为空")
     @Size(max = 255, message = "权限名称长度必须小于等于255")
     private String permissionName;
-    @NotNull(message = "菜单代码不能为空")
-    @NotEmpty(message = "菜单代码不能为空")
-    @Size(max = 255, message = "菜单代码长度必须小于等于255")
-    private String menuCode;
-    @NotNull(message = "菜单名称不能为空")
-    @NotEmpty(message = "菜单名称不能为空")
-    @Size(max = 255, message = "菜单名称长度必须小于等于255")
-    private String menuName;
-    @NotNull(message = "状态不能为空")
-    @Max(value = 1, message = "状态必须为0~1")
-    @Min(value = 0, message = "状态必须为0~1")
-    private Byte required;
+    private Integer parentId;
 
     public Integer getId() {
         return id;
@@ -50,27 +39,11 @@ public class PermissionDO implements Serializable {
         this.permissionName = permissionName;
     }
 
-    public String getMenuCode() {
-        return menuCode;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setMenuCode(String menuCode) {
-        this.menuCode = menuCode;
-    }
-
-    public String getMenuName() {
-        return menuName;
-    }
-
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
-    public Byte getRequired() {
-        return required;
-    }
-
-    public void setRequired(Byte required) {
-        this.required = required;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 }

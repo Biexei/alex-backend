@@ -1,5 +1,6 @@
 package org.alex.platform.controller;
 
+import org.alex.platform.common.Key;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
@@ -162,5 +163,17 @@ public class UserController {
         String token = request.getHeader("Token");
         redisUtil.del(token);
         return Result.success("退出成功");
+    }
+
+    /**
+     * 重置密码
+     * @param userId 用户编号
+     * @return Result
+     * @throws BusinessException BusinessException
+     */
+    @GetMapping("/user/reset/{userId}")
+    public Result pwdReset(@PathVariable Integer userId) throws BusinessException {
+        userService.pwdReset(userId, Key.DEFAULT_PWD);
+        return Result.success("操作成功");
     }
 }
