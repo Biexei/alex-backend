@@ -13,5 +13,6 @@ public interface RoleMapper {
     List<RoleVO> selectRole(RoleDTO roleDTO);
     void insertRole(RoleDO roleDO);
     void updateRole(RoleDO roleDO);
-    void removeRoleById(Integer roleId);
+    void deleteRoleById(Integer roleId);
+    List<RoleVO> checkRoleNameRepeat(RoleDTO roleDTO);
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-03-09 17:03:35
+Date: 2021-03-10 16:58:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -450,11 +450,15 @@ CREATE TABLE `t_permission` (
   `menu_name` varchar(255) DEFAULT NULL COMMENT '菜单名称',
   `required` tinyint DEFAULT NULL COMMENT '是否必选0是1否',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
 -- ----------------------------
+INSERT INTO `t_permission` VALUES ('1', 'user:list', '查询', 'user', '用户管理', '0');
+INSERT INTO `t_permission` VALUES ('2', 'user:add', '新增', 'user', '用户管理', '0');
+INSERT INTO `t_permission` VALUES ('3', 'user:modify', '修改', 'user', '用户管理', '0');
+INSERT INTO `t_permission` VALUES ('4', 'user:remove', '删除', 'user', '用户管理', '0');
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -464,13 +468,16 @@ CREATE TABLE `t_permission_role_ref` (
   `id` int NOT NULL AUTO_INCREMENT,
   `permission_id` int DEFAULT NULL COMMENT '权限ID',
   `role_id` int DEFAULT NULL COMMENT '权限编号',
-  `status` tinyint DEFAULT NULL COMMENT '状态0启用1禁用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
 -- ----------------------------
+INSERT INTO `t_permission_role_ref` VALUES ('1', '1', '1');
+INSERT INTO `t_permission_role_ref` VALUES ('2', '2', '1');
+INSERT INTO `t_permission_role_ref` VALUES ('3', '3', '1');
+INSERT INTO `t_permission_role_ref` VALUES ('4', '4', '1');
 
 -- ----------------------------
 -- Table structure for t_project
@@ -556,11 +563,13 @@ CREATE TABLE `t_role` (
   `role_name` varchar(20) DEFAULT NULL COMMENT '角色名称',
   `status` tinyint DEFAULT NULL COMMENT '状态0启用1禁用',
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_role
 -- ----------------------------
+INSERT INTO `t_role` VALUES ('1', '超级管理员', '0');
+INSERT INTO `t_role` VALUES ('4', '游客', '0');
 
 -- ----------------------------
 -- Table structure for t_task
@@ -655,11 +664,12 @@ CREATE TABLE `t_user` (
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `real_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '真实姓名',
-  `role_id` int DEFAULT NULL COMMENT '角色类型 0超级管理员 1系统管理员 2普通用户 ',
+  `role_id` int DEFAULT NULL COMMENT '角色类型',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=550 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=554 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1', '123', '123', null, '1', '1', null, null, '123', '0');
+INSERT INTO `t_user` VALUES ('1', '123', '123', '', '1', '1', null, '2021-03-10 16:08:51', '123', '1');
+INSERT INTO `t_user` VALUES ('552', 'hahah', '123', '', '1', '1', '2021-03-10 16:54:43', '2021-03-10 16:57:15', '123', null);

@@ -15,8 +15,6 @@ public class UserDO implements Serializable {
     @Size(min = 1, max = 20, message = "用户名长度必须为1~20")
     @NotNull(message = "用户名不能为空")
     private String username;
-    @Size(min = 3, max = 20, message = "密码长度必须为3~20")
-    @NotNull(message = "密码不能为空")
     private String password;
     @Pattern(regexp = "\\d{0,10}$", message = "工号必须为数字")
     private String jobNumber;
@@ -28,8 +26,8 @@ public class UserDO implements Serializable {
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
-    @NotNull(message = "真实姓名不能为空")
-    @Size(max = 20, message = "真实姓名长度必须小于20")
+    @NotNull(message = "昵称不能为空")
+    @Size(max = 20, message = "昵称长度必须小于20")
     private String realName;
     private Integer roleId;
 

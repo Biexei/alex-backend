@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class RoleVO implements Serializable {
     private Integer roleId;
-    private String roleNme;
+    private String roleName;
     private Byte status;
 
     public Integer getRoleId() {
@@ -15,12 +15,12 @@ public class RoleVO implements Serializable {
         this.roleId = roleId;
     }
 
-    public String getRoleNme() {
-        return roleNme;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRoleNme(String roleNme) {
-        this.roleNme = roleNme;
+    public void setRoleNme(String roleName) {
+        this.roleName = roleName;
     }
 
     public Byte getStatus() {

@@ -13,5 +13,5 @@ public interface PermissionMapper {
     List<PermissionVO> selectPermission(PermissionDTO permissionDTO);
     void insertPermission(PermissionDO permissionDO);
     void updatePermission(PermissionDO permissionDO);
-    void removePermissionById(Integer permissionId);
+    void deletePermissionById(Integer permissionId);
 }

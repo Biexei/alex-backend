@@ -3,10 +3,13 @@ package org.alex.platform.controller;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.UserDO;
+import org.alex.platform.pojo.UserVO;
 import org.alex.platform.service.UserService;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.util.RedisUtil;
+import org.alex.platform.util.ValidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -57,8 +62,8 @@ public class UserController {
     @GetMapping("/user/info/{userId}")
     @ResponseBody
     public Result user(@PathVariable Integer userId) {
-        UserDO userDOInfo = userService.findUserById(userId);
-        return Result.success(userDOInfo);
+        UserVO userVO = userService.findUserById(userId);
+        return Result.success(userVO);
     }
 
     /**
@@ -70,12 +75,6 @@ public class UserController {
     @PostMapping("/user/update")
     @ResponseBody
     public Result userUpdate(@Validated UserDO userDO) throws BusinessException {
-        Integer userId = userDO.getUserId();
-        UserDO user = userService.findUserById(userId);
-        if (user.getRoleId() == 0) {
-            throw new BusinessException("超级管理员禁止修改");
-        }
-        userDO.setUpdateTime(new Date());
         userService.modifyUser(userDO);
         return Result.success("更新成功");
     }
@@ -88,27 +87,9 @@ public class UserController {
      */
     @PostMapping("/user/save")
     @ResponseBody
-    public Result saveUser(@Validated UserDO userDO) {
-        String username = userDO.getUsername();
-        String password = userDO.getPassword();
-        String realName = userDO.getRealName();
-        Byte sex = userDO.getSex();
-        Date date = new Date();
-        userDO.setCreatedTime(date);
-        userDO.setUpdateTime(date);
-        userDO.setIsEnable((byte) 1);
-        userDO.setRoleId(2);
-        if (username == null || password == null || sex == null || realName == null) {
-            LOG.error("请完善注册信息");
-            return Result.fail("请完善注册信息");
-        } else {
-            if (userService.saveUser(userDO)) {
-                return Result.success("注册成功");
-            } else {
-                LOG.error("用户名已存在");
-                return Result.fail("用户名已存在");
-            }
-        }
+    public Result saveUser(@Validated UserDO userDO) throws BusinessException {
+        userService.saveUser(userDO);
+        return Result.success("新增成功");
     }
 
     /**
@@ -119,27 +100,9 @@ public class UserController {
      */
     @PostMapping("/user/register")
     @ResponseBody
-    public Result registerUser(@Validated UserDO userDO) {
-        String username = userDO.getUsername();
-        String password = userDO.getPassword();
-        String realName = userDO.getRealName();
-        Date date = new Date();
-        userDO.setCreatedTime(date);
-        userDO.setUpdateTime(date);
-        userDO.setIsEnable((byte) 1);
-        userDO.setRoleId(2);
-        userDO.setSex((byte) 1);
-        if (username == null || password == null || realName == null) {
-            LOG.error("请完善注册信息");
-            return Result.fail("请完善注册信息");
-        } else {
-            if (userService.saveUser(userDO)) {
-                return Result.success("注册成功");
-            } else {
-                LOG.error("用户名已存在");
-                return Result.fail("用户名已存在");
-            }
-        }
+    public Result registerUser(@Validated UserDO userDO) throws BusinessException {
+        userService.registerUser(userDO);
+        return Result.success("注册成功");
     }
 
     /**
@@ -185,12 +148,8 @@ public class UserController {
     @GetMapping("user/remove/{userId}")
     @ResponseBody
     public Result removeUser(@PathVariable Integer userId) throws BusinessException {
-        UserDO user = userService.findUserById(userId);
-        if (user.getRoleId() == 0) {
-            throw new BusinessException("超级管理员禁止删除");
-        }
         userService.removeUserById(userId);
-        return Result.success();
+        return Result.success("删除成功");
     }
 
     /**

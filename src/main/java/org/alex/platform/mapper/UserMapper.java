@@ -1,13 +1,14 @@
 package org.alex.platform.mapper;
 
 import org.alex.platform.pojo.UserDO;
+import org.alex.platform.pojo.UserVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface UserMapper {
-    List<UserDO> selectUserList(UserDO userDO);
+    List<UserVO> selectUserList(UserDO userDO);
 
     List<UserDO> checkUser(UserDO userDO);
 
@@ -19,9 +20,8 @@ public interface UserMapper {
 
     UserDO selectUserToLogin(UserDO userDO);
 
-    UserDO selectUserById(Integer userId);
+    UserVO selectUserById(Integer userId);
 
     UserDO selectUserByName(String username);
 
-    UserDO selectUserByJobNumber(Integer jobNumber);
 }

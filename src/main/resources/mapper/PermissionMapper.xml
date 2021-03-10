@@ -23,20 +23,21 @@
     <insert id="insertPermission" parameterType="org.alex.platform.pojo.PermissionDO">
         insert into `t_permission`
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            `id`, `permission_code`, `permission_name`, `menu_code`, `menu_name`, `required`,
+            `permission_code`, `permission_name`, `menu_code`, `menu_name`, `required`,
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            #{id}, #{permissionCode}, #{permissionName}, #{menuCode}, #{menuName}, #{required},
+            #{permissionCode}, #{permissionName}, #{menuCode}, #{menuName}, #{required},
         </trim>
     </insert>
     <update id="updatePermission" parameterType="org.alex.platform.pojo.RoleDO">
         update `t_permission`
         <set>
-            `id`=#{id},`permission_code`=#{permissionCode},`permission_name`=#{permissionName},
+            `permission_code`=#{permissionCode},`permission_name`=#{permissionName},
             `menu_code`=#{menuCode},`menu_name`=#{menuName},`required`=#{required},
         </set>
+        where `id` = #{id}
     </update>
-    <delete id="removePermissionById" parameterType="Integer">
+    <delete id="deletePermissionById" parameterType="Integer">
         delete from `t_permission`
         where `id` = #{id}
     </delete>

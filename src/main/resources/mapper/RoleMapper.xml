@@ -12,27 +12,33 @@
         select `role_id`, `role_name`, `status`
         from `t_role`
         <where>
-            <if test="roleName != null">and `role_id`=#{roleId}</if>
+            <if test="roleId != null">and `role_id`=#{roleId}</if>
             <if test="roleName != null">and `role_name`=#{roleName}</if>
             <if test="status != null">and `status`=#{status}</if>
         </where>
     </select>
+    <select id="checkRoleNameRepeat" parameterType="org.alex.platform.pojo.RoleDTO" resultType="org.alex.platform.pojo.RoleVO">
+        select `role_id`, `role_name`, `status`
+        from `t_role`
+        where `role_id` != #{roleId} and `role_name` = #{roleName}
+    </select>
     <insert id="insertRole" parameterType="org.alex.platform.pojo.RoleDO">
         insert into `t_role`
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            `role_id`, `role_name`, `status`,
+            `role_name`, `status`,
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            #{roleId}, #{roleName}, #{status}
+            #{roleName}, #{status}
         </trim>
     </insert>
     <update id="updateRole" parameterType="org.alex.platform.pojo.RoleDO">
         update `t_role`
         <set>
-            `role_id`=#{roleId},`role_name`=#{roleName},`status`=#{status},
+            `role_name`=#{roleName},`status`=#{status},
         </set>
+        where `role_id` = #{roleId}
     </update>
-    <delete id="removeRoleById" parameterType="Integer">
+    <delete id="deleteRoleById" parameterType="Integer">
         delete from `t_role`
         where `role_id` = #{roleId}
     </delete>
