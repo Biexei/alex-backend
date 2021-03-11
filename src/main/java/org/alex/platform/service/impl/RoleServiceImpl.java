@@ -1,8 +1,10 @@
 package org.alex.platform.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.RoleMapper;
 import org.alex.platform.mapper.UserMapper;
 import org.alex.platform.pojo.RoleDO;
@@ -10,12 +12,13 @@ import org.alex.platform.pojo.RoleDTO;
 import org.alex.platform.pojo.RoleVO;
 import org.alex.platform.pojo.UserDO;
 import org.alex.platform.service.RoleService;
-import org.alex.platform.service.UserService;
+import org.alex.platform.util.ValidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -114,5 +117,44 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleVO> checkRoleNameRepeat(RoleDTO roleDTO) {
         return roleMapper.checkRoleNameRepeat(roleDTO);
+    }
+
+    /**
+     * 查询角色已有权限
+     * @param roleId 角色编号
+     * @return 权限编号数组
+     */
+    @Override
+    public JSONArray findPermissionIdArrayByRoleId(Integer roleId) throws ValidException {
+        ValidUtil.notNUll(roleId, "参数错误");
+        return roleMapper.selectPermissionIdArrayByRoleId(roleId);
+    }
+
+    /**
+     * 为角色新增权限
+     * @param roleId 角色id
+     * @param permissionId 权限id
+     */
+    @Override
+    public void saveRolePermission(Integer roleId, Integer permissionId, Date updateTime) throws ValidException {
+        ValidUtil.notNUll(roleId, "参数错误");
+        ValidUtil.notNUll(permissionId, "参数错误");
+        // 防止关联表重复添加
+        if (roleMapper.selectRolePermission(roleId, permissionId).isEmpty()) {
+            roleMapper.insertRolePermission(roleId, permissionId, updateTime);
+        }
+    }
+
+    /**
+     * 为角色删除权限
+     * @param roleId 角色id
+     * @param permissionId 权限id
+     * @throws ValidException 参数异常
+     */
+    @Override
+    public void removeRolePermission(Integer roleId, Integer permissionId) throws ValidException {
+        ValidUtil.notNUll(roleId, "参数错误");
+        ValidUtil.notNUll(permissionId, "参数错误");
+        roleMapper.deleteRolePermission(roleId, permissionId);
     }
 }

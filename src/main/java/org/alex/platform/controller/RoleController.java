@@ -1,16 +1,18 @@
 package org.alex.platform.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.RoleDO;
 import org.alex.platform.pojo.RoleDTO;
 import org.alex.platform.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @RestController
@@ -47,6 +49,23 @@ public class RoleController {
     @GetMapping("/role/remove/{roleId}")
     public Result removeRoleById(@PathVariable Integer roleId) throws BusinessException {
         roleService.removeRoleById(roleId);
+        return Result.success("删除成功");
+    }
+
+    @GetMapping("/role/permission/{roleId}")
+    public Result findPermissionIdArrayByRoleId(@PathVariable Integer roleId) throws ValidException {
+        return Result.success(roleService.findPermissionIdArrayByRoleId(roleId));
+    }
+
+    @PostMapping("/role/permission/save")
+    public Result saveRolePermission(@RequestParam Integer roleId, @RequestParam Integer permissionId) throws ValidException {
+        roleService.saveRolePermission(roleId, permissionId, new Date());
+        return Result.success("新增成功");
+    }
+
+    @PostMapping("/role/permission/remove")
+    public Result removeRolePermission(@RequestParam Integer roleId, @RequestParam Integer permissionId) throws ValidException {
+        roleService.removeRolePermission(roleId, permissionId);
         return Result.success("删除成功");
     }
 }

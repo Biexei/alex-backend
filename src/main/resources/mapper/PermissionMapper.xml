@@ -33,8 +33,31 @@
         <collection property="nodeList" column="id" ofType="org.alex.platform.pojo.PermissionVO" select="selectPermissionByParentId"/>
     </resultMap>
     <select id="selectPermissionByParentId" resultMap="nodes">
-        select `permission_name`, `parent_id`, `id`,`permission_code`
+        select `id`, `permission_name`,`permission_code`,`parent_id`
         from `t_permission`
         where parent_id = #{parentId}
+    </select>
+
+    <select id="selectPermissionById" parameterType="Integer" resultType="org.alex.platform.pojo.PermissionVO">
+        select `id`, `permission_name`,`permission_code`,`parent_id`
+        from `t_permission`
+        where `id` = #{id}
+    </select>
+
+    <select id="checkPermissionCodeRepeat" resultType="org.alex.platform.pojo.PermissionVO">
+        select `id`, `permission_name`,`permission_code`,`parent_id`
+        from `t_permission`
+        where `id` != #{id} and `permission_code` = #{permissionCode}
+    </select>
+
+    <select id="selectPermission" parameterType="org.alex.platform.pojo.PermissionDTO" resultType="org.alex.platform.pojo.PermissionVO">
+        select `id`, `permission_name`,`permission_code`,`parent_id`
+        from `t_permission`
+        <where>
+            <if test="id != null">and `id` = #{id}</if>
+            <if test="permissionName != null">and `permission_name` = #{permissionName}</if>
+            <if test="permissionCode != null">and `permission_code` = #{permissionCode}</if>
+            <if test="parentId != null">and `parent_id` = #{parentId}</if>
+        </where>
     </select>
 </mapper>

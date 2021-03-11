@@ -42,4 +42,21 @@
         delete from `t_role`
         where `role_id` = #{roleId}
     </delete>
+    <select id="selectPermissionIdArrayByRoleId" parameterType="Integer" resultType="Integer">
+        select `permission_id`
+        from `t_permission_role_ref`
+        where `role_id` = #{roleId}
+    </select>
+    <select id="selectRolePermission" resultType="HashMap">
+        select `permission_id`, `role_id`, `Id`
+        from `t_permission_role_ref`
+        where `role_id` = #{roleId} and `permission_id` = #{permissionId}
+    </select>
+    <insert id="insertRolePermission">
+        insert into `t_permission_role_ref` (`role_id`,`permission_id`, `update_time`) values (#{roleId}, #{permissionId}, #{updateTime})
+    </insert>
+    <insert id="deleteRolePermission">
+        delete from `t_permission_role_ref`
+        where `role_id` = #{roleId} and `permission_id` = #{permissionId}
+    </insert>
 </mapper>

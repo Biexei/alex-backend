@@ -4,13 +4,11 @@ import org.alex.platform.common.Key;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
-import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.UserDO;
 import org.alex.platform.pojo.UserVO;
 import org.alex.platform.service.UserService;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.util.RedisUtil;
-import org.alex.platform.util.ValidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 

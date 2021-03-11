@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 80019
+Source Server         : 本地
+Source Server Version : 80020
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80019
+Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-03-10 21:43:28
+Date: 2021-03-11 16:46:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -448,7 +448,7 @@ CREATE TABLE `t_permission` (
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限名称',
   `parent_id` int DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -458,7 +458,7 @@ INSERT INTO `t_permission` VALUES ('2', 'user:add', '新增', '1');
 INSERT INTO `t_permission` VALUES ('3', 'user:modify', '修改', '1');
 INSERT INTO `t_permission` VALUES ('4', 'user:remove', '删除', '1');
 INSERT INTO `t_permission` VALUES ('5', 'user:list', '列表', '1');
-INSERT INTO `t_permission` VALUES ('6', 'user:modify:info', '修改-详情', '3');
+INSERT INTO `t_permission` VALUES ('6', 'user:reset', '重置', '1');
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -468,16 +468,18 @@ CREATE TABLE `t_permission_role_ref` (
   `id` int NOT NULL AUTO_INCREMENT,
   `permission_id` int DEFAULT NULL COMMENT '权限ID',
   `role_id` int DEFAULT NULL COMMENT '权限编号',
+  `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
 -- ----------------------------
-INSERT INTO `t_permission_role_ref` VALUES ('1', '1', '1');
-INSERT INTO `t_permission_role_ref` VALUES ('2', '2', '1');
-INSERT INTO `t_permission_role_ref` VALUES ('3', '3', '1');
-INSERT INTO `t_permission_role_ref` VALUES ('4', '4', '1');
+INSERT INTO `t_permission_role_ref` VALUES ('17', '1', '1', null);
+INSERT INTO `t_permission_role_ref` VALUES ('22', '4', '1', null);
+INSERT INTO `t_permission_role_ref` VALUES ('26', '2', '1', '2021-03-11 16:45:38');
+INSERT INTO `t_permission_role_ref` VALUES ('27', '5', '1', '2021-03-11 16:45:47');
+INSERT INTO `t_permission_role_ref` VALUES ('28', '6', '1', '2021-03-11 16:45:47');
 
 -- ----------------------------
 -- Table structure for t_post_processor
