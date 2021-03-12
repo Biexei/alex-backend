@@ -1,8 +1,10 @@
 package org.alex.platform.service.impl;
 
-import org.alex.platform.common.Key;
+import com.alibaba.fastjson.JSON;
+import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.UserMapper;
 import org.alex.platform.pojo.UserDO;
 import org.alex.platform.pojo.UserVO;
@@ -15,11 +17,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 
 
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    LoginUserInfo loginUserInfo;
+
     @Autowired
     UserMapper userMapper;
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -117,7 +124,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 修改用户信息
+     * 查询用户信息
      * @param userId 用户编号
      * @return UserDO
      */
@@ -131,11 +138,44 @@ public class UserServiceImpl implements UserService {
      * @param userId 用户编号
      */
     @Override
-    public void removeUserById(Integer userId) throws BusinessException {
+    public void removeUserById(HttpServletRequest request, Integer userId) throws BusinessException {
         if (userId == 1) {
             throw new BusinessException("内置用户禁止删除");
         }
         userMapper.deleteUser(userId);
+        Object operator = this.loginUserInfo.getLoginUserInfo(request);
+        LOG.warn("删除用户, 操作人信息为：{}", JSON.toJSONString(operator));
+    }
+
+    /**
+     * 查询用户密码
+     * @param userId 用户id
+     * @return 密码
+     */
+    @Override
+    public String findPwdByUserId(Integer userId) {
+        return userMapper.selectPwdByUserId(userId);
+    }
+
+    /**
+     * 修改用户密码
+     * @param request request
+     * @param oldPwd 旧密码
+     * @param newPwd 新密码
+     */
+    @Override
+    public void changePwd(HttpServletRequest request, String oldPwd, String newPwd) throws BusinessException {
+        if (oldPwd == null || newPwd == null) {
+            throw new ValidException("密码错误");
+        }
+        ValidUtil.length(newPwd, 3, 20, "密码长度必须为3~20");
+        HashMap<String, Object> map = (HashMap) loginUserInfo.getLoginUserInfo(request);
+        Integer userId = (Integer)map.get("userId");
+        String password = findPwdByUserId(userId);
+        if (!oldPwd.equals(password)) {
+            throw new BusinessException("旧密码错误");
+        }
+        userMapper.updatePassword(userId, newPwd);
     }
 
     /**

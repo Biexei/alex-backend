@@ -82,6 +82,21 @@ public class UserController {
     }
 
     /**
+     * 修改密码
+     * @param request request
+     * @param oldPwd oldPwd
+     * @param newPwd newPwd
+     * @return Result
+     * @throws BusinessException BusinessException
+     */
+    @PostMapping("/user/pwd/change")
+    @ResponseBody
+    public Result changePwd(HttpServletRequest request, String oldPwd, String newPwd) throws BusinessException {
+        userService.changePwd(request, oldPwd, newPwd);
+        return Result.success("更新成功");
+    }
+
+    /**
      * 新增用户
      *
      * @param userDO userDO
@@ -149,12 +164,13 @@ public class UserController {
      * 删除用户
      *
      * @param userId 用户编号
+     * @param request request
      * @return Result
      */
     @GetMapping("user/remove/{userId}")
     @ResponseBody
-    public Result removeUser(@PathVariable Integer userId) throws BusinessException {
-        userService.removeUserById(userId);
+    public Result removeUser(HttpServletRequest request, @PathVariable Integer userId) throws BusinessException {
+        userService.removeUserById(request, userId);
         return Result.success("删除成功");
     }
 

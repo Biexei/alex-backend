@@ -22,6 +22,9 @@
     <select id="selectUserById" resultType="org.alex.platform.pojo.UserVO" parameterType="Integer">
         select user_id, username, job_number,sex, is_enable, real_name, role_id from t_user where user_id = #{userId}
     </select>
+    <select id="selectPwdByUserId" resultType="String" parameterType="Integer">
+        select password from t_user where user_id = #{userId}
+    </select>
     <select id="selectUserByName" resultType="org.alex.platform.pojo.UserDO" parameterType="String">
         select user_id, username, password, job_number,sex, is_enable, real_name, role_id from t_user where username = #{username}
     </select>
@@ -41,6 +44,13 @@
             update_time=#{updateTime},
             real_name=#{realName},
             role_id=#{roleId}
+        </set>
+        where user_id = #{userId}
+    </update>
+    <update id="updatePassword" parameterType="String">
+        update t_user
+        <set>
+            password=#{password}
         </set>
         where user_id = #{userId}
     </update>

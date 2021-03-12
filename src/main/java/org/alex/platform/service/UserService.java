@@ -1,9 +1,12 @@
 package org.alex.platform.service;
 
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.UserDO;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.pojo.UserVO;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 public interface UserService {
@@ -19,7 +22,11 @@ public interface UserService {
 
     UserVO findUserById(Integer userId);
 
-    void removeUserById(Integer userId) throws BusinessException;
+    void removeUserById(HttpServletRequest request, Integer userId) throws BusinessException;
+
+    String findPwdByUserId(Integer userId);
+
+    void changePwd(HttpServletRequest request, String oldPwd, String newPwd) throws BusinessException;
 
     void pwdReset(Integer userId, String password) throws BusinessException;
 }
