@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-03-11 16:46:06
+Date: 2021-03-12 17:02:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -448,7 +448,7 @@ CREATE TABLE `t_permission` (
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限名称',
   `parent_id` int DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -457,8 +457,72 @@ INSERT INTO `t_permission` VALUES ('1', 'user', '用户管理', '0');
 INSERT INTO `t_permission` VALUES ('2', 'user:add', '新增', '1');
 INSERT INTO `t_permission` VALUES ('3', 'user:modify', '修改', '1');
 INSERT INTO `t_permission` VALUES ('4', 'user:remove', '删除', '1');
-INSERT INTO `t_permission` VALUES ('5', 'user:list', '列表', '1');
-INSERT INTO `t_permission` VALUES ('6', 'user:reset', '重置', '1');
+INSERT INTO `t_permission` VALUES ('5', 'user:find', '查询', '1');
+INSERT INTO `t_permission` VALUES ('6', 'user:reset', '重置密码', '1');
+INSERT INTO `t_permission` VALUES ('89', 'role', '角色管理', '0');
+INSERT INTO `t_permission` VALUES ('90', 'role:add', '新增', '89');
+INSERT INTO `t_permission` VALUES ('91', 'role:modify', '修改', '89');
+INSERT INTO `t_permission` VALUES ('92', 'role:remove', '删除', '89');
+INSERT INTO `t_permission` VALUES ('93', 'role:find', '查询', '89');
+INSERT INTO `t_permission` VALUES ('94', 'role:permission', '授权', '89');
+INSERT INTO `t_permission` VALUES ('95', 'permission', '权限管理', '0');
+INSERT INTO `t_permission` VALUES ('96', 'permission:add', '新增', '95');
+INSERT INTO `t_permission` VALUES ('97', 'permission:modify', '修改', '95');
+INSERT INTO `t_permission` VALUES ('98', 'permission:remove', '删除', '95');
+INSERT INTO `t_permission` VALUES ('99', 'permission:find', '查询', '95');
+INSERT INTO `t_permission` VALUES ('100', 'permission:add_top', '新增顶级节点', '95');
+INSERT INTO `t_permission` VALUES ('102', 'project', '项目管理', '0');
+INSERT INTO `t_permission` VALUES ('103', 'project:add', '新增', '102');
+INSERT INTO `t_permission` VALUES ('104', 'project:modify', '修改', '102');
+INSERT INTO `t_permission` VALUES ('105', 'project:remove', '删除', '102');
+INSERT INTO `t_permission` VALUES ('106', 'project:find', '查询', '102');
+INSERT INTO `t_permission` VALUES ('107', 'module', '模块管理', '0');
+INSERT INTO `t_permission` VALUES ('108', 'module:add', '新增', '107');
+INSERT INTO `t_permission` VALUES ('109', 'module:modify', '修改', '107');
+INSERT INTO `t_permission` VALUES ('110', 'module:remove', '删除', '107');
+INSERT INTO `t_permission` VALUES ('111', 'module:find', '查询', '107');
+INSERT INTO `t_permission` VALUES ('112', 'db', '数据源中心', '0');
+INSERT INTO `t_permission` VALUES ('113', 'db:add', '新增', '112');
+INSERT INTO `t_permission` VALUES ('114', 'db:modify', '修改', '112');
+INSERT INTO `t_permission` VALUES ('115', 'db:remove', '删除', '112');
+INSERT INTO `t_permission` VALUES ('116', 'db:find', '查询', '112');
+INSERT INTO `t_permission` VALUES ('117', 'db:check', '预检', '112');
+INSERT INTO `t_permission` VALUES ('118', 'factory', '数据工厂', '0');
+INSERT INTO `t_permission` VALUES ('119', 'factory:add', '新增', '118');
+INSERT INTO `t_permission` VALUES ('120', 'factory:modify', '修改', '118');
+INSERT INTO `t_permission` VALUES ('121', 'factory:remove', '删除', '118');
+INSERT INTO `t_permission` VALUES ('122', 'factory:find', '查询', '118');
+INSERT INTO `t_permission` VALUES ('123', 'factory:execute', '执行', '118');
+INSERT INTO `t_permission` VALUES ('124', 'data_center', '数据中心', '0');
+INSERT INTO `t_permission` VALUES ('125', 'data_center:temp_env', '临时变量', '124');
+INSERT INTO `t_permission` VALUES ('126', 'data_center:temp_env:find', '查询', '125');
+INSERT INTO `t_permission` VALUES ('127', 'data_center:temp_env:clear', '清空', '125');
+INSERT INTO `t_permission` VALUES ('128', 'data_center:if_rely', '接口依赖', '124');
+INSERT INTO `t_permission` VALUES ('129', 'data_center:if_rely:add', '新增', '128');
+INSERT INTO `t_permission` VALUES ('130', 'data_center:if_rely:modify', '修改', '128');
+INSERT INTO `t_permission` VALUES ('131', 'data_center:if_rely:remove', '删除', '128');
+INSERT INTO `t_permission` VALUES ('132', 'data_center:if_rely:find', '查询', '128');
+INSERT INTO `t_permission` VALUES ('133', 'data_center:if_rely:execute', '执行', '128');
+INSERT INTO `t_permission` VALUES ('134', 'data_center:rely_data', '其它依赖', '124');
+INSERT INTO `t_permission` VALUES ('135', 'data_center:rely_data:add', '新增', '134');
+INSERT INTO `t_permission` VALUES ('136', 'data_center:rely_data:modify', '修改', '134');
+INSERT INTO `t_permission` VALUES ('137', 'data_center:rely_data:remove', '删除', '134');
+INSERT INTO `t_permission` VALUES ('138', 'data_center:rely_data:find', '查询', '134');
+INSERT INTO `t_permission` VALUES ('139', 'data_center:rely_sql_data', '查询语句', '124');
+INSERT INTO `t_permission` VALUES ('140', 'data_center:rely_sql_data:add', '新增', '139');
+INSERT INTO `t_permission` VALUES ('141', 'data_center:rely_sql_data:modify', '修改', '139');
+INSERT INTO `t_permission` VALUES ('142', 'data_center:rely_sql_data:remove', '删除', '139');
+INSERT INTO `t_permission` VALUES ('143', 'data_center:rely_sql_data:find', '查询', '139');
+INSERT INTO `t_permission` VALUES ('144', 'data_center:rely_init_method', '预置方法', '124');
+INSERT INTO `t_permission` VALUES ('145', 'data_center:rely_init_method:add', '新增', '144');
+INSERT INTO `t_permission` VALUES ('146', 'data_center:rely_init_method:modify', '修改', '144');
+INSERT INTO `t_permission` VALUES ('147', 'data_center:rely_init_method:remove', '删除', '144');
+INSERT INTO `t_permission` VALUES ('148', 'data_center:rely_init_method:find', '查询', '144');
+INSERT INTO `t_permission` VALUES ('149', 'data_center:rely_fixed_data', '固定字符', '124');
+INSERT INTO `t_permission` VALUES ('150', 'data_center:rely_fixed_data:add', '新增', '149');
+INSERT INTO `t_permission` VALUES ('151', 'data_center:rely_fixed_data:modify', '修改', '149');
+INSERT INTO `t_permission` VALUES ('152', 'data_center:rely_fixed_data:remove', '删除', '149');
+INSERT INTO `t_permission` VALUES ('153', 'data_center:rely_fixed_data:find', '查询', '149');
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -470,7 +534,7 @@ CREATE TABLE `t_permission_role_ref` (
   `role_id` int DEFAULT NULL COMMENT '权限编号',
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
