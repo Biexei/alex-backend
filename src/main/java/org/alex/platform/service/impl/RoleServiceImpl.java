@@ -120,7 +120,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
-     * 查询角色已有权限
+     * 查询角色已有权限id
      * @param roleId 角色编号
      * @return 权限编号数组
      */
@@ -128,6 +128,17 @@ public class RoleServiceImpl implements RoleService {
     public JSONArray findPermissionIdArrayByRoleId(Integer roleId) throws ValidException {
         ValidUtil.notNUll(roleId, "参数错误");
         return roleMapper.selectPermissionIdArrayByRoleId(roleId);
+    }
+
+    /**
+     * 查询角色已有权限code
+     * @param roleId 角色编号
+     * @return 权限编号数组
+     */
+    @Override
+    public JSONArray findPermissionCodeArrayByRoleId(Integer roleId) throws ValidException {
+        ValidUtil.notNUll(roleId, "参数错误");
+        return roleMapper.selectPermissionCodeArrayByRoleId(roleId);
     }
 
     /**

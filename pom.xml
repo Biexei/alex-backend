@@ -159,11 +159,11 @@
             <version>1.25</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-            <version>1.6.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.shiro</groupId>-->
+<!--            <artifactId>shiro-spring</artifactId>-->
+<!--            <version>1.6.0</version>-->
+<!--        </dependency>-->
     </dependencies>
     <build>
         <plugins>

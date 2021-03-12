@@ -21,6 +21,7 @@ public interface RoleService {
     List<RoleVO> checkRoleNameRepeat(RoleDTO roleDTO);
 
     JSONArray findPermissionIdArrayByRoleId(Integer roleId) throws ValidException;
+    JSONArray findPermissionCodeArrayByRoleId(Integer roleId) throws ValidException;
     void saveRolePermission(Integer roleId, Integer permissionId, Date updateTime) throws ValidException;
     void removeRolePermission(Integer roleId, Integer permissionId) throws ValidException;
 }

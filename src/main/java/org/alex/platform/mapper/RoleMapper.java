@@ -21,6 +21,7 @@ public interface RoleMapper {
     List<RoleVO> checkRoleNameRepeat(RoleDTO roleDTO);
 
     JSONArray selectPermissionIdArrayByRoleId(Integer roleId);
+    JSONArray selectPermissionCodeArrayByRoleId(Integer roleId);
     void insertRolePermission(@Param("roleId") Integer roleId, @Param("permissionId") Integer permissionId, @Param("updateTime") Date updateTime);
     void deleteRolePermission(@Param("roleId") Integer roleId, @Param("permissionId") Integer permissionId);
     List<HashMap> selectRolePermission(@Param("roleId") Integer roleId, @Param("permissionId") Integer permissionId);

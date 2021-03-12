@@ -47,6 +47,13 @@
         from `t_permission_role_ref`
         where `role_id` = #{roleId}
     </select>
+    <select id="selectPermissionCodeArrayByRoleId" parameterType="Integer" resultType="String">
+        select `permission_code`
+        from `t_permission_role_ref` as `a`
+        left join `t_permission` as `b`
+        on `a`.`permission_id` = `b`.`id`
+        where `role_id` = #{roleId}
+    </select>
     <select id="selectRolePermission" resultType="HashMap">
         select `permission_id`, `role_id`, `Id`
         from `t_permission_role_ref`

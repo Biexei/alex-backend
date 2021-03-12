@@ -1,11 +1,15 @@
 package org.alex.platform.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import org.alex.platform.common.Key;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.UserDO;
 import org.alex.platform.pojo.UserVO;
+import org.alex.platform.service.PermissionService;
+import org.alex.platform.service.RoleService;
 import org.alex.platform.service.UserService;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.util.RedisUtil;
@@ -29,6 +33,8 @@ public class UserController {
     RedisUtil redisUtil;
     @Autowired
     LoginUserInfo loginUserInfo;
+    @Autowired
+    RoleService roleService;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
@@ -110,7 +116,7 @@ public class UserController {
      */
     @PostMapping("/user/login")
     @ResponseBody
-    public Result login(String username, String password) {
+    public Result login(String username, String password) throws ValidException {
         if (null == username || "".equals(username) || null == password || "".equals(password)) {
             LOG.error("帐号名或者密码错误");
             return Result.fail("帐号名或者密码错误");
@@ -119,6 +125,7 @@ public class UserController {
         userDO.setUsername(username);
         userDO.setPassword(password);
         UserDO userInfo = userService.findUserToLogin(userDO);
+
         if (userInfo != null) {
             String token = UUID.randomUUID().toString();
             HashMap<String, Object> userMap = new HashMap<>();
@@ -127,6 +134,9 @@ public class UserController {
             userMap.put("username", userInfo.getUsername());
             userMap.put("realName", userInfo.getRealName());
             userMap.put("isEnable", userInfo.getIsEnable());
+            Integer roleId = userInfo.getRoleId();
+            JSONArray permissionCodeArray = roleService.findPermissionCodeArrayByRoleId(roleId);
+            userMap.put("permission", permissionCodeArray);
             redisUtil.set(token, userMap, 60*30);
             return Result.success("登录成功", userMap);
         } else {
