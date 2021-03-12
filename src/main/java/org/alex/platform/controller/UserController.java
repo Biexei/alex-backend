@@ -12,6 +12,7 @@ import org.alex.platform.service.PermissionService;
 import org.alex.platform.service.RoleService;
 import org.alex.platform.service.UserService;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.util.MD5Util;
 import org.alex.platform.util.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -194,7 +195,7 @@ public class UserController {
      */
     @GetMapping("/user/reset/{userId}")
     public Result pwdReset(@PathVariable Integer userId) throws BusinessException {
-        userService.pwdReset(userId, Key.DEFAULT_PWD);
+        userService.pwdReset(userId, MD5Util.md5ForLoginPassword(Key.DEFAULT_PWD));
         return Result.success("操作成功");
     }
 }

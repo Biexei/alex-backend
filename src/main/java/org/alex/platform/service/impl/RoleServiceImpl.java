@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -136,8 +137,11 @@ public class RoleServiceImpl implements RoleService {
      * @return 权限编号数组
      */
     @Override
-    public JSONArray findPermissionCodeArrayByRoleId(Integer roleId) throws ValidException {
-        ValidUtil.notNUll(roleId, "参数错误");
+    public JSONArray findPermissionCodeArrayByRoleId(Integer roleId) {
+        // 没角色不给任何权限
+        if (roleId == null) {
+            return new JSONArray();
+        }
         return roleMapper.selectPermissionCodeArrayByRoleId(roleId);
     }
 
@@ -167,5 +171,15 @@ public class RoleServiceImpl implements RoleService {
         ValidUtil.notNUll(roleId, "参数错误");
         ValidUtil.notNUll(permissionId, "参数错误");
         roleMapper.deleteRolePermission(roleId, permissionId);
+    }
+
+    /**
+     * 删除权限角色关联记录
+     * @param permissionId 权限id
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void removePermissionRoleRef(Integer permissionId) {
+        roleMapper.deletePermissionRoleRef(permissionId);
     }
 }

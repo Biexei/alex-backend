@@ -42,6 +42,11 @@
         delete from `t_role`
         where `role_id` = #{roleId}
     </delete>
+
+    <delete id="deletePermissionRoleRef" parameterType="Integer">
+        delete from `t_permission_role_ref`
+        where `permission_id` = #{permissionId}
+    </delete>
     <select id="selectPermissionIdArrayByRoleId" parameterType="Integer" resultType="Integer">
         select `permission_id`
         from `t_permission_role_ref`

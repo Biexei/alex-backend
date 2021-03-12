@@ -11,6 +11,7 @@ import org.alex.platform.pojo.UserVO;
 import org.alex.platform.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.util.MD5Util;
 import org.alex.platform.util.ValidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
             if (userMapper.selectUserByName(username) != null) {
                 throw new BusinessException("用户名已存在");
             } else {
+                userDO.setPassword(MD5Util.md5ForLoginPassword(password));
                 userMapper.insertUser(userDO);
             }
         }
@@ -109,6 +111,7 @@ public class UserServiceImpl implements UserService {
         if (userMapper.selectUserByName(username) != null) {
             throw new BusinessException("用户名已存在");
         } else {
+            userDO.setPassword(MD5Util.md5ForLoginPassword(password));
             userMapper.insertUser(userDO);
         }
     }
@@ -120,6 +123,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDO findUserToLogin(UserDO userDO) {
+        String password = userDO.getPassword();
+        userDO.setPassword(MD5Util.md5ForLoginPassword(password));
         return userMapper.selectUserToLogin(userDO);
     }
 
@@ -172,10 +177,10 @@ public class UserServiceImpl implements UserService {
         HashMap<String, Object> map = (HashMap) loginUserInfo.getLoginUserInfo(request);
         Integer userId = (Integer)map.get("userId");
         String password = findPwdByUserId(userId);
-        if (!oldPwd.equals(password)) {
+        if (!MD5Util.md5ForLoginPassword(oldPwd).equals(password)) {
             throw new BusinessException("旧密码错误");
         }
-        userMapper.updatePassword(userId, newPwd);
+        userMapper.updatePassword(userId, MD5Util.md5ForLoginPassword(newPwd));
     }
 
     /**

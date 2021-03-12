@@ -25,4 +25,5 @@ public interface RoleMapper {
     void insertRolePermission(@Param("roleId") Integer roleId, @Param("permissionId") Integer permissionId, @Param("updateTime") Date updateTime);
     void deleteRolePermission(@Param("roleId") Integer roleId, @Param("permissionId") Integer permissionId);
     List<HashMap> selectRolePermission(@Param("roleId") Integer roleId, @Param("permissionId") Integer permissionId);
+    void deletePermissionRoleRef(Integer permissionId);
 }

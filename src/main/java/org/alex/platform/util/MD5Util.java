@@ -1,5 +1,8 @@
 package org.alex.platform.util;
 
+import org.alex.platform.common.Key;
+
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 public class MD5Util {
@@ -28,6 +31,15 @@ public class MD5Util {
             return "";
         }
         return resultString;
+    }
+
+    /**
+     * 登录密码专用MD5
+     * @param password 密码明文
+     * @return
+     */
+    public static String md5ForLoginPassword(String password) {
+        return MD5Encode(Key.PWD_SALT + password, "utf-8");
     }
 
 

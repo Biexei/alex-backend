@@ -6,10 +6,12 @@ import org.alex.platform.pojo.PermissionDO;
 import org.alex.platform.pojo.PermissionDTO;
 import org.alex.platform.pojo.PermissionVO;
 import org.alex.platform.service.PermissionService;
+import org.alex.platform.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ public class PermissionServiceImpl implements PermissionService {
     private static final Logger LOG = LoggerFactory.getLogger(PermissionServiceImpl.class);
     @Autowired
     PermissionMapper permissionMapper;
+    @Autowired
+    RoleService roleService;
 
     /**
      * 动态查询节点
@@ -94,6 +98,7 @@ public class PermissionServiceImpl implements PermissionService {
      * 删除节点
      * @param id 删除节点
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void removePermissionById(Integer id) throws BusinessException {
         PermissionDTO permissionDTO = new PermissionDTO();
@@ -102,6 +107,8 @@ public class PermissionServiceImpl implements PermissionService {
             throw new BusinessException("请先删除相关子节点");
         }
         permissionMapper.deletePermissionById(id);
+        // 同时删除角色权限中间表
+        roleService.removePermissionRoleRef(id);
         LOG.info("删除权限成功");
     }
 }
