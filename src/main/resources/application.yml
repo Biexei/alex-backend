@@ -35,5 +35,5 @@ logging:
   file:
     name: src/main/resources/log/log.log
   level:
-    root: info
+    root: error
 

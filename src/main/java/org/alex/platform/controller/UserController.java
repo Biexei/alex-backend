@@ -118,7 +118,7 @@ public class UserController {
      */
     @PostMapping("/user/register")
     @ResponseBody
-    public Result registerUser(@Validated UserDO userDO) throws BusinessException {
+    public Result registerUser(@Validated @RequestBody UserDO userDO) throws BusinessException {
         userService.registerUser(userDO);
         return Result.success("注册成功");
     }
