@@ -210,7 +210,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
         }
         String fileContent = FileUtil.readByBufferReader(fis, StandardCharsets.UTF_8);
         JSONObject fileContentObj = JSONObject.parseObject(fileContent);
-        JSONArray resultArray = main.generateCase(fileContentObj, caseRule);
+        JSONArray resultArray = main.generateCase(fileContentObj, caseRule, true);
         String resultString = JSON.toJSONString(resultArray, SerializerFeature.DisableCircularReferenceDetect,
                 SerializerFeature.WriteMapNullValue, SerializerFeature.PrettyFormat);
         LOG.info("批量生成用例共" + resultArray.size() + "条");

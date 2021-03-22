@@ -36,17 +36,15 @@ public class CaseGenTest {
         String desc = "姓名";
         String type = "String";
 
-        JSONObject publicConfig = new JSONObject();
-        publicConfig.put("allowNull", false);
-        publicConfig.put("allowRepeat", false);
-
         JSONObject privateConfig = new JSONObject();
         privateConfig.put("allowIllegal", false);
         privateConfig.put("allowEmpty", false);
         privateConfig.put("minLen", 2);
         privateConfig.put("maxLen", 2);
+        privateConfig.put("allowNull", false);
+        privateConfig.put("allowRepeat", false);
 
-        System.out.println(generator.genSingleField(key, desc, type, publicConfig, privateConfig));
+        System.out.println(generator.genSingleField(key, desc, type, privateConfig));
     }
 
     @Test
@@ -55,15 +53,13 @@ public class CaseGenTest {
         String desc = "姓名";
         String type = "Number";
 
-        JSONObject publicConfig = new JSONObject();
-        publicConfig.put("allowNull", false);
-        publicConfig.put("allowRepeat", false);
-
         JSONObject privateConfig = new JSONObject();
         privateConfig.put("min", -0.1);
         privateConfig.put("max", 100);
+        privateConfig.put("allowNull", false);
+        privateConfig.put("allowRepeat", false);
 
-        System.out.println(generator.genSingleField(key, desc, type, publicConfig, privateConfig));
+        System.out.println(generator.genSingleField(key, desc, type, privateConfig));
     }
 
     @Test
@@ -72,16 +68,14 @@ public class CaseGenTest {
         String desc = "姓名";
         String type = "NotInDb";
 
-        JSONObject publicConfig = new JSONObject();
-        publicConfig.put("allowNull", false);
-        publicConfig.put("allowRepeat", false);
-
         JSONObject privateConfig = new JSONObject();
         privateConfig.put("dbId", 1);
         privateConfig.put("sql", "select `desc` from t_db");
         privateConfig.put("elementType", "str");
+        privateConfig.put("allowNull", false);
+        privateConfig.put("allowRepeat", false);
 
-        System.out.println(generator.genSingleField(key, desc, type, publicConfig, privateConfig));
+        System.out.println(generator.genSingleField(key, desc, type, privateConfig));
     }
 
     @Test
@@ -90,9 +84,6 @@ public class CaseGenTest {
         String desc = "姓名";
         String type = "notInArray";
 
-        JSONObject publicConfig = new JSONObject();
-        publicConfig.put("allowNull", false);
-        publicConfig.put("allowRepeat", false);
 
         JSONObject privateConfig = new JSONObject();
         JSONArray array = new JSONArray();
@@ -101,20 +92,19 @@ public class CaseGenTest {
         array.add(1);
         privateConfig.put("value", array);
         privateConfig.put("elementType", "integer");
+        privateConfig.put("allowNull", false);
+        privateConfig.put("allowRepeat", false);
 
-        System.out.println(generator.genSingleField(key, desc, type, publicConfig, privateConfig));
+        System.out.println(generator.genSingleField(key, desc, type, privateConfig));
     }
 
     @Test
     public void testMain() throws Exception {
         String jsonStr = FileUtil.readByBuffer("C:\\Users\\beix\\IdeaProjects\\platform\\src\\main\\resources\\template\\用户注册接口自动生成用例约束示例.json", StandardCharsets.UTF_8);
         JSONObject schema = JSONObject.parseObject(jsonStr);
-//        System.out.println(JSON.toJSONString(main.generateCase(schema, CaseRule.ORT),
-//                SerializerFeature.DisableCircularReferenceDetect,
-//                SerializerFeature.WriteMapNullValue));
-        FileOutputStream fileOutputStream = new FileOutputStream(new File("C:\\Users\\beix\\Desktop\\1.json"));
-        JSON.writeJSONString(fileOutputStream, main.generateCase(schema, CaseRule.ORT), SerializerFeature.DisableCircularReferenceDetect,
-                SerializerFeature.WriteMapNullValue, SerializerFeature.PrettyFormat);
+        System.out.println(JSON.toJSONString(main.generateCase(schema, CaseRule.CARTESIAN, false),
+                SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteMapNullValue));
     }
 
     @Test

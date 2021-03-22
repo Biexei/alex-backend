@@ -27,51 +27,49 @@ public class Generator {
     @Autowired
     DbService dbService;
 
-    public JSONArray genSingleField(String key, String desc, String type, JSONObject publicConfig, JSONObject privateConfig) throws Exception {
+    public JSONArray genSingleField(String key, String desc, String type, JSONObject config) throws Exception {
         type = FieldType.getFieldType(type);
-
-        Boolean allowNull = publicConfig.getBoolean("allowNull");
-        Boolean allowRepeat = publicConfig.getBoolean("allowRepeat");
-        filter.valid4GlobalConfig(allowNull, allowRepeat);
+        Boolean allowNull = config.getBoolean("allowNull");
+        Boolean allowRepeat = config.getBoolean("allowRepeat");
 
         switch (type) {
             case "string":
-                Boolean allowIllegal = privateConfig.getBoolean("allowIllegal");
-                Boolean allowEmpty = privateConfig.getBoolean("allowEmpty");
-                Integer minLen = privateConfig.getInteger("minLen");
-                Integer maxLen = privateConfig.getInteger("maxLen");
-                filter.valid4String(allowIllegal, allowEmpty, minLen, maxLen);
-                return genString(key, desc, publicConfig, allowIllegal, allowEmpty, minLen, maxLen);
+                Boolean allowIllegal = config.getBoolean("allowIllegal");
+                Boolean allowEmpty = config.getBoolean("allowEmpty");
+                Integer minLen = config.getInteger("minLen");
+                Integer maxLen = config.getInteger("maxLen");
+                filter.valid4String(allowIllegal, allowEmpty, minLen, maxLen, allowNull);
+                return genString(key, desc, allowIllegal, allowEmpty, minLen, maxLen, allowNull, allowRepeat);
             case "number":
-                BigDecimal min = privateConfig.getBigDecimal("min");
-                BigDecimal max = privateConfig.getBigDecimal("max");
-                filter.valid4Number(min, max);
-                return genNumber(key, desc, publicConfig, min, max);
+                BigDecimal min = config.getBigDecimal("min");
+                BigDecimal max = config.getBigDecimal("max");
+                filter.valid4Number(min, max, allowNull);
+                return genNumber(key, desc, min, max, allowNull, allowRepeat);
             case "inDb":
             case "notInDb": {
-                Integer dbId = privateConfig.getInteger("dbId");
-                String sql = privateConfig.getString("sql");
-                String elementType = privateConfig.getString("elementType");
-                filter.valid4DbData(dbId, sql, elementType);
+                Integer dbId = config.getInteger("dbId");
+                String sql = config.getString("sql");
+                String elementType = config.getString("elementType");
+                filter.valid4DbData(dbId, sql, elementType, allowNull);
                 if (type.equals("inDb")) {
-                    return genInDb(key, desc, publicConfig, dbId, sql, elementType);
+                    return genInDb(key, desc, dbId, sql, elementType, allowNull, allowRepeat);
                 } else {
-                    return genNotInDb(key, desc, publicConfig, dbId, sql, elementType);
+                    return genNotInDb(key, desc, dbId, sql, elementType, allowNull, allowRepeat);
                 }
             }
             case "const":
-                Object value = privateConfig.get("value");
-                filter.valid4Const(value);
-                return genConst(key, desc, publicConfig, value);
+                Object value = config.get("value");
+                filter.valid4Const(value, allowNull);
+                return genConst(key, desc, value, allowNull, allowRepeat);
             case "inArray":
             case "notInArray": {
-                String elementType = privateConfig.getString("elementType");
-                JSONArray arrayValue = privateConfig.getJSONArray("value");
-                filter.valid4ArrayData(elementType, arrayValue);
+                String elementType = config.getString("elementType");
+                JSONArray arrayValue = config.getJSONArray("value");
+                filter.valid4ArrayData(elementType, arrayValue, allowNull);
                 if (type.equals("inArray")) {
-                    return genInArray(key, desc, publicConfig, arrayValue, elementType);
+                    return genInArray(key, desc, arrayValue, elementType, allowNull, allowRepeat);
                 } else {
-                    return genNotInArray(key, desc, publicConfig, arrayValue, elementType);
+                    return genNotInArray(key, desc, arrayValue, elementType, allowNull, allowRepeat);
                 }
             }
             default:
@@ -83,19 +81,16 @@ public class Generator {
      * 生成字段类型为String的用例
      * @param key 字段名称
      * @param desc 字段描述
-     * @param publicConfig 全局配置
      * @param allowIllegal 是否允许非法字符
      * @param allowEmpty 是否允许为空
      * @param minLen 最小长度
      * @param maxLen 最大长度
+     * @param allowNull 是否运行为空
+     * @param allowRepeat 是否运行重复
      * @return 字段用例
      */
-    private JSONArray genString(String key, String desc,
-                           JSONObject publicConfig,
-                           Boolean allowIllegal, Boolean allowEmpty, Integer minLen, Integer maxLen) {
-
-        Boolean allowNull = publicConfig.getBoolean("allowNull");
-        Boolean allowRepeat = publicConfig.getBoolean("allowRepeat");
+    private JSONArray genString(String key, String desc, Boolean allowIllegal, Boolean allowEmpty, Integer minLen,
+                                Integer maxLen, Boolean allowNull, Boolean allowRepeat) {
 
         JSONArray result = new JSONArray();
 
@@ -146,10 +141,12 @@ public class Generator {
         }
 
         //5.重复
-        if (allowRepeat) {
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4LengthRepeat(key, desc, minLen, maxLen), randomLegalString, key));
-        } else {
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4LengthRepeat(key, desc, minLen, maxLen), randomLegalString, key));
+        if (allowRepeat != null) {
+            if (allowRepeat) {
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4LengthRepeat(key, desc, minLen, maxLen), randomLegalString, key));
+            } else {
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4LengthRepeat(key, desc, minLen, maxLen), randomLegalString, key));
+            }
         }
 
         return result;
@@ -159,15 +156,14 @@ public class Generator {
      * 生成字段类型为String的用例
      * @param key 字段名称
      * @param desc 字段描述
-     * @param publicConfig 全局配置
      * @param min 最小值
      * @param max 最大值
+     * @param allowNull 是否允许为空
+     * @param allowRepeat 是否允许重复
      * @return 字段用例
      */
-    private JSONArray genNumber(String key, String desc, JSONObject publicConfig, BigDecimal min, BigDecimal max) {
-
-        Boolean allowNull = publicConfig.getBoolean("allowNull");
-        Boolean allowRepeat = publicConfig.getBoolean("allowRepeat");
+    private JSONArray genNumber(String key, String desc, BigDecimal min, BigDecimal max,
+                                Boolean allowNull, Boolean allowRepeat) {
 
         JSONArray result = new JSONArray();
 
@@ -181,10 +177,12 @@ public class Generator {
         result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4EqualsMaxSize(key, desc, max), max, key));
         if (min.compareTo(max) == 0) { // 最大值==最小值，使用最大值作为重复值
             // 5.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4SizeRepeat(key, desc, min, max), max, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4SizeRepeat(key, desc, min, max), max, key));
+            if (allowRepeat != null) {
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4SizeRepeat(key, desc, min, max), max, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4SizeRepeat(key, desc, min, max), max, key));
+                }
             }
         }
         if (min.compareTo(max) < 0) { // 最大值>最小值，使用区间内值作为重复值
@@ -203,10 +201,12 @@ public class Generator {
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4Size(key, desc, min, max), bigDecimal, key));
             }
             // 5.重复
-            if (allowRepeat) {
-                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4SizeRepeat(key, desc, min, max), bigDecimal, key));
-            } else {
-                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4SizeRepeat(key, desc, min, max), bigDecimal, key));
+            if (allowRepeat != null) {
+                if (allowRepeat) {
+                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4SizeRepeat(key, desc, min, max), bigDecimal, key));
+                } else {
+                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4SizeRepeat(key, desc, min, max), bigDecimal, key));
+                }
             }
         }
         // 5.恰好为最小值-步长
@@ -222,17 +222,15 @@ public class Generator {
      * 生成字段类型为InDb的用例
      * @param key 字段名称
      * @param desc 字段描述
-     * @param publicConfig 全局配置
      * @param dbId 数据源编号
      * @param sql sql查询语句
      * @param elementType 列字段类型
+     * @param allowNull 是否运行为空
+     * @param allowRepeat 是否运行重复
      * @return 字段用例
      */
-    private JSONArray genInDb(String key, String desc, JSONObject publicConfig,
-                              Integer dbId, String sql, String elementType) throws Exception {
-
-        Boolean allowNull = publicConfig.getBoolean("allowNull");
-        Boolean allowRepeat = publicConfig.getBoolean("allowRepeat");
+    private JSONArray genInDb(String key, String desc, Integer dbId, String sql, String elementType,
+                              Boolean allowNull, Boolean allowRepeat) throws Exception {
 
         JSONArray result = new JSONArray();
 
@@ -266,10 +264,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidStr, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -290,10 +290,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidNum, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -314,10 +316,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidInt, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -338,10 +342,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidFloat, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -362,10 +368,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), invalidDouble, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -377,17 +385,15 @@ public class Generator {
      * 生成字段类型为NotInDb的用例
      * @param key 字段名称
      * @param desc 字段描述
-     * @param publicConfig 全局配置
      * @param dbId 数据源编号
      * @param sql sql查询语句
      * @param elementType 列字段类型
+     * @param allowNull 是否允许为空
+     * @param allowRepeat 是否允许重复
      * @return 字段用例
      */
-    private JSONArray genNotInDb(String key, String desc, JSONObject publicConfig,
-                              Integer dbId, String sql, String elementType) throws Exception {
-
-        Boolean allowNull = publicConfig.getBoolean("allowNull");
-        Boolean allowRepeat = publicConfig.getBoolean("allowRepeat");
+    private JSONArray genNotInDb(String key, String desc, Integer dbId, String sql, String elementType,
+                                 Boolean allowNull, Boolean allowRepeat) throws Exception {
 
         JSONArray result = new JSONArray();
 
@@ -421,10 +427,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validStr, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validStr, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validStr, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validStr, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validStr, key));
+                    }
                 }
                 break;
             }
@@ -445,10 +453,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validNum, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validNum, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validNum, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validNum, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validNum, key));
+                    }
                 }
                 break;
             }
@@ -469,10 +479,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validInt, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validInt, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validInt, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validInt, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validInt, key));
+                    }
                 }
                 break;
             }
@@ -493,10 +505,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validFloat, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validFloat, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validFloat, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validFloat, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validFloat, key));
+                    }
                 }
                 break;
             }
@@ -517,10 +531,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInDb(key, desc), validDouble, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validDouble, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), validDouble, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4DbRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -532,13 +548,12 @@ public class Generator {
      * 生成字段类型为const的用例
      * @param key 字段名称
      * @param desc 字段描述
-     * @param publicConfig 全局配置
      * @param value 固定值
+     * @param allowNull 是否允许为空
+     * @param allowRepeat 是否允许重复
      * @return 字段用例
      */
-    private JSONArray genConst(String key, String desc, JSONObject publicConfig, Object value) {
-        Boolean allowNull = publicConfig.getBoolean("allowNull");
-        Boolean allowRepeat = publicConfig.getBoolean("allowRepeat");
+    private JSONArray genConst(String key, String desc, Object value, Boolean allowNull, Boolean allowRepeat) {
 
         JSONArray result = new JSONArray();
 
@@ -555,10 +570,12 @@ public class Generator {
         // 不考虑无效等价类
         if (value instanceof String) {
             if (!(((String) value).startsWith("#{") && !(((String) value).startsWith("${")))) {
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ConstRepeat(key, desc), value, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ConstRepeat(key, desc), value, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ConstRepeat(key, desc), value, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ConstRepeat(key, desc), value, key));
+                    }
                 }
             }
         }
@@ -569,13 +586,13 @@ public class Generator {
      * 生成字段类型为InArray的用例
      * @param key 字段名称
      * @param desc 字段描述
-     * @param publicConfig 全局配置
      * @param array 固定值
+     * @param allowNull 是否允许为空
+     * @param allowRepeat 是否允许重复
      * @return 字段用例
      */
-    private JSONArray genInArray(String key, String desc, JSONObject publicConfig, JSONArray array, String elementType) throws ValidException {
-        Boolean allowNull = publicConfig.getBoolean("allowNull");
-        Boolean allowRepeat = publicConfig.getBoolean("allowRepeat");
+    private JSONArray genInArray(String key, String desc, JSONArray array, String elementType,
+                                 Boolean allowNull, Boolean allowRepeat) throws ValidException {
 
         JSONArray result = new JSONArray();
 
@@ -600,10 +617,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidStr, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -620,10 +639,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidNum, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -640,10 +661,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidInt, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -660,10 +683,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidFloat, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -680,10 +705,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), invalidDouble, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), randomRow, key));
+                    }
                 }
                 break;
             }
@@ -695,13 +722,13 @@ public class Generator {
      * 生成字段类型为NotInArray的用例
      * @param key 字段名称
      * @param desc 字段描述
-     * @param publicConfig 全局配置
      * @param array 固定值
+     * @param allowNull 是否允许为空
+     * @param allowRepeat 是否允许重复
      * @return 字段用例
      */
-    private JSONArray genNotInArray(String key, String desc, JSONObject publicConfig, JSONArray array, String elementType) throws ValidException {
-        Boolean allowNull = publicConfig.getBoolean("allowNull");
-        Boolean allowRepeat = publicConfig.getBoolean("allowRepeat");
+    private JSONArray genNotInArray(String key, String desc, JSONArray array, String elementType,
+                                    Boolean allowNull, Boolean allowRepeat) throws ValidException {
 
         JSONArray result = new JSONArray();
 
@@ -726,10 +753,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validStr, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validStr, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validStr, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validStr, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validStr, key));
+                    }
                 }
                 break;
             }
@@ -746,10 +775,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validNum, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validNum, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validNum, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validNum, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validNum, key));
+                    }
                 }
                 break;
             }
@@ -766,10 +797,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validInt, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validInt, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validInt, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validInt, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validInt, key));
+                    }
                 }
                 break;
             }
@@ -786,10 +819,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validFloat, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validFloat, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validFloat, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validFloat, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validFloat, key));
+                    }
                 }
                 break;
             }
@@ -806,10 +841,12 @@ public class Generator {
                 }
                 result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4NotInArray(key, desc), validDouble, key));
                 // 3.重复
-                if (allowRepeat) {
-                    result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validDouble, key));
-                } else {
-                    result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validDouble, key));
+                if (allowRepeat != null) {
+                    if (allowRepeat) {
+                        result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validDouble, key));
+                    } else {
+                        result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4ArrayRepeat(key, desc), validDouble, key));
+                    }
                 }
                 break;
             }

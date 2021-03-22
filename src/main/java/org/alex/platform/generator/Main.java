@@ -25,7 +25,7 @@ public class Main {
     Rule rule;
 
     @SuppressWarnings({"unchecked","rawtypes"})
-    public JSONArray generateCase(JSONObject schemaFileObject, CaseRule caseRule) throws Exception {
+    public JSONArray generateCase(JSONObject schemaFileObject, CaseRule caseRule, Boolean isReturnMix) throws Exception {
         // 读取配置文件
         JSONObject property = schemaFileObject.getJSONObject("property");
         Integer projectId = property.getInteger("projectId");
@@ -53,10 +53,13 @@ public class Main {
                 String name = jo.getString("name");
                 String desc = jo.getString("desc");
                 String type = jo.getString("type");
-                JSONObject globalConfig = jo.getJSONObject("globalConfig");
-                JSONObject privateConfig = jo.getJSONObject("privateConfig");
-                itemList.add(generator.genSingleField(name, desc, type, globalConfig, privateConfig));
+                JSONObject config = jo.getJSONObject("config");
+                itemList.add(generator.genSingleField(name, desc, type, config));
             }
+        }
+
+        if (!isReturnMix) {
+            return itemList;
         }
 
         // 确定用例生成规则

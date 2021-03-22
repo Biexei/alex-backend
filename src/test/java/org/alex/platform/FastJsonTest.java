@@ -22,6 +22,5 @@ public class FastJsonTest {
 
         Integer minIntLen = 1;
         Integer maxIntLen = 1;
-        filter.valid4Number(minimum, maximum);
     }
 }

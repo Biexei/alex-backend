@@ -54,11 +54,9 @@
 			"name": "username",
 			"desc": "用户名",
 			"type": "NotInDb",
-			"globalConfig": {
+			"config": {
 				"allowNull": false,
-				"allowRepeat": false
-			},
-			"privateConfig": {
+				"allowRepeat": false,
 				"dbId": 1,
 				"sql": "select username from t_user",
 				"elementType": "String"
@@ -68,11 +66,8 @@
 			"name": "password",
 			"desc": "密码",
 			"type": "String",
-			"globalConfig": {
+			"config": {
 				"allowNull": false,
-				"allowRepeat": true
-			},
-			"privateConfig": {
 				"allowIllegal": true,
 				"allowEmpty": false,
 				"minLen": 1,
@@ -83,11 +78,9 @@
 			"name": "realName",
 			"desc": "真实姓名",
 			"type": "String",
-			"globalConfig": {
+			"config": {
 				"allowNull": true,
-				"allowRepeat": true
-			},
-			"privateConfig": {
+				"allowRepeat": true,
 				"allowIllegal": false,
 				"allowEmpty": true,
 				"minLen": 1,
@@ -98,11 +91,9 @@
 			"name": "sex",
 			"desc": "性别",
 			"type": "InArray",
-			"globalConfig": {
+			"config": {
 				"allowNull": false,
-				"allowRepeat": true
-			},
-			"privateConfig": {
+				"allowRepeat": true,
 				"value": [0, 1],
 				"elementType": "Integer"
 			}
