@@ -864,11 +864,11 @@ public class Generator {
     private JSONObject model(CaseType type, String desc, Object value, String key) {
         JSONObject jsonObject = new JSONObject();
         if (type == CaseType.INVALID_EQUIVALENCE_CLASS) {
-            jsonObject.put("type", "INVALID_EQUIVALENCE_CLASS");
+            jsonObject.put("type", "invalidEquivalenceClass");
             jsonObject.put("desc", "*" + desc);
         } else {
             jsonObject.put("desc", desc);
-            jsonObject.put("type", "VALID_EQUIVALENCE_CLASS");
+            jsonObject.put("type", "validEquivalenceClass");
         }
         jsonObject.put("value", value);
         jsonObject.put("key", key);
