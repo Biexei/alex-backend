@@ -569,7 +569,7 @@ public class Generator {
 
         // 不考虑无效等价类
         if (value instanceof String) {
-            if (!(((String) value).startsWith("#{") && !(((String) value).startsWith("${")))) {
+            if (!(((String) value).contains("#{") && !(((String) value).contains("${")))) {
                 if (allowRepeat != null) {
                     if (allowRepeat) {
                         result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4ConstRepeat(key, desc), value, key));
