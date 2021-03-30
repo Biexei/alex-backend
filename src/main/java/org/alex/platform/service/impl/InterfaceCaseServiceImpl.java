@@ -1287,7 +1287,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     LOG.warn("未找到该预置方法/动态SQL依赖名称， string={}", methodName);
                     throw new ParseException("未找到该预置方法/动态SQL依赖名称");
                 }
-                if (relyDataVO.getType() == 1) { //反射方法
+                byte type = relyDataVO.getType();
+                if (type == 1) { //反射方法
                     LOG.info("--------------------------------------进入预置方法模式");
                     // 无参方法特殊处理
                     if (params.length == 1 && "".equals(params[0])) {
@@ -1310,7 +1311,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         LOG.error("未找到依赖方法或者入参错误, errorMsg={}", ExceptionUtil.msg(e));
                         throw new ParseException("未找到依赖方法或者入参错误, errorMsg=" + ExceptionUtil.msg(e));
                     }
-                } else if (relyDataVO.getType() == 2) { //sql
+                } else if (type >= 2 && type <= 6) { //sql 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
                     LOG.info("--------------------------------------进入动态SQL模式");
                     if (params.length == 1 && "".equals(params[0])) {
                         params = null;
@@ -1367,7 +1368,19 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         LOG.info("解析SQL完成，解析后SQL={}", sql);
                     }
                     LOG.info("SQL执行参数，SQL={}, params={}", sql, params);
-                    String sqlResult = JdbcUtil.selectFirst(url, username, password, sql, params);
+
+                    String sqlResult = "";
+                    if (type == 2) { // 查询
+                        sqlResult = JdbcUtil.selectFirst(url, username, password, sql, params);
+                    } else if (type == 3) { // 新增
+                        sqlResult = String.valueOf(JdbcUtil.insert(url, username, password, sql, params));
+                    } else if (type == 4) { // 修改
+                        sqlResult = JdbcUtil.update(url, username, password, sql, params);
+                    } else if (type == 5) { // 删除
+                        sqlResult = JdbcUtil.delete(url, username, password, sql, params);
+                    } else { // 脚本
+                        sqlResult = JdbcUtil.script(url, username, password, sql, true);
+                    }
                     s = s.replace(findStr, sqlResult);
                 }
 
@@ -1391,7 +1404,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         int type = relyDataVO.getType();
                         if (type == 0) {
                             s = s.replace(findStr, relyDataVO.getValue());
-                        } else if (type == 2) {
+                        } else if (type >= 2 && type <= 6) {
                             Integer datasourceId = relyDataVO.getDatasourceId();
                             if (null == datasourceId) {
                                 LOG.warn("SQL依赖名称未找到对应的数据源");
@@ -1439,7 +1452,18 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 LOG.info("解析SQL完成，解析后SQL={}", sql);
                             }
                             LOG.info("SQL执行参数，SQL={}", sql);
-                            String sqlResult = JdbcUtil.selectFirst(url, username, password, sql, null);
+                            String sqlResult = "";
+                            if (type == 2) { // 查询
+                                sqlResult = JdbcUtil.selectFirst(url, username, password, sql, null);
+                            } else if (type == 3) { // 新增
+                                sqlResult = String.valueOf(JdbcUtil.insert(url, username, password, sql, null));
+                            } else if (type == 4) { // 修改
+                                sqlResult = JdbcUtil.update(url, username, password, sql, null);
+                            } else if (type == 5) { // 删除
+                                sqlResult = JdbcUtil.delete(url, username, password, sql, null);
+                            } else { // 脚本
+                                sqlResult = JdbcUtil.script(url, username, password, sql, true);
+                            }
                             s = s.replace(findStr, sqlResult);
                         }
                     }

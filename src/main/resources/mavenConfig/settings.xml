@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="         http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">  
+    <!--本地仓库。该值表示构建系统本地仓库的路径。其默认值为~/.m2/repository。   
+        <localRepository>F:\apache-maven-3.0.4\dependy\repository</localRepository>   
+    -->  
+    <!--Maven是否需要和用户交互以获得输入。如果Maven需要和用户交互以获得输入，则设置成true，反之则应为false。默认为true。   
+        <interactiveMode>true</interactiveMode>   
+    -->  
+    <mirrors>  
+        <!-- mirror | Specifies a repository mirror site to use instead of a given   
+            repository. The repository that | this mirror serves has an ID that matches   
+            the mirrorOf element of this mirror. IDs are used | for inheritance and direct   
+            lookup purposes, and must be unique across the set of mirrors. | -->  
+        <mirror>  
+            <id>nexus-aliyun</id>  
+            <mirrorOf>central</mirrorOf>  
+            <name>Nexus aliyun</name>  
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>  
+        </mirror>  
+        <mirror>  
+            <id>net-cn</id>  
+            <mirrorOf>central</mirrorOf>  
+            <name>Nexus net</name>  
+            <url>http://maven.net.cn/content/groups/public/</url>  
+        </mirror>  
+    </mirrors>  
+  
+    <profiles>  
+        <profile>  
+            
+            <repositories>  
+                <repository>  
+                    <id>nexus</id>  
+                    <name>local private nexus</name>  
+                    <url>http://maven.aliyun.com/nexus/content/groups/public/</url>  
+                    <releases>  
+                        <enabled>true</enabled>  
+                    </releases>  
+                    <snapshots>  
+                        <enabled>false</enabled>  
+                    </snapshots>  
+                </repository>  
+            </repositories>  
+            <pluginRepositories>  
+                <pluginRepository>  
+                    <id>nexus</id>  
+                    <name>local private nexus</name>  
+                    <url>http://maven.aliyun.com/nexus/content/groups/public/</url>  
+                    <releases>  
+                        <enabled>true</enabled>  
+                    </releases>  
+                    <snapshots>  
+                        <enabled>false</enabled>  
+                    </snapshots>  
+                </pluginRepository>  
+            </pluginRepositories>  
+        </profile>  
+    </profiles>  
+    <!-- -->  
+    <activeProfiles>  
+        <activeProfile>nexus</activeProfile>  
+    </activeProfiles>  
+</settings>

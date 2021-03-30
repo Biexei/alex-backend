@@ -258,7 +258,7 @@ public class DataFactoryServiceImpl implements DataFactoryService {
      * 执行sql脚本
      */
     private void runScript(String sql, String url, String username, String password, boolean stopOnError) throws BusinessException {
-        Connection conn;
+        Connection conn = null;
         try {
             // 建立连接
             conn = DriverManager.getConnection(url, username, password);
@@ -269,12 +269,18 @@ public class DataFactoryServiceImpl implements DataFactoryService {
             runner.setStopOnError(stopOnError);
             // 执行SQL脚本
             runner.runScript(new StringReader(sql));
-            if (conn != null) {
-                conn.close();
-            }
         } catch (SQLException e) {
-            LOG.error("数据源连接异常,url={},username={},password={}", url, username, password);
-            throw new BusinessException("数据源连接异常");
+            LOG.error("执行SQL脚本异常,url={},username={},password={},errorMsg={}", url, username, password, e);
+            throw new BusinessException("执行SQL脚本异常");
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                LOG.error("执行SQL脚本异常,url={},username={},password={},errorMsg={}", url, username, password, e);
+            }
         }
     }
 }
+

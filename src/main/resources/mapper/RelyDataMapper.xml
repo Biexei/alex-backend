@@ -78,7 +78,14 @@
             <if test="name!=null">and `rd`.`name` like concat('%',#{name},'%')</if>
             <if test="value!=null">and `rd`.`value` like concat('%',#{value},'%')</if>
             <if test="desc!=null">and `rd`.`desc` like concat('%',#{desc},'%')</if>
-            <if test="type!=null">and `rd`.`type`=#{type}</if>
+            <choose>
+                <when test="type!=null and type&lt;2">
+                    and `rd`.`type`=#{type}
+                </when>
+                <otherwise>
+                    and `rd`.`type` in (2, 3, 4, 5, 6)
+                </otherwise>
+            </choose>
             <if test="datasourceId!=null">and `rd`.`datasource_id`=#{datasourceId}</if>
             <if test="dbName!=null">and `db`.`name` like concat('%',#{dbName},'%')</if>
             <if test="createdTime!=null">and `rd`.`created_time` &gt;= #{createdTime}</if>

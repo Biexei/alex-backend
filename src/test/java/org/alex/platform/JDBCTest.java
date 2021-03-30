@@ -91,9 +91,9 @@ public class JDBCTest {
         String url = "jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8&tinyInt1isBit=false&transformedBitIsBoolean=false";
         String username = "root";
         String password = "root";
-        String sql = "select * from t_user where id = %s";
-        String[] array = {"123"};
-        String s = JdbcUtil.selectFirst(url, username, password, sql, array);
+        String params[] = {"xiebei", "123456"};
+        String sql = "INSERT INTO `platform`.`t_user` (`username`, `password`, `job_number`, `sex`, `is_enable`, `created_time`, `update_time`, `real_name`, `role_id`) VALUES (?, ?, '', '1', '1', NULL, '2021-03-10 16:08:51', '123', '1');\n";
+        long s = JdbcUtil.insert(url, username, password, sql, params);
         System.out.println(s);
     }
 
