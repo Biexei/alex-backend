@@ -1371,13 +1371,30 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
                     String sqlResult = "";
                     if (type == 2) { // 查询
-                        sqlResult = JdbcUtil.selectFirst(url, username, password, sql, params);
+                        if (relyDataVO.getAnalysisRely().intValue() == 0) {
+                            sqlResult = JdbcUtil.selectFirst(url, username, password, sql, params);
+                        } else {
+                            sqlResult = JdbcUtil.selectFirst(url, username, password, relyDataVO.getValue(), params);
+                        }
                     } else if (type == 3) { // 新增
-                        sqlResult = String.valueOf(JdbcUtil.insert(url, username, password, sql, params));
+                        if (relyDataVO.getEnableReturn().intValue() == 0) {
+                            sqlResult = String.valueOf(JdbcUtil.insert(url, username, password, sql, params));
+                        } else {
+                            JdbcUtil.insert(url, username, password, sql, params);
+                            sqlResult = "";
+                        }
                     } else if (type == 4) { // 修改
-                        sqlResult = JdbcUtil.update(url, username, password, sql, params);
+                        if (relyDataVO.getAnalysisRely().intValue() == 0) {
+                            sqlResult = JdbcUtil.update(url, username, password, sql, params);
+                        } else {
+                            sqlResult = JdbcUtil.update(url, username, password, relyDataVO.getValue(), params);
+                        }
                     } else if (type == 5) { // 删除
-                        sqlResult = JdbcUtil.delete(url, username, password, sql, params);
+                        if (relyDataVO.getAnalysisRely().intValue() == 0) {
+                            sqlResult = JdbcUtil.delete(url, username, password, sql, params);
+                        } else {
+                            sqlResult = JdbcUtil.delete(url, username, password, relyDataVO.getValue(), params);
+                        }
                     } else { // 脚本
                         if (relyDataVO.getAnalysisRely().intValue() == 0) {
                             sqlResult = JdbcUtil.script(sql, url, username, password, true);
@@ -1458,7 +1475,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             LOG.info("SQL执行参数，SQL={}", sql);
                             String sqlResult = "";
                             if (type == 2) { // 查询
-                                sqlResult = JdbcUtil.selectFirst(url, username, password, sql, null);
+                                if (relyDataVO.getAnalysisRely().intValue() == 0) {
+                                    sqlResult = JdbcUtil.selectFirst(url, username, password, sql, null);
+                                } else {
+                                    sqlResult = JdbcUtil.selectFirst(url, username, password, relyDataVO.getValue(), null);
+                                }
                             } else if (type == 3) { // 新增
                                 if (relyDataVO.getEnableReturn().intValue() == 0) {
                                     sqlResult = String.valueOf(JdbcUtil.insert(url, username, password, sql, null));
@@ -1467,9 +1488,17 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     sqlResult = "";
                                 }
                             } else if (type == 4) { // 修改
-                                sqlResult = JdbcUtil.update(url, username, password, sql, null);
+                                if (relyDataVO.getAnalysisRely().intValue() == 0) {
+                                    sqlResult = JdbcUtil.update(url, username, password, sql, null);
+                                } else {
+                                    sqlResult = JdbcUtil.update(url, username, password, relyDataVO.getValue(), null);
+                                }
                             } else if (type == 5) { // 删除
-                                sqlResult = JdbcUtil.delete(url, username, password, sql, null);
+                                if (relyDataVO.getAnalysisRely().intValue() == 0) {
+                                    sqlResult = JdbcUtil.delete(url, username, password, sql, null);
+                                } else {
+                                    sqlResult = JdbcUtil.delete(url, username, password, relyDataVO.getValue(), null);
+                                }
                             } else { // 脚本
                                 if (relyDataVO.getAnalysisRely().intValue() == 0) {
                                     sqlResult = JdbcUtil.script(sql, url, username, password, true);

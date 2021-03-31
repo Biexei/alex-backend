@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-03-31 11:27:04
+Date: 2021-03-31 11:43:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -773,7 +773,7 @@ CREATE TABLE `t_rely_data` (
   `created_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `enable_return` tinyint DEFAULT NULL COMMENT '0是1否当type=3（新增）时，是否返回自增主键',
-  `analysis_rely` tinyint DEFAULT NULL COMMENT '0是1否当type=6（脚本）时，是否解析sql脚本中的依赖',
+  `analysis_rely` tinyint DEFAULT NULL COMMENT '0是1否当type<2时，是否解析sql中的依赖',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
@@ -810,8 +810,8 @@ INSERT INTO `t_rely_data` VALUES ('37', 'ipv4', 'ipv4()', '随机ipv4地址，�
 INSERT INTO `t_rely_data` VALUES ('38', 'privateIpv4', 'privateIpv4()', '随机私有ipv4地址，引用方式示例：${privateIpv4()}', '1', null, '2020-10-21 16:16:42', null, null, null);
 INSERT INTO `t_rely_data` VALUES ('39', 'publicIpv4', 'publicIpv4()', '随机公有ipv4地址，引用方式示例：${publicIpv4()}', '1', null, '2020-10-21 16:16:44', null, null, null);
 INSERT INTO `t_rely_data` VALUES ('40', 'ipv6', 'ipv6()', '随机ipv6地址，引用方式示例：${ipv6()}', '1', null, '2020-10-21 16:16:47', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('41', 'InterfaceCaseTable', 'select * from t_interface_case where case_id = ?', '查询根据用例编号查询t_interface_case', '2', '1', '2021-03-08 15:32:57', '2021-03-08 15:47:17', null, null);
-INSERT INTO `t_rely_data` VALUES ('44', 'InsertUser', 'INSERT INTO `platform`.`t_user` (`username`, `password`, `job_number`, `sex`, `is_enable`, `created_time`, `update_time`, `real_name`, `role_id`) VALUES (\'${timestamp()}\', \'18e29620f058e8bf085bfed74fdf5e82\', \'\', \'1\', \'1\', NULL, \'2021-03-10 16:08:51\', \'123\', \'1\');', '新增用户', '3', '1', '2021-03-30 13:44:05', '2021-03-31 11:23:57', '0', null);
+INSERT INTO `t_rely_data` VALUES ('41', 'InterfaceCaseTable', 'select * from t_interface_case where case_id = ?', '查询根据用例编号查询t_interface_case', '2', '1', '2021-03-08 15:32:57', '2021-03-31 11:43:19', null, '1');
+INSERT INTO `t_rely_data` VALUES ('44', 'InsertUser', 'INSERT INTO `platform`.`t_user` (`username`, `password`, `job_number`, `sex`, `is_enable`, `created_time`, `update_time`, `real_name`, `role_id`) VALUES (\'${timestamp()}\', \'18e29620f058e8bf085bfed74fdf5e82\', \'\', \'1\', \'1\', NULL, \'2021-03-10 16:08:51\', \'123\', \'1\');', '新增用户', '2', '1', '2021-03-30 13:44:05', '2021-03-31 11:43:26', null, '0');
 
 -- ----------------------------
 -- Table structure for t_role

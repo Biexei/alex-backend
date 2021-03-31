@@ -126,7 +126,7 @@ public class RelyDataServiceImpl implements RelyDataService {
         if (type != 3) { // 非新增语句时，将enable_return 设为 null
             relyDataDO.setEnableReturn(null);
         }
-        if (type != 6) { // 非SQL脚本时，将analysis_rely 设为 null
+        if (type < 2) { // 0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
             relyDataDO.setAnalysisRely(null);
         }
         // 校验参数
