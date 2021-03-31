@@ -3,12 +3,14 @@ package org.alex.platform.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.InterfaceCaseRelyDataMapper;
 import org.alex.platform.mapper.RelyDataMapper;
 import org.alex.platform.pojo.RelyDataDO;
 import org.alex.platform.pojo.RelyDataDTO;
 import org.alex.platform.pojo.RelyDataVO;
 import org.alex.platform.service.RelyDataService;
+import org.alex.platform.util.ValidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,8 @@ public class RelyDataServiceImpl implements RelyDataService {
     private static final Logger LOG = LoggerFactory.getLogger(RelyDataServiceImpl.class);
 
     @Override
-    public void saveRelyData(RelyDataDO relyDataDO) throws BusinessException {
+    public void saveRelyData(RelyDataDO relyDO) throws BusinessException {
+        RelyDataDO relyDataDO = relyDataDOWrapper(relyDO);
         String name = relyDataDO.getName();
         // name不能在在于t_interface_case_rely_data
         if (null != interfaceCaseRelyDataMapper.selectIfRelyDataByName(name)) {
@@ -44,7 +47,8 @@ public class RelyDataServiceImpl implements RelyDataService {
     }
 
     @Override
-    public void modifyRelyData(RelyDataDO relyDataDO) throws BusinessException {
+    public void modifyRelyData(RelyDataDO relyDO) throws BusinessException {
+        RelyDataDO relyDataDO = relyDataDOWrapper(relyDO);
         String name = relyDataDO.getName();
         // name不能在在于t_interface_case_rely_data
         if (null != interfaceCaseRelyDataMapper.selectIfRelyDataByName(name)) {
@@ -109,5 +113,35 @@ public class RelyDataServiceImpl implements RelyDataService {
             throw new BusinessException("预置方法不允许删除");
         }
         relyDataMapper.deleteRelyDataById(id);
+    }
+
+    /**
+     * DO装饰器 参数校验以及参数处理
+     * @param relyDataDO relyDataDO
+     * @return DO
+     * @throws ValidException 参数校验
+     */
+    private RelyDataDO relyDataDOWrapper(RelyDataDO relyDataDO) throws BusinessException {
+        Byte type = relyDataDO.getType();
+        if (type != 3) { // 非新增语句时，将enable_return 设为 null
+            relyDataDO.setEnableReturn(null);
+        }
+        if (type != 6) { // 非SQL脚本时，将analysis_rely 设为 null
+            relyDataDO.setAnalysisRely(null);
+        }
+        // 校验参数
+        Byte analysisRely = relyDataDO.getAnalysisRely();
+        Byte enableReturn = relyDataDO.getEnableReturn();
+        try {
+            if (analysisRely != null) {
+                ValidUtil.size(analysisRely, 0, 1, "参数非法");
+            }
+            if (enableReturn != null) {
+                ValidUtil.size(enableReturn, 0, 1, "参数非法");
+            }
+        } catch (ValidException e) {
+            throw new BusinessException(e.getMessage());
+        }
+        return relyDataDO;
     }
 }

@@ -27,6 +27,24 @@ public class RelyDataDO implements Serializable {
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    private Byte analysisRely;
+    private Byte enableReturn;
+
+    public Byte getAnalysisRely() {
+        return analysisRely;
+    }
+
+    public void setAnalysisRely(Byte analysisRely) {
+        this.analysisRely = analysisRely;
+    }
+
+    public Byte getEnableReturn() {
+        return enableReturn;
+    }
+
+    public void setEnableReturn(Byte enableReturn) {
+        this.enableReturn = enableReturn;
+    }
 
     public Integer getId() {
         return id;

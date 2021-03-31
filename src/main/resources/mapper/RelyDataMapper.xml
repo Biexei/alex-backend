@@ -13,6 +13,8 @@
            <if test="datasourceId!=null">`datasource_id`,</if>
            <if test="createdTime!=null">`created_time`,</if>
            <if test="updateTime!=null">`update_time`,</if>
+           <if test="analysisRely!=null">`analysis_rely`,</if>
+           <if test="enableReturn!=null">`enable_return`,</if>
        </trim>
        <trim prefix="value(" suffix=")" suffixOverrides=",">
            <if test="name!=null">#{name},</if>
@@ -22,6 +24,8 @@
            <if test="datasourceId!=null">#{datasourceId},</if>
            <if test="createdTime!=null">#{createdTime},</if>
            <if test="updateTime!=null">#{updateTime},</if>
+           <if test="analysisRely!=null">#{analysisRely},</if>
+           <if test="enableReturn!=null">#{enableReturn},</if>
        </trim>
     </insert>
 <!--    <update id="updateRelyData" parameterType="org.alex.platform.pojo.RelyDataDO">-->
@@ -48,12 +52,14 @@
             `datasource_id`=#{datasourceId},
             `created_time`=#{createdTime},
             `update_time`=#{updateTime},
+            `analysis_rely`=#{analysisRely},
+            `enable_return`=#{enableReturn},
         </set>
         where `id` = #{id}
     </update>
     <select id="selectRelyDataById" parameterType="Integer" resultType="org.alex.platform.pojo.RelyDataVO">
         select `rd`.`id`,`rd`.`name`,`rd`.`value`,`rd`.`desc`,`rd`.`type`,`rd`.`datasource_id`,
-        `db`.`name` as `db_name`,`rd`.`created_time`,`rd`.`update_time`
+        `db`.`name` as `db_name`,`rd`.`created_time`,`rd`.`update_time`, `rd`.`analysis_rely`, `rd`.`enable_return`
         from `t_rely_data` as `rd`
         left join t_db as `db`
         on `rd`.`datasource_id` = `db`.`id`
@@ -61,7 +67,7 @@
     </select>
     <select id="selectRelyDataByName" parameterType="String" resultType="org.alex.platform.pojo.RelyDataVO">
         select `rd`.`id`,`rd`.`name`,`rd`.`value`,`rd`.`desc`,`rd`.`type`,`rd`.`datasource_id`,
-        `db`.`name` as `db_name`,`rd`.`created_time`,`rd`.`update_time`
+        `db`.`name` as `db_name`,`rd`.`created_time`,`rd`.`update_time`, `rd`.`analysis_rely`, `rd`.`enable_return`
         from `t_rely_data` as `rd`
         left join t_db as `db`
         on `rd`.`datasource_id` = `db`.`id`
@@ -69,7 +75,7 @@
     </select>
     <select id="selectRelyDataList" parameterType="org.alex.platform.pojo.RelyDataDTO" resultType="org.alex.platform.pojo.RelyDataVO">
         select `rd`.`id`,`rd`.`name`,`rd`.`value`,`rd`.`desc`,`rd`.`type`,`rd`.`datasource_id`,
-        `db`.`name` as `db_name`,`rd`.`created_time`,`rd`.`update_time`
+        `db`.`name` as `db_name`,`rd`.`created_time`,`rd`.`update_time`, `rd`.`analysis_rely`, `rd`.`enable_return`
         from `t_rely_data` as `rd`
         left join t_db as `db`
         on `rd`.`datasource_id` = `db`.`id`
@@ -96,7 +102,8 @@
         delete from `t_rely_data` where id = #{id}
     </delete>
     <select id="checkName" parameterType="org.alex.platform.pojo.RelyDataDO" resultType="org.alex.platform.pojo.RelyDataVO">
-        select `rd`.`id`,`rd`.`name`,`rd`.`value`,`rd`.`desc`,`rd`.`type`,`rd`.`datasource_id`,`rd`.`created_time`,`rd`.`update_time`
+        select `rd`.`id`,`rd`.`name`,`rd`.`value`,`rd`.`desc`,`rd`.`type`,`rd`.`datasource_id`,
+        `rd`.`created_time`,`rd`.`update_time`, `rd`.`analysis_rely`, `rd`.`enable_return`
         from `t_rely_data` as `rd`
         where `rd`.`id`!=#{id} and `rd`.`name`=#{name}
     </select>
