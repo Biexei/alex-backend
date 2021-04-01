@@ -144,7 +144,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
      * @throws BusinessException BusinessException
      */
     @Override
-    public void executeSuiteCaseById(Integer suiteId, String executor) throws BusinessException {
+    public String executeSuiteCaseById(Integer suiteId, String executor) throws BusinessException {
         // 获取测试套件下所有测试用例
         InterfaceSuiteCaseRefDTO interfaceSuiteCaseRefDTO = new InterfaceSuiteCaseRefDTO();
         interfaceSuiteCaseRefDTO.setSuiteId(suiteId);
@@ -335,6 +335,8 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
 
         // 删除后置处理器缓存
         redisUtil.del(suiteLogDetailNo);
+
+        return suiteLogNo;
     }
 
     /**

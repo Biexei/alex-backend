@@ -2,7 +2,7 @@ package org.alex.platform.task;
 
 import java.util.concurrent.ScheduledFuture;
 
-public final class ScheduledTask {
+public final class TaskFuture {
 
     public volatile ScheduledFuture<?> future;
     /**

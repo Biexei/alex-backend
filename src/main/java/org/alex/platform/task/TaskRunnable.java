@@ -6,26 +6,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
  * 定时任务运行类
  */
-public class SchedulingRunnable implements Runnable {
+public class TaskRunnable implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(SchedulingRunnable.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TaskRunnable.class);
 
-    private String beanName;
+    private final String beanName;
 
-    private String methodName;
+    private final String methodName;
 
-    private Object[] params;
+    private final Object[] params;
 
-    public SchedulingRunnable(String beanName, String methodName) {
-        this(beanName, methodName, null);
+    public TaskRunnable(String beanName, String methodName) {
+        this(beanName, methodName, (Object) null);
     }
 
-    public SchedulingRunnable(String beanName, String methodName, Object...params ) {
+    public TaskRunnable(String beanName, String methodName, Object...params) {
         this.beanName = beanName;
         this.methodName = methodName;
         this.params = params;
@@ -33,13 +34,13 @@ public class SchedulingRunnable implements Runnable {
 
     @Override
     public void run() {
-        logger.info("定时任务开始执行 - bean：{}，方法：{}，参数：{}", beanName, methodName, params);
+        LOG.info("定时任务开始执行 - bean：{}，方法：{}，参数：{}", beanName, methodName, params);
         long startTime = System.currentTimeMillis();
 
         try {
             Object target = SpringUtil.getBean(beanName);
 
-            Method method = null;
+            Method method;
             if (null != params && params.length > 0) {
                 Class<?>[] paramCls = new Class[params.length];
                 for (int i = 0; i < params.length; i++) {
@@ -57,27 +58,27 @@ public class SchedulingRunnable implements Runnable {
                 method.invoke(target);
             }
         } catch (Exception ex) {
-            logger.error(String.format("定时任务执行异常 - bean：%s，方法：%s，参数：%s ", beanName, methodName, params), ex);
+            LOG.error(String.format("定时任务执行异常 - bean：%s，方法：%s，参数：%s ", beanName, methodName, Arrays.toString(params)), ex);
         }
-
         long times = System.currentTimeMillis() - startTime;
-        logger.info("定时任务执行结束 - bean：{}，方法：{}，参数：{}，耗时：{} 毫秒", beanName, methodName, params, times);
+        LOG.info("定时任务执行结束 - bean：{}，方法：{}，参数：{}，耗时：{} 毫秒", beanName, methodName, params, times);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SchedulingRunnable that = (SchedulingRunnable) o;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        TaskRunnable that = (TaskRunnable) o;
         if (params == null) {
             return beanName.equals(that.beanName) &&
                     methodName.equals(that.methodName) &&
                     that.params == null;
         }
-
         return beanName.equals(that.beanName) &&
                 methodName.equals(that.methodName) &&
-                params.equals(that.params);
+                Arrays.equals(params, that.params);
     }
 
     @Override
@@ -85,7 +86,6 @@ public class SchedulingRunnable implements Runnable {
         if (params == null) {
             return Objects.hash(beanName, methodName);
         }
-
         return Objects.hash(beanName, methodName, params);
     }
 }
