@@ -68,10 +68,10 @@ public class TaskCenter {
                         Integer totalError= suiteLog.getTotalError();
                         String successRate = totalSuccess/totalCase*100 + "%";
                         String title = "Alex定时任务通知";
-                        String text = String.format("1.执行时间：%s\r\n2.耗时：%s\r\n3.执行编号：%s\r\n" +
-                                "4.执行类型：接口测试套件\r\n" + "5.总用例数：%s\r\n6.成功数：%s\r\n7.失败数：%s\r\n" +
-                                "8.错误数：%s\r\n9.成功率：%s",
-                                time, runTime, suiteLogNo, totalCase, totalSuccess, totalFailed, totalError, successRate);
+                        String text = String.format("执行编号：%s\r\n耗时：%sms\r\n执行于：%s\r\n" +
+                                "执行类型：接口测试套件\r\n" + "总用例数：%s\r\n成功数：%s\r\n失败数：%s\r\n" +
+                                "错误数：%s\r\n成功率：%s\r\n更多详情请前往Alex接口自动化测试平台查看!",
+                                suiteLogNo, runTime, time, totalCase, totalSuccess, totalFailed, totalError, successRate);
                         mailService.send(title, text, emails);
                         LOG.info("定时任务执行邮件发送成功");
                     } catch (BusinessException e) {

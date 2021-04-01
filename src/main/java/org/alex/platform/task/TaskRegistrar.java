@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class TaskRegistrar implements DisposableBean {
 
-    private final Map<Runnable, TaskFuture> scheduledTasks = new ConcurrentHashMap<>(16);
+    private Map<Runnable, TaskFuture> scheduledTasks = new ConcurrentHashMap<>(16);
 
     @Autowired
     private TaskScheduler taskScheduler;
@@ -31,6 +31,16 @@ public class TaskRegistrar implements DisposableBean {
      */
     public void save(Runnable task, String cronExpression) {
         save(new CronTask(task, cronExpression));
+    }
+
+    /**
+     * 修改定时任务
+     * TaskRunnable重写了equals方法，且save方法做了删除操作。可以把新增理解为修改
+     * @param task 定时任务
+     * @param cronExpression cron
+     */
+    public void modify(Runnable task, String cronExpression) {
+        save(task, cronExpression);
     }
 
     /**

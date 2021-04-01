@@ -86,7 +86,7 @@ public class TaskRunnable implements Runnable {
         if (params == null) {
             return Objects.hash(beanName, methodName);
         }
-        return Objects.hash(beanName, methodName, params);
+        return Objects.hash(beanName, methodName, Arrays.toString(params));
     }
 }
 

@@ -6,6 +6,8 @@ import org.alex.platform.mapper.TaskMapper;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.TaskEmailRefService;
 import org.alex.platform.service.TaskService;
+import org.alex.platform.task.TaskRegistrar;
+import org.alex.platform.task.TaskRunnable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class TaskServiceImpl implements TaskService {
     TaskMapper taskMapper;
     @Autowired
     TaskEmailRefService taskEmailRefService;
+    @Autowired
+    TaskRegistrar taskRegistrar;
     private static final Logger LOG = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     /**
@@ -85,6 +89,16 @@ public class TaskServiceImpl implements TaskService {
                 taskEmailRefService.saveTaskEmailRef(taskEmailRefDO);
             }
         }
+        // 执行定时任务
+        String cron = taskDO.getCron();
+        Byte status = taskDO.getStatus();
+        Byte suiteType = taskDO.getSuiteType();
+        if (suiteType == 0) { //接口
+            if (status == 0) { //启用
+                TaskRunnable taskRunnable = new TaskRunnable("taskCenter", "executeInterfaceCaseSuite", taskId);
+                taskRegistrar.save(taskRunnable, cron);
+            }
+        }
     }
 
     /**
@@ -119,6 +133,18 @@ public class TaskServiceImpl implements TaskService {
                 taskEmailRefService.saveTaskEmailRef(taskEmailRefDO);
             }
         }
+        // 执行定时任务
+        String cron = taskDO.getCron();
+        Byte status = taskDO.getStatus();
+        Byte suiteType = taskDO.getSuiteType();
+        if (suiteType == 0) { //接口
+            TaskRunnable taskRunnable = new TaskRunnable("taskCenter", "executeInterfaceCaseSuite", taskId);
+            if (status == 0) { //启用
+                taskRegistrar.modify(taskRunnable, cron);
+            } else { //禁用则移除定时任务
+                taskRegistrar.remove(taskRunnable);
+            }
+        }
     }
 
     /**
@@ -133,5 +159,8 @@ public class TaskServiceImpl implements TaskService {
         TaskEmailRefDTO taskEmailRefDTO = new TaskEmailRefDTO();
         taskEmailRefDTO.setTaskId(taskId);
         taskEmailRefService.removeTaskEmailRef(taskEmailRefDTO);
+        // 删除定时任务
+        TaskRunnable taskRunnable = new TaskRunnable("taskCenter", "executeInterfaceCaseSuite", taskId);
+        taskRegistrar.remove(taskRunnable);
     }
 }
