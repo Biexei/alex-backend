@@ -6,11 +6,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.common.Env;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
 import org.alex.platform.mapper.*;
 import org.alex.platform.pojo.*;
+import org.alex.platform.pojo.entity.DbConnection;
 import org.alex.platform.pojo.param.ExecuteInterfaceCaseParam;
 import org.alex.platform.service.*;
 import org.alex.platform.util.*;
@@ -65,6 +67,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     InterfaceProcessorLogService interfaceProcessorLogService;
     @Autowired
     InterfacePreCaseService interfacePreCaseService;
+    @Autowired
+    Env env;
 
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseServiceImpl.class);
 
@@ -427,21 +431,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             InterfaceCaseSuiteVO suiteVO = ifSuiteService.findInterfaceCaseSuiteById(suiteId);
             Byte runDev = suiteVO.getRunDev();
             // 0dev 1test 2stg 3prod 4debug调试模式
-            if (runDev == 0) {
-                url = projectVO.getDevDomain() + interfaceCaseInfoVO.getUrl();
-            } else if (runDev == 1) {
-                url = projectVO.getTestDomain() + interfaceCaseInfoVO.getUrl();
-            } else if (runDev == 2) {
-                url = projectVO.getStgDomain() + interfaceCaseInfoVO.getUrl();
-            } else if (runDev == 3) {
-                url = projectVO.getProdDomain() + interfaceCaseInfoVO.getUrl();
-            } else if (runDev == 4) {
-                url = projectVO.getDomain() + interfaceCaseInfoVO.getUrl();
-            } else {
-                LOG.error("运行环境错误，invalid runDev={}", runDev);
-                throw new BusinessException("运行环境错误");
-            }
-
+            url = env.domain(projectVO, runDev) + interfaceCaseInfoVO.getUrl();
         }
         String desc = interfaceCaseInfoVO.getDesc();
         String headers = interfaceCaseInfoVO.getHeaders();
@@ -1333,33 +1323,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         LOG.warn("数据源已被禁用，dbName={}", dbVO.getName());
                         throw new ParseException("数据源已被禁用");
                     }
-                    String url;
-                    String username;
-                    String password;
                     // env 0dev 1test 2stg 3prod 4debug
-                    if (runEnv == 4) {
-                        url = dbVO.getUrl();
-                        username = dbVO.getUsername();
-                        password = dbVO.getPassword();
-                    } else if (runEnv == 0) {
-                        url = dbVO.getDevUrl();
-                        username = dbVO.getDevUsername();
-                        password = dbVO.getDevPassword();
-                    } else if (runEnv == 1) {
-                        url = dbVO.getTestUrl();
-                        username = dbVO.getTestUsername();
-                        password = dbVO.getTestPassword();
-                    } else if (runEnv == 2) {
-                        url = dbVO.getStgUrl();
-                        username = dbVO.getStgUsername();
-                        password = dbVO.getStgPassword();
-                    } else if (runEnv == 3) {
-                        url = dbVO.getProdUrl();
-                        username = dbVO.getProdUsername();
-                        password = dbVO.getProdPassword();
-                    } else {
-                        throw new BusinessException("数据源确定运行环境时出错");
-                    }
+                    DbConnection datasource = env.datasource(dbVO, runEnv);
+                    String url = datasource.getUrl();
+                    String username = datasource.getUsername();
+                    String password = datasource.getPassword();
                     // 支持动态sql
                     String sql = relyDataVO.getValue();
                     if (relyDataVO.getValue() != null) {
@@ -1438,33 +1406,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 LOG.warn("数据源已被禁用，dbName={}", dbVO.getName());
                                 throw new ParseException("数据源已被禁用");
                             }
-                            String url;
-                            String username;
-                            String password;
                             // env 0dev 1test 2stg 3prod 4debug
-                            if (runEnv == 4) {
-                                url = dbVO.getUrl();
-                                username = dbVO.getUsername();
-                                password = dbVO.getPassword();
-                            } else if (runEnv == 0) {
-                                url = dbVO.getDevUrl();
-                                username = dbVO.getDevUsername();
-                                password = dbVO.getDevPassword();
-                            } else if (runEnv == 1) {
-                                url = dbVO.getTestUrl();
-                                username = dbVO.getTestUsername();
-                                password = dbVO.getTestPassword();
-                            } else if (runEnv == 2) {
-                                url = dbVO.getStgUrl();
-                                username = dbVO.getStgUsername();
-                                password = dbVO.getStgPassword();
-                            } else if (runEnv == 3) {
-                                url = dbVO.getProdUrl();
-                                username = dbVO.getProdUsername();
-                                password = dbVO.getProdPassword();
-                            } else {
-                                throw new BusinessException("数据源确定运行环境时出错");
-                            }
+                            DbConnection datasource = env.datasource(dbVO, runEnv);
+                            String url = datasource.getUrl();
+                            String username = datasource.getUsername();
+                            String password = datasource.getPassword();
                             // 支持动态sql
                             String sql = relyDataVO.getValue();
                             if (relyDataVO.getValue() != null) {

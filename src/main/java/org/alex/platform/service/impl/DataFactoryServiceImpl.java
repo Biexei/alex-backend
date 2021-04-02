@@ -2,10 +2,12 @@ package org.alex.platform.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.common.Env;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.DataFactoryMapper;
 import org.alex.platform.pojo.*;
+import org.alex.platform.pojo.entity.DbConnection;
 import org.alex.platform.service.DataFactoryService;
 import org.alex.platform.service.DbService;
 import org.alex.platform.service.InterfaceCaseSuiteService;
@@ -34,6 +36,8 @@ public class DataFactoryServiceImpl implements DataFactoryService {
     DbService dbService;
     @Autowired
     InterfaceCaseSuiteService interfaceCaseSuiteService;
+    @Autowired
+    Env env;
     private static final Logger LOG = LoggerFactory.getLogger(DataFactoryServiceImpl.class);
 
     /**
@@ -134,33 +138,10 @@ public class DataFactoryServiceImpl implements DataFactoryService {
             Byte runEnv = factoryVO.getSqlRunDev();
             Integer dbId = factoryVO.getSqlDbId();
             DbVO dbVO = dbService.findDbById(dbId);
-            String url;
-            String username;
-            String password;
-            if (runEnv == 4) {
-                url = dbVO.getUrl();
-                username = dbVO.getUsername();
-                password = dbVO.getPassword();
-            } else if (runEnv == 0) {
-                url = dbVO.getDevUrl();
-                username = dbVO.getDevUsername();
-                password = dbVO.getDevPassword();
-            } else if (runEnv == 1) {
-                url = dbVO.getTestUrl();
-                username = dbVO.getTestUsername();
-                password = dbVO.getTestPassword();
-            } else if (runEnv == 2) {
-                url = dbVO.getStgUrl();
-                username = dbVO.getStgUsername();
-                password = dbVO.getStgPassword();
-            } else if (runEnv == 3) {
-                url = dbVO.getProdUrl();
-                username = dbVO.getProdUsername();
-                password = dbVO.getProdPassword();
-            } else {
-                LOG.error("数据源确定运行环境时出错");
-                throw new BusinessException("数据源确定运行环境时出错");
-            }
+            DbConnection datasource = env.datasource(dbVO, runEnv);
+            String url = datasource.getUrl();
+            String username = datasource.getUsername();
+            String password = datasource.getPassword();
             long begin = System.currentTimeMillis();
             for (int i = 0; i < times; i++) {
                 this.runScript(sql, url, username, password, failedStop);
