@@ -31,6 +31,7 @@
             <if test="emailAddress!=null">and `ref`.`email_address` like concat('%',#{emailAddress},'%')</if>
             <if test="status!=null">and `task`.`status`=#{status}</if>
             <if test="suiteId!=null">and `task`.`suite_id`=#{suiteId}</if>
+            <if test="suiteType!=null">and `task`.`suite_type`=#{suiteType}</if>
         </where>
     </select>
     <select id="selectTaskById" parameterType="Integer" resultMap="taskMap">

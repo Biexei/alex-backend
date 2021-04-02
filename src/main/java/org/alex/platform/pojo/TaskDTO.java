@@ -6,6 +6,15 @@ public class TaskDTO {
     private String suiteName;
     private String emailAddress;
     private Byte status;
+    private Byte suiteType;
+
+    public Byte getSuiteType() {
+        return suiteType;
+    }
+
+    public void setSuiteType(Byte suiteType) {
+        this.suiteType = suiteType;
+    }
 
     public Integer getSuiteId() {
         return suiteId;
