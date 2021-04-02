@@ -80,8 +80,7 @@
     <update id="updateTaskNextTime" parameterType="org.alex.platform.pojo.TaskDO">
         update `t_task`
         <set>
-            `next_time`=#{nextTime},
-            `update_time`=#{updateTime},
+            `next_time`=#{nextTime}
         </set>
         where `task_id`=#{taskId}
     </update>

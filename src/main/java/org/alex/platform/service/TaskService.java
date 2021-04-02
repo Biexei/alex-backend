@@ -22,4 +22,6 @@ public interface TaskService {
 
     @Transactional(rollbackFor = Exception.class)
     void removeTask(Integer taskId);
+
+    void executeTask(Integer taskId);
 }

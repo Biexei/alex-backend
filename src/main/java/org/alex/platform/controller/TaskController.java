@@ -43,6 +43,18 @@ public class TaskController {
     }
 
     /**
+     * 手动触发执行一次定时任务内容
+     *
+     * @param taskId 任务编号
+     * @return Result
+     */
+    @GetMapping("/task/execute/{taskId}")
+    public Result executeTask(@PathVariable Integer taskId) {
+        taskService.executeTask(taskId);
+        return Result.success("执行成功");
+    }
+
+    /**
      * 新增定时任务
      *
      * @param taskRefDO taskRefDO
@@ -67,7 +79,6 @@ public class TaskController {
     @PostMapping("/task/modify")
     public Result modifyTask(@RequestBody @Validated TaskRefDO taskRefDO) {
         taskRefDO.setUpdateTime(new Date());
-        System.out.println(JSON.toJSONString(taskRefDO));
         taskService.modifyTaskAndRef(taskRefDO);
         return Result.success("修改成功");
     }

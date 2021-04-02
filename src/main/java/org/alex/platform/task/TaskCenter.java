@@ -1,7 +1,9 @@
 package org.alex.platform.task;
 
 import org.alex.platform.exception.BusinessException;
+import org.alex.platform.mapper.TaskMapper;
 import org.alex.platform.pojo.InterfaceSuiteLogVO;
+import org.alex.platform.pojo.TaskDO;
 import org.alex.platform.pojo.TaskVO;
 import org.alex.platform.service.InterfaceSuiteCaseRefService;
 import org.alex.platform.service.InterfaceSuiteLogService;
@@ -27,6 +29,8 @@ public class TaskCenter {
     @Autowired
     TaskService taskService;
     @Autowired
+    TaskMapper taskMapper;
+    @Autowired
     InterfaceSuiteCaseRefService interfaceSuiteCaseRefService;
     @Autowired
     MailService mailService;
@@ -49,6 +53,11 @@ public class TaskCenter {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 time = format.format(new Date());
                 suiteLogNo = interfaceSuiteCaseRefService.executeSuiteCaseById(suiteId, "定时任务");
+                // 手动修改最近一次执行时间
+                TaskDO taskDO = new TaskDO();
+                taskDO.setNextTime(new Date());
+                taskDO.setTaskId(taskId);
+                taskMapper.updateTaskNextTime(taskDO);
                 LOG.info("定时任务测试套件执行完毕，suiteId={}", suiteId);
             } catch (BusinessException e) {
                 e.printStackTrace();

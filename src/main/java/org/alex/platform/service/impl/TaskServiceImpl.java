@@ -6,6 +6,7 @@ import org.alex.platform.mapper.TaskMapper;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.TaskEmailRefService;
 import org.alex.platform.service.TaskService;
+import org.alex.platform.task.TaskCenter;
 import org.alex.platform.task.TaskRegistrar;
 import org.alex.platform.task.TaskRunnable;
 import org.slf4j.Logger;
@@ -23,6 +24,8 @@ public class TaskServiceImpl implements TaskService {
     TaskEmailRefService taskEmailRefService;
     @Autowired
     TaskRegistrar taskRegistrar;
+    @Autowired
+    TaskCenter taskCenter;
     private static final Logger LOG = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     /**
@@ -162,5 +165,18 @@ public class TaskServiceImpl implements TaskService {
         // 删除定时任务
         TaskRunnable taskRunnable = new TaskRunnable("taskCenter", "executeInterfaceCaseSuite", taskId);
         taskRegistrar.remove(taskRunnable);
+    }
+
+    /**
+     * 手动执行一次定时任务
+     * @param taskId 任务id
+     */
+    @Override
+    public void executeTask(Integer taskId) {
+        TaskVO task = findTaskById(taskId);
+        Byte type = task.getSuiteType();
+        if (type == 0) { //接口
+            taskCenter.executeInterfaceCaseSuite(taskId);
+        }
     }
 }
