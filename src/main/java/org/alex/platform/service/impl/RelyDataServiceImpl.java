@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class RelyDataServiceImpl implements RelyDataService {
@@ -122,7 +124,25 @@ public class RelyDataServiceImpl implements RelyDataService {
      * @throws ValidException 参数校验
      */
     private RelyDataDO relyDataDOWrapper(RelyDataDO relyDataDO) throws BusinessException {
+        String name = relyDataDO.getName();
         Byte type = relyDataDO.getType();
+        // sql类型的依赖值不能包含依赖名称
+        if (relyDataDO.getType() > 1) { //0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
+            String sql = relyDataDO.getValue();
+            Pattern pattern = Pattern.compile("\\$\\{.+?\\}");
+            Matcher matcher = pattern.matcher(sql);
+            while (matcher.find()) {
+                String findStr = matcher.group();
+                String relyName = findStr.substring(2, findStr.length() - 1);
+                if (relyName.contains("(") && relyName.contains(")")) {
+                    int index = relyName.indexOf("(");
+                    relyName = relyName.substring(0, index);
+                }
+                if (relyName.equals(name)) {
+                    throw new BusinessException("依赖禁止引用自身");
+                }
+            }
+        }
         if (type != 3) { // 非新增语句时，将enable_return 设为 null
             relyDataDO.setEnableReturn(null);
         }

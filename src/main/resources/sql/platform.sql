@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-03-31 11:43:38
+Date: 2021-04-02 11:19:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -153,7 +153,7 @@ CREATE TABLE `t_interface_assert_log` (
   `error_message` mediumtext COMMENT '断言出错异常信息',
   `created_time` datetime DEFAULT NULL,
   PRIMARY KEY (`assert_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3283 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3300 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert_log
@@ -224,7 +224,7 @@ CREATE TABLE `t_interface_case_execute_log` (
   `is_failed_retry` tinyint DEFAULT NULL COMMENT '是否为失败重跑用例0是1否',
   `source` tinyint DEFAULT NULL COMMENT '来源（0用例调试 1依赖调试 2运行整个测试套件 3测试套件单个用例调试 4依赖解析 5综合用例-前置用例）',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1836 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1845 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case_execute_log
@@ -383,7 +383,7 @@ CREATE TABLE `t_interface_suite_log` (
   `is_retry` tinyint DEFAULT NULL COMMENT '是否失败重新 0是1否',
   PRIMARY KEY (`id`),
   UNIQUE KEY `suite_log_no` (`suite_log_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_suite_log
@@ -438,7 +438,7 @@ CREATE TABLE `t_permission` (
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限名称',
   `parent_id` int DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=194 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=195 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -548,6 +548,7 @@ INSERT INTO `t_permission` VALUES ('190', 'setting:task:add', '新增', '189');
 INSERT INTO `t_permission` VALUES ('191', 'setting:task:modify', '修改', '189');
 INSERT INTO `t_permission` VALUES ('192', 'setting:task:remove', '删除', '189');
 INSERT INTO `t_permission` VALUES ('193', 'setting:task:find', '查询', '189');
+INSERT INTO `t_permission` VALUES ('194', 'setting:task:execute', '执行', '189');
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -559,7 +560,7 @@ CREATE TABLE `t_permission_role_ref` (
   `role_id` int DEFAULT NULL COMMENT '权限编号',
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=166 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
@@ -685,6 +686,7 @@ INSERT INTO `t_permission_role_ref` VALUES ('161', '118', '4', '2021-03-12 21:25
 INSERT INTO `t_permission_role_ref` VALUES ('162', '124', '4', '2021-03-12 21:25:59');
 INSERT INTO `t_permission_role_ref` VALUES ('163', '154', '4', '2021-03-12 21:25:59');
 INSERT INTO `t_permission_role_ref` VALUES ('164', '178', '4', '2021-03-12 21:26:00');
+INSERT INTO `t_permission_role_ref` VALUES ('165', '194', '1', '2021-04-02 09:20:55');
 
 -- ----------------------------
 -- Table structure for t_post_processor
@@ -776,7 +778,7 @@ CREATE TABLE `t_rely_data` (
   `analysis_rely` tinyint DEFAULT NULL COMMENT '0是1否当type<2时，是否解析sql中的依赖',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_rely_data
@@ -784,7 +786,7 @@ CREATE TABLE `t_rely_data` (
 INSERT INTO `t_rely_data` VALUES ('1', 'md5', 'md5(String s)', 'md5加密，引用方式示例：${md5(\"123456\")}', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58', null, null);
 INSERT INTO `t_rely_data` VALUES ('2', 'uuid', 'uuid()', '获取uuid，引用方式示例：${uuid()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:29:54', null, null);
 INSERT INTO `t_rely_data` VALUES ('3', 'base64', 'base64(String s)', 'base64加密，引用方式示例：${base64(\"123456\")}', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58', null, null);
-INSERT INTO `t_rely_data` VALUES ('4', 'timestamp', 'timestamp()', '获取当前时间戳，引用方式示例：${timestamp()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
+INSERT INTO `t_rely_data` VALUES ('4', 'timestamp', 'timestamp()', '获取当前时间戳ms，引用方式示例：${timestamp()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
 INSERT INTO `t_rely_data` VALUES ('5', 'now', 'now(String format)', '获取当前时间，引用方式示例：${now(\"yyyy-MM-dd HH:mm:ss\")}，重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-10-21 16:18:07', null, null);
 INSERT INTO `t_rely_data` VALUES ('10', 'yesterday', 'yesterday(String format)', '获取当前时间对应的昨天，引用方式示例：${yesterday(\"yyyy-MM-dd HH:mm:ss\")}，重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-10-21 16:18:11', null, null);
 INSERT INTO `t_rely_data` VALUES ('11', 'lastMonth', 'lastMonth(String format)', '获取当前时间对应的上个月，引用方式示例：${lastMonth(\"yyyy-MM-dd HH:mm:ss\")}，重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-10-21 16:18:15', null, null);
@@ -811,7 +813,10 @@ INSERT INTO `t_rely_data` VALUES ('38', 'privateIpv4', 'privateIpv4()', '随机�
 INSERT INTO `t_rely_data` VALUES ('39', 'publicIpv4', 'publicIpv4()', '随机公有ipv4地址，引用方式示例：${publicIpv4()}', '1', null, '2020-10-21 16:16:44', null, null, null);
 INSERT INTO `t_rely_data` VALUES ('40', 'ipv6', 'ipv6()', '随机ipv6地址，引用方式示例：${ipv6()}', '1', null, '2020-10-21 16:16:47', null, null, null);
 INSERT INTO `t_rely_data` VALUES ('41', 'InterfaceCaseTable', 'select * from t_interface_case where case_id = ?', '查询根据用例编号查询t_interface_case', '2', '1', '2021-03-08 15:32:57', '2021-03-31 11:43:19', null, '1');
-INSERT INTO `t_rely_data` VALUES ('44', 'InsertUser', 'INSERT INTO `platform`.`t_user` (`username`, `password`, `job_number`, `sex`, `is_enable`, `created_time`, `update_time`, `real_name`, `role_id`) VALUES (\'${timestamp()}\', \'18e29620f058e8bf085bfed74fdf5e82\', \'\', \'1\', \'1\', NULL, \'2021-03-10 16:08:51\', \'123\', \'1\');', '新增用户', '2', '1', '2021-03-30 13:44:05', '2021-03-31 11:43:26', null, '0');
+INSERT INTO `t_rely_data` VALUES ('44', 'InsertUser', 'INSERT INTO `platform`.`t_user` (`username`, `password`, `job_number`, `sex`, `is_enable`, `created_time`, `update_time`, `real_name`, `role_id`) VALUES (\'${timestamp()}\', \'18e29620f058e8bf085bfed74fdf5e82\', \'\', \'1\', \'1\', NULL, \'2021-03-10 16:08:51\', \'123\', \'1\');', '新增用户', '3', '1', '2021-03-30 13:44:05', '2021-04-02 10:23:07', '0', '0');
+INSERT INTO `t_rely_data` VALUES ('45', 'timestamps', 'timestamps()', '获取当前时间戳s，引用方式示例：${timestamps()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
+INSERT INTO `t_rely_data` VALUES ('46', 'pick', 'pick(String... args)', '参数列表任选值，引用方式示例：${pick(\"1\", \"2\", \"3\")}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
+INSERT INTO `t_rely_data` VALUES ('47', 'inversePick', 'inversePick(String... args)', '参数列表返选值，引用方式示例：${inversePick(\"1\", \"2\", \"3\")}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
 
 -- ----------------------------
 -- Table structure for t_role
@@ -866,7 +871,7 @@ CREATE TABLE `t_task` (
 -- ----------------------------
 -- Records of t_task
 -- ----------------------------
-INSERT INTO `t_task` VALUES ('119', '定时任务', '*/5 * * * * ?', '2021-03-09 10:37:20', '2021-03-09 10:34:23', '2021-03-13 14:38:40', '0', '35', '1');
+INSERT INTO `t_task` VALUES ('119', '定时任务', '*/5 * * * * ?', '2021-04-02 10:13:01', '2021-03-09 10:34:23', '2021-04-02 10:13:02', '0', '35', '1');
 
 -- ----------------------------
 -- Table structure for t_task_email_ref
@@ -941,7 +946,7 @@ CREATE TABLE `t_user` (
   `real_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '真实姓名',
   `role_id` int DEFAULT NULL COMMENT '角色类型',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=572 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=573 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user

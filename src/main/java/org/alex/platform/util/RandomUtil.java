@@ -7,6 +7,7 @@ import java.util.Random;
 public class RandomUtil {
     private static final String illegalString = "!@#$%^&*()_+-/,.\\<>";
     private static final String legalString = "123456790abcdefghijklmnopqrstuvwxyz";
+    private static final String numString = "0123456789";
 
     /**
      * 指定范围的的随机数
@@ -29,6 +30,21 @@ public class RandomUtil {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < len; i++) {
             sb.append(legalString.charAt(new Random().nextInt(legalString.length())));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 指定长度区间的数字字符串
+     * @param minLen 最小长度
+     * @param maxLen 最大长度
+     * @return 随机字符串
+     */
+    public static String randomNumString(int minLen, int maxLen) {
+        int len = randomInt(minLen, maxLen);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            sb.append(numString.charAt(new Random().nextInt(numString.length())));
         }
         return sb.toString();
     }
@@ -57,6 +73,19 @@ public class RandomUtil {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
             sb.append(legalString.charAt(new Random().nextInt(legalString.length())));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 指定长度的随机数字字符串
+     * @param length 长度
+     * @return 指定长度的随机字符串
+     */
+    public static String randomNumStringByLength(int length) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            sb.append(numString.charAt(new Random().nextInt(numString.length())));
         }
         return sb.toString();
     }

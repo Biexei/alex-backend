@@ -2,12 +2,15 @@ package org.alex.platform.common;
 
 import com.github.javafaker.Faker;
 import org.alex.platform.util.MD5Util;
+import org.alex.platform.util.RandomUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class ReflectMethod {
 
@@ -61,6 +64,66 @@ public class ReflectMethod {
      */
     public String timestamp() {
         return String.valueOf(System.currentTimeMillis());
+    }
+
+    /**
+     * 随机挑选一个参数列表的值
+     *
+     * @return 参数列表任意值
+     */
+    public String pick(String... args) {
+        int len = args.length;
+        if (len == 0) {
+            return "";
+        }
+        return args[RandomUtil.randomInt(0, len - 1)];
+    }
+
+    /**
+     * 随机反选一个参数列表的值
+     *
+     * @return 不在参数列表的任意值
+     */
+    public String inversePick(String... args) {
+        if (args.length == 0) {
+            return "";
+        }
+        int sumLen = 0;
+        int avgLen;
+        boolean isNum = true;
+        Pattern pattern = Pattern.compile("[^0-9]+");
+        for (String arg : args) {
+            if (pattern.matcher(arg).find()) {
+                isNum = false;
+                break;
+            }
+        }
+        for (String arg : args) {
+            sumLen += arg.length();
+        }
+        avgLen = sumLen/args.length;
+        String result;
+        if (isNum) {
+            result = RandomUtil.randomNumStringByLength(avgLen);
+            while (ArrayUtils.contains(args, RandomUtil.randomNumStringByLength(avgLen))) {
+                result = RandomUtil.randomNumStringByLength(avgLen);
+            }
+        } else {
+            result = RandomUtil.randomLegalStringByLength(avgLen);
+            while (ArrayUtils.contains(args, RandomUtil.randomLegalStringByLength(avgLen))) {
+                result = RandomUtil.randomLegalStringByLength(avgLen);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 获取当前时间戳
+     *
+     * @return 返回当前时间戳
+     */
+    public String timestamps() {
+        return String.valueOf(System.currentTimeMillis()/1000);
     }
 
     /**
@@ -433,6 +496,6 @@ public class ReflectMethod {
     }
 
     public static void main(String[] args) {
-        System.out.println(new ReflectMethod().publicIpv4());
+        System.out.println(new ReflectMethod().inversePick("111", "1a"));
     }
 }
