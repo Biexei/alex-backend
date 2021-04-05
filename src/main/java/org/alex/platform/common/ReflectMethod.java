@@ -1,6 +1,10 @@
 package org.alex.platform.common;
 
 import com.github.javafaker.Faker;
+import org.alex.platform.enums.ResultType;
+import org.alex.platform.pojo.DbVO;
+import org.alex.platform.pojo.entity.DbConnection;
+import org.alex.platform.util.JdbcUtil;
 import org.alex.platform.util.MD5Util;
 import org.alex.platform.util.RandomUtil;
 import org.apache.commons.lang3.ArrayUtils;
@@ -8,11 +12,17 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class ReflectMethod {
+    byte runEnv;
+
+    public ReflectMethod(byte runEnv) {
+        this.runEnv = runEnv;
+    }
 
     // faker 单例
     private static class SingleFaker{
@@ -495,7 +505,108 @@ public class ReflectMethod {
         return getInstance().internet().ipV6Address();
     }
 
+    /**
+     * 随机任选查询结果
+     * @param dbId 数据源编号
+     * @param sql sql语句
+     * @param returnType 返回类型
+     * @return 任意随机结果
+     * @throws Exception 异常
+     */
+    public String select(String dbId, String sql, String returnType) throws Exception {
+        int id = Integer.parseInt(dbId);
+        EnvWithoutSpring env = new EnvWithoutSpring();
+        DbConnection datasource = env.datasource(id, runEnv);
+        String url = datasource.getUrl();
+        String username = datasource.getUsername();
+        String password = datasource.getPassword();
+        String resultType = ResultType.getResultType(returnType);
+        if (resultType.equals("integer")) {
+            List<Integer> list = JdbcUtil.queryForList(url, username, password, sql, Integer.class);
+            return String.valueOf(list.get(new Random().nextInt(list.size())));
+        } else if (returnType.equals("float")) {
+            List<Float> list = JdbcUtil.queryForList(url, username, password, sql, Float.class);
+            return String.valueOf(list.get(new Random().nextInt(list.size())));
+        } else if (returnType.equals("double")) {
+            List<Double> list = JdbcUtil.queryForList(url, username, password, sql, Double.class);
+            return String.valueOf(list.get(new Random().nextInt(list.size())));
+        } else if (resultType.equals("number")){
+            List<BigDecimal> list = JdbcUtil.queryForList(url, username, password, sql, BigDecimal.class);
+            return list.get(new Random().nextInt(list.size())).toString();
+        } else {
+            List<String> list = JdbcUtil.queryForList(url, username, password, sql, String.class);
+            return list.get(new Random().nextInt(list.size()));
+        }
+    }
+
+    /**
+     * 随机反选查询结果
+     * @param dbId 数据源编号
+     * @param sql sql语句
+     * @param returnType 返回类型
+     * @return 任意随机结果
+     * @throws Exception 异常
+     */
+    public String inverseSelect(String dbId, String sql, String returnType) throws Exception {
+        int id = Integer.parseInt(dbId);
+        EnvWithoutSpring env = new EnvWithoutSpring();
+        DbConnection datasource = env.datasource(id, runEnv);
+        String url = datasource.getUrl();
+        String username = datasource.getUsername();
+        String password = datasource.getPassword();
+        String resultType = ResultType.getResultType(returnType);
+        if (resultType.equals("integer")) {
+            List<Integer> list = JdbcUtil.queryForList(url, username, password, sql, Integer.class);
+            int randomRow = list.get(new Random().nextInt(list.size()));
+            int min = 0;
+            int max = 999999;
+            int invalidInt = RandomUtil.randomInt(min, max);
+            while (randomRow == invalidInt) {
+                invalidInt = RandomUtil.randomInt(min, max);
+            }
+            return String.valueOf(invalidInt);
+        } else if (returnType.equals("float")) {
+            List<Float> list = JdbcUtil.queryForList(url, username, password, sql, Float.class);
+            Float randomRow = list.get(new Random().nextInt(list.size()));
+            BigDecimal min = new BigDecimal("0.00");
+            BigDecimal max = new BigDecimal("99999.99");
+            BigDecimal invalidFloat = RandomUtil.randomBigDecimal(min, max);
+            while (randomRow.equals(invalidFloat.floatValue())) {
+                invalidFloat = RandomUtil.randomBigDecimal(min, max);
+            }
+            return String.valueOf(invalidFloat);
+        } else if (returnType.equals("double")) {
+            List<Double> list = JdbcUtil.queryForList(url, username, password, sql, Double.class);
+            Double randomRow = list.get(new Random().nextInt(list.size()));
+            BigDecimal min = new BigDecimal("0.00");
+            BigDecimal max = new BigDecimal("99999.99");
+            BigDecimal invalidDouble = RandomUtil.randomBigDecimal(min, max);
+            while (randomRow.equals(invalidDouble.doubleValue())) {
+                invalidDouble = RandomUtil.randomBigDecimal(min, max);
+            }
+            return String.valueOf(invalidDouble);
+        } else if (resultType.equals("number")){
+            List<BigDecimal> list = JdbcUtil.queryForList(url, username, password, sql, BigDecimal.class);
+            BigDecimal randomRow = list.get(new Random().nextInt(list.size()));
+            BigDecimal min = new BigDecimal("0.00");
+            BigDecimal max = new BigDecimal("99999.99");
+            BigDecimal invalidNum = RandomUtil.randomBigDecimal(min, max);
+            while (randomRow.equals(invalidNum)) {
+                invalidNum = RandomUtil.randomBigDecimal(min, max);
+            }
+            return String.valueOf(invalidNum);
+        } else {
+            List<String> list = JdbcUtil.queryForList(url, username, password, sql, String.class);
+            String randomRow = list.get(new Random().nextInt(list.size()));
+            String invalidStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+            while (randomRow.equals(invalidStr)) {
+                invalidStr = RandomUtil.randomLegalStringByLength(randomRow.length());
+            }
+            return invalidStr;
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(new ReflectMethod().inversePick("111", "1a"));
+        System.out.println(new ReflectMethod((byte)1).inversePick("111", "1a"));
     }
 }

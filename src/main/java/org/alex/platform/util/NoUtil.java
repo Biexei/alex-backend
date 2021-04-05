@@ -1,7 +1,7 @@
 package org.alex.platform.util;
 
-import org.alex.platform.common.ReflectMethod;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 public class NoUtil {
@@ -15,10 +15,10 @@ public class NoUtil {
      * @return 测试套件执行日志编号
      */
     public static String genSuiteLogNo() {
-        ReflectMethod reflectMethod = new ReflectMethod();
-        String prefix = reflectMethod.now("yyyyMMddHHmmss");
-        String mid = reflectMethod.randomUpper("5");
-        String suffix = reflectMethod.randomInt("5");
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        String prefix = format.format(new Date());
+        String mid = RandomUtil.randomLegalStringByLength(5);
+        String suffix = RandomUtil.randomNumStringByLength(5);
         return "SN" + prefix + mid + suffix;
     }
 

@@ -18,7 +18,7 @@ public class RelyDataDO implements Serializable {
     @NotEmpty(message = "固定值/方法声明/SQL不允许为空")
     private String value;
     @NotEmpty(message = "依赖描述不允许为空")
-    @Size(min = 1, max = 100, message = "依赖描述长度必须为[1,100]")
+    @Size(min = 1, max = 200, message = "依赖描述长度必须为[1,200]")
     private String desc;
     @NotNull(message = "类型不允许为空")
     private Byte type;

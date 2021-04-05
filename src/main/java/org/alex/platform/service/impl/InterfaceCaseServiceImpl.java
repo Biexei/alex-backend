@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -1287,6 +1288,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     // 反射执行对应方法
                     try {
                         Class<?> clazz = Class.forName("org.alex.platform.common.ReflectMethod");
+                        Constructor<?> constructor = clazz.getConstructor(byte.class);
                         Class[] paramsList = new Class[params.length];
                         for (int i = 0; i < params.length; i++) {
                             paramsList[i] = String.class;
@@ -1295,7 +1297,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         }
                         LOG.info("方法名称={}，方法参数={}", methodName, Arrays.toString(params));
                         Method method = clazz.getMethod(methodName, paramsList);
-                        s = s.replace(findStr, (String) method.invoke(clazz.newInstance(), params));
+                        s = s.replace(findStr, (String) method.invoke(constructor.newInstance(runEnv), params));
                         LOG.info("预置方法执行并替换后的结果={}", s);
                     } catch (Exception e) {
                         LOG.error("未找到依赖方法或者入参错误, errorMsg={}", ExceptionUtil.msg(e));
