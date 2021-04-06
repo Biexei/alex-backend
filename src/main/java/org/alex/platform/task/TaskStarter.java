@@ -32,12 +32,12 @@ public class TaskStarter implements CommandLineRunner {
         taskDTO.setStatus((byte)0); //状态 0启用
         taskDTO.setSuiteType((byte)0); //类型 0接口
         List<TaskVO> taskList = taskMapper.selectTaskList(taskDTO);
-        for (TaskVO taskVO : taskList) {
+        taskList.parallelStream().forEach(taskVO -> {
             // 将每个任务加入定时任务池
             Integer taskId = taskVO.getTaskId();
             String cron = taskVO.getCron();
             TaskRunnable taskRunnable = new TaskRunnable("taskCenter", "executeInterfaceCaseSuite", taskId);
             taskRegistrar.save(taskRunnable, cron);
-        }
+        });
     }
 }
