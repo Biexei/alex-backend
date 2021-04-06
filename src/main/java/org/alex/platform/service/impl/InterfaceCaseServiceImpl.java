@@ -1135,7 +1135,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
         LOG.info("--------------------------------------开始字符串解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
-        // env 0dev1test2stg3prod4debug
         Byte runEnv;
         if (suiteId == null) {
             runEnv = 4;
@@ -1147,14 +1146,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         Matcher matcher = p.matcher(s);
         while (matcher.find()) {
             String findStr = matcher.group();
-            // 获取relyName
             String relyName = findStr.substring(2, findStr.length() - 1);
             LOG.info("relyName={}", relyName);
-// 进入普通依赖数据模式-再进入根据数组下标模式
+// 进入数组下标取值模式
             if (Pattern.matches("[a-zA-Z]+\\[[0-9]+\\]", relyName)) {
                 LOG.info("--------------------------------------进入数组下标取值模式");
-                // if (relyName.indexOf("[") != -1 && relyName.endsWith("]")) {
-                // 判断出现次数,首次出现和最后一次出现位置不一致，则说明[>1 ]>1
                 if (relyName.indexOf("[") != relyName.lastIndexOf("[") ||
                         relyName.indexOf("]") != relyName.lastIndexOf("]")) {
                     LOG.warn("数据取值语法错误，relyName={}", relyName);
@@ -1166,7 +1162,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     LOG.info("数据下标={}", index);
                     relyName = relyName.substring(0, relyName.indexOf("["));
                     LOG.info("去除下标后的真实relyName={}", relyName);
-                    // 查询其所依赖的caseId
                     InterfaceCaseRelyDataDTO interfaceCaseRelyDataDTO = new InterfaceCaseRelyDataDTO();
                     interfaceCaseRelyDataDTO.setRelyName(relyName);
                     LOG.info("根据relyName查询用例信息，relyName={}", relyName);
@@ -1177,31 +1172,22 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     }
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     LOG.info("获取到的用例编号={}", caseId);
-                    // 根据caseId调用相应case
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                             caseId, "系统调度", null, chainNo, suiteId,
                             isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, (byte)4, casePreNo));
                     redisUtil.stackPush(chainNo, executeLogId);
 
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
-                    // 获取case执行结果, 不等于0, 则用例未通过
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
                         LOG.warn("前置用例执行未通过，执行用例编号={}，执行日志编号={}", caseId, executeLogId);
                         throw new BusinessException("前置用例执行未通过");
                     }
-                    // 根据executeLogId查询对应的执行记录
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
                     String responseBody = interfaceCaseExecuteLogVO.getResponseBody();
                     String responseHeaders = interfaceCaseExecuteLogVO.getResponseHeaders();
                     LOG.warn("前置用例responseBody={}", responseBody);
                     LOG.warn("前置用例responseHeaders={}", responseHeaders);
-                    // 根据contentType来确定对何字段进行替换, 提取数据类型   0json/1html/2header/
                     int contentType = (int) interfaceCaseRelyDataVO.getContentType();
-//                    if (contentType != 2) {
-//                        throw new ParseException("只有依赖数据提取类型为header时才支持指定下标，" +
-//                                "否则请自行调整jsonpath/xpath表达式，使提取结果唯一");
-//                    }
-                    // 2020.09.27 xpath/jsonPath也支持下标
                     String expression = interfaceCaseRelyDataVO.getExtractExpression();
                     try {
                         if (contentType == 0) { // json
@@ -1257,20 +1243,16 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     LOG.error("数组下标只能为数字");
                     throw new ParseException("数组下标只能为数字");
                 }
-// 进入预置函数模式
+// 进入预置方法/动态SQL模式
             } else if (Pattern.matches("\\w+\\((,?|(\\\".*\\\")?|\\s?)+\\)$", relyName)) {
                 LOG.info("--------------------------------------进入预置方法/动态SQL模式");
-                // } else if (relyName.indexOf("(") != -1 && relyName.endsWith(")")) {
-                // 判断出现次数,首次出现和最后一次出现位置不一致，则说明(>1 )>1
                 if (relyName.indexOf("(") != relyName.lastIndexOf("(") ||
                         relyName.indexOf(")") != relyName.lastIndexOf(")")) {
                     LOG.warn("预置方法/动态SQL语法错误， string={}", relyName);
                     throw new ParseException("预置方法/动态SQL语法错误");
                 }
-                // 获取方法名称
                 String methodName = relyName.substring(0, relyName.indexOf("("));
                 LOG.warn("预置方法名称/动态SQL依赖名称={}", methodName);
-                // 获取参数列表, 去除引号空格
                 String[] params = relyName.substring(relyName.indexOf("(") + 1, relyName.length() - 1)
                         .replaceAll(",\\s+", ",").split(",");
                 RelyDataVO relyDataVO = relyDataService.findRelyDataByName(methodName);
@@ -1281,18 +1263,15 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 byte type = relyDataVO.getType();
                 if (type == 1) { //反射方法
                     LOG.info("--------------------------------------进入预置方法模式");
-                    // 无参方法特殊处理
                     if (params.length == 1 && "".equals(params[0])) {
                         params = new String[0];
                     }
-                    // 反射执行对应方法
                     try {
                         Class<?> clazz = Class.forName("org.alex.platform.common.ReflectMethod");
                         Constructor<?> constructor = clazz.getConstructor(byte.class);
                         Class[] paramsList = new Class[params.length];
                         for (int i = 0; i < params.length; i++) {
                             paramsList[i] = String.class;
-                            // 去除首尾引号
                             params[i] = params[i].substring(1, params[i].length() - 1);
                         }
                         LOG.info("方法名称={}，方法参数={}", methodName, Arrays.toString(params));
@@ -1319,13 +1298,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         throw new ParseException("SQL依赖名称未找到对应的数据源");
                     }
                     DbVO dbVO = dbService.findDbById(datasourceId);
-                    // 0启动 1禁用
                     int status = dbVO.getStatus();
                     if (status == 1) {
                         LOG.warn("数据源已被禁用，dbName={}", dbVO.getName());
                         throw new ParseException("数据源已被禁用");
                     }
-                    // env 0dev 1test 2stg 3prod 4debug
                     DbConnection datasource = env.datasource(dbVO, runEnv);
                     String url = datasource.getUrl();
                     String username = datasource.getUsername();
@@ -1378,20 +1355,15 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 // 进入普通依赖数据模式
             } else {
                 LOG.info("--------------------------------------进入普通依赖数据模式");
-                // 查询其所依赖的caseId
                 InterfaceCaseRelyDataDTO interfaceCaseRelyDataDTO = new InterfaceCaseRelyDataDTO();
                 interfaceCaseRelyDataDTO.setRelyName(relyName);
                 InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = ifCaseRelyDataService.findIfRelyDataByName(relyName);
-                // 判断是否在t_interface_case_rely_data
                 if (null == interfaceCaseRelyDataVO) {
                     RelyDataVO relyDataVO = relyDataService.findRelyDataByName(relyName);
-                    // 判断是否在t_rely_data
                     if (null == relyDataVO) {
                         LOG.warn("未找到该依赖数值，relyName={}", relyName);
                         throw new ParseException("未找到该依赖数值, ${" + relyName + "}");
                     } else {
-                        // 此处不考虑反射函数类型，已经在${xx()}步骤处理
-                        // 依赖类型 0固定值 1反射方法 2sql
                         int type = relyDataVO.getType();
                         if (type == 0) {
                             s = s.replace(findStr, relyDataVO.getValue());
@@ -1402,18 +1374,15 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 throw new ParseException("SQL依赖名称未找到对应的数据源");
                             }
                             DbVO dbVO = dbService.findDbById(datasourceId);
-                            // 0启动 1禁用
                             int status = dbVO.getStatus();
                             if (status == 1) {
                                 LOG.warn("数据源已被禁用，dbName={}", dbVO.getName());
                                 throw new ParseException("数据源已被禁用");
                             }
-                            // env 0dev 1test 2stg 3prod 4debug
                             DbConnection datasource = env.datasource(dbVO, runEnv);
                             String url = datasource.getUrl();
                             String username = datasource.getUsername();
                             String password = datasource.getPassword();
-                            // 支持动态sql
                             String sql = relyDataVO.getValue();
                             if (relyDataVO.getValue() != null) {
                                 LOG.info("开始解析SQL，解析前SQL={}", sql);
@@ -1459,24 +1428,19 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     }
                 } else {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
-                    // 根据caseId调用相应case
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                             "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo,
                             globalHeaders, globalParams, globalData, (byte)4, casePreNo));
                     redisUtil.stackPush(chainNo, executeLogId);
-
-                    // 获取case执行结果, 不等于0, 则用例未通过
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
                         LOG.warn("前置用例执行未通过");
                         throw new BusinessException("前置用例执行未通过");
                     }
-                    // 根据executeLogId查询对应的执行记录
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
                     String responseBody = interfaceCaseExecuteLogVO.getResponseBody();
                     String responseHeaders = interfaceCaseExecuteLogVO.getResponseHeaders();
                     LOG.warn("前置用例responseBody={}", responseBody);
                     LOG.warn("前置用例responseHeaders={}", responseHeaders);
-                    // 根据contentType来确定对何字段进行替换, 提取数据类型   0json/1html/2header/
                     int contentType = (int) interfaceCaseRelyDataVO.getContentType();
                     String expression = interfaceCaseRelyDataVO.getExtractExpression();
                     try {
