@@ -7,6 +7,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.common.Env;
+import org.alex.platform.enums.RelyType;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
@@ -464,8 +465,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 executeInterfaceCaseParam.setSuiteLogNo(null); // 把前置用例作为中间依赖case处理
                 executeInterfaceCaseParam.setInterfaceCaseId(caseId);
                 try {
+                    long start = TimeUtil.now();
                     Integer preCaseLogId = this.executeInterfaceCase(executeInterfaceCaseParam);
-                    redisUtil.stackPush(chainNo, preCaseLogId);
+                    long waste = TimeUtil.now() - start;
+                    redisUtil.stackPush(chainNo, chainNode(RelyType.PRE_CASE, preCaseLogId, null, null, waste));
                 } catch (BusinessException e) {
                     caseStatus = 2;
                     e.printStackTrace();
@@ -614,7 +617,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
             InterfaceCaseExecuteLogDO updateChain = new InterfaceCaseExecuteLogDO();
             updateChain.setId(executeLogId);
-            updateChain.setChain(redisUtil.stackGetAll(chainNo).toString());
+            updateChain.setChain(JSON.toJSONString(redisUtil.stackGetAll(chainNo)));
             executeLogService.modifyExecuteLog(updateChain);
 
             LOG.warn("3.请求错误，仅保存执行，保存执行日志，日志内容={}，自增执行日志编号={}", executedLogDO, executeLogId);
@@ -932,7 +935,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             // 修改调用链
             InterfaceCaseExecuteLogDO updateChain = new InterfaceCaseExecuteLogDO();
             updateChain.setId(executedLogId);
-            updateChain.setChain(redisUtil.stackGetAll(chainNo).toString());
+            updateChain.setChain(JSON.toJSONString(redisUtil.stackGetAll(chainNo)));
             executeLogService.modifyExecuteLog(updateChain);
 
 
@@ -1147,9 +1150,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         while (matcher.find()) {
             String findStr = matcher.group();
             String relyName = findStr.substring(2, findStr.length() - 1);
+            String relyExpress = relyName; // 带索引的
             LOG.info("relyName={}", relyName);
 // 进入数组下标取值模式
             if (Pattern.matches("[a-zA-Z]+\\[[0-9]+\\]", relyName)) {
+                long start = TimeUtil.now();
                 LOG.info("--------------------------------------进入数组下标取值模式");
                 if (relyName.indexOf("[") != relyName.lastIndexOf("[") ||
                         relyName.indexOf("]") != relyName.lastIndexOf("]")) {
@@ -1175,7 +1180,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                             caseId, "系统调度", null, chainNo, suiteId,
                             isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, (byte)4, casePreNo));
-                    redisUtil.stackPush(chainNo, executeLogId);
 
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
@@ -1197,7 +1201,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 throw new ParseException(expression + "提取内容为空");
                             }
                             try {
-                                s = s.replace(findStr, jsonPathArray.get(index).toString());
+                                String value = jsonPathArray.get(index).toString();
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_JSON, executeLogId, relyExpress, value, TimeUtil.now()-start));
+                                s = s.replace(findStr, value);
                                 LOG.info("jsonPath提取值并替换后的结果={}", s);
                             } catch (Exception e) {
                                 LOG.warn("jsonPath数组下表越界，relyName={}, index={}", relyName, index);
@@ -1210,7 +1216,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 throw new ParseException(expression + "提取内容为空");
                             }
                             try {
-                                s = s.replace(findStr, xpathArray.get(index).toString());
+                                String value = xpathArray.get(index).toString();
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HTML, executeLogId, relyExpress, value, TimeUtil.now()-start));
+                                s = s.replace(findStr, value);
                                 LOG.info("xpath提取值并替换后的结果={}", s);
                             } catch (Exception e) {
                                 LOG.warn("xpath数组下表越界，relyName={}, index={}", relyName, index);
@@ -1223,7 +1231,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 throw new ParseException("未找到请求头:" + expression);
                             }
                             try {
-                                s = s.replace(findStr, headerArray.get(index).toString());
+                                String value = headerArray.get(index).toString();
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HEADER, executeLogId, relyExpress, value, TimeUtil.now()-start));
+                                s = s.replace(findStr, value);
                                 LOG.info("header提取值并替换后的结果={}", s);
                             } catch (Exception e) {
                                 LOG.warn("header数组下表越界，header={}, index={}", expression, index);
@@ -1245,6 +1255,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 }
 // 进入预置方法/动态SQL模式
             } else if (Pattern.matches("\\w+\\((,?|(\\\".*\\\")?|\\s?)+\\)$", relyName)) {
+                long start = TimeUtil.now();
                 LOG.info("--------------------------------------进入预置方法/动态SQL模式");
                 if (relyName.indexOf("(") != relyName.lastIndexOf("(") ||
                         relyName.indexOf(")") != relyName.lastIndexOf(")")) {
@@ -1276,7 +1287,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         }
                         LOG.info("方法名称={}，方法参数={}", methodName, Arrays.toString(params));
                         Method method = clazz.getMethod(methodName, paramsList);
-                        s = s.replace(findStr, (String) method.invoke(constructor.newInstance(runEnv), params));
+                        String value = (String) method.invoke(constructor.newInstance(runEnv), params);
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.INVOKE, relyDataVO.getId(), relyName, value, TimeUtil.now()-start));
+                        s = s.replace(findStr, value);
                         LOG.info("预置方法执行并替换后的结果={}", s);
                     } catch (Exception e) {
                         LOG.error("未找到依赖方法或者入参错误, errorMsg={}", ExceptionUtil.msg(e));
@@ -1323,6 +1336,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         } else {
                             sqlResult = JdbcUtil.selectFirst(url, username, password, relyDataVO.getValue(), params);
                         }
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SELECT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
                     } else if (type == 3) { // 新增
                         if (relyDataVO.getEnableReturn().intValue() == 0) {
                             sqlResult = String.valueOf(JdbcUtil.insert(url, username, password, sql, params));
@@ -1330,30 +1344,35 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             JdbcUtil.insert(url, username, password, sql, params);
                             sqlResult = "";
                         }
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_INSERT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
                     } else if (type == 4) { // 修改
                         if (relyDataVO.getAnalysisRely().intValue() == 0) {
                             sqlResult = JdbcUtil.update(url, username, password, sql, params);
                         } else {
                             sqlResult = JdbcUtil.update(url, username, password, relyDataVO.getValue(), params);
                         }
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_UPDATE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
                     } else if (type == 5) { // 删除
                         if (relyDataVO.getAnalysisRely().intValue() == 0) {
                             sqlResult = JdbcUtil.delete(url, username, password, sql, params);
                         } else {
                             sqlResult = JdbcUtil.delete(url, username, password, relyDataVO.getValue(), params);
                         }
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_DELETE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
                     } else { // 脚本
                         if (relyDataVO.getAnalysisRely().intValue() == 0) {
                             sqlResult = JdbcUtil.script(sql, url, username, password, true);
                         } else {
                             sqlResult = JdbcUtil.script(relyDataVO.getValue(), url, username, password, true);
                         }
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SCRIPT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
                     }
                     s = s.replace(findStr, sqlResult);
                 }
 
 // 进入普通依赖数据模式
             } else {
+                long start = TimeUtil.now();
                 LOG.info("--------------------------------------进入普通依赖数据模式");
                 InterfaceCaseRelyDataDTO interfaceCaseRelyDataDTO = new InterfaceCaseRelyDataDTO();
                 interfaceCaseRelyDataDTO.setRelyName(relyName);
@@ -1366,7 +1385,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     } else {
                         int type = relyDataVO.getType();
                         if (type == 0) {
-                            s = s.replace(findStr, relyDataVO.getValue());
+                            String value = relyDataVO.getValue();
+                            s = s.replace(findStr, value);
+                            redisUtil.stackPush(chainNo, chainNode(RelyType.CONST, relyDataVO.getId(), relyName, value, TimeUtil.now()-start));
                         } else if (type >= 2 && type <= 6) {
                             Integer datasourceId = relyDataVO.getDatasourceId();
                             if (null == datasourceId) {
@@ -1397,6 +1418,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     sqlResult = JdbcUtil.selectFirst(url, username, password, relyDataVO.getValue(), null);
                                 }
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SELECT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
                             } else if (type == 3) { // 新增
                                 if (relyDataVO.getEnableReturn().intValue() == 0) {
                                     sqlResult = String.valueOf(JdbcUtil.insert(url, username, password, sql, null));
@@ -1404,24 +1426,28 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     JdbcUtil.insert(url, username, password, sql, null);
                                     sqlResult = "";
                                 }
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_INSERT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
                             } else if (type == 4) { // 修改
                                 if (relyDataVO.getAnalysisRely().intValue() == 0) {
                                     sqlResult = JdbcUtil.update(url, username, password, sql, null);
                                 } else {
                                     sqlResult = JdbcUtil.update(url, username, password, relyDataVO.getValue(), null);
                                 }
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_UPDATE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
                             } else if (type == 5) { // 删除
                                 if (relyDataVO.getAnalysisRely().intValue() == 0) {
                                     sqlResult = JdbcUtil.delete(url, username, password, sql, null);
                                 } else {
                                     sqlResult = JdbcUtil.delete(url, username, password, relyDataVO.getValue(), null);
                                 }
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_DELETE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
                             } else { // 脚本
                                 if (relyDataVO.getAnalysisRely().intValue() == 0) {
                                     sqlResult = JdbcUtil.script(sql, url, username, password, true);
                                 } else {
                                     sqlResult = JdbcUtil.script(relyDataVO.getValue(), url, username, password, true);
                                 }
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SCRIPT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
                             }
                             s = s.replace(findStr, sqlResult);
                         }
@@ -1431,7 +1457,6 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                             "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo,
                             globalHeaders, globalParams, globalData, (byte)4, casePreNo));
-                    redisUtil.stackPush(chainNo, executeLogId);
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
                         LOG.warn("前置用例执行未通过");
                         throw new BusinessException("前置用例执行未通过");
@@ -1455,8 +1480,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 if (o == null) {
                                     throw new BusinessException(jsonPathArray + "提取内容为空");
                                 }
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_JSON, executeLogId, relyName, o.toString(), TimeUtil.now()-start));
                                 s = s.replace(findStr, o.toString());
                             } else {
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_JSON, executeLogId, relyName, JSON.toJSONString(jsonPathArray), TimeUtil.now()-start));
                                 s = s.replace(findStr, JSON.toJSONString(jsonPathArray));
                             }
                             LOG.info("jsonPath提取值并替换后的结果={}", s);
@@ -1471,8 +1498,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 if (o == null) {
                                     throw new BusinessException(xpathArray + "提取内容为空");
                                 }
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HTML, executeLogId, relyName, o.toString(), TimeUtil.now()-start));
                                 s = s.replace(findStr, o.toString());
                             } else {
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HTML, executeLogId, relyName, JSON.toJSONString(xpathArray), TimeUtil.now()-start));
                                 s = s.replace(findStr, JSON.toJSONString(xpathArray));
                             }
                             LOG.info("xml提取值并替换后的结果={}", s);
@@ -1488,8 +1517,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     if (o == null) {
                                         throw new BusinessException(headerArray + "提取内容为空");
                                     }
+                                    redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HEADER, executeLogId, relyName, o.toString(), TimeUtil.now()-start));
                                     s = s.replace(findStr, o.toString());
                                 } else {
+                                    redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HEADER, executeLogId, relyName, JSON.toJSONString(headerArray), TimeUtil.now()-start));
                                     s = s.replace(findStr, JSON.toJSONString(headerArray));
                                 }
                                 LOG.info("header提取值并替换后的结果={}", s);
@@ -1562,5 +1593,68 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         LOG.info("--------------------------------------结束后置处理器提取解析流程--------------------------------------");
         LOG.info("--------------------------------------解析后的字符串为={}", s);
         return s;
+    }
+
+    /**
+     * 封装链路跟踪节点对象
+     * @param type 类型枚举
+     * @param id 对应其数据库中存储的编号
+     * @param name 名称
+     * @param value 当时的value
+     * @param runTime 执行耗时
+     * @return json对象
+     */
+    private JSONObject chainNode(RelyType type, Integer id, String name, String value, long runTime) {
+        JSONObject object = new JSONObject();
+        String typeStr;
+        String desc;
+        if (type == RelyType.INVOKE) {
+            typeStr = "反射方法";
+            desc = "反射方法";
+        } else if (type == RelyType.PRE_CASE){
+            typeStr = "前置用例";
+            desc = "前置用例";
+        } else if (type == RelyType.INTERFACE_JSON){
+            typeStr = "接口依赖";
+            desc = "JsonPath";
+        } else if (type == RelyType.INTERFACE_HTML){
+            typeStr = "接口依赖";
+            desc = "Xpath";
+        } else if (type == RelyType.INTERFACE_HEADER){
+            typeStr = "接口依赖";
+            desc = "Header";
+        } else if (type == RelyType.SQL_SELECT){
+            typeStr = "SQL依赖";
+            desc = "查询";
+        } else if (type == RelyType.SQL_DELETE){
+            typeStr = "SQL依赖";
+            desc = "删除";
+        } else if (type == RelyType.SQL_INSERT){
+            typeStr = "SQL依赖";
+            desc = "新增";
+        } else if (type == RelyType.SQL_UPDATE){
+            typeStr = "SQL依赖";
+            desc = "修改";
+        } else if (type == RelyType.SQL_SCRIPT){
+            typeStr = "SQL依赖";
+            desc = "脚本";
+        } else if (type == RelyType.CONST){
+            typeStr = "固定字符";
+            desc = "固定字符";
+        } else if (type == RelyType.END){
+            typeStr = "执行完成";
+            desc = "执行完成";
+        } else {
+            typeStr = "其它";
+            desc = "其它";
+        }
+        object.put("type", type);
+        object.put("typeDesc", typeStr);
+        object.put("id", id);
+        object.put("name", name);
+        object.put("value", value);
+        object.put("time", runTime);
+        object.put("desc", desc);
+        return object;
     }
 }

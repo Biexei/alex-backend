@@ -1,8 +1,10 @@
 package org.alex.platform.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.enums.RelyType;
 import org.alex.platform.mapper.InterfaceCaseExecuteLogMapper;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogDO;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO;
@@ -80,39 +82,23 @@ public class InterfaceCaseExecuteLogServiceImpl implements InterfaceCaseExecuteL
      * @return LinkedList<HashMap < String, Object>>
      */
     @Override
-    public LinkedList<HashMap<String, Object>> caseExecuteLogChain(Integer executeId) {
-        LinkedList<HashMap<String, Object>> list = new LinkedList<>();
-        String chain = this.findExecute(executeId).getChain();
-        ArrayList<Integer> preChainExecuteLogId = JSONObject.parseObject(chain, ArrayList.class);
-        if (null != preChainExecuteLogId) {
-            // 添加前置子节点
-            for (Integer logId : preChainExecuteLogId) {
-                HashMap<String, Object> map = new HashMap<>();
-                InterfaceCaseExecuteLogVO executeLogVO = this.findExecute(logId);
-                map.put("logId", executeLogVO.getId());
-                map.put("caseId", executeLogVO.getCaseId());
-                map.put("caseDesc", executeLogVO.getCaseDesc());
-                map.put("status", executeLogVO.getStatus());
-                map.put("createdTime", executeLogVO.getCreatedTime());
-                map.put("runTime", executeLogVO.getRunTime());
-                map.put("executer", executeLogVO.getExecuter());
-                map.put("suiteLogNo", executeLogVO.getSuiteLogNo());
-                list.add(map);
-            }
-        }
-        // 添加自身
-        HashMap<String, Object> map = new HashMap<>();
+    public JSONArray caseExecuteLogChain(Integer executeId) {
         InterfaceCaseExecuteLogVO executeLogVO = this.findExecute(executeId);
-        map.put("logId", executeLogVO.getId());
-        map.put("caseId", executeLogVO.getCaseId());
-        map.put("caseDesc", executeLogVO.getCaseDesc());
-        map.put("status", executeLogVO.getStatus());
-        map.put("createdTime", executeLogVO.getCreatedTime());
-        map.put("runTime", executeLogVO.getRunTime());
-        map.put("executer", executeLogVO.getExecuter());
-        map.put("suiteLogNo", executeLogVO.getSuiteLogNo());
-        list.add(map);
-        return list;
+        String chain = executeLogVO.getChain();
+        Integer id = executeLogVO.getId();
+        long runTime = executeLogVO.getRunTime();
+        JSONArray nodes = JSONArray.parseArray(chain);
+        // 添加自身
+        JSONObject object = new JSONObject();
+        object.put("type", RelyType.END);
+        object.put("typeDesc", "执行完成");
+        object.put("id", id);
+        object.put("name", executeLogVO.getCaseDesc());
+        object.put("value", null);
+        object.put("time", runTime);
+        object.put("desc", "执行完成");
+        nodes.add(object);
+        return nodes;
     }
 
     /**

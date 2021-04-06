@@ -1,5 +1,6 @@
 package org.alex.platform.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogDO;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO;
@@ -23,7 +24,7 @@ public interface InterfaceCaseExecuteLogService {
 
     void modifyExecuteLog(InterfaceCaseExecuteLogDO executeLogDO);
 
-    LinkedList<HashMap<String, Object>> caseExecuteLogChain(Integer executeId);
+    JSONArray caseExecuteLogChain(Integer executeId);
 
     List<InterfaceCaseExecuteLogListVO> findExecuteListAll(InterfaceCaseExecuteLogListDTO executeLogListDTO);
 }
