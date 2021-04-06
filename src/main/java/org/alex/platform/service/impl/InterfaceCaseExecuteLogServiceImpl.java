@@ -85,20 +85,7 @@ public class InterfaceCaseExecuteLogServiceImpl implements InterfaceCaseExecuteL
     public JSONArray caseExecuteLogChain(Integer executeId) {
         InterfaceCaseExecuteLogVO executeLogVO = this.findExecute(executeId);
         String chain = executeLogVO.getChain();
-        Integer id = executeLogVO.getId();
-        long runTime = executeLogVO.getRunTime();
-        JSONArray nodes = JSONArray.parseArray(chain);
-        // 添加自身
-        JSONObject object = new JSONObject();
-        object.put("type", RelyType.END);
-        object.put("typeDesc", "执行完成");
-        object.put("id", id);
-        object.put("name", executeLogVO.getCaseDesc());
-        object.put("value", null);
-        object.put("time", runTime);
-        object.put("desc", "执行完成");
-        nodes.add(object);
-        return nodes;
+        return JSONArray.parseArray(chain);
     }
 
     /**

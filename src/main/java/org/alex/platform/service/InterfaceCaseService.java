@@ -33,5 +33,5 @@ public interface InterfaceCaseService {
                          HashMap globalHeaders, HashMap globalParams, HashMap globalData, String casePreNo)
             throws BusinessException, ParseException, SqlException;
 
-    String parsePostProcessor(String s, String suiteLogDetailNo, String casePreNo) throws ParseException;
+    String parseProcessor(String s, String suiteLogDetailNo, String casePreNo, String chainNo) throws ParseException;
 }

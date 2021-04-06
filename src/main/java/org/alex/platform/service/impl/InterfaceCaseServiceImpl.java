@@ -26,6 +26,7 @@ import org.springframework.web.client.ResourceAccessException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.sql.Time;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -114,7 +115,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     }
 
     /**
-     * 新增接口测试用例及断言及后置处理器
+     * 新增接口测试用例及断言及处理器
      *
      * @param interfaceCaseDTO interfaceCaseDTO
      * @throws BusinessException BusinessException
@@ -143,7 +144,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 interfaceAssertService.saveAssert(assertDO);
             }
         }
-        //插入后置处理器表
+        //插入处理器表
         List<InterfaceProcessorDO> postProcessorList = interfaceCaseDTO.getPostProcessors();
         if (!postProcessorList.isEmpty()) {
             for (InterfaceProcessorDO interfaceProcessorDO : postProcessorList) {
@@ -294,7 +295,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             interfacePreCaseService.removeInterfacePreCaseByParentId(caseId);
         }
 
-        // 修改后置处理器
+        // 修改处理器
         List<InterfaceProcessorDO> postProcessors = interfaceCaseDTO.getPostProcessors();
         List<Integer> postProcessorIdList = interfaceProcessorService.findInterfaceProcessorIdByCaseId(interfaceCaseDTO.getCaseId());
         if (postProcessors != null) {
@@ -318,7 +319,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 interfaceProcessorService.removeInterfaceProcessorById(postProcessorId);
             }
         } else {
-            // 移除该用例下所有的后置处理器
+            // 移除该用例下所有的处理器
             interfaceProcessorService.removeInterfaceProcessorByCaseId(caseId);
         }
     }
@@ -360,7 +361,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             interfaceCaseMapper.removeInterfaceCase(interfaceCaseId);
             // 删除与之相关的断言
             interfaceAssertService.removeAssertByCaseId(interfaceCaseId);
-            // 删除与之相关的后置处理器
+            // 删除与之相关的处理器
             interfaceProcessorService.removeInterfaceProcessorByCaseId(interfaceCaseId);
             // 删除与之相关的前置用例
             interfacePreCaseService.removeInterfacePreCaseByParentId(interfaceCaseId);
@@ -466,9 +467,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 executeInterfaceCaseParam.setInterfaceCaseId(caseId);
                 try {
                     long start = TimeUtil.now();
-                    Integer preCaseLogId = this.executeInterfaceCase(executeInterfaceCaseParam);
-                    long waste = TimeUtil.now() - start;
-                    redisUtil.stackPush(chainNo, chainNode(RelyType.PRE_CASE, preCaseLogId, null, null, waste));
+                    InterfaceCaseInfoVO caseInfoVO = this.findInterfaceCaseByCaseId(caseId);
+                    redisUtil.stackPush(chainNo, chainNode(RelyType.PRE_CASE, null, caseInfoVO.getDesc(), null, TimeUtil.now()-start, null));
+                    this.executeInterfaceCase(executeInterfaceCaseParam);
                 } catch (BusinessException e) {
                     caseStatus = 2;
                     e.printStackTrace();
@@ -667,7 +668,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
 
             // 断言执行前，执行从request提取类型
-            // 即type=3request-header/4request-params/5request-data/6request-json的后置处理器
+            // 即type=3request-header/4request-params/5request-data/6request-json的处理器
             // 但是response提取必须所有断言执行完成且用例状态为通过才提取
             if (1 == 1) { // 控制作用域 懒得再写。。。
                 InterfaceProcessorDTO interfaceProcessorDTO = new InterfaceProcessorDTO();
@@ -721,7 +722,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     status = 1;
                                     LOG.warn("jsonPath提取内容为空，jsonPath={}", expression);
-                                    errorMsg = "后置处理器" + name + "提取类型为空，提取表达式为：" + expression;
+                                    errorMsg = "处理器" + name + "提取类型为空，提取表达式为：" + expression;
                                 }
                             } else {
                                 isDefaultValue = 1;
@@ -743,7 +744,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             interfaceProcessorLogDO.setExpression(expression);
                             interfaceProcessorLogDO.setWr((byte) 1);
                             if (!isThrowException) {
-                                // 写入后置处理器记录表
+                                // 写入处理器记录表
                                 interfaceProcessorLogDO.setIsDefaultValue(isDefaultValue);
                                 interfaceProcessorLogDO.setValue(value);
                                 interfaceProcessorLogDO.setCreatedTime(new Date());
@@ -753,47 +754,60 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     interfaceProcessorLogDO.setErrorMsg(errorMsg);
                                 }
-                                // 写入后置处理器日志表
+                                // 写入处理器日志表
+                                long start = TimeUtil.now();
                                 interfaceProcessorLogService.saveInterfaceProcessorLog(interfaceProcessorLogDO);
-                                LOG.info("写入后置处理器日志表");
-                                // 如果后置处理器出错，那么将用例执行状态重新置为错误
+                                // type=3request-header/4request-params/5request-data/6request-json的处理器
+                                RelyType relyType;
+                                if (type == 3) {
+                                    relyType = RelyType.WRITE_PROCESSOR_REQUEST_HEADER;
+                                } else if (type == 4) {
+                                    relyType = RelyType.WRITE_PROCESSOR_REQUEST_PARAMS;
+                                } else if (type == 5) {
+                                    relyType = RelyType.WRITE_PROCESSOR_REQUEST_DATA;
+                                } else {
+                                    relyType = RelyType.WRITE_PROCESSOR_REQUEST_JSON;
+                                }
+                                LOG.info("写入处理器日志表");
+                                // 如果处理器出错，那么将用例执行状态重新置为错误
                                 if (status == 1) {
                                     InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
                                     afterPostProcessorLogDo.setId(executedLogId);
                                     afterPostProcessorLogDo.setStatus((byte) 2);
                                     afterPostProcessorLogDo.setErrorMessage(errorMsg);
                                     executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
-                                    LOG.info("后置处理器运行错误，主动将用例执行状态置为错误");
+                                    LOG.info("处理器运行错误，主动将用例执行状态置为错误");
                                 } else {
                                     if (casePreNo != null) { //如果为前置用例，仅写入前置用例域，
                                         redisUtil.hashPut(casePreNo, name, value);
-                                        LOG.info("写入后置处理器-前置用例域，key={}，hashKey={}，value={}", casePreNo, name, value);
+                                        LOG.info("写入处理器-前置用例域，key={}，hashKey={}，value={}", casePreNo, name, value);
                                     } else {
                                         if (suiteLogDetailNo == null) { // 不存在则写入临时域
                                             redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
-                                            LOG.info("写入后置处理器-临时域，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
+                                            LOG.info("写入处理器-临时域，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
                                         } else { // 否则写入测试套件域
                                             redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
-                                            LOG.info("写入后置处理器-测试套件域，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
+                                            LOG.info("写入处理器-测试套件域，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
                                         }
                                     }
                                 }
+                                redisUtil.stackPush(chainNo, chainNode(relyType, null, name, value, TimeUtil.now()-start, expression));
                             } else { // 若解析json、xpath出错
-                                // 写入后置处理器记录表
+                                // 写入处理器记录表
                                 interfaceProcessorLogDO.setIsDefaultValue(null);
                                 interfaceProcessorLogDO.setValue(null);
                                 interfaceProcessorLogDO.setCreatedTime(new Date());
                                 interfaceProcessorLogDO.setStatus((byte) 1);
                                 interfaceProcessorLogDO.setErrorMsg(exceptionMsg);
                                 interfaceProcessorLogService.saveInterfaceProcessorLog(interfaceProcessorLogDO);
-                                LOG.warn("后置处理器解析出错，写入后置处理器记录表");
+                                LOG.warn("处理器解析出错，写入处理器记录表");
                                 // 重置用例状态
                                 InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
                                 afterPostProcessorLogDo.setId(executedLogId);
                                 afterPostProcessorLogDo.setStatus((byte) 2);
                                 afterPostProcessorLogDo.setErrorMessage(exceptionMsg);
                                 executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
-                                LOG.info("后置处理器解析出错，主动将用例执行状态置为错误");
+                                LOG.info("处理器解析出错，主动将用例执行状态置为错误");
                             }
                         }
                     }
@@ -939,7 +953,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             executeLogService.modifyExecuteLog(updateChain);
 
 
-            // *仅用例执行通过才写入后置处理器记录
+            // *仅用例执行通过才写入处理器记录
             if (updateStatus.getStatus() == 0 ) {
                 InterfaceProcessorDTO interfaceProcessorDTO = new InterfaceProcessorDTO();
                 interfaceProcessorDTO.setCaseId(interfaceCaseId);
@@ -977,7 +991,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     status = 1;
                                     LOG.warn("response-json提取内容为空，jsonPath={}", expression);
-                                    errorMsg = "后置处理器" + name + "提取类型为空，提取表达式为：" + expression;
+                                    errorMsg = "处理器" + name + "提取类型为空，提取表达式为：" + expression;
                                 }
                             } else {
                                 isDefaultValue = 1;
@@ -1007,7 +1021,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     status = 1;
                                     LOG.warn("response-xml提取内容为空，xpath={}", expression);
-                                    errorMsg = "后置处理器" + name + "提取类型为空，提取表达式为：" + expression;
+                                    errorMsg = "处理器" + name + "提取类型为空，提取表达式为：" + expression;
                                 }
                             } else {
                                 isDefaultValue = 1;
@@ -1030,7 +1044,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     status = 1;
                                     LOG.warn("header提取内容为空，header={}", expression);
-                                    errorMsg = "后置处理器" + name + "提取类型为空，提取表达式为：" + expression;
+                                    errorMsg = "处理器" + name + "提取类型为空，提取表达式为：" + expression;
                                 }
                             } else {
                                 isDefaultValue = 1;
@@ -1044,8 +1058,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             }
                         } else if (type >= 7) {
                             status = 1;
-                            LOG.error("后置处理器提取类型错误");
-                            errorMsg = "后置处理器提取类型错误";
+                            LOG.error("处理器提取类型错误");
+                            errorMsg = "处理器提取类型错误";
                         }
                         if (type <= 2 || type >7 ) { // 3-6时，已在前面写入缓存
                             interfaceProcessorLogDO = new InterfaceProcessorLogDO();
@@ -1056,7 +1070,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             interfaceProcessorLogDO.setType(type);
                             interfaceProcessorLogDO.setExpression(expression);
                             if (!isThrowException) {
-                                // 写入后置处理器记录表
+                                // 写入处理器记录表
                                 interfaceProcessorLogDO.setIsDefaultValue(isDefaultValue);
                                 interfaceProcessorLogDO.setValue(value);
                                 interfaceProcessorLogDO.setCreatedTime(new Date());
@@ -1067,47 +1081,58 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     interfaceProcessorLogDO.setErrorMsg(errorMsg);
                                 }
-                                // 写入后置处理器日志表
+                                // 写入处理器日志表
+                                long start = TimeUtil.now();
                                 interfaceProcessorLogService.saveInterfaceProcessorLog(interfaceProcessorLogDO);
-                                LOG.info("写入后置处理器日志表");
-                                // 如果后置处理器出错，那么将用例执行状态重新置为错误
+                                // 0response-json/1response-html/2response-header
+                                RelyType relyType;
+                                if (type == 0) {
+                                    relyType = RelyType.WRITE_PROCESSOR_RESPONSE_JSON;
+                                } else if (type == 1) {
+                                    relyType = RelyType.WRITE_PROCESSOR_RESPONSE_HTML;
+                                } else {
+                                    relyType = RelyType.WRITE_PROCESSOR_RESPONSE_HEADER;
+                                }
+                                LOG.info("写入处理器日志表");
+                                // 如果处理器出错，那么将用例执行状态重新置为错误
                                 if (status == 1) {
                                     InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
                                     afterPostProcessorLogDo.setId(executedLogId);
                                     afterPostProcessorLogDo.setStatus((byte) 2);
                                     afterPostProcessorLogDo.setErrorMessage(errorMsg);
                                     executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
-                                    LOG.info("后置处理器运行错误，主动将用例执行状态置为错误");
+                                    LOG.info("处理器运行错误，主动将用例执行状态置为错误");
                                 } else {
                                     if (casePreNo != null) { //如果为前置用例，仅写入前置用例域，
                                         redisUtil.hashPut(casePreNo, name, value);
-                                        LOG.info("写入后置处理器-前置用例域，key={}，hashKey={}，value={}", casePreNo, name, value);
+                                        LOG.info("写入处理器-前置用例域，key={}，hashKey={}，value={}", casePreNo, name, value);
                                     } else {
                                         if (suiteLogDetailNo == null) { // 不存在则写入临时域
                                             redisUtil.hashPut(NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
-                                            LOG.info("写入后置处理器-临时域，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
+                                            LOG.info("写入处理器-临时域，key={}，hashKey={}，value={}", NoUtil.TEMP_POST_PROCESSOR_NO, name, value);
                                         } else { // 否则写入测试套件域
                                             redisUtil.hashPut(suiteLogDetailNo, name, value, 24*60*60);
-                                            LOG.info("写入后置处理器-测试套件域，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
+                                            LOG.info("写入处理器-测试套件域，key={}，hashKey={}，value={}", suiteLogDetailNo, name, value);
                                         }
                                     }
                                 }
+                                redisUtil.stackPush(chainNo, chainNode(relyType, null, name, value, TimeUtil.now()-start, expression));
                             } else { // 若解析json、xpath出错
-                                // 写入后置处理器记录表
+                                // 写入处理器记录表
                                 interfaceProcessorLogDO.setIsDefaultValue(null);
                                 interfaceProcessorLogDO.setValue(null);
                                 interfaceProcessorLogDO.setCreatedTime(new Date());
                                 interfaceProcessorLogDO.setStatus((byte) 1);
                                 interfaceProcessorLogDO.setErrorMsg(exceptionMsg);
                                 interfaceProcessorLogService.saveInterfaceProcessorLog(interfaceProcessorLogDO);
-                                LOG.warn("后置处理器解析出错，写入后置处理器记录表");
+                                LOG.warn("处理器解析出错，写入处理器记录表");
                                 // 重置用例状态
                                 InterfaceCaseExecuteLogDO afterPostProcessorLogDo = new InterfaceCaseExecuteLogDO();
                                 afterPostProcessorLogDo.setId(executedLogId);
                                 afterPostProcessorLogDo.setStatus((byte) 2);
                                 afterPostProcessorLogDo.setErrorMessage(exceptionMsg);
                                 executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
-                                LOG.info("后置处理器解析出错，主动将用例执行状态置为错误");
+                                LOG.info("处理器解析出错，主动将用例执行状态置为错误");
                             }
                         }
                     }
@@ -1133,8 +1158,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     HashMap globalHeaders, HashMap globalParams, HashMap globalData, String casePreNo)
             throws ParseException, BusinessException, SqlException {
 
-        // 解析后置处理器
-        s = parsePostProcessor(s, suiteLogDetailNo, casePreNo);
+        // 解析处理器
+        s = parseProcessor(s, suiteLogDetailNo, casePreNo, chainNo);
 
         LOG.info("--------------------------------------开始字符串解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
@@ -1202,7 +1227,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             }
                             try {
                                 String value = jsonPathArray.get(index).toString();
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_JSON, executeLogId, relyExpress, value, TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_JSON, executeLogId, relyExpress, value, TimeUtil.now()-start, expression));
                                 s = s.replace(findStr, value);
                                 LOG.info("jsonPath提取值并替换后的结果={}", s);
                             } catch (Exception e) {
@@ -1217,7 +1242,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             }
                             try {
                                 String value = xpathArray.get(index).toString();
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HTML, executeLogId, relyExpress, value, TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HTML, executeLogId, relyExpress, value, TimeUtil.now()-start, expression));
                                 s = s.replace(findStr, value);
                                 LOG.info("xpath提取值并替换后的结果={}", s);
                             } catch (Exception e) {
@@ -1232,7 +1257,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             }
                             try {
                                 String value = headerArray.get(index).toString();
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HEADER, executeLogId, relyExpress, value, TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HEADER, executeLogId, relyExpress, value, TimeUtil.now()-start, expression));
                                 s = s.replace(findStr, value);
                                 LOG.info("header提取值并替换后的结果={}", s);
                             } catch (Exception e) {
@@ -1288,7 +1313,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         LOG.info("方法名称={}，方法参数={}", methodName, Arrays.toString(params));
                         Method method = clazz.getMethod(methodName, paramsList);
                         String value = (String) method.invoke(constructor.newInstance(runEnv), params);
-                        redisUtil.stackPush(chainNo, chainNode(RelyType.INVOKE, relyDataVO.getId(), relyName, value, TimeUtil.now()-start));
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.INVOKE, relyDataVO.getId(), relyName, value, TimeUtil.now()-start, null));
                         s = s.replace(findStr, value);
                         LOG.info("预置方法执行并替换后的结果={}", s);
                     } catch (Exception e) {
@@ -1336,7 +1361,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         } else {
                             sqlResult = JdbcUtil.selectFirst(url, username, password, relyDataVO.getValue(), params);
                         }
-                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SELECT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SELECT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                     } else if (type == 3) { // 新增
                         if (relyDataVO.getEnableReturn().intValue() == 0) {
                             sqlResult = String.valueOf(JdbcUtil.insert(url, username, password, sql, params));
@@ -1344,28 +1369,28 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                             JdbcUtil.insert(url, username, password, sql, params);
                             sqlResult = "";
                         }
-                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_INSERT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_INSERT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                     } else if (type == 4) { // 修改
                         if (relyDataVO.getAnalysisRely().intValue() == 0) {
                             sqlResult = JdbcUtil.update(url, username, password, sql, params);
                         } else {
                             sqlResult = JdbcUtil.update(url, username, password, relyDataVO.getValue(), params);
                         }
-                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_UPDATE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_UPDATE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                     } else if (type == 5) { // 删除
                         if (relyDataVO.getAnalysisRely().intValue() == 0) {
                             sqlResult = JdbcUtil.delete(url, username, password, sql, params);
                         } else {
                             sqlResult = JdbcUtil.delete(url, username, password, relyDataVO.getValue(), params);
                         }
-                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_DELETE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_DELETE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                     } else { // 脚本
                         if (relyDataVO.getAnalysisRely().intValue() == 0) {
                             sqlResult = JdbcUtil.script(sql, url, username, password, true);
                         } else {
                             sqlResult = JdbcUtil.script(relyDataVO.getValue(), url, username, password, true);
                         }
-                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SCRIPT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
+                        redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SCRIPT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                     }
                     s = s.replace(findStr, sqlResult);
                 }
@@ -1387,7 +1412,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         if (type == 0) {
                             String value = relyDataVO.getValue();
                             s = s.replace(findStr, value);
-                            redisUtil.stackPush(chainNo, chainNode(RelyType.CONST, relyDataVO.getId(), relyName, value, TimeUtil.now()-start));
+                            redisUtil.stackPush(chainNo, chainNode(RelyType.CONST, relyDataVO.getId(), relyName, value, TimeUtil.now()-start, null));
                         } else if (type >= 2 && type <= 6) {
                             Integer datasourceId = relyDataVO.getDatasourceId();
                             if (null == datasourceId) {
@@ -1418,7 +1443,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 } else {
                                     sqlResult = JdbcUtil.selectFirst(url, username, password, relyDataVO.getValue(), null);
                                 }
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SELECT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SELECT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                             } else if (type == 3) { // 新增
                                 if (relyDataVO.getEnableReturn().intValue() == 0) {
                                     sqlResult = String.valueOf(JdbcUtil.insert(url, username, password, sql, null));
@@ -1426,28 +1451,28 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     JdbcUtil.insert(url, username, password, sql, null);
                                     sqlResult = "";
                                 }
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_INSERT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_INSERT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                             } else if (type == 4) { // 修改
                                 if (relyDataVO.getAnalysisRely().intValue() == 0) {
                                     sqlResult = JdbcUtil.update(url, username, password, sql, null);
                                 } else {
                                     sqlResult = JdbcUtil.update(url, username, password, relyDataVO.getValue(), null);
                                 }
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_UPDATE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_UPDATE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                             } else if (type == 5) { // 删除
                                 if (relyDataVO.getAnalysisRely().intValue() == 0) {
                                     sqlResult = JdbcUtil.delete(url, username, password, sql, null);
                                 } else {
                                     sqlResult = JdbcUtil.delete(url, username, password, relyDataVO.getValue(), null);
                                 }
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_DELETE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_DELETE, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                             } else { // 脚本
                                 if (relyDataVO.getAnalysisRely().intValue() == 0) {
                                     sqlResult = JdbcUtil.script(sql, url, username, password, true);
                                 } else {
                                     sqlResult = JdbcUtil.script(relyDataVO.getValue(), url, username, password, true);
                                 }
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SCRIPT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SCRIPT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                             }
                             s = s.replace(findStr, sqlResult);
                         }
@@ -1480,10 +1505,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 if (o == null) {
                                     throw new BusinessException(jsonPathArray + "提取内容为空");
                                 }
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_JSON, executeLogId, relyName, o.toString(), TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_JSON, executeLogId, relyName, o.toString(), TimeUtil.now()-start, expression));
                                 s = s.replace(findStr, o.toString());
                             } else {
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_JSON, executeLogId, relyName, JSON.toJSONString(jsonPathArray), TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_JSON, executeLogId, relyName, JSON.toJSONString(jsonPathArray), TimeUtil.now()-start, expression));
                                 s = s.replace(findStr, JSON.toJSONString(jsonPathArray));
                             }
                             LOG.info("jsonPath提取值并替换后的结果={}", s);
@@ -1498,10 +1523,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                 if (o == null) {
                                     throw new BusinessException(xpathArray + "提取内容为空");
                                 }
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HTML, executeLogId, relyName, o.toString(), TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HTML, executeLogId, relyName, o.toString(), TimeUtil.now()-start, expression));
                                 s = s.replace(findStr, o.toString());
                             } else {
-                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HTML, executeLogId, relyName, JSON.toJSONString(xpathArray), TimeUtil.now()-start));
+                                redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HTML, executeLogId, relyName, JSON.toJSONString(xpathArray), TimeUtil.now()-start, expression));
                                 s = s.replace(findStr, JSON.toJSONString(xpathArray));
                             }
                             LOG.info("xml提取值并替换后的结果={}", s);
@@ -1517,10 +1542,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     if (o == null) {
                                         throw new BusinessException(headerArray + "提取内容为空");
                                     }
-                                    redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HEADER, executeLogId, relyName, o.toString(), TimeUtil.now()-start));
+                                    redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HEADER, executeLogId, relyName, o.toString(), TimeUtil.now()-start, expression));
                                     s = s.replace(findStr, o.toString());
                                 } else {
-                                    redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HEADER, executeLogId, relyName, JSON.toJSONString(headerArray), TimeUtil.now()-start));
+                                    redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HEADER, executeLogId, relyName, JSON.toJSONString(headerArray), TimeUtil.now()-start, expression));
                                     s = s.replace(findStr, JSON.toJSONString(headerArray));
                                 }
                                 LOG.info("header提取值并替换后的结果={}", s);
@@ -1542,24 +1567,25 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     }
 
     /**
-     * 解析后置处理器
+     * 解析处理器
      * @param s 原文
      * @param suiteLogDetailNo 非空时使用测试套件域，否则使用临时域
      * @param casePreNo 组合用例的前置用例缓存redis hash key
+     * @param chainNo 链路跟踪redis key
      * @return 解析后的字符串
-     * @throws ParseException 找不到后置处理器
+     * @throws ParseException 找不到处理器
      */
-    @Override
-    public String parsePostProcessor(String s, String suiteLogDetailNo, String casePreNo) throws ParseException {
-        LOG.info("--------------------------------------开始后置处理器提取解析流程--------------------------------------");
+    public String parseProcessor(String s, String suiteLogDetailNo, String casePreNo, String chainNo) throws ParseException {
+        LOG.info("--------------------------------------开始处理器提取解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
         Pattern pattern = Pattern.compile("#\\{.+?\\}");
         Matcher matcher = pattern.matcher(s);
         while (matcher.find()) {
+            long start = TimeUtil.now();
             String findStr = matcher.group();
             String postProcessorName = findStr.substring(2, findStr.length() - 1);
             InterfaceProcessorVO postProcessor = interfaceProcessorService.findInterfaceProcessorByName(postProcessorName);
-            LOG.info("后置处理器名称={}", postProcessorName);
+            LOG.info("处理器名称={}", postProcessorName);
             Object redisResult;
             if (casePreNo == null) {
                 if (suiteLogDetailNo == null) {
@@ -1575,13 +1601,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 redisResult = redisUtil.hashGet(casePreNo, postProcessorName);
             }
             if (redisResult == null) {
-                LOG.error("未找到后置处理器#{" + postProcessorName + "}");
-                throw new ParseException("未找到后置处理器#{" + postProcessorName + "}");
+                LOG.error("未找到处理器#{" + postProcessorName + "}");
+                throw new ParseException("未找到处理器#{" + postProcessorName + "}");
             }
             String redisResultStr = redisResult.toString();
+            redisUtil.stackPush(chainNo, chainNode(RelyType.READ_PROCESSOR, null, postProcessorName, redisResultStr, TimeUtil.now()-start, null));
             s = s.replace(findStr, redisResultStr);
 
-            // 写入后置处理器日志表
+            // 写入处理器日志表
             InterfaceProcessorLogDO interfaceProcessorLogDO = new InterfaceProcessorLogDO();
             interfaceProcessorLogDO.setName(postProcessor.getName());
             interfaceProcessorLogDO.setValue(redisResultStr);
@@ -1590,7 +1617,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             interfaceProcessorLogDO.setWr((byte)0);
             interfaceProcessorLogService.saveInterfaceProcessorLog(interfaceProcessorLogDO);
         }
-        LOG.info("--------------------------------------结束后置处理器提取解析流程--------------------------------------");
+        LOG.info("--------------------------------------结束处理器提取解析流程--------------------------------------");
         LOG.info("--------------------------------------解析后的字符串为={}", s);
         return s;
     }
@@ -1598,13 +1625,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     /**
      * 封装链路跟踪节点对象
      * @param type 类型枚举
-     * @param id 对应其数据库中存储的编号
+     * @param id 对应其数据表中存储的编号 用例对应日志表；依赖对应两张依赖表，其他为null
      * @param name 名称
      * @param value 当时的value
      * @param runTime 执行耗时
+     * @param expression 提取表达式
      * @return json对象
      */
-    private JSONObject chainNode(RelyType type, Integer id, String name, String value, long runTime) {
+    private JSONObject chainNode(RelyType type, Integer id, String name, String value, long runTime, String expression) {
         JSONObject object = new JSONObject();
         String typeStr;
         String desc;
@@ -1616,34 +1644,55 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             desc = "前置用例";
         } else if (type == RelyType.INTERFACE_JSON){
             typeStr = "接口依赖";
-            desc = "JsonPath";
+            desc = "Json";
         } else if (type == RelyType.INTERFACE_HTML){
             typeStr = "接口依赖";
-            desc = "Xpath";
+            desc = "Html";
         } else if (type == RelyType.INTERFACE_HEADER){
             typeStr = "接口依赖";
             desc = "Header";
         } else if (type == RelyType.SQL_SELECT){
             typeStr = "SQL依赖";
-            desc = "查询";
+            desc = "查询语句";
         } else if (type == RelyType.SQL_DELETE){
             typeStr = "SQL依赖";
-            desc = "删除";
+            desc = "删除语句";
         } else if (type == RelyType.SQL_INSERT){
             typeStr = "SQL依赖";
-            desc = "新增";
+            desc = "新增语句";
         } else if (type == RelyType.SQL_UPDATE){
             typeStr = "SQL依赖";
-            desc = "修改";
+            desc = "修改语句";
         } else if (type == RelyType.SQL_SCRIPT){
             typeStr = "SQL依赖";
-            desc = "脚本";
+            desc = "脚本处理";
         } else if (type == RelyType.CONST){
             typeStr = "固定字符";
             desc = "固定字符";
-        } else if (type == RelyType.END){
-            typeStr = "执行完成";
-            desc = "执行完成";
+        } else if (type == RelyType.READ_PROCESSOR){
+            typeStr = "使用缓存";
+            desc = "使用缓存";
+        } else if (type == RelyType.WRITE_PROCESSOR_REQUEST_HEADER){
+            typeStr = "参数缓存";
+            desc = "Header";
+        } else if (type == RelyType.WRITE_PROCESSOR_REQUEST_PARAMS){
+            typeStr = "参数缓存";
+            desc = "Params";
+        } else if (type == RelyType.WRITE_PROCESSOR_REQUEST_DATA){
+            typeStr = "参数缓存";
+            desc = "Data";
+        } else if (type == RelyType.WRITE_PROCESSOR_REQUEST_JSON){
+            typeStr = "参数缓存";
+            desc = "Json";
+        } else if (type == RelyType.WRITE_PROCESSOR_RESPONSE_JSON){
+            typeStr = "响应缓存";
+            desc = "Json";
+        } else if (type == RelyType.WRITE_PROCESSOR_RESPONSE_HTML){
+            typeStr = "响应缓存";
+            desc = "Html";
+        } else if (type == RelyType.WRITE_PROCESSOR_RESPONSE_HEADER){
+            typeStr = "响应缓存";
+            desc = "Header";
         } else {
             typeStr = "其它";
             desc = "其它";
@@ -1655,6 +1704,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         object.put("value", value);
         object.put("time", runTime);
         object.put("desc", desc);
+        object.put("expression", expression);
         return object;
     }
 }

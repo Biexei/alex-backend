@@ -12,5 +12,12 @@ public enum RelyType {
     SQL_UPDATE, //sql查询
     SQL_SCRIPT, //sql脚本
     CONST, //固定字符
-    END, //最后一个节点 调用自身
+    READ_PROCESSOR, //读处理器
+    WRITE_PROCESSOR_REQUEST_HEADER, //写处理器-请求头
+    WRITE_PROCESSOR_REQUEST_PARAMS, //写处理器-请求头
+    WRITE_PROCESSOR_REQUEST_DATA, //写处理器-请求头
+    WRITE_PROCESSOR_REQUEST_JSON, //写处理器-请求头
+    WRITE_PROCESSOR_RESPONSE_JSON, //写处理器-响应JSON
+    WRITE_PROCESSOR_RESPONSE_HTML, //写处理器-响应HTML
+    WRITE_PROCESSOR_RESPONSE_HEADER, //写处理器-响应HEADER
 }
