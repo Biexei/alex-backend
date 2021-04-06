@@ -17,10 +17,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class ReflectMethod {
+public class InvokeCenter {
     byte runEnv;
 
-    public ReflectMethod(byte runEnv) {
+    public InvokeCenter(byte runEnv) {
         this.runEnv = runEnv;
     }
 
@@ -604,9 +604,5 @@ public class ReflectMethod {
             }
             return invalidStr;
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new ReflectMethod((byte)1).inversePick("111", "1a"));
     }
 }

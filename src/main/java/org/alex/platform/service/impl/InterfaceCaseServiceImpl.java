@@ -1267,7 +1267,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                         params = new String[0];
                     }
                     try {
-                        Class<?> clazz = Class.forName("org.alex.platform.common.ReflectMethod");
+                        Class<?> clazz = Class.forName("org.alex.platform.common.InvokeCenter");
                         Constructor<?> constructor = clazz.getConstructor(byte.class);
                         Class[] paramsList = new Class[params.length];
                         for (int i = 0; i < params.length; i++) {

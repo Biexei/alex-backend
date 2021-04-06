@@ -30,7 +30,7 @@ public class EnvWithoutSpring {
      * @throws BusinessException 数据源已被禁用
      */
     public DbConnection datasource(int dbId, byte runEnv) throws Exception {
-        DruidDataSource druid = alexDbInfo();
+        DruidDataSource druid = connection();
         JdbcTemplate template = new JdbcTemplate(druid);
         String sql = "select `id`,`name`,`type`,`desc`,`url`,`username`,`password`,`created_time`,`update_time`,`status`,\n" +
                 "        `dev_url`,`dev_username`,`dev_password`,`test_url`,`test_username`,`test_password`,`stg_url`,`stg_username`,\n" +
@@ -85,7 +85,7 @@ public class EnvWithoutSpring {
      * @return alex数据库连接池
      * @throws Exception 异常
      */
-    private DruidDataSource alexDbInfo() throws Exception {
+    private DruidDataSource connection() throws Exception {
         Yaml yaml = new Yaml();
         FileInputStream fis = new FileInputStream("src\\main\\resources\\application.yml");
         JSONObject yamlConfig = yaml.loadAs(fis, JSONObject.class);
