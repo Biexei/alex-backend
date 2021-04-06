@@ -26,7 +26,6 @@ import org.springframework.web.client.ResourceAccessException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.sql.Time;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -468,8 +467,14 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 try {
                     long start = TimeUtil.now();
                     InterfaceCaseInfoVO caseInfoVO = this.findInterfaceCaseByCaseId(caseId);
-                    redisUtil.stackPush(chainNo, chainNode(RelyType.PRE_CASE, null, caseInfoVO.getDesc(), null, TimeUtil.now()-start, null));
-                    this.executeInterfaceCase(executeInterfaceCaseParam);
+                    //redisUtil.stackPush(chainNo, chainNode(RelyType.PRE_CASE_START, null, caseInfoVO.getDesc(), null, TimeUtil.now()-start, null));
+                    Integer logId = this.executeInterfaceCase(executeInterfaceCaseParam);
+                    // 手动写入，否则前置用例的跟踪链看不到
+                    InterfaceCaseExecuteLogDO modifyChain = new InterfaceCaseExecuteLogDO();
+                    modifyChain.setId(logId);
+                    modifyChain.setChain(JSON.toJSONString(redisUtil.stackGetAll(chainNo)));
+                    executeLogService.modifyExecuteLog(modifyChain);
+                    redisUtil.stackPush(chainNo, chainNode(RelyType.PRE_CASE_END, logId, caseInfoVO.getDesc(), null, TimeUtil.now()-start, null));
                 } catch (BusinessException e) {
                     caseStatus = 2;
                     e.printStackTrace();
@@ -792,6 +797,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     }
                                 }
                                 redisUtil.stackPush(chainNo, chainNode(relyType, null, name, value, TimeUtil.now()-start, expression));
+                                // 手动写入，否则前置用例的跟踪链看不到
+                                InterfaceCaseExecuteLogDO modifyChain = new InterfaceCaseExecuteLogDO();
+                                modifyChain.setId(executedLogId);
+                                modifyChain.setChain(JSON.toJSONString(redisUtil.stackGetAll(chainNo)));
+                                executeLogService.modifyExecuteLog(modifyChain);
                             } else { // 若解析json、xpath出错
                                 // 写入处理器记录表
                                 interfaceProcessorLogDO.setIsDefaultValue(null);
@@ -1117,6 +1127,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                                     }
                                 }
                                 redisUtil.stackPush(chainNo, chainNode(relyType, null, name, value, TimeUtil.now()-start, expression));
+                                // 手动写入，否则前置用例的跟踪链看不到
+                                InterfaceCaseExecuteLogDO modifyChain = new InterfaceCaseExecuteLogDO();
+                                modifyChain.setId(executedLogId);
+                                modifyChain.setChain(JSON.toJSONString(redisUtil.stackGetAll(chainNo)));
+                                executeLogService.modifyExecuteLog(modifyChain);
                             } else { // 若解析json、xpath出错
                                 // 写入处理器记录表
                                 interfaceProcessorLogDO.setIsDefaultValue(null);
@@ -1639,9 +1654,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         if (type == RelyType.INVOKE) {
             typeStr = "反射方法";
             desc = "反射方法";
-        } else if (type == RelyType.PRE_CASE){
+        } else if (type == RelyType.PRE_CASE_START){
             typeStr = "前置用例";
-            desc = "前置用例";
+            desc = "开始执行";
+        } else if (type == RelyType.PRE_CASE_END){
+            typeStr = "前置用例";
+            desc = "执行完成";
         } else if (type == RelyType.INTERFACE_JSON){
             typeStr = "接口依赖";
             desc = "Json";
@@ -1705,6 +1723,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         object.put("time", runTime);
         object.put("desc", desc);
         object.put("expression", expression);
+        object.put("date", TimeUtil.date("yyyy-MM-dd HH:mm:ss:SSS"));
         return object;
     }
 }

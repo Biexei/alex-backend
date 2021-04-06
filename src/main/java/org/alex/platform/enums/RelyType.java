@@ -2,7 +2,8 @@ package org.alex.platform.enums;
 
 public enum RelyType {
     INVOKE, //反射方法
-    PRE_CASE, //前置用例
+    PRE_CASE_START, //前置用例开始执行
+    PRE_CASE_END, //前置用例执行完成
     INTERFACE_JSON, //接口依赖-JSON
     INTERFACE_HTML, //接口依赖-HTML
     INTERFACE_HEADER, //接口依赖-HEADER
