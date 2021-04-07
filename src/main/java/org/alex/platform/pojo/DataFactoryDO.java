@@ -15,8 +15,8 @@ public class DataFactoryDO implements Serializable {
     @Max(value = 2, message = "类型只能为0~2")
     private Byte type;
     @NotNull(message = "执行次数不能为空")
-    @Min(value = 1, message = "执行次数只能为1~100")
-    @Max(value = 100, message = "执行次数只能为1~100")
+    @Min(value = 1, message = "执行次数只能为1~1000")
+    @Max(value = 1000, message = "执行次数只能为1~1000")
     private Integer times;
     @NotNull(message = "失败重试不能为空")
     @Min(value = 0, message = "失败重试只能为0~1")
