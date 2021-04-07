@@ -40,7 +40,7 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
             throw new BusinessException("参数非法,前置用例不存在");
         }
         // 校验前置用例合法性
-        this.validatePreCase(interfacePreCaseDO);
+        this.validatePreCaseForSave(interfacePreCaseDO);
         Date date = new Date();
         interfacePreCaseDO.setCreatedTime(date);
         interfacePreCaseDO.setUpdateTime(date);
@@ -67,7 +67,7 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
             throw new BusinessException("前置用例不能为本身，请重新选择前置用例");
         }
         // 校验前置用例合法性
-        this.validatePreCase(interfacePreCaseDO);
+        this.validatePreCaseForModify(interfacePreCaseDO);
         interfacePreCaseMapper.updateInterfacePreCase(interfacePreCaseDO);
     }
 
@@ -140,11 +140,11 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
     }
 
     /**
-     * 校验前置用例（含前置用例的前置用例）是否包含自身
+     * 校验前置用例（含前置用例的前置用例）是否包含自身(新增用)
      * @param interfacePreCaseDO interfacePreCaseDO
      * @throws BusinessException 前置用例（含前置用例的前置用例）不能包含本身
      */
-    private void validatePreCase(InterfacePreCaseDO interfacePreCaseDO) throws BusinessException {
+    private void validatePreCaseForSave(InterfacePreCaseDO interfacePreCaseDO) throws BusinessException {
         Integer parentCase = interfacePreCaseDO.getParentCaseId();
         Integer preCase = interfacePreCaseDO.getPreCaseId();
         // 校验父节点
@@ -156,6 +156,34 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
         List<Integer> allPreCase2 = this.recursionPreCase(new ArrayList<Integer>(), preCase);
         if (allPreCase2.contains(parentCase)) {
             throw new BusinessException("前置用例（含前置用例的前置用例）不能包含本身");
+        }
+    }
+
+    /**
+     * 校验前置用例（含前置用例的前置用例）是否包含自身(修改用)
+     * @param interfacePreCaseDO interfacePreCaseDO
+     * @throws BusinessException 前置用例（含前置用例的前置用例）不能包含本身
+     */
+    private void validatePreCaseForModify(InterfacePreCaseDO interfacePreCaseDO) throws BusinessException {
+        Integer parentCase = interfacePreCaseDO.getParentCaseId();
+        Integer preCase = interfacePreCaseDO.getPreCaseId();
+        Integer id = interfacePreCaseDO.getId();
+        // 校验父节点
+        List<Integer> allPreCase1 = this.recursionPreCase(new ArrayList<Integer>(), parentCase);
+        // 移除现有preCaseId
+        List<Integer> preCaseIdList = interfacePreCaseMapper.selectInterfacePreCaseIdById(id);
+        for (Integer preCaseId : preCaseIdList) {
+            if (allPreCase1.contains(preCaseId)) {
+                allPreCase1.remove(preCaseId);
+            }
+        }
+        if (allPreCase1.contains(preCase)) {
+            throw new BusinessException("前置用例（含前置用例的前置用例）不能包含本身/前置用例重复");
+        }
+        // 校验自身节点
+        List<Integer> allPreCase2 = this.recursionPreCase(new ArrayList<Integer>(), preCase);
+        if (allPreCase2.contains(parentCase)) {
+            throw new BusinessException("前置用例（含前置用例的前置用例）不能包含本身/前置用例重复");
         }
     }
 }

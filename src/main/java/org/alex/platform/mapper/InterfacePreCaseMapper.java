@@ -19,5 +19,7 @@ public interface InterfacePreCaseMapper {
 
     List<Integer> selectInterfacePreIdByParentId(Integer parentCaseId);
 
+    List<Integer> selectInterfacePreCaseIdById(Integer id);
+
     List<Integer> selectInterfacePreCaseIdByParentId(Integer parentCaseId);
 }

@@ -55,6 +55,12 @@
         where `parent_case_id` = #{parentCaseId}
     </select>
 
+    <select id="selectInterfacePreCaseIdById" parameterType="Integer" resultType="Integer">
+        select `pre_case_id`
+        from `t_interface_pre_case`
+        where `id` = #{id}
+    </select>
+
     <delete id="deleteInterfacePreCaseById" parameterType="Integer">
         delete from `t_interface_pre_case` where `id` = #{id}
     </delete>

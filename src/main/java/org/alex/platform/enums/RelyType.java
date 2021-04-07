@@ -1,6 +1,10 @@
 package org.alex.platform.enums;
 
 public enum RelyType {
+    CASE_START, //用例开始执行
+    CASE_END, //用例执行完成
+    RELY_START, //依赖开始执行
+    RELY_END, //依赖执行完成
     INVOKE, //反射方法
     PRE_CASE_START, //前置用例开始执行
     PRE_CASE_END, //前置用例执行完成

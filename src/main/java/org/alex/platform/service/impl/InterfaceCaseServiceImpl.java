@@ -402,6 +402,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
      */
     @Override
     public Integer executeInterfaceCase(ExecuteInterfaceCaseParam executeInterfaceCaseParam) throws BusinessException {
+        long methodStart = TimeUtil.now();
+        RelyType startRelyType;
+        RelyType endRelyType;
+
         Integer interfaceCaseId = executeInterfaceCaseParam.getInterfaceCaseId();
         String executor = executeInterfaceCaseParam.getExecutor();
         String suiteLogNo = executeInterfaceCaseParam.getSuiteLogNo();
@@ -414,13 +418,30 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         HashMap globalData = executeInterfaceCaseParam.getGlobalData();
         Byte source = executeInterfaceCaseParam.getSource();
         String casePreNo = executeInterfaceCaseParam.getCasePreNo();
+
+        // source 来源（0用例调试 1依赖调试 2运行整个测试套件 3测试套件单个用例调试 4依赖解析 5综合用例-前置用例）
+        switch (source) {
+            case 1:
+            case 4:
+                startRelyType = RelyType.RELY_START;
+                endRelyType = RelyType.RELY_END;
+                break;
+            case 5:
+                startRelyType = RelyType.PRE_CASE_START;
+                endRelyType = RelyType.PRE_CASE_END;
+                break;
+            default:
+                startRelyType = RelyType.CASE_START;
+                endRelyType = RelyType.CASE_END;
+                break;
+        }
         LOG.info("---------------------------------开始执行测试用例：caseId={}---------------------------------", interfaceCaseId);
         String exceptionMessage = null;
         // 运行结果 0成功 1失败 2错误
         byte caseStatus = 0;
-
         // 1.获取case详情
         InterfaceCaseInfoVO interfaceCaseInfoVO = this.findInterfaceCaseByCaseId(interfaceCaseId);
+        redisUtil.stackPush(chainNo, chainNode(startRelyType, null, interfaceCaseInfoVO.getDesc(), null, TimeUtil.now()-methodStart, null));
         Integer projectId = interfaceCaseInfoVO.getProjectId();
 
         ProjectVO projectVO = projectService.findProjectById(projectId);
@@ -465,16 +486,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                 executeInterfaceCaseParam.setSuiteLogNo(null); // 把前置用例作为中间依赖case处理
                 executeInterfaceCaseParam.setInterfaceCaseId(caseId);
                 try {
-                    long start = TimeUtil.now();
-                    InterfaceCaseInfoVO caseInfoVO = this.findInterfaceCaseByCaseId(caseId);
-                    //redisUtil.stackPush(chainNo, chainNode(RelyType.PRE_CASE_START, null, caseInfoVO.getDesc(), null, TimeUtil.now()-start, null));
-                    Integer logId = this.executeInterfaceCase(executeInterfaceCaseParam);
-                    // 手动写入，否则前置用例的跟踪链看不到
-                    InterfaceCaseExecuteLogDO modifyChain = new InterfaceCaseExecuteLogDO();
-                    modifyChain.setId(logId);
-                    modifyChain.setChain(JSON.toJSONString(redisUtil.stackGetAll(chainNo)));
-                    executeLogService.modifyExecuteLog(modifyChain);
-                    redisUtil.stackPush(chainNo, chainNode(RelyType.PRE_CASE_END, logId, caseInfoVO.getDesc(), null, TimeUtil.now()-start, null));
+                    this.executeInterfaceCase(executeInterfaceCaseParam);
                 } catch (BusinessException e) {
                     caseStatus = 2;
                     e.printStackTrace();
@@ -1153,6 +1165,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
                     }
                 }
             }
+            // 手动写入，否则前置用例的跟踪链看不到
+            redisUtil.stackPush(chainNo, chainNode(endRelyType, executedLogId, interfaceCaseInfoVO.getDesc(), null, TimeUtil.now()-methodStart, null));
+            InterfaceCaseExecuteLogDO modifyChain = new InterfaceCaseExecuteLogDO();
+            modifyChain.setId(executedLogId);
+            modifyChain.setChain(JSON.toJSONString(redisUtil.stackGetAll(chainNo)));
+            executeLogService.modifyExecuteLog(modifyChain);
             return executedLogId;
         }
     }
@@ -1651,7 +1669,19 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         JSONObject object = new JSONObject();
         String typeStr;
         String desc;
-        if (type == RelyType.INVOKE) {
+        if (type == RelyType.CASE_START) {
+            typeStr = "执行用例";
+            desc = "开始执行";
+        } else if (type == RelyType.CASE_END) {
+            typeStr = "执行用例";
+            desc = "执行完成";
+        } else if (type == RelyType.RELY_START) {
+            typeStr = "接口依赖";
+            desc = "开始执行";
+        } else if (type == RelyType.RELY_END) {
+            typeStr = "接口依赖";
+            desc = "执行完成";
+        } else if (type == RelyType.INVOKE) {
             typeStr = "反射方法";
             desc = "反射方法";
         } else if (type == RelyType.PRE_CASE_START){
