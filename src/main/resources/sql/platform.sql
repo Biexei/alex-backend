@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
-Source Server Version : 80020
+Source Server         : localhost
+Source Server Version : 80019
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80020
+Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2021-04-09 14:53:20
+Date: 2021-04-09 19:18:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -634,7 +634,7 @@ CREATE TABLE `t_interface_case_suite` (
 -- ----------------------------
 -- Records of t_interface_case_suite
 -- ----------------------------
-INSERT INTO `t_interface_case_suite` VALUES ('35', '测试', null, null, '2021-04-09 14:07:42', '超级管理员', '1', '4', '1');
+INSERT INTO `t_interface_case_suite` VALUES ('35', '测试', null, null, '2021-04-09 19:13:35', '超级管理员', '1', '4', '1');
 
 -- ----------------------------
 -- Table structure for t_interface_pre_case
@@ -892,6 +892,7 @@ CREATE TABLE `t_interface_suite_log` (
   `executor` varchar(20) DEFAULT NULL COMMENT '执行人',
   `is_retry` tinyint DEFAULT NULL COMMENT '是否失败重新 0是1否',
   `progress` tinyint DEFAULT NULL COMMENT '0进行中1执行完成2执行失败',
+  `percentage` int DEFAULT NULL COMMENT '执行进度百分比',
   PRIMARY KEY (`id`),
   UNIQUE KEY `suite_log_no` (`suite_log_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -914,12 +915,13 @@ CREATE TABLE `t_interface_suite_processor` (
   `created_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_suite_processor
 -- ----------------------------
-INSERT INTO `t_interface_suite_processor` VALUES ('45', '35', '0', '0', null, '', '2021-04-09 14:07:42', '2021-04-09 14:07:42');
+INSERT INTO `t_interface_suite_processor` VALUES ('50', '35', '0', '0', null, '${asd}', '2021-04-09 19:13:35', '2021-04-09 19:13:35');
+INSERT INTO `t_interface_suite_processor` VALUES ('51', '35', '1', '0', null, '', '2021-04-09 19:13:35', '2021-04-09 19:13:35');
 
 -- ----------------------------
 -- Table structure for t_module

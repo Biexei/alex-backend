@@ -25,6 +25,15 @@ public class InterfaceSuiteLogDO {
     private String executor;
     private Byte isRetry;
     private Byte progress;
+    private Integer percentage;
+
+    public Integer getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(Integer percentage) {
+        this.percentage = percentage;
+    }
 
     public Byte getProgress() {
         return progress;

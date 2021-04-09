@@ -7,7 +7,7 @@
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
         `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,`log`.`executor`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
-        `log`.`is_retry`,`log`.`total_retry`,`log`.`progress`,
+        `log`.`is_retry`,`log`.`total_retry`,`log`.`progress`,`log`.`percentage`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
         LEFT JOIN `t_interface_case_suite` as `suite`
@@ -30,7 +30,7 @@
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
         `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,`log`.`executor`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
-        `log`.`is_retry`,`log`.`total_retry`,`log`.`progress`,
+        `log`.`is_retry`,`log`.`total_retry`,`log`.`progress`,`log`.`percentage`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
         LEFT JOIN `t_interface_case_suite` as `suite`
@@ -41,7 +41,7 @@
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
         `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,`log`.`executor`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
-        `log`.`is_retry`,`log`.`total_retry`,`log`.`progress`,
+        `log`.`is_retry`,`log`.`total_retry`,`log`.`progress`,`log`.`percentage`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
         LEFT JOIN `t_interface_case_suite` as `suite`
@@ -68,6 +68,7 @@
             <if test="isRetry!=null">`is_retry`,</if>
             <if test="totalRetry!=null">`total_retry`,</if>
             <if test="progress!=null">`progress`,</if>
+            <if test="percentage!=null">`percentage`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="suiteId!=null">#{suiteId},</if>
@@ -87,6 +88,7 @@
             <if test="isRetry!=null">#{isRetry},</if>
             <if test="totalRetry!=null">#{totalRetry},</if>
             <if test="progress!=null">#{progress},</if>
+            <if test="percentage!=null">#{percentage},</if>
         </trim>
     </insert>
 
@@ -110,6 +112,7 @@
             <if test="executor != null">`executor`=#{executor},</if>
             <if test="isRetry != null">`is_retry`=#{isRetry},</if>
             <if test="progress != null">`progress`=#{progress},</if>
+            <if test="percentage != null">`percentage`=#{percentage},</if>
         </set>
         where `id` = #{id}
     </update>

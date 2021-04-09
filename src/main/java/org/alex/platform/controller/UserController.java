@@ -1,18 +1,15 @@
 package org.alex.platform.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import org.alex.platform.common.Key;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
-import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.UserDO;
 import org.alex.platform.pojo.UserVO;
-import org.alex.platform.service.PermissionService;
 import org.alex.platform.service.RoleService;
 import org.alex.platform.service.UserService;
-import com.github.pagehelper.PageInfo;
 import org.alex.platform.util.MD5Util;
+import org.alex.platform.util.NoUtil;
 import org.alex.platform.util.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,8 +49,7 @@ public class UserController {
     public Result users(UserDO userDO, Integer pageNum, Integer pageSize) {
         pageNum = pageNum == null ? 1 : pageNum;
         pageSize = pageSize == null ? 10 : pageSize;
-        PageInfo pageInfo = userService.findUserList(userDO, pageNum, pageSize);
-        return Result.success(pageInfo);
+        return Result.success(userService.findUserList(userDO, pageNum, pageSize));
     }
 
     /**
@@ -132,7 +128,7 @@ public class UserController {
      */
     @PostMapping("/user/login")
     @ResponseBody
-    public Result login(String username, String password) throws ValidException {
+    public Result login(String username, String password) {
         if (null == username || "".equals(username) || null == password || "".equals(password)) {
             LOG.error("帐号名或者密码错误");
             return Result.fail("帐号名或者密码错误");
@@ -195,7 +191,7 @@ public class UserController {
      */
     @GetMapping("/user/reset/{userId}")
     public Result pwdReset(@PathVariable Integer userId) throws BusinessException {
-        userService.pwdReset(userId, MD5Util.md5ForLoginPassword(Key.DEFAULT_PWD));
+        userService.pwdReset(userId, MD5Util.md5ForLoginPassword(NoUtil.DEFAULT_PWD));
         return Result.success("操作成功");
     }
 }

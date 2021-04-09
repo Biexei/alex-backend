@@ -180,7 +180,9 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         initDO.setExecutor(executor);
         initDO.setIsRetry(interfaceCaseSuiteVO.getIsRetry());
         initDO.setProgress((byte)0);
+        initDO.setPercentage(0);
         InterfaceSuiteLogDO saveDO = interfaceSuiteLogService.saveIfSuiteLog(initDO);
+        int id = saveDO.getId();
 
 
         // 获取测试套件前置处理器
@@ -188,7 +190,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         try {
             this.executeRely(suiteId, (byte) 0, suiteLogDetailNo);
         } catch (Exception e) {
-            this.modifyProgress(saveDO.getId(), 2);
+            this.updateProgressFailed(id);
             LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
             throw new BusinessException("前置处理器执行失败");
@@ -203,6 +205,8 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             globalParams = this.globalParams(suiteId, suiteLogDetailNo);
             globalData = this.globalData(suiteId, suiteLogDetailNo);
         } catch (Exception e) {
+            this.updateProgressFailed(saveDO.getId());
+            this.updateProgressPercentage(saveDO.getId(), 0);
             LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
             throw new BusinessException("前置处理器执行失败");
@@ -210,9 +214,6 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
 
         if (type == 0) { // 异步
             LOG.info("-----------------------开始并行执行测试套件，suiteId={}-----------------------", suiteId);
-            HashMap finalGlobalHeaders = globalHeaders;
-            HashMap finalGlobalParams = globalParams;
-            HashMap finalGlobalData = globalData;
             suiteCaseList.parallelStream().forEach(suiteCase -> {
                 Integer caseId = suiteCase.getCaseId();
                 boolean doRetryFlag = false;
@@ -226,7 +227,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                     } else {
                         Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                                 caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
-                                finalGlobalHeaders, finalGlobalParams, finalGlobalData, (byte)2, null));
+                                globalHeaders, globalParams, globalData, (byte)2, null));
                         InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = interfaceCaseExecuteLogMapper.selectExecute(executeLogId);
                         Byte status = interfaceCaseExecuteLogVO.getStatus();
                         if (status == 0) {
@@ -237,7 +238,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                                 totalRetry.getAndIncrement();
                                 Integer retryExecuteLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                                         caseId, executor, suiteLogNo, NoUtil.genChainNo(), suiteId, (byte) 0, suiteLogDetailNo,
-                                        finalGlobalHeaders, finalGlobalParams, finalGlobalData, (byte)2, null));
+                                        globalHeaders, globalParams, globalData, (byte)2, null));
                                 InterfaceCaseExecuteLogVO retryVO = interfaceCaseExecuteLogMapper.selectExecute(retryExecuteLogId);
                                 Byte retryStatus = retryVO.getStatus();
                                 if (retryStatus == 0) {
@@ -247,7 +248,6 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                                 } else {
                                     totalError.getAndIncrement();
                                 }
-                                doRetryFlag = false;
                             } else {
                                 totalFailed.getAndIncrement();
                             }
@@ -257,18 +257,15 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                         totalRunCase.getAndIncrement();
                     }
                 } catch (Exception e) {
-                    this.modifyProgress(saveDO.getId(), 2);
+                    this.updateProgressFailed(id);
+                    int percent = this.updateProgressCache(suiteLogProgressNo, suiteCaseList.size(),
+                            totalRunCase, totalSkip);
+                    this.updateProgressPercentage(id, percent);
                     LOG.error("并行执行测试套件出现异常，errorMsg={}", ExceptionUtil.msg(e));
                     throw new RuntimeException(e.getMessage());
                 }
-                float run = totalRunCase.floatValue() + totalSkip.floatValue();
                 int total = suiteCaseList.size();
-                if (total == 0 || run == 0) {
-                    redisUtil.set(suiteLogProgressNo, 0);
-                } else {
-                    int rate = (int) (run/total*100);
-                    redisUtil.set(suiteLogProgressNo, rate);
-                }
+                this.updateProgressCache(suiteLogProgressNo, total, totalRunCase, totalSkip);
             });
         } else { // 同步
             LOG.info("-----------------------开始串行执行测试套件，suiteId={}-----------------------", suiteId);
@@ -304,7 +301,6 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                             } else {
                                 totalError.getAndIncrement();
                             }
-                            doRetryFlag = false;
                         } else {
                             totalFailed.getAndIncrement();
                         }
@@ -313,14 +309,8 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                     }
                     totalRunCase.getAndIncrement();
                 }
-                float run = totalRunCase.floatValue() + totalSkip.floatValue();
                 int total = suiteCaseList.size();
-                if (total == 0 || run == 0) {
-                    redisUtil.set(suiteLogProgressNo, 0);
-                } else {
-                    int rate = (int) (run/total*100);
-                    redisUtil.set(suiteLogProgressNo, rate);
-                }
+                this.updateProgressCache(suiteLogProgressNo, total, totalRunCase, totalSkip);
             }
         }
 
@@ -345,6 +335,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         interfaceSuiteLogDO.setExecutor(executor);
         interfaceSuiteLogDO.setIsRetry(interfaceCaseSuiteVO.getIsRetry());
         interfaceSuiteLogDO.setProgress((byte)1);
+        interfaceSuiteLogDO.setPercentage(100);
         // 仅开启失败重跑才写入该字段，否则连0都不准写
         if (isRetry.get()) {
             interfaceSuiteLogDO.setTotalRetry(totalRetry.intValue());
@@ -361,7 +352,9 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         try {
             this.executeRely(suiteId, (byte) 1, suiteLogDetailNo);
         } catch (Exception e) {
-            this.modifyProgress(saveDO.getId(), 2);
+            this.updateProgressFailed(id);
+            redisUtil.set(suiteLogProgressNo, 99, 60*60*12);
+            this.updateProgressPercentage(id, 99);
             LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
             throw new BusinessException("后置处理器执行失败");
@@ -402,9 +395,9 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         }
         LOG.info("-----------------------执行测试套件={}，用例编号={}前置处理器依赖执行完成-----------------------", suiteId, caseId);
 
-        HashMap globalHeaders = null;
-        HashMap globalParams = null;
-        HashMap globalData = null;
+        HashMap globalHeaders;
+        HashMap globalParams;
+        HashMap globalData;
         try {
             globalHeaders = this.globalHeaders(suiteId, suiteLogDetailNo);
             globalParams = this.globalParams(suiteId, suiteLogDetailNo);
@@ -534,13 +527,43 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
 
     /**
      * 修改测试套件执行日志状态
-     * @param suiteLogId 测试套件日志
-     * @param progress 进度 0执行中1执行成功2执行失败
+     * @param suiteLogId 测试套件日志编号
      */
-    private void modifyProgress(Integer suiteLogId, int progress) {
+    private void updateProgressFailed(Integer suiteLogId) {
         InterfaceSuiteLogDO logDO = new InterfaceSuiteLogDO();
         logDO.setId(suiteLogId);
-        logDO.setProgress((byte)progress);
+        logDO.setProgress((byte)2);
         interfaceSuiteLogService.modifyIfSuiteLog(logDO);
+    }
+
+    /**
+     * 修改测试套件执行进度百分比
+     * @param suiteLogId 测试套件日志编号
+     * @param percentage 百分比
+     */
+    private void updateProgressPercentage(Integer suiteLogId, int percentage) {
+        InterfaceSuiteLogDO logDO = new InterfaceSuiteLogDO();
+        logDO.setId(suiteLogId);
+        logDO.setPercentage(percentage);
+        interfaceSuiteLogService.modifyIfSuiteLog(logDO);
+    }
+
+    /**
+     * 缓存进度进度
+     * @param suiteLogProgressNo suiteLogProgressNo
+     * @param total 总用例
+     * @param totalRunCase 总运行
+     * @param totalSkip 总跳过
+     */
+    private int updateProgressCache(String suiteLogProgressNo, int total, AtomicInteger totalRunCase, AtomicInteger totalSkip) {
+        float run = totalRunCase.floatValue() + totalSkip.floatValue();
+        if (total == 0 || run == 0) {
+            redisUtil.set(suiteLogProgressNo, 0, 60*60*12);
+            return 0;
+        } else {
+            int rate = (int) (run/total*100);
+            redisUtil.set(suiteLogProgressNo, rate,60*60*12);
+            return rate;
+        }
     }
 }

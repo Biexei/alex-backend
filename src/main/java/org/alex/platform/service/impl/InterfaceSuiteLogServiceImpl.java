@@ -45,12 +45,15 @@ public class InterfaceSuiteLogServiceImpl implements InterfaceSuiteLogService {
         ArrayList<InterfaceSuiteLogVO> vos = interfaceSuiteLogMapper.selectIfSuiteLog(interfaceSuiteLogDTO);
         List<InterfaceSuiteLogVO> result = vos.stream().map(vo -> {
             String suiteLogNo = vo.getSuiteLogNo();
+            Integer id = vo.getId();
             Byte progress = vo.getProgress(); // 0进行中1执行完成2执行失败
             String logProgressNo = NoUtil.genSuiteLogProgressNo(suiteLogNo);
             Integer percentage = (Integer) redisUtil.get(logProgressNo);
             if (progress == 0 || progress == 2) {
                 if (percentage == null) {
-                    vo.setPercentage(0);
+                    InterfaceSuiteLogVO suiteLog = this.findIfSuiteLogById(id);
+                    Integer dbPercent = suiteLog.getPercentage();
+                    vo.setPercentage(dbPercent == null ? 0 : dbPercent);
                 } else {
                     vo.setPercentage(percentage);
                 }

@@ -7,7 +7,7 @@
 		"desc": "用户注册接口",
 		"doc": "",
 		"headers": "{'Token':'${token}'}",
-		"schemaType": "data",
+		"schemaType": "json",
 		"validEquivalenceClass": {
 			"caseLevel": "高",
 			"asserts": [

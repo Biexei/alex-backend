@@ -7,7 +7,13 @@ import java.util.UUID;
 public class NoUtil {
 
     // 当接口未包含在测试套件时，且定义了后置处理器，全局都使用该名称作为缓存key
-    public static final String TEMP_POST_PROCESSOR_NO = "tempPostProcessor";
+    public static final String TEMP_POST_PROCESSOR_NO = "TEMP_POST_PROCESSOR_NO";
+
+    // 重置密码默认密码
+    public static final String DEFAULT_PWD = "123456";
+
+    // 用户密码盐
+    public static final String PWD_SALT = "66CD1CF5$C062#401C@8C21!13A94F950955";
 
     /**
      * 生成测试套件执行日志编号
