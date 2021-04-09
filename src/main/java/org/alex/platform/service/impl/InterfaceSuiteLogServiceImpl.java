@@ -9,6 +9,8 @@ import org.alex.platform.pojo.InterfaceSuiteLogDTO;
 import org.alex.platform.pojo.InterfaceSuiteLogVO;
 import org.alex.platform.pojo.InterfaceSuiteSummaryDTO;
 import org.alex.platform.service.InterfaceSuiteLogService;
+import org.alex.platform.util.NoUtil;
+import org.alex.platform.util.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InterfaceSuiteLogServiceImpl implements InterfaceSuiteLogService {
+    @Autowired
+    RedisUtil redisUtil;
     @Autowired
     InterfaceSuiteLogMapper interfaceSuiteLogMapper;
     @Autowired
@@ -36,7 +42,24 @@ public class InterfaceSuiteLogServiceImpl implements InterfaceSuiteLogService {
     @Override
     public PageInfo<InterfaceSuiteLogVO> findIfSuiteLog(InterfaceSuiteLogDTO interfaceSuiteLogDTO, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo<>(interfaceSuiteLogMapper.selectIfSuiteLog(interfaceSuiteLogDTO));
+        ArrayList<InterfaceSuiteLogVO> vos = interfaceSuiteLogMapper.selectIfSuiteLog(interfaceSuiteLogDTO);
+        List<InterfaceSuiteLogVO> result = vos.stream().map(vo -> {
+            String suiteLogNo = vo.getSuiteLogNo();
+            Byte progress = vo.getProgress(); // 0进行中1执行完成2执行失败
+            String logProgressNo = NoUtil.genSuiteLogProgressNo(suiteLogNo);
+            Integer percentage = (Integer) redisUtil.get(logProgressNo);
+            if (progress == 0 || progress == 2) {
+                if (percentage == null) {
+                    vo.setPercentage(0);
+                } else {
+                    vo.setPercentage(percentage);
+                }
+            } else {
+                vo.setPercentage(100);
+            }
+            return vo;
+        }).collect(Collectors.toList());
+        return new PageInfo<>(result);
     }
 
     /**
@@ -71,6 +94,15 @@ public class InterfaceSuiteLogServiceImpl implements InterfaceSuiteLogService {
     public InterfaceSuiteLogDO saveIfSuiteLog(InterfaceSuiteLogDO interfaceSuiteLogDO) {
         interfaceSuiteLogMapper.insertIfSuiteLog(interfaceSuiteLogDO);
         return interfaceSuiteLogDO;
+    }
+
+    /**
+     * 修改测试套件执行日志
+     * @param interfaceSuiteLogDO interfaceSuiteLogDO
+     */
+    @Override
+    public void modifyIfSuiteLog(InterfaceSuiteLogDO interfaceSuiteLogDO) {
+        interfaceSuiteLogMapper.updateIfSuiteLog(interfaceSuiteLogDO);
     }
 
     /**

@@ -23,6 +23,16 @@ public class NoUtil {
     }
 
     /**
+     * 生成测试套件执行日志编号进度缓存key
+     * 每执行一个测试套件用例，都根据该编号去调整缓存中的执行状态
+     * @return 测试套件执行日志进度编号
+     */
+    public static String genSuiteLogProgressNo(String suiteLogNo) {
+
+        return "PROGRESS-" + suiteLogNo;
+    }
+
+    /**
      * 生成测试套件执行日志细节编号，主要用于调用依赖case标记
      *
      * @param suiteLogNo 测试套件执行日志编号

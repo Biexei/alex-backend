@@ -18,6 +18,15 @@ public class InterfaceSuiteInfoVO implements Serializable {
     private Byte executeType;
     private Byte runDev;
     private Byte isRetry;
+    private Byte progress;
+
+    public Byte getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Byte progress) {
+        this.progress = progress;
+    }
 
     private List<InterfaceSuiteProcessorVO> suiteProcessors;
 

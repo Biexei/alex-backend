@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
+@SuppressWarnings({"unchecked","rawtypes"})
 public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefService {
     @Autowired
     InterfaceSuiteCaseRefMapper interfaceSuiteCaseRefMapper;
@@ -155,9 +156,11 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         Byte runDev = interfaceCaseSuiteVO.getRunDev();
         AtomicBoolean isRetry = new AtomicBoolean(interfaceCaseSuiteVO.getIsRetry() == 0);
 
-        // 写入测试套件执行日志表
+        Date startTime = new Date();
+        long begin = System.currentTimeMillis();
         String suiteLogNo = NoUtil.genSuiteLogNo();
         String suiteLogDetailNo = NoUtil.genSuiteLogDetailNo(suiteLogNo);
+        String suiteLogProgressNo = NoUtil.genSuiteLogProgressNo(suiteLogNo);
         AtomicInteger totalRunCase = new AtomicInteger();
         Integer totalCase = suiteCaseList.size();
         AtomicInteger totalSkip = new AtomicInteger();
@@ -165,23 +168,36 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         AtomicInteger totalFailed = new AtomicInteger();
         AtomicInteger totalError = new AtomicInteger();
         AtomicInteger totalRetry = new AtomicInteger();
-        Date startTime = new Date();
-        long begin = System.currentTimeMillis();
+
+        // 在正式调度前写入记录，并将进度置为正在进行中
+        InterfaceSuiteLogDO initDO = new InterfaceSuiteLogDO();
+        initDO.setSuiteId(suiteId);
+        initDO.setSuiteLogNo(suiteLogNo);
+        initDO.setTotalCase(totalCase);
+        initDO.setStartTime(startTime);
+        initDO.setExecuteType(type);
+        initDO.setRunDev(runDev);
+        initDO.setExecutor(executor);
+        initDO.setIsRetry(interfaceCaseSuiteVO.getIsRetry());
+        initDO.setProgress((byte)0);
+        InterfaceSuiteLogDO saveDO = interfaceSuiteLogService.saveIfSuiteLog(initDO);
+
 
         // 获取测试套件前置处理器
         LOG.info("-----------------------开始前置处理器依赖执行-----------------------");
         try {
             this.executeRely(suiteId, (byte) 0, suiteLogDetailNo);
         } catch (Exception e) {
+            this.modifyProgress(saveDO.getId(), 2);
             LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
             throw new BusinessException("前置处理器执行失败");
         }
         LOG.info("-----------------------前置处理器依赖执行完成-----------------------");
 
-        HashMap globalHeaders = null;
-        HashMap globalParams = null;
-        HashMap globalData = null;
+        HashMap globalHeaders;
+        HashMap globalParams;
+        HashMap globalData;
         try {
             globalHeaders = this.globalHeaders(suiteId, suiteLogDetailNo);
             globalParams = this.globalParams(suiteId, suiteLogDetailNo);
@@ -241,8 +257,17 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                         totalRunCase.getAndIncrement();
                     }
                 } catch (Exception e) {
+                    this.modifyProgress(saveDO.getId(), 2);
                     LOG.error("并行执行测试套件出现异常，errorMsg={}", ExceptionUtil.msg(e));
                     throw new RuntimeException(e.getMessage());
+                }
+                float run = totalRunCase.floatValue() + totalSkip.floatValue();
+                int total = suiteCaseList.size();
+                if (total == 0 || run == 0) {
+                    redisUtil.set(suiteLogProgressNo, 0);
+                } else {
+                    int rate = (int) (run/total*100);
+                    redisUtil.set(suiteLogProgressNo, rate);
                 }
             });
         } else { // 同步
@@ -288,13 +313,22 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
                     }
                     totalRunCase.getAndIncrement();
                 }
+                float run = totalRunCase.floatValue() + totalSkip.floatValue();
+                int total = suiteCaseList.size();
+                if (total == 0 || run == 0) {
+                    redisUtil.set(suiteLogProgressNo, 0);
+                } else {
+                    int rate = (int) (run/total*100);
+                    redisUtil.set(suiteLogProgressNo, rate);
+                }
             }
         }
 
-        // 写入测试套件执行日志表
+        // 修改测试套件执行日志表
         long end = System.currentTimeMillis();
         Date endTime = new Date();
         InterfaceSuiteLogDO interfaceSuiteLogDO = new InterfaceSuiteLogDO();
+        interfaceSuiteLogDO.setId(saveDO.getId()); //新增自增key
         interfaceSuiteLogDO.setSuiteId(suiteId);
         interfaceSuiteLogDO.setSuiteLogNo(suiteLogNo);
         interfaceSuiteLogDO.setRunTime((end - begin));
@@ -310,13 +344,14 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         interfaceSuiteLogDO.setRunDev(runDev);
         interfaceSuiteLogDO.setExecutor(executor);
         interfaceSuiteLogDO.setIsRetry(interfaceCaseSuiteVO.getIsRetry());
+        interfaceSuiteLogDO.setProgress((byte)1);
         // 仅开启失败重跑才写入该字段，否则连0都不准写
         if (isRetry.get()) {
             interfaceSuiteLogDO.setTotalRetry(totalRetry.intValue());
         } else {
             interfaceSuiteLogDO.setTotalRetry(null);
         }
-        interfaceSuiteLogService.saveIfSuiteLog(interfaceSuiteLogDO);
+        interfaceSuiteLogService.modifyIfSuiteLog(interfaceSuiteLogDO);
         LOG.info("写入测试套件执行日志表，suiteLogNo={}，success={}，failed={}，error={}, skip={}, 运行环境={}, 执行方式={}",
                 suiteLogNo, totalSuccess.intValue(), totalFailed.intValue(), totalError.intValue()
                 , totalSkip.intValue(), type, runDev);
@@ -326,6 +361,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
         try {
             this.executeRely(suiteId, (byte) 1, suiteLogDetailNo);
         } catch (Exception e) {
+            this.modifyProgress(saveDO.getId(), 2);
             LOG.error(ExceptionUtil.msg(e));
             e.printStackTrace();
             throw new BusinessException("后置处理器执行失败");
@@ -335,6 +371,9 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
 
         // 删除后置处理器缓存
         redisUtil.del(suiteLogDetailNo);
+
+        // 删除进度缓存
+        redisUtil.del(suiteLogProgressNo);
 
         return suiteLogNo;
     }
@@ -491,5 +530,17 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
      */
     private HashMap globalData(Integer suiteId, String suiteLogDetailNo) throws BusinessException, ParseException, SqlException {
         return JsonUtil.jsonString2HashMap(this.getPreProcessor(suiteId, (byte) 3, suiteLogDetailNo));
+    }
+
+    /**
+     * 修改测试套件执行日志状态
+     * @param suiteLogId 测试套件日志
+     * @param progress 进度 0执行中1执行成功2执行失败
+     */
+    private void modifyProgress(Integer suiteLogId, int progress) {
+        InterfaceSuiteLogDO logDO = new InterfaceSuiteLogDO();
+        logDO.setId(suiteLogId);
+        logDO.setProgress((byte)progress);
+        interfaceSuiteLogService.modifyIfSuiteLog(logDO);
     }
 }

@@ -19,6 +19,8 @@ public interface InterfaceSuiteLogService {
 
     InterfaceSuiteLogDO saveIfSuiteLog(InterfaceSuiteLogDO interfaceSuiteLogDO);
 
+    void modifyIfSuiteLog(InterfaceSuiteLogDO interfaceSuiteLogDO);
+
     ArrayList<HashMap<String, Object>> findSuiteLogSummary(String suiteLogNo);
 
     HashMap<String, Object> findSuiteReportAssert(String suiteLogNo);

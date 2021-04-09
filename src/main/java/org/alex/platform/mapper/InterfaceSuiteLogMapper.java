@@ -4,6 +4,7 @@ import org.alex.platform.pojo.InterfaceSuiteLogDO;
 import org.alex.platform.pojo.InterfaceSuiteLogDTO;
 import org.alex.platform.pojo.InterfaceSuiteLogVO;
 import org.alex.platform.pojo.InterfaceSuiteSummaryDTO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public interface InterfaceSuiteLogMapper {
     InterfaceSuiteLogVO selectIfSuiteLogById(Integer id);
 
     Integer insertIfSuiteLog(InterfaceSuiteLogDO interfaceSuiteLogDO);
+
+    Integer updateIfSuiteLog(InterfaceSuiteLogDO interfaceSuiteLogDO);
 
     ArrayList<HashMap<String, Object>> selectSuiteLogProjectModule(String suiteLogNo);
 

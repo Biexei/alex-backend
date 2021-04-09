@@ -16,6 +16,15 @@ public class InterfaceSuiteLogDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdEndTime;
     private String executor;
+    private Byte progress;
+
+    public Byte getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Byte progress) {
+        this.progress = progress;
+    }
 
     public String getExecutor() {
         return executor;

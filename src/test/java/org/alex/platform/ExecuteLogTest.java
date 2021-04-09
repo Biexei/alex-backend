@@ -1,6 +1,7 @@
 package org.alex.platform;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sun.org.apache.bcel.internal.generic.FLOAD;
 import org.alex.platform.mapper.InterfaceCaseExecuteLogMapper;
 import org.alex.platform.mapper.InterfaceCaseMapper;
 import org.alex.platform.pojo.InterfaceCaseExecuteLogDO;
@@ -25,15 +26,8 @@ public class ExecuteLogTest {
 
     @Test
     public void testInfo(){
-        HashMap map = new HashMap();
-        map.put("a", "1");
-        map.put("b", "2");
-        InterfaceCaseExecuteLogDO logDO = new InterfaceCaseExecuteLogDO();
-        logDO.setCaseDesc("case desc");
-        logDO.setRequestHeaders(JSONObject.toJSONString(map));
-        logDO.setCreatedTime(new Date());
-        //mapper.insertExecuteLog(logDO);
-
-        System.out.println(JSONObject.toJSONString(interfaceCaseMapper.selectInterfaceCaseByCaseId(6)));
+        float a = 1;
+        int b = 2;
+        System.out.println((a/b*100));
     }
 }

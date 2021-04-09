@@ -7,7 +7,7 @@
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
         `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,`log`.`executor`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
-        `log`.`is_retry`,`log`.`total_retry`,
+        `log`.`is_retry`,`log`.`total_retry`,`log`.`progress`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
         LEFT JOIN `t_interface_case_suite` as `suite`
@@ -22,6 +22,7 @@
             <if test="suiteLogNo!=null">and `log`.`suite_log_no` like concat('%',#{suiteLogNo},'%')</if>
             <if test="createdStartTime!=null">and `log`.`start_time`&gt;=#{createdStartTime}</if>
             <if test="createdEndTime!=null">and `log`.`start_time`&lt;=#{createdEndTime}</if>
+            <if test="progress!=null">and `log`.`progress`=#{progress}</if>
         </where>
         order by `log`.`id` desc
     </select>
@@ -29,7 +30,7 @@
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
         `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,`log`.`executor`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
-        `log`.`is_retry`,`log`.`total_retry`,
+        `log`.`is_retry`,`log`.`total_retry`,`log`.`progress`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
         LEFT JOIN `t_interface_case_suite` as `suite`
@@ -40,7 +41,7 @@
         select `log`.`id`, `log`.`suite_id`, `log`.`suite_log_no`, `log`.`run_time`, `log`.`total_run_case`,
         `log`.`total_case`,`log`.`total_skip`,`log`.`execute_type`,`log`.`run_dev`,`log`.`executor`,
         `log`.`total_success`, `log`.`total_failed`, `log`.`total_error`, `log`.`start_time`, `log`.`end_time`,
-        `log`.`is_retry`,`log`.`total_retry`,
+        `log`.`is_retry`,`log`.`total_retry`,`log`.`progress`,
         `suite`.`suite_name`, `suite`.`desc` as `suite_desc`
         from `t_interface_suite_log` as `log`
         LEFT JOIN `t_interface_case_suite` as `suite`
@@ -66,6 +67,7 @@
             <if test="executor!=null">`executor`,</if>
             <if test="isRetry!=null">`is_retry`,</if>
             <if test="totalRetry!=null">`total_retry`,</if>
+            <if test="progress!=null">`progress`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="suiteId!=null">#{suiteId},</if>
@@ -84,8 +86,33 @@
             <if test="executor!=null">#{executor},</if>
             <if test="isRetry!=null">#{isRetry},</if>
             <if test="totalRetry!=null">#{totalRetry},</if>
+            <if test="progress!=null">#{progress},</if>
         </trim>
     </insert>
+
+    <update id="updateIfSuiteLog" parameterType="org.alex.platform.pojo.InterfaceSuiteLogDO">
+        update `t_interface_suite_log`
+        <set>
+            <if test="suiteId != null">`suite_id`=#{suiteId},</if>
+            <if test="suiteLogNo != null">`suite_log_no`=#{suiteLogNo},</if>
+            <if test="runTime != null">`run_time`=#{runTime},</if>
+            <if test="totalCase != null">`total_case`=#{totalCase},</if>
+            <if test="totalRunCase != null">`total_run_case`=#{totalRunCase},</if>
+            <if test="totalSkip != null">`total_skip`=#{totalSkip},</if>
+            <if test="totalSuccess != null">`total_success`=#{totalSuccess},</if>
+            <if test="totalFailed != null">`total_failed`=#{totalFailed},</if>
+            <if test="totalError != null">`total_error`=#{totalError},</if>
+            <if test="totalRetry != null">`total_retry`=#{totalRetry},</if>
+            <if test="startTime != null">`start_time`=#{startTime},</if>
+            <if test="endTime != null">`end_time`=#{endTime},</if>
+            <if test="executeType != null">`execute_type`=#{executeType},</if>
+            <if test="runDev != null">`run_dev`=#{runDev},</if>
+            <if test="executor != null">`executor`=#{executor},</if>
+            <if test="isRetry != null">`is_retry`=#{isRetry},</if>
+            <if test="progress != null">`progress`=#{progress},</if>
+        </set>
+        where `id` = #{id}
+    </update>
 
     <select id="selectSuiteLogProjectModule" parameterType="String" resultType="java.util.HashMap">
         select `project`.`project_id`,`project`.`name` as `project_name`,

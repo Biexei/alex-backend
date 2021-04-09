@@ -24,6 +24,15 @@ public class InterfaceSuiteLogDO {
     private Byte runDev;
     private String executor;
     private Byte isRetry;
+    private Byte progress;
+
+    public Byte getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Byte progress) {
+        this.progress = progress;
+    }
 
     public Integer getTotalRetry() {
         return totalRetry;
