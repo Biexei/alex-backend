@@ -13,6 +13,7 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private Integer moduleId;
     private String moduleName;
     private String responseBody;
+    private String responseHeaders;
     private String executer;
     private Long runTime;
     private Byte status;
@@ -24,6 +25,14 @@ public class InterfaceCaseExecuteLogListVO implements Serializable {
     private Byte isFailedRetry;
     private Integer responseCode;
     private Byte source;
+
+    public String getResponseHeaders() {
+        return responseHeaders;
+    }
+
+    public void setResponseHeaders(String responseHeaders) {
+        this.responseHeaders = responseHeaders;
+    }
 
     public Byte getSource() {
         return source;
