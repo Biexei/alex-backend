@@ -588,8 +588,8 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             // 代理未开启
             caseStatus = 2;
             e.printStackTrace();
-            LOG.error("请检查是否启用代理服务器");
-            exceptionMessage = "请检查是否启用代理服务器";
+            LOG.error("连接超时，请检查超时设置/代理服务器");
+            exceptionMessage = "连接超时，请检查超时设置/代理服务器";
         } catch (Exception e) {
             // 出现异常则追加错误信息，并将case状态设置为2错误
             caseStatus = 2;

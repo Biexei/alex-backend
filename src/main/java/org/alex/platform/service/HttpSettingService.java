@@ -1,6 +1,7 @@
 package org.alex.platform.service;
 
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.HttpSettingDO;
 import org.alex.platform.pojo.HttpSettingDTO;
 import org.alex.platform.pojo.HttpSettingVO;
@@ -14,9 +15,11 @@ public interface HttpSettingService {
 
     PageInfo<HttpSettingVO> findHttpSetting(HttpSettingDTO httpSettingDTO, Integer pageNum, Integer pageSize);
 
-    void saveHttpSetting(HttpSettingDO httpSettingDO);
+    PageInfo<HttpSettingVO> findHttpSettingTimeout(HttpSettingDTO httpSettingDTO, Integer pageNum, Integer pageSize);
 
-    void modifyHttpSetting(HttpSettingDO httpSettingDO);
+    void saveHttpSetting(HttpSettingDO httpSettingDO) throws ValidException;
+
+    void modifyHttpSetting(HttpSettingDO httpSettingDO) throws ValidException;
 
     void removeHttpSetting(Integer settingId);
 

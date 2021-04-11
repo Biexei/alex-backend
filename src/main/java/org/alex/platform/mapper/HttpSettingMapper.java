@@ -15,6 +15,8 @@ public interface HttpSettingMapper {
 
     List<HttpSettingVO> selectHttpSetting(HttpSettingDTO httpSettingDTO);
 
+    List<HttpSettingVO> selectHttpSettingTimeout(HttpSettingDTO httpSettingDTO);
+
     void insertHttpSetting(HttpSettingDO httpSettingDO);
 
     void updateHttpSetting(HttpSettingDO httpSettingDO);
@@ -22,6 +24,10 @@ public interface HttpSettingMapper {
     void deleteHttpSetting(Integer settingId);
 
     void closeOtherProxy(Integer settingId);
+
+    void closeOtherConnectTimeout(Integer settingId);
+
+    void closeOtherReadTimeout(Integer settingId);
 
     ArrayList<String> selectAllEmail();
 }

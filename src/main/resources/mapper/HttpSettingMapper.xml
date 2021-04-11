@@ -26,8 +26,23 @@
             <if test="status!=null">and `status`=#{status}</if>
             <if test="type!=null">and `type`=#{type}</if>
         </where>
-        order by `type`
+        order by `status` asc, `type`
     </select>
+
+    <select id="selectHttpSettingTimeout" parameterType="org.alex.platform.pojo.HttpSettingDTO" resultType="org.alex.platform.pojo.HttpSettingVO">
+        select `setting_id`, `name`, `value`, `desc`, `status`, `type`, `created_time`, `update_time`
+        from `t_http_setting`
+        <where>
+            <if test="type==null">and `type` in (3, 4)</if>
+            <if test="settingId!=null">and `setting_id`=#{settingId}</if>
+            <if test="name!=null">and `name` like concat('%',#{name},'%')</if>
+            <if test="value!=null">and `value` like concat('%',#{value},'%')</if>
+            <if test="desc!=null">and `desc` like concat('%',#{desc},'%')</if>
+            <if test="status!=null">and `status`=#{status}</if>
+        </where>
+        order by `status` asc, `type`
+    </select>
+
     <insert id="insertHttpSetting" parameterType="org.alex.platform.pojo.HttpSettingDO">
         insert into `t_http_setting`
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -64,9 +79,19 @@
     <delete id="deleteHttpSetting" parameterType="Integer">
         delete from `t_http_setting` where `setting_id`=#{settingId}
     </delete>
-    <update id="closeOtherProxy" parameterType="org.alex.platform.pojo.HttpSettingDO">
+    <update id="closeOtherProxy" parameterType="Integer">
         update `t_http_setting`
         set `status`=1
         where `setting_id`!=#{settingId} and `type`=0
+    </update>
+    <update id="closeOtherConnectTimeout" parameterType="Integer">
+        update `t_http_setting`
+        set `status`=1
+        where `setting_id`!=#{settingId} and `type`=3
+    </update>
+    <update id="closeOtherReadTimeout" parameterType="Integer">
+        update `t_http_setting`
+        set `status`=1
+        where `setting_id`!=#{settingId} and `type`=4
     </update>
 </mapper>

@@ -32,6 +32,9 @@ import java.util.regex.Pattern;
 public class RestUtil {
     @Autowired
     HttpSettingMapper httpSettingMapper;
+
+    private static final int DEFAULT_CONNECT_TIMEOUT = 30 * 1000;
+    private static final int DEFAULT_READ_TIMEOUT = 30 * 1000;
     private static RestUtil restUtil;
 
     private static class SingleRestTemplate {
@@ -40,6 +43,16 @@ public class RestUtil {
 
     public static RestTemplate getInstance() {
         RestTemplate restTemplate = SingleRestTemplate.INSTANCE;
+        restTemplate.setRequestFactory(requestFactory());
+        restTemplate.setErrorHandler(errorHandler());
+        return restTemplate;
+    }
+
+    /**
+     * 配置请求设置
+     * @return 请求设置
+     */
+    private static SimpleClientHttpRequestFactory requestFactory() {
         SimpleClientHttpRequestFactory sh = new SimpleClientHttpRequestFactory();
         HttpSettingVO proxy = getProxy();
         if (proxy != null) {
@@ -48,10 +61,29 @@ public class RestUtil {
             int port = Integer.parseInt(domain[1]);
             sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port)));
         }
-        sh.setConnectTimeout(20 * 1000);
-        sh.setReadTimeout(20 * 1000);
-        restTemplate.setRequestFactory(sh);
-        restTemplate.setErrorHandler(new ResponseErrorHandler() {
+        Integer connectTimeout = getTimeout(true);
+        Integer readTimeout = getTimeout(false);
+        if (connectTimeout == null) {
+            connectTimeout = DEFAULT_CONNECT_TIMEOUT;
+        } else if (connectTimeout < 0) {
+            connectTimeout = -1;
+        }
+        if (readTimeout == null) {
+            readTimeout = DEFAULT_READ_TIMEOUT;
+        } else if (readTimeout < 0) {
+            readTimeout = -1;
+        }
+        sh.setConnectTimeout(connectTimeout);
+        sh.setReadTimeout(readTimeout);
+        return sh;
+    }
+
+    /**
+     * 错误处理
+     * @return 错误处理
+     */
+    private static ResponseErrorHandler errorHandler() {
+        return new ResponseErrorHandler() {
             @Override
             public boolean hasError(ClientHttpResponse clientHttpResponse) {
                 return false;
@@ -61,27 +93,7 @@ public class RestUtil {
             public void handleError(ClientHttpResponse clientHttpResponse) {
 
             }
-        });
-        // 4.配置全局headers
-        // 2020-10-12去除，造成并行执行case时java.util.ConcurrentModificationException
-//        restTemplate.getInterceptors().add(new ClientHttpRequestInterceptor() {
-//            @Override
-//            public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution
-//                    clientHttpRequestExecution) throws IOException {
-//                HttpHeaders headers = httpRequest.getHeaders();
-//                // 1.设置请求头
-//                List<HttpSettingVO> header = getHeader();
-//                if (!header.isEmpty()) {
-//                    for (HttpSettingVO httpSettingVO : header) {
-//                        LinkedList<String> list = new LinkedList<>();
-//                        list.add(httpSettingVO.getValue());
-//                        headers.put(httpSettingVO.getName(), list);
-//                    }
-//                }
-//                return clientHttpRequestExecution.execute(httpRequest, bytes);
-//            }
-//        });
-        return restTemplate;
+        };
     }
 
     /**
@@ -339,10 +351,28 @@ public class RestUtil {
         }
     }
 
-    public static List<HttpSettingVO> getHeader() {
+    /**
+     * 获取超时时常单位秒，0ConnectTimeout  1ReadTimeout
+     * @return 秒
+     */
+    public static Integer getTimeout(boolean isConnectTimeout) {
         HttpSettingDTO httpSettingDTO = new HttpSettingDTO();
         httpSettingDTO.setStatus((byte)0);
-        httpSettingDTO.setType((byte)1);
-        return restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO);
+        if (isConnectTimeout) {
+            httpSettingDTO.setType((byte) 3);
+        } else {
+            httpSettingDTO.setType((byte) 4);
+        }
+        List<HttpSettingVO> list = restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO);
+        if (!list.isEmpty()) {
+            String value = list.get(0).getValue();
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }

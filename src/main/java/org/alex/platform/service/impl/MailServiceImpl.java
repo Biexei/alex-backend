@@ -6,6 +6,7 @@ import org.alex.platform.util.ExceptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Service;
 public class MailServiceImpl implements MailService {
     @Autowired
     private JavaMailSender javaMailSender;
-    private static final String FROM = "biexei@163.com";
+    @Value("${spring.mail.username}")
+    private String from;
     private static final Logger LOG = LoggerFactory.getLogger(MailServiceImpl.class);
 
     /**
@@ -28,7 +30,7 @@ public class MailServiceImpl implements MailService {
      */
     public void send(String subject, String text, String... to) throws BusinessException {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom(FROM);
+        simpleMailMessage.setFrom(from);
         simpleMailMessage.setTo(to);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(text);

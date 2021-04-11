@@ -2,6 +2,7 @@ package org.alex.platform.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.HttpSettingMapper;
 import org.alex.platform.pojo.HttpSettingDO;
 import org.alex.platform.pojo.HttpSettingDTO;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.regex.Pattern;
 
 @Service
 public class HttpSettingServiceImpl implements HttpSettingService {
@@ -46,12 +49,36 @@ public class HttpSettingServiceImpl implements HttpSettingService {
     }
 
     /**
+     * 获取配置项列表(超时 即type == 3 || type == 4)
+     *
+     * @param httpSettingDTO httpSettingDTO
+     * @param pageNum        pageNum
+     * @param pageSize       pageSize
+     * @return PageInfo<HttpSettingVO>
+     */
+    @Override
+    public PageInfo<HttpSettingVO> findHttpSettingTimeout(HttpSettingDTO httpSettingDTO, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        return new PageInfo<>(httpSettingMapper.selectHttpSettingTimeout(httpSettingDTO));
+    }
+
+    /**
      * 新增配置项
      *
      * @param httpSettingDO httpSettingDO
      */
     @Override
-    public void saveHttpSetting(HttpSettingDO httpSettingDO) {
+    public void saveHttpSetting(HttpSettingDO httpSettingDO) throws ValidException {
+        this.checkDO(httpSettingDO);
+        Date date = new Date();
+        httpSettingDO.setCreatedTime(date);
+        httpSettingDO.setUpdateTime(date);
+        Byte type = httpSettingDO.getType();
+        if (type == 0 || type ==3 || type == 4) { // 若为代理/ConnectTimeout/ReadTimeout则将状态置为未启用
+            httpSettingDO.setStatus((byte) 1);
+        } else {
+            httpSettingDO.setStatus((byte) 0);
+        }
         httpSettingMapper.insertHttpSetting(httpSettingDO);
     }
 
@@ -61,13 +88,23 @@ public class HttpSettingServiceImpl implements HttpSettingService {
      * @param httpSettingDO httpSettingDO
      */
     @Override
-    public void modifyHttpSetting(HttpSettingDO httpSettingDO) {
-        // 如果是代理，则将其它的代理项关闭
+    public void modifyHttpSetting(HttpSettingDO httpSettingDO) throws ValidException {
+        this.checkDO(httpSettingDO);
+        httpSettingDO.setUpdateTime(new Date());
+        // 如果是代理 ConnectTimeout ReadTimeout
         Integer settingId = httpSettingDO.getSettingId();
         HttpSettingVO httpSettingVO = httpSettingMapper.selectHttpSettingById(settingId);
         if (httpSettingVO != null) {
-            if (httpSettingVO.getType() == 0 && httpSettingDO.getStatus() == 0) { // 0为代理
-                httpSettingMapper.closeOtherProxy(settingId);
+            Byte type = httpSettingVO.getType();
+            Byte status = httpSettingDO.getStatus();
+            if (status == 0) {
+                if (type == 0) {
+                    httpSettingMapper.closeOtherProxy(settingId);
+                } else if (type == 3) {
+                    httpSettingMapper.closeOtherConnectTimeout(settingId);
+                } else if (type == 4) {
+                    httpSettingMapper.closeOtherReadTimeout(settingId);
+                }
             }
         }
         httpSettingMapper.updateHttpSetting(httpSettingDO);
@@ -91,5 +128,30 @@ public class HttpSettingServiceImpl implements HttpSettingService {
     @Override
     public ArrayList<String> findAllEmail() {
         return httpSettingMapper.selectAllEmail();
+    }
+
+    /**
+     * 校验入参
+     * @param httpSettingDO httpSettingDO
+     * @throws ValidException 校验异常
+     */
+    private void checkDO(HttpSettingDO httpSettingDO) throws ValidException {
+        Byte type = httpSettingDO.getType();
+        String value = httpSettingDO.getValue();
+        if (type == 0) {
+            if (!Pattern.matches("[a-zA-z0-9\\.]+:(\\d+)$", value)) {
+                throw new ValidException("代理服务器格式错误");
+            }
+        } else if (type == 2) { // 邮箱
+            if (!Pattern.matches("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?", value)) {
+                throw new ValidException("邮箱格式错误");
+            }
+        } else if (type == 3 || type == 4) { // 3ConnectTimeout 、 4ReadTimeout
+            if (!Pattern.matches("(\\d+)$", value)) {
+                throw new ValidException("超时时间格式错误");
+            }
+        } else {
+            throw new ValidException("参数非法");
+        }
     }
 }
