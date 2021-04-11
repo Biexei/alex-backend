@@ -1,19 +1,28 @@
 package org.alex.platform.controller;
 
+import com.github.pagehelper.PageInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.pojo.InterfaceSuiteLogDO;
 import org.alex.platform.pojo.InterfaceSuiteLogDTO;
+import org.alex.platform.pojo.InterfaceSuiteLogVO;
 import org.alex.platform.service.InterfaceSuiteLogService;
+import org.alex.platform.util.NoUtil;
+import org.alex.platform.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 public class InterfaceSuiteLogController {
     @Autowired
     InterfaceSuiteLogService interfaceSuiteLogService;
+    @Autowired
+    RedisUtil redisUtil;
 
     /**
      * 查询测试套件执行日志列表
@@ -27,7 +36,29 @@ public class InterfaceSuiteLogController {
     public Result findIfSuiteLog(InterfaceSuiteLogDTO interfaceSuiteLogDTO, Integer pageNum, Integer pageSize) {
         int num = pageNum == null ? 1 : pageNum;
         int size = pageSize == null ? 10 : pageSize;
-        return Result.success(interfaceSuiteLogService.findIfSuiteLog(interfaceSuiteLogDTO, num, size));
+        PageInfo<InterfaceSuiteLogVO> pageData = interfaceSuiteLogService.findIfSuiteLog(interfaceSuiteLogDTO, num, size);
+        // 注入progress属性只能在分页完成后进行处理，否则分页失效
+        List<InterfaceSuiteLogVO> result = pageData.getList().stream().map(vo -> {
+            String suiteLogNo = vo.getSuiteLogNo();
+            Integer id = vo.getId();
+            Byte progress = vo.getProgress(); // 0进行中1执行完成2执行失败
+            String logProgressNo = NoUtil.genSuiteLogProgressNo(suiteLogNo);
+            Integer percentage = (Integer) redisUtil.get(logProgressNo);
+            if (progress == 0 || progress == 2) {
+                if (percentage == null) {
+                    InterfaceSuiteLogVO suiteLog = interfaceSuiteLogService.findIfSuiteLogById(id);
+                    Integer dbPercent = suiteLog.getPercentage();
+                    vo.setPercentage(dbPercent == null ? 0 : dbPercent);
+                } else {
+                    vo.setPercentage(percentage);
+                }
+            } else {
+                vo.setPercentage(100);
+            }
+            return vo;
+        }).collect(Collectors.toList());
+        pageData.setList(result);
+        return Result.success(pageData);
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.alex.platform.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.mapper.InterfaceAssertLogMapper;
@@ -42,27 +43,7 @@ public class InterfaceSuiteLogServiceImpl implements InterfaceSuiteLogService {
     @Override
     public PageInfo<InterfaceSuiteLogVO> findIfSuiteLog(InterfaceSuiteLogDTO interfaceSuiteLogDTO, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        ArrayList<InterfaceSuiteLogVO> vos = interfaceSuiteLogMapper.selectIfSuiteLog(interfaceSuiteLogDTO);
-        List<InterfaceSuiteLogVO> result = vos.stream().map(vo -> {
-            String suiteLogNo = vo.getSuiteLogNo();
-            Integer id = vo.getId();
-            Byte progress = vo.getProgress(); // 0进行中1执行完成2执行失败
-            String logProgressNo = NoUtil.genSuiteLogProgressNo(suiteLogNo);
-            Integer percentage = (Integer) redisUtil.get(logProgressNo);
-            if (progress == 0 || progress == 2) {
-                if (percentage == null) {
-                    InterfaceSuiteLogVO suiteLog = this.findIfSuiteLogById(id);
-                    Integer dbPercent = suiteLog.getPercentage();
-                    vo.setPercentage(dbPercent == null ? 0 : dbPercent);
-                } else {
-                    vo.setPercentage(percentage);
-                }
-            } else {
-                vo.setPercentage(100);
-            }
-            return vo;
-        }).collect(Collectors.toList());
-        return new PageInfo<>(result);
+        return new PageInfo(interfaceSuiteLogMapper.selectIfSuiteLog(interfaceSuiteLogDTO));
     }
 
     /**
