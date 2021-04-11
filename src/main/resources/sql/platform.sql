@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2021-04-11 18:49:54
+Date: 2021-04-11 23:33:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -76,6 +76,30 @@ CREATE TABLE `t_db` (
 -- Records of t_db
 -- ----------------------------
 INSERT INTO `t_db` VALUES ('1', 'platform', '0', '自动化平台库', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root', '2020-09-02 15:40:50', '2020-10-21 11:31:11', '0', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root');
+
+-- ----------------------------
+-- Table structure for t_feedback
+-- ----------------------------
+DROP TABLE IF EXISTS `t_feedback`;
+CREATE TABLE `t_feedback` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `rate` tinyint DEFAULT NULL COMMENT '评分',
+  `content` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '反馈内容',
+  `created_time` datetime DEFAULT NULL,
+  `status` tinyint DEFAULT NULL COMMENT '0未读 1已读未回 2已回待阅  3已回已阅',
+  `creator_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '反馈人昵称（real_name）',
+  `creator_id` int DEFAULT NULL COMMENT '反馈人id（user_id）',
+  `reply` varchar(200) DEFAULT NULL COMMENT '回复',
+  `reply_time` datetime DEFAULT NULL,
+  `solution` tinyint DEFAULT NULL COMMENT '解决方案 0暂不调整 1延期解决 2已解决 3未答复',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_feedback
+-- ----------------------------
+INSERT INTO `t_feedback` VALUES ('2', '5', '不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错', '2021-04-11 22:53:46', '3', '123', '1', '修复好了', '2021-04-11 23:07:01', '2');
+INSERT INTO `t_feedback` VALUES ('3', '2', '123', '2021-04-11 23:23:18', '2', '123', '1', '123', '2021-04-11 23:28:32', '0');
 
 -- ----------------------------
 -- Table structure for t_http_setting
@@ -472,7 +496,7 @@ CREATE TABLE `t_permission` (
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限名称',
   `parent_id` int DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -589,6 +613,16 @@ INSERT INTO `t_permission` VALUES ('197', 'setting:timeout:modify', '修改', '1
 INSERT INTO `t_permission` VALUES ('198', 'setting:timeout:remove', '删除', '195');
 INSERT INTO `t_permission` VALUES ('199', 'setting:timeout:find', '查询', '195');
 INSERT INTO `t_permission` VALUES ('200', 'interface:case:logInfo', '链路日志', '155');
+INSERT INTO `t_permission` VALUES ('201', 'feedback', '反馈中心', '0');
+INSERT INTO `t_permission` VALUES ('202', 'feedback:list', '反馈列表', '201');
+INSERT INTO `t_permission` VALUES ('203', 'feedback:list:find', '查询', '202');
+INSERT INTO `t_permission` VALUES ('204', 'feedback:list:remove', '删除', '202');
+INSERT INTO `t_permission` VALUES ('205', 'feedback:list:reply', '回复', '202');
+INSERT INTO `t_permission` VALUES ('206', 'feedback:my', '我的反馈', '201');
+INSERT INTO `t_permission` VALUES ('207', 'feedback:my:add', '新增', '206');
+INSERT INTO `t_permission` VALUES ('208', 'feedback:my:modify', '修改', '206');
+INSERT INTO `t_permission` VALUES ('209', 'feedback:my:remove', '删除', '206');
+INSERT INTO `t_permission` VALUES ('210', 'feedback:my:find', '查询', '206');
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -600,7 +634,7 @@ CREATE TABLE `t_permission_role_ref` (
   `role_id` int DEFAULT NULL COMMENT '权限编号',
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
@@ -733,6 +767,16 @@ INSERT INTO `t_permission_role_ref` VALUES ('168', '197', '1', '2021-04-11 17:13
 INSERT INTO `t_permission_role_ref` VALUES ('169', '198', '1', '2021-04-11 17:13:47');
 INSERT INTO `t_permission_role_ref` VALUES ('170', '199', '1', '2021-04-11 17:13:48');
 INSERT INTO `t_permission_role_ref` VALUES ('171', '200', '1', '2021-04-11 18:08:03');
+INSERT INTO `t_permission_role_ref` VALUES ('172', '201', '1', '2021-04-11 21:05:27');
+INSERT INTO `t_permission_role_ref` VALUES ('173', '202', '1', '2021-04-11 21:05:27');
+INSERT INTO `t_permission_role_ref` VALUES ('174', '203', '1', '2021-04-11 21:05:28');
+INSERT INTO `t_permission_role_ref` VALUES ('175', '204', '1', '2021-04-11 21:05:28');
+INSERT INTO `t_permission_role_ref` VALUES ('176', '205', '1', '2021-04-11 21:05:29');
+INSERT INTO `t_permission_role_ref` VALUES ('177', '206', '1', '2021-04-11 21:05:30');
+INSERT INTO `t_permission_role_ref` VALUES ('178', '208', '1', '2021-04-11 21:05:31');
+INSERT INTO `t_permission_role_ref` VALUES ('179', '209', '1', '2021-04-11 21:05:31');
+INSERT INTO `t_permission_role_ref` VALUES ('180', '210', '1', '2021-04-11 21:05:32');
+INSERT INTO `t_permission_role_ref` VALUES ('181', '207', '1', '2021-04-11 21:05:33');
 
 -- ----------------------------
 -- Table structure for t_project

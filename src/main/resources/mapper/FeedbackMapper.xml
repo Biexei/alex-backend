@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.FeedbackMapper">
+    <insert id="insertFeedback" parameterType="org.alex.platform.pojo.FeedbackDO">
+        insert into `t_feedback`
+        (`rate`, `content`, `created_time`, `status`, `creator_name`, `creator_id`, `reply`, `reply_time`, `solution`)
+        values(#{rate},#{content},#{createdTime},#{status},#{creatorName},#{creatorId},#{reply},#{replyTime},#{solution})
+    </insert>
+    <update id="updateFeedback" parameterType="org.alex.platform.pojo.FeedbackDO">
+        update `t_feedback`
+        <set>
+            <if test="rate!=null">`rate`=#{rate},</if>
+            <if test="content!=null">`content` like concat("%", #{content}, "%"),</if>
+            <if test="createdTime!=null">`created_time`=#{createdTime},</if>
+            <if test="status!=null">`status`=#{status},</if>
+            <if test="creatorId!=null">`creator_id`=#{creatorId},</if>
+            <if test="creatorName!=null">`creator_name` like concat("%", #{creatorName}, "%"),</if>
+            <if test="reply!=null">`reply` like concat("%", #{rely}, "%"),</if>
+            <if test="replyTime!=null">`reply_time`=#{replyTime},</if>
+            <if test="solution!=null">`solution`=#{solution},</if>
+        </set>
+        where `id`=#{id}
+    </update>
+    <select id="selectFeedback" parameterType="org.alex.platform.pojo.FeedbackDTO" resultType="org.alex.platform.pojo.FeedbackVO">
+        select `id`, `rate`, `content`, `created_time`, `status`, `creator_name`,
+        `creator_id`, `reply`, `reply_time`, `solution`
+        from `t_feedback`
+        <where>
+            <if test="rate!=null">and `rate`=#{rate}</if>
+            <if test="content!=null">and `content`=#{content}</if>
+            <if test="createdTime!=null">and `created_time`=#{createdTime}</if>
+            <if test="status!=null">and `status`=#{status}</if>
+            <if test="creatorId!=null">and `creator_id`=#{creatorId}</if>
+            <if test="creatorName!=null">and `creator_name`=#{creatorName}</if>
+            <if test="reply!=null">and `reply`=#{reply}</if>
+            <if test="replyTime!=null">and `reply_time`=#{replyTime}</if>
+            <if test="solution!=null">and `solution`=#{solution}</if>
+            <if test="statusList!=null">
+                and `status` in
+                <foreach collection="list" item="s" separator="," index="index" open="(" close=")">
+                    #{s}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="selectFeedbackById" parameterType="Integer" resultType="org.alex.platform.pojo.FeedbackVO">
+        select `id`, `rate`, `content`, `created_time`, `status`, `creator_name`,
+        `creator_id`, `reply`, `reply_time`, `solution`
+        from `t_feedback`
+        where `id` = #{id}
+    </select>
+    <delete id="deleteFeedback" parameterType="Integer">
+        delete from `t_feedback`
+        where `id` = #{id}
+    </delete>
+</mapper>

@@ -41,4 +41,21 @@ public class LoginUserInfo {
         }
         return executor;
     }
+
+    /**
+     * 获取登录用户id
+     * @param request request
+     * @return user id
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public int getUserId(HttpServletRequest request) {
+        HashMap<String, Object> map = (HashMap)getLoginUserInfo(request);
+        Integer userId;
+        try {
+            userId = (Integer) map.get("userId");
+        } catch (Exception e) {
+            userId = -1;
+        }
+        return userId;
+    }
 }
