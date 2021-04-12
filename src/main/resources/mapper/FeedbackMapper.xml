@@ -12,12 +12,12 @@
         update `t_feedback`
         <set>
             <if test="rate!=null">`rate`=#{rate},</if>
-            <if test="content!=null">`content` like concat("%", #{content}, "%"),</if>
+            <if test="content!=null">`content`=#{content},</if>
             <if test="createdTime!=null">`created_time`=#{createdTime},</if>
             <if test="status!=null">`status`=#{status},</if>
             <if test="creatorId!=null">`creator_id`=#{creatorId},</if>
-            <if test="creatorName!=null">`creator_name` like concat("%", #{creatorName}, "%"),</if>
-            <if test="reply!=null">`reply` like concat("%", #{rely}, "%"),</if>
+            <if test="creatorName!=null">`creator_name`=#{creatorName},</if>
+            <if test="reply!=null">`reply`=#{reply},</if>
             <if test="replyTime!=null">`reply_time`=#{replyTime},</if>
             <if test="solution!=null">`solution`=#{solution},</if>
         </set>
@@ -29,12 +29,12 @@
         from `t_feedback`
         <where>
             <if test="rate!=null">and `rate`=#{rate}</if>
-            <if test="content!=null">and `content`=#{content}</if>
+            <if test="content!=null">and `content` like concat("%", #{content}, "%")</if>
             <if test="createdTime!=null">and `created_time`=#{createdTime}</if>
             <if test="status!=null">and `status`=#{status}</if>
             <if test="creatorId!=null">and `creator_id`=#{creatorId}</if>
-            <if test="creatorName!=null">and `creator_name`=#{creatorName}</if>
-            <if test="reply!=null">and `reply`=#{reply}</if>
+            <if test="creatorName!=null">and `creator_name` like concat("%", #{creatorName}, "%")</if>
+            <if test="reply!=null">and `reply` like concat("%", #{reply}, "%")</if>
             <if test="replyTime!=null">and `reply_time`=#{replyTime}</if>
             <if test="solution!=null">and `solution`=#{solution}</if>
             <if test="statusList!=null">
