@@ -23,7 +23,7 @@ public class NoUtil {
     public static String genSuiteLogNo() {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         String prefix = format.format(new Date());
-        String mid = RandomUtil.randomLegalStringByLength(5);
+        String mid = RandomUtil.randomLegalStringByLength(5).toUpperCase();
         String suffix = RandomUtil.randomNumStringByLength(5);
         return "SN" + prefix + mid + suffix;
     }
