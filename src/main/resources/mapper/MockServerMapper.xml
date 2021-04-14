@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.MockServerMapper">
+    <insert id="insertMockServer" parameterType="org.alex.platform.pojo.MockServerDO">
+        insert into `t_mock_sever`
+        (`port`, `remote_host`, `remote_port`, `desc`, `creator_id`, `creator_name`, `created_time`, `update_time`)
+        values(#{port},#{remoteHost},#{remotePort},#{desc},#{creatorId},#{creatorName},#{createdTime},#{updateTime})
+    </insert>
+    <update id="updateMockServer" parameterType="org.alex.platform.pojo.MockServerDO">
+        update `t_mock_sever`
+        <set>
+            <if test="port!=null">`port`=#{port},</if>
+            <if test="remoteHost!=null">`remote_host`=#{remoteHost},</if>
+            <if test="remotePort!=null">`remote_port`=#{remotePort},</if>
+            <if test="desc!=null">`desc`=#{desc},</if>
+            <if test="creatorId!=null">`creator_id`=#{creatorId},</if>
+            <if test="creatorName!=null">`creator_name`=#{creatorName},</if>
+            <if test="createdTime!=null">`created_time`=#{createdTime},</if>
+            <if test="updateTime!=null">`update_time`=#{updateTime},</if>
+        </set>
+        where `server_id`=#{serverId}
+    </update>
+    <select id="selectMockServer" parameterType="org.alex.platform.pojo.MockServerDTO" resultType="org.alex.platform.pojo.MockServerVO">
+        select `server_id`, `port`, `remote_host`, `remote_port`, `desc`, `creator_id`,
+        `creator_name`, `created_time`, `update_time`
+        from `t_mock_sever`
+        <where>
+            <if test="serverId!=null">and `server_id`=#{serverId}</if>
+            <if test="port!=null">and `port`=#{port}</if>
+            <if test="desc!=null">and `desc` like contcat('%', #{desc}, '%')</if>
+            <if test="remoteHost!=null">and `remote_host` like contcat('%', #{remoteHost}, '%')</if>
+            <if test="remotePort!=null">and `remote_port`=#{remotePort}</if>
+        </where>
+    </select>
+    <select id="selectMockServerById" parameterType="Integer" resultType="org.alex.platform.pojo.MockServerVO">
+        select `server_id`, `port`, `remote_host`, `remote_port`, `desc`, `creator_id`,
+        `creator_name`, `created_time`, `update_time`
+        from `t_mock_sever`
+        where `server_id`=#{serverId}
+    </select>
+    <select id="checkPortUnique" resultType="org.alex.platform.pojo.MockServerVO">
+        select `server_id`, `port`, `remote_host`, `remote_port`, `desc`, `creator_id`,
+        `creator_name`, `created_time`, `update_time`
+        from `t_mock_sever`
+        where `server_id`!=#{serverId} and `port`=#{port}
+    </select>
+    <delete id="deleteMockServer" parameterType="Integer">
+        delete from `t_mock_sever`
+        where `server_id`=#{serverId}
+    </delete>
+</mapper>

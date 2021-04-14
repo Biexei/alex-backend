@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 80019
+Source Server         : 本地
+Source Server Version : 80020
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80019
+Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-04-13 18:48:34
+Date: 2021-04-14 17:22:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -578,6 +578,77 @@ CREATE TABLE `t_interface_suite_processor` (
 -- ----------------------------
 INSERT INTO `t_interface_suite_processor` VALUES ('52', '35', '0', '0', null, '', '2021-04-09 20:28:32', '2021-04-09 20:28:32');
 INSERT INTO `t_interface_suite_processor` VALUES ('53', '35', '1', '0', null, '', '2021-04-09 20:28:32', '2021-04-09 20:28:32');
+
+-- ----------------------------
+-- Table structure for t_mock_api
+-- ----------------------------
+DROP TABLE IF EXISTS `t_mock_api`;
+CREATE TABLE `t_mock_api` (
+  `api_id` int NOT NULL AUTO_INCREMENT,
+  `desc` varchar(30) DEFAULT NULL COMMENT '描述',
+  `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '请求地址',
+  `method` varchar(20) DEFAULT NULL COMMENT '请求方式',
+  `response_code` int DEFAULT NULL COMMENT '状态码',
+  `response_headers` varchar(1000) DEFAULT NULL COMMENT '响应头',
+  `response_cookie` varchar(1000) DEFAULT NULL COMMENT '响应cookie',
+  `response_body` mediumtext COMMENT '响应body',
+  `response_delay` int DEFAULT NULL COMMENT '响应时延ms',
+  `status` tinyint DEFAULT NULL COMMENT '0启用1禁用',
+  `created_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `response_headers_enable_rely` tinyint DEFAULT NULL COMMENT '0是1否 是否解析headers依赖',
+  `response_cookie_enable_rely` tinyint DEFAULT NULL COMMENT '0是1否 是否解析cookie依赖',
+  `response_body_enable_rely` tinyint DEFAULT NULL COMMENT '0是1否 是否解析body依赖',
+  `creator_id` int DEFAULT NULL COMMENT '创建人id',
+  `creator_name` varchar(30) DEFAULT NULL COMMENT '创建人名称',
+  PRIMARY KEY (`api_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_mock_api
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_mock_hit_policy
+-- ----------------------------
+DROP TABLE IF EXISTS `t_mock_hit_policy`;
+CREATE TABLE `t_mock_hit_policy` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `api_id` int DEFAULT NULL COMMENT 'api_id',
+  `match_scope` tinyint DEFAULT NULL COMMENT '0请求头1请求params2请求body3请求cookie',
+  `match_type` tinyint DEFAULT NULL COMMENT '0固定值1正则2json schema3xpath4jsonpath',
+  `name` varchar(200) DEFAULT NULL COMMENT '名称',
+  `value` varchar(200) DEFAULT NULL COMMENT '值',
+  `status` tinyint DEFAULT NULL COMMENT '0启用1禁用',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_mock_hit_policy
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_mock_sever
+-- ----------------------------
+DROP TABLE IF EXISTS `t_mock_sever`;
+CREATE TABLE `t_mock_sever` (
+  `server_id` int NOT NULL AUTO_INCREMENT,
+  `port` int DEFAULT NULL COMMENT '端口号',
+  `remote_host` varchar(30) DEFAULT NULL COMMENT '当没有命中时转发的主机地址',
+  `remote_port` int DEFAULT NULL COMMENT '当没有命中时转发的端口',
+  `desc` varchar(200) DEFAULT NULL COMMENT '描述',
+  `creator_id` int DEFAULT NULL COMMENT '创建人user_id',
+  `creator_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人realname',
+  `created_time` datetime DEFAULT NULL COMMENT 'update_time',
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`server_id`),
+  UNIQUE KEY `port` (`port`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_mock_sever
+-- ----------------------------
+INSERT INTO `t_mock_sever` VALUES ('1', '7777', '', null, '123', '1', '123', '2021-04-14 17:07:46', '2021-04-14 17:22:01');
 
 -- ----------------------------
 -- Table structure for t_module
