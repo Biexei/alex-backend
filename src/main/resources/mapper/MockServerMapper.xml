@@ -29,8 +29,8 @@
         <where>
             <if test="serverId!=null">and `server_id`=#{serverId}</if>
             <if test="port!=null">and `port`=#{port}</if>
-            <if test="desc!=null">and `desc` like contcat('%', #{desc}, '%')</if>
-            <if test="remoteHost!=null">and `remote_host` like contcat('%', #{remoteHost}, '%')</if>
+            <if test="desc!=null">and `desc` like concat('%', #{desc}, '%')</if>
+            <if test="remoteHost!=null">and `remote_host` like concat('%', #{remoteHost}, '%')</if>
             <if test="remotePort!=null">and `remote_port`=#{remotePort}</if>
         </where>
     </select>

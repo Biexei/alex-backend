@@ -53,7 +53,7 @@ public class MockServerPool {
         if (remoteHost == null) {
             throw new BusinessException("转发地址不能为空");
         } else {
-            if (!remoteHost.matches("[a-zA-z0-9.]")) {
+            if (!remoteHost.matches("[a-zA-z0-9.]+")) {
                 throw new BusinessException("转发地址格式错误");
             }
         }
@@ -101,7 +101,7 @@ public class MockServerPool {
         ClientAndServer hit = instance.get(port.toString());
         if (hit != null) {
             if (isRunning(port)) {
-                hit.stop();
+                hit.stop(true);
                 instance.remove(port.toString());
             }
         }
@@ -114,7 +114,7 @@ public class MockServerPool {
         HashMap<String, ClientAndServer> instance = MockServerPool.getInstance();
         for(Map.Entry<String, ClientAndServer> entry : instance.entrySet()) {
             ClientAndServer mockServer = entry.getValue();
-            mockServer.stop();
+            mockServer.stop(true);
         }
         instance.clear();
     }
@@ -133,7 +133,7 @@ public class MockServerPool {
             if (remoteAddress == null) {
                 return hit;
             } else {
-                stop(port);
+                hit.stop(true);
                 return start(port);
             }
         } else {
@@ -157,7 +157,7 @@ public class MockServerPool {
             if (remoteAddress != null) {
                 return hit;
             } else {
-                stop(port);
+                hit.stop(true);
                 return start(remoteHost, remotePort, port);
             }
         } else {

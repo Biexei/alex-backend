@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
-Source Server Version : 80020
+Source Server         : localhost
+Source Server Version : 80019
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80020
+Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2021-04-14 17:22:27
+Date: 2021-04-14 19:47:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -643,12 +643,13 @@ CREATE TABLE `t_mock_sever` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`server_id`),
   UNIQUE KEY `port` (`port`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_mock_sever
 -- ----------------------------
-INSERT INTO `t_mock_sever` VALUES ('1', '7777', '', null, '123', '1', '123', '2021-04-14 17:07:46', '2021-04-14 17:22:01');
+INSERT INTO `t_mock_sever` VALUES ('1', '6666', '127.0.0.1', '7777', '123', '1', '123', '2021-04-14 17:07:46', '2021-04-14 19:26:23');
+INSERT INTO `t_mock_sever` VALUES ('3', '5555', '', null, '', '1', '123', '2021-04-14 19:24:01', '2021-04-14 19:24:23');
 
 -- ----------------------------
 -- Table structure for t_module
@@ -679,7 +680,7 @@ CREATE TABLE `t_permission` (
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限名称',
   `parent_id` int DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=213 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -808,6 +809,14 @@ INSERT INTO `t_permission` VALUES ('209', 'feedback:my:remove', '删除', '206')
 INSERT INTO `t_permission` VALUES ('210', 'feedback:my:find', '查询', '206');
 INSERT INTO `t_permission` VALUES ('211', 'interface:ifreport', '测试报告', '154');
 INSERT INTO `t_permission` VALUES ('212', 'interface:ifreport:find', '查询', '211');
+INSERT INTO `t_permission` VALUES ('213', 'mock', 'Mock', '0');
+INSERT INTO `t_permission` VALUES ('214', 'mock:node', '节点管理', '213');
+INSERT INTO `t_permission` VALUES ('215', 'mock:node:add', '添加', '214');
+INSERT INTO `t_permission` VALUES ('216', 'mock:node:modify', '修改', '214');
+INSERT INTO `t_permission` VALUES ('217', 'mock:node:remove', '删除', '214');
+INSERT INTO `t_permission` VALUES ('218', 'mock:node:find', '查询', '214');
+INSERT INTO `t_permission` VALUES ('219', 'mock:node:start', '启用', '214');
+INSERT INTO `t_permission` VALUES ('220', 'mock:node:stop', '停用', '214');
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -819,7 +828,7 @@ CREATE TABLE `t_permission_role_ref` (
   `role_id` int DEFAULT NULL COMMENT '权限编号',
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=192 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
@@ -964,6 +973,14 @@ INSERT INTO `t_permission_role_ref` VALUES ('180', '210', '1', '2021-04-11 21:05
 INSERT INTO `t_permission_role_ref` VALUES ('181', '207', '1', '2021-04-11 21:05:33');
 INSERT INTO `t_permission_role_ref` VALUES ('182', '211', '1', '2021-04-13 18:46:52');
 INSERT INTO `t_permission_role_ref` VALUES ('183', '212', '1', '2021-04-13 18:46:52');
+INSERT INTO `t_permission_role_ref` VALUES ('184', '213', '1', '2021-04-14 19:45:39');
+INSERT INTO `t_permission_role_ref` VALUES ('185', '214', '1', '2021-04-14 19:45:39');
+INSERT INTO `t_permission_role_ref` VALUES ('186', '215', '1', '2021-04-14 19:45:40');
+INSERT INTO `t_permission_role_ref` VALUES ('187', '216', '1', '2021-04-14 19:45:40');
+INSERT INTO `t_permission_role_ref` VALUES ('188', '217', '1', '2021-04-14 19:45:41');
+INSERT INTO `t_permission_role_ref` VALUES ('189', '218', '1', '2021-04-14 19:45:41');
+INSERT INTO `t_permission_role_ref` VALUES ('190', '219', '1', '2021-04-14 19:45:42');
+INSERT INTO `t_permission_role_ref` VALUES ('191', '220', '1', '2021-04-14 19:45:42');
 
 -- ----------------------------
 -- Table structure for t_project

@@ -37,7 +37,7 @@ public class MockServerController {
         mockServerDO.setCreatorId(userId);
         mockServerDO.setCreatorName(realName);
         mockServerService.modifyMockServer(mockServerDO);
-        return Result.success("修改成功");
+        return Result.success();
     }
 
     @GetMapping("/all")
