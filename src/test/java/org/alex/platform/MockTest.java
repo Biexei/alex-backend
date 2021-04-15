@@ -29,16 +29,11 @@ public class MockTest {
         server.when(
                 request()
                         .withPath("/some/path")
-                        .withPathParameters(
-                                param("cartId", "055CA455-1DF7-45BB-8535-4F83E7266092")
-                        )
-                        .withQueryStringParameters(
-                                param("type", "[A-Z0-9\\-]+")
-                        )
-        ).respond(
-                response()
-                        .withBody("mock successfully")
-        );
+        )
+                .respond(
+                        response()
+                                .withBody("some_response_body")
+                );
 
 //
 //        server = new ClientAndServer(7777);

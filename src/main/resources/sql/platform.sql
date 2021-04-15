@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 80019
+Source Server         : 本地
+Source Server Version : 80020
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80019
+Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-04-14 19:47:18
+Date: 2021-04-15 16:52:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -93,13 +93,14 @@ CREATE TABLE `t_feedback` (
   `reply_time` datetime DEFAULT NULL,
   `solution` tinyint DEFAULT NULL COMMENT '解决方案 0暂不调整 1延期解决 2已解决 3未答复',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_feedback
 -- ----------------------------
 INSERT INTO `t_feedback` VALUES ('2', '5', '不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错不错', '2021-04-11 22:53:46', '3', '123', '1', '修复好了', '2021-04-11 23:07:01', '2');
 INSERT INTO `t_feedback` VALUES ('3', '2', '123', '2021-04-11 23:23:18', '3', '123', '1', '123', '2021-04-12 16:32:52', '0');
+INSERT INTO `t_feedback` VALUES ('4', '1', '123', '2021-04-15 11:26:18', '1', '123', '1', null, null, null);
 
 -- ----------------------------
 -- Table structure for t_http_setting
@@ -122,7 +123,7 @@ CREATE TABLE `t_http_setting` (
 -- ----------------------------
 -- Records of t_http_setting
 -- ----------------------------
-INSERT INTO `t_http_setting` VALUES ('7', '本地代理', 'localhost:8888', '', '1', '0', '2020-10-02 16:14:57', '2021-04-11 16:58:58');
+INSERT INTO `t_http_setting` VALUES ('7', '本地代理', 'localhost:8888', '', '1', '0', '2020-10-02 16:14:57', '2021-04-15 13:38:06');
 INSERT INTO `t_http_setting` VALUES ('11', 'qq', '1014759718@qq.com', '', '0', '2', '2020-10-02 18:57:14', '2021-04-13 18:01:46');
 INSERT INTO `t_http_setting` VALUES ('12', '163', 'biexei@163.com', '', '0', '2', '2020-10-04 19:21:30', '2020-12-14 16:22:21');
 INSERT INTO `t_http_setting` VALUES ('13', '126', 'biexei@126.com', '', '0', '2', '2020-10-04 21:10:46', '2020-12-14 16:22:22');
@@ -145,7 +146,7 @@ CREATE TABLE `t_interface_assert` (
   `created_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`assert_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=573 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=574 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert
@@ -160,6 +161,7 @@ INSERT INTO `t_interface_assert` VALUES ('281', '执行耗时', '280', '4', null
 INSERT INTO `t_interface_assert` VALUES ('282', 'content-type', '280', '2', 'Content-Type', '0', 'application/json', '4', '2021-03-13 15:48:55', '2021-03-13 15:48:55');
 INSERT INTO `t_interface_assert` VALUES ('283', '接口状态码', '283', '0', '$..code', '0', '200', '0', '2021-03-30 14:03:41', '2021-04-05 14:06:58');
 INSERT INTO `t_interface_assert` VALUES ('284', '接口状态码', '284', '0', '$..code', '0', '200', '0', '2021-04-05 15:12:13', '2021-04-06 16:08:54');
+INSERT INTO `t_interface_assert` VALUES ('573', 'http code 不能为404', '429', '3', null, '6', '404', '1', '2021-04-15 13:28:48', '2021-04-15 14:42:22');
 
 -- ----------------------------
 -- Table structure for t_interface_assert_log
@@ -184,7 +186,7 @@ CREATE TABLE `t_interface_assert_log` (
   PRIMARY KEY (`assert_log_id`),
   KEY `case_id` (`case_id`),
   KEY `execute_log_id` (`execute_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_assert_log
@@ -256,6 +258,36 @@ INSERT INTO `t_interface_assert_log` VALUES ('64', '34', '266', '接口状态码
 INSERT INTO `t_interface_assert_log` VALUES ('65', '35', '268', '接口状态码', '279', '0', '$..code', '0', '200', '200', '0', '200', '0', null, '2021-04-13 18:42:23');
 INSERT INTO `t_interface_assert_log` VALUES ('66', '36', '265', 'HTTP响应状态码', '277', '3', null, '0', '200', '200', '0', '200', '0', null, '2021-04-13 18:42:23');
 INSERT INTO `t_interface_assert_log` VALUES ('67', '36', '266', '接口状态码', '277', '0', '$..code', '0', '200', '200', '1', '200', '0', null, '2021-04-13 18:42:23');
+INSERT INTO `t_interface_assert_log` VALUES ('68', '38', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:28:49');
+INSERT INTO `t_interface_assert_log` VALUES ('69', '39', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:29:31');
+INSERT INTO `t_interface_assert_log` VALUES ('70', '40', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:29:58');
+INSERT INTO `t_interface_assert_log` VALUES ('71', '41', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:31:11');
+INSERT INTO `t_interface_assert_log` VALUES ('72', '42', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:31:21');
+INSERT INTO `t_interface_assert_log` VALUES ('73', '43', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:31:41');
+INSERT INTO `t_interface_assert_log` VALUES ('74', '44', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:32:00');
+INSERT INTO `t_interface_assert_log` VALUES ('75', '45', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:32:42');
+INSERT INTO `t_interface_assert_log` VALUES ('76', '46', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:34:13');
+INSERT INTO `t_interface_assert_log` VALUES ('77', '47', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '200', '0', null, '2021-04-15 13:38:16');
+INSERT INTO `t_interface_assert_log` VALUES ('78', '48', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '200', '0', null, '2021-04-15 13:38:36');
+INSERT INTO `t_interface_assert_log` VALUES ('79', '49', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '200', '0', null, '2021-04-15 13:39:19');
+INSERT INTO `t_interface_assert_log` VALUES ('80', '50', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:39:24');
+INSERT INTO `t_interface_assert_log` VALUES ('81', '51', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '200', '0', null, '2021-04-15 13:40:11');
+INSERT INTO `t_interface_assert_log` VALUES ('82', '52', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:40:18');
+INSERT INTO `t_interface_assert_log` VALUES ('83', '53', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:40:24');
+INSERT INTO `t_interface_assert_log` VALUES ('84', '54', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '200', '0', null, '2021-04-15 13:47:55');
+INSERT INTO `t_interface_assert_log` VALUES ('85', '55', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '200', '0', null, '2021-04-15 13:48:23');
+INSERT INTO `t_interface_assert_log` VALUES ('86', '56', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 13:48:28');
+INSERT INTO `t_interface_assert_log` VALUES ('87', '57', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 14:41:23');
+INSERT INTO `t_interface_assert_log` VALUES ('88', '58', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 14:41:30');
+INSERT INTO `t_interface_assert_log` VALUES ('89', '59', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 14:41:45');
+INSERT INTO `t_interface_assert_log` VALUES ('90', '60', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 14:41:48');
+INSERT INTO `t_interface_assert_log` VALUES ('91', '61', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 14:41:55');
+INSERT INTO `t_interface_assert_log` VALUES ('92', '62', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '200', '0', null, '2021-04-15 14:42:14');
+INSERT INTO `t_interface_assert_log` VALUES ('93', '63', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '200', '0', null, '2021-04-15 14:42:15');
+INSERT INTO `t_interface_assert_log` VALUES ('94', '64', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 14:42:23');
+INSERT INTO `t_interface_assert_log` VALUES ('95', '65', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 15:59:38');
+INSERT INTO `t_interface_assert_log` VALUES ('96', '66', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '404', '1', null, '2021-04-15 16:00:05');
+INSERT INTO `t_interface_assert_log` VALUES ('97', '67', '573', 'http code 不能为404', '429', '3', null, '6', '404', '404', '1', '200', '0', null, '2021-04-15 16:01:31');
 
 -- ----------------------------
 -- Table structure for t_interface_case
@@ -282,7 +314,7 @@ CREATE TABLE `t_interface_case` (
   PRIMARY KEY (`case_id`),
   KEY `project_id` (`project_id`),
   KEY `module_id` (`module_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=429 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=430 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case
@@ -292,6 +324,7 @@ INSERT INTO `t_interface_case` VALUES ('24', '14', '279', '/interface/case/list'
 INSERT INTO `t_interface_case` VALUES ('24', '14', '280', '/interface/case/info/{id}', '0', '查看用例详情', '0', null, '{\"Token\":\"${Token}\"}', '{\"id\":\"277\"}', null, null, '超级管理员', '2021-03-08 15:34:20', '2021-03-13 15:48:55', '0', null);
 INSERT INTO `t_interface_case` VALUES ('24', '14', '283', '/user/info/{userId}', '0', '查看新增用户详情', '0', null, '{\"Token\":\"${Token}\"}', '{\"userId\": \"${select(\"1\", \"select username from t_user\", \"string\")}\"}', null, null, '123', '2021-03-30 14:03:41', '2021-04-05 14:06:58', '0', null);
 INSERT INTO `t_interface_case` VALUES ('24', '14', '284', '/user/list?pageNum=1&pageSize=10', '0', '查看用户列表', '0', null, '{\"Token\":\"${Token}\"}', '{\"username\": \"${md5(\"123456\")}\"}', null, null, '123', '2021-04-05 15:12:13', '2021-04-06 16:08:54', '0', null);
+INSERT INTO `t_interface_case` VALUES ('25', '15', '429', '/some/path', '1', 'test', '0', null, '', '', null, 'som', '123', '2021-04-15 13:27:56', '2021-04-15 14:42:22', '0', null);
 
 -- ----------------------------
 -- Table structure for t_interface_case_execute_log
@@ -327,7 +360,7 @@ CREATE TABLE `t_interface_case_execute_log` (
   PRIMARY KEY (`id`),
   KEY `case_id` (`case_id`),
   KEY `status` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case_execute_log
@@ -368,6 +401,37 @@ INSERT INTO `t_interface_case_execute_log` VALUES ('33', '280', '查看用例详
 INSERT INTO `t_interface_case_execute_log` VALUES ('34', '277', '用户登录', 'http://localhost:7777/user/login', '1', '', '', '{\n	\"password\":\"123\",\n	\"username\":\"123\"\n}', null, '', '', '{\"username\":\"123\",\"password\":\"123\"}', null, '200', '{\n	\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\n	\"Content-Type\":[\"application/json\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Date\":[\"Tue, 13 Apr 2021 10:42:22 GMT\"],\n	\"Keep-Alive\":[\"timeout=60\"],\n	\"Connection\":[\"keep-alive\"]\n}', '{\n	\"msg\":\"登录成功\",\n	\"code\":200,\n	\"data\":{\n		\"realName\":\"123\",\n		\"permission\":[\n			\"role\",\n			\"role:add\",\n			\"role:modify\",\n			\"role:remove\",\n			\"role:find\",\n			\"role:permission\",\n			\"permission\",\n			null,\n			null,\n			null,\n			null,\n			\"permission:add_top\",\n			\"project\",\n			\"project:add\",\n			\"project:modify\",\n			\"project:remove\",\n			\"project:find\",\n			\"module\",\n			\"module:add\",\n			\"module:modify\",\n			\"module:remove\",\n			\"module:find\",\n			\"db\",\n			\"db:add\",\n			\"db:modify\",\n			\"db:remove\",\n			\"db:find\",\n			\"db:check\",\n			\"factory\",\n			\"factory:add\",\n			\"factory:modify\",\n			\"factory:remove\",\n			\"factory:find\",\n			\"factory:execute\",\n			\"data_center\",\n			\"data_center:temp_env\",\n			\"data_center:temp_env:find\",\n			\"data_center:temp_env:clear\",\n			\"data_center:if_rely\",\n			\"data_center:if_rely:add\",\n			\"data_center:if_rely:modify\",\n			\"data_center:if_rely:remove\",\n			\"data_center:if_rely:find\",\n			\"data_center:if_rely:execute\",\n			\"data_center:rely_data:add\",\n			\"data_center:rely_data:modify\",\n			\"data_center:rely_data:remove\",\n			\"data_center:rely_data:find\",\n			\"data_center:rely_sql_data\",\n			\"data_center:rely_sql_data:add\",\n			\"data_center:rely_sql_data:modify\",\n			\"data_center:rely_sql_data:remove\",\n			\"data_center:rely_sql_data:find\",\n			\"data_center:rely_init_method\",\n			null,\n			\"data_center:rely_init_method:modify\",\n			\"data_center:rely_init_method:remove\",\n			\"data_center:rely_init_method:find\",\n			\"data_center:rely_fixed_data\",\n			\"data_center:rely_fixed_data:add\",\n			\"data_center:rely_fixed_data:remove\",\n			\"data_center:rely_fixed_data:modify\",\n			\"data_center:rely_fixed_data:find\",\n			\"interface\",\n			\"interface:case\",\n			\"interface:case:add\",\n			\"interface:case:modify\",\n			\"interface:case:remove\",\n			\"interface:case:find\",\n			\"interface:case:copy\",\n			\"interface:case:generate\",\n			\"interface:case:execute\",\n			\"interface:case:import\",\n			\"interface:suite\",\n			\"interface:suite:add\",\n			\"interface:suite:modify\",\n			\"interface:suite:remove\",\n			\"interface:suite:find\",\n			\"interface:suite:copy\",\n			\"interface:suite:manager\",\n			\"interface:suite:execute\",\n			\"interface:case_log\",\n			\"interface:case_log:find\",\n			\"interface:case_log:detail\",\n			\"interface:case_log:chain\",\n			\"interface:assert_log\",\n			\"interface:assert_log:find\",\n			\"setting:email\",\n			\"setting\",\n			\"setting:email:modify\",\n			\"setting:email:add\",\n			\"setting:email:remove\",\n			\"setting:email:find\",\n			\"setting:proxy\",\n			\"setting:proxy:add\",\n			\"setting:proxy:modify\",\n			\"setting:proxy:remove\",\n			\"setting:proxy:find\",\n			\"setting:task\",\n			\"setting:task:add\",\n			\"setting:task:modify\",\n			\"setting:task:remove\",\n			\"setting:task:find\",\n			\"user:add\",\n			\"user:remove\",\n			\"user:modify\",\n			\"user:find\",\n			\"user:reset\",\n			\"user\",\n			\"setting:task:execute\",\n			\"setting:timeout\",\n			\"setting:timeout:add\",\n			\"setting:timeout:modify\",\n			\"setting:timeout:remove\",\n			\"setting:timeout:find\",\n			\"interface:case:logInfo\",\n			\"feedback\",\n			\"feedback:list\",\n			\"feedback:list:find\",\n			\"feedback:list:remove\",\n			\"feedback:list:reply\",\n			\"feedback:my\",\n			\"feedback:my:modify\",\n			\"feedback:my:remove\",\n			\"feedback:my:find\",\n			\"feedback:my:add\"\n		],\n		\"userId\":1,\n		\"token\":\"084692fb-cd19-4b7e-ae16-f435d769f3c6\",\n		\"username\":\"123\",\n		\"isEnable\":1\n	}\n}', '19', '系统调度', '0', '2021-04-13 18:42:23', null, null, 'SND20210413184222hg9nw60378', '[{\"date\":\"2021-04-13 18:42:23:105\",\"typeDesc\":\"执行用例\",\"name\":\"查看用例列表\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-13 18:42:23:113\",\"typeDesc\":\"接口依赖\",\"name\":\"用户登录\",\"time\":3,\"type\":\"RELY_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-13 18:42:23:167\",\"typeDesc\":\"接口依赖\",\"name\":\"用户登录\",\"id\":34,\"time\":57,\"type\":\"RELY_END\",\"desc\":\"执行完成\"}]', '1', '4');
 INSERT INTO `t_interface_case_execute_log` VALUES ('35', '279', '查看用例列表', 'http://localhost:7777/interface/case/list', '0', '{\n	\"Token\":\"084692fb-cd19-4b7e-ae16-f435d769f3c6\"\n}', '', '', null, '{\"Token\":\"${Token}\"}', '', null, null, '200', '{\n	\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\n	\"Content-Type\":[\"application/json\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Date\":[\"Tue, 13 Apr 2021 10:42:22 GMT\"],\n	\"Keep-Alive\":[\"timeout=60\"],\n	\"Connection\":[\"keep-alive\"]\n}', '{\n	\"msg\":\"操作成功\",\n	\"code\":200,\n	\"data\":{\n		\"startRow\":1,\n		\"navigatepageNums\":[\n			1\n		],\n		\"lastPage\":1,\n		\"prePage\":0,\n		\"hasNextPage\":false,\n		\"nextPage\":0,\n		\"pageSize\":10,\n		\"endRow\":5,\n		\"list\":[\n			{\n				\"method\":0,\n				\"level\":0,\n				\"moduleName\":\"用户管理\",\n				\"source\":0,\n				\"url\":\"/user/list?pageNum=1&pageSize=10\",\n				\"importNo\":null,\n				\"caseId\":284,\n				\"creater\":\"123\",\n				\"createdTime\":\"2021-04-05 15:12:13\",\n				\"projectName\":\"Alex\",\n				\"moduleId\":14,\n				\"projectId\":24,\n				\"desc\":\"查看用户列表\"\n			},\n			{\n				\"method\":0,\n				\"level\":0,\n				\"moduleName\":\"用户管理\",\n				\"source\":0,\n				\"url\":\"/user/info/{userId}\",\n				\"importNo\":null,\n				\"caseId\":283,\n				\"creater\":\"123\",\n				\"createdTime\":\"2021-03-30 14:03:41\",\n				\"projectName\":\"Alex\",\n				\"moduleId\":14,\n				\"projectId\":24,\n				\"desc\":\"查看新增用户详情\"\n			},\n			{\n				\"method\":0,\n				\"level\":0,\n				\"moduleName\":\"用户管理\",\n				\"source\":0,\n				\"url\":\"/interface/case/info/{id}\",\n				\"importNo\":null,\n				\"caseId\":280,\n				\"creater\":\"超级管理员\",\n				\"createdTime\":\"2021-03-08 15:34:20\",\n				\"projectName\":\"Alex\",\n				\"moduleId\":14,\n				\"projectId\":24,\n				\"desc\":\"查看用例详情\"\n			},\n			{\n				\"method\":0,\n				\"level\":0,\n				\"moduleName\":\"用户管理\",\n				\"source\":0,\n				\"url\":\"/interface/case/list\",\n				\"importNo\":null,\n				\"caseId\":279,\n				\"creater\":\"超级管理员\",\n				\"createdTime\":\"2021-03-08 15:33:36\",\n				\"projectName\":\"Alex\",\n				\"moduleId\":14,\n				\"projectId\":24,\n				\"desc\":\"查看用例列表\"\n			},\n			{\n				\"method\":1,\n				\"level\":0,\n				\"moduleName\":\"用户管理\",\n				\"source\":0,\n				\"url\":\"/user/login\",\n				\"importNo\":null,\n				\"caseId\":277,\n				\"creater\":\"系统管理员\",\n				\"createdTime\":\"2021-03-08 15:25:56\",\n				\"projectName\":\"Alex\",\n				\"moduleId\":14,\n				\"projectId\":24,\n				\"desc\":\"用户登录\"\n			}\n		],\n		\"pageNum\":1,\n		\"navigatePages\":8,\n		\"total\":5,\n		\"navigateFirstPage\":1,\n		\"pages\":1,\n		\"size\":5,\n		\"firstPage\":1,\n		\"isLastPage\":true,\n		\"hasPreviousPage\":false,\n		\"navigateLastPage\":1,\n		\"isFirstPage\":true\n	}\n}', '9', '123', '0', '2021-04-13 18:42:23', null, 'SN20210413184222hg9nw60378', 'SND20210413184222hg9nw60378', '[{\"date\":\"2021-04-13 18:42:23:105\",\"typeDesc\":\"执行用例\",\"name\":\"查看用例列表\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-13 18:42:23:113\",\"typeDesc\":\"接口依赖\",\"name\":\"用户登录\",\"time\":3,\"type\":\"RELY_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-13 18:42:23:167\",\"typeDesc\":\"接口依赖\",\"name\":\"用户登录\",\"id\":34,\"time\":57,\"type\":\"RELY_END\",\"desc\":\"执行完成\"},{\"date\":\"2021-04-13 18:42:23:177\",\"typeDesc\":\"接口依赖\",\"expression\":\"$..data.token\",\"name\":\"Token\",\"id\":34,\"time\":68,\"type\":\"INTERFACE_JSON\",\"value\":\"084692fb-cd19-4b7e-ae16-f435d769f3c6\",\"desc\":\"Json\"},{\"date\":\"2021-04-13 18:42:23:212\",\"typeDesc\":\"执行用例\",\"name\":\"查看用例列表\",\"id\":35,\"time\":109,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '2');
 INSERT INTO `t_interface_case_execute_log` VALUES ('36', '277', '用户登录', 'http://localhost:7777/user/login', '1', '', '', '{\n	\"password\":\"123\",\n	\"username\":\"123\"\n}', null, '', '', '{\"username\":\"123\",\"password\":\"123\"}', null, '200', '{\n	\"Vary\":[\"Origin\",\"Access-Control-Request-Method\",\"Access-Control-Request-Headers\"],\n	\"Content-Type\":[\"application/json\"],\n	\"Transfer-Encoding\":[\"chunked\"],\n	\"Date\":[\"Tue, 13 Apr 2021 10:42:22 GMT\"],\n	\"Keep-Alive\":[\"timeout=60\"],\n	\"Connection\":[\"keep-alive\"]\n}', '{\n	\"msg\":\"登录成功\",\n	\"code\":200,\n	\"data\":{\n		\"realName\":\"123\",\n		\"permission\":[\n			\"role\",\n			\"role:add\",\n			\"role:modify\",\n			\"role:remove\",\n			\"role:find\",\n			\"role:permission\",\n			\"permission\",\n			null,\n			null,\n			null,\n			null,\n			\"permission:add_top\",\n			\"project\",\n			\"project:add\",\n			\"project:modify\",\n			\"project:remove\",\n			\"project:find\",\n			\"module\",\n			\"module:add\",\n			\"module:modify\",\n			\"module:remove\",\n			\"module:find\",\n			\"db\",\n			\"db:add\",\n			\"db:modify\",\n			\"db:remove\",\n			\"db:find\",\n			\"db:check\",\n			\"factory\",\n			\"factory:add\",\n			\"factory:modify\",\n			\"factory:remove\",\n			\"factory:find\",\n			\"factory:execute\",\n			\"data_center\",\n			\"data_center:temp_env\",\n			\"data_center:temp_env:find\",\n			\"data_center:temp_env:clear\",\n			\"data_center:if_rely\",\n			\"data_center:if_rely:add\",\n			\"data_center:if_rely:modify\",\n			\"data_center:if_rely:remove\",\n			\"data_center:if_rely:find\",\n			\"data_center:if_rely:execute\",\n			\"data_center:rely_data:add\",\n			\"data_center:rely_data:modify\",\n			\"data_center:rely_data:remove\",\n			\"data_center:rely_data:find\",\n			\"data_center:rely_sql_data\",\n			\"data_center:rely_sql_data:add\",\n			\"data_center:rely_sql_data:modify\",\n			\"data_center:rely_sql_data:remove\",\n			\"data_center:rely_sql_data:find\",\n			\"data_center:rely_init_method\",\n			null,\n			\"data_center:rely_init_method:modify\",\n			\"data_center:rely_init_method:remove\",\n			\"data_center:rely_init_method:find\",\n			\"data_center:rely_fixed_data\",\n			\"data_center:rely_fixed_data:add\",\n			\"data_center:rely_fixed_data:remove\",\n			\"data_center:rely_fixed_data:modify\",\n			\"data_center:rely_fixed_data:find\",\n			\"interface\",\n			\"interface:case\",\n			\"interface:case:add\",\n			\"interface:case:modify\",\n			\"interface:case:remove\",\n			\"interface:case:find\",\n			\"interface:case:copy\",\n			\"interface:case:generate\",\n			\"interface:case:execute\",\n			\"interface:case:import\",\n			\"interface:suite\",\n			\"interface:suite:add\",\n			\"interface:suite:modify\",\n			\"interface:suite:remove\",\n			\"interface:suite:find\",\n			\"interface:suite:copy\",\n			\"interface:suite:manager\",\n			\"interface:suite:execute\",\n			\"interface:case_log\",\n			\"interface:case_log:find\",\n			\"interface:case_log:detail\",\n			\"interface:case_log:chain\",\n			\"interface:assert_log\",\n			\"interface:assert_log:find\",\n			\"setting:email\",\n			\"setting\",\n			\"setting:email:modify\",\n			\"setting:email:add\",\n			\"setting:email:remove\",\n			\"setting:email:find\",\n			\"setting:proxy\",\n			\"setting:proxy:add\",\n			\"setting:proxy:modify\",\n			\"setting:proxy:remove\",\n			\"setting:proxy:find\",\n			\"setting:task\",\n			\"setting:task:add\",\n			\"setting:task:modify\",\n			\"setting:task:remove\",\n			\"setting:task:find\",\n			\"user:add\",\n			\"user:remove\",\n			\"user:modify\",\n			\"user:find\",\n			\"user:reset\",\n			\"user\",\n			\"setting:task:execute\",\n			\"setting:timeout\",\n			\"setting:timeout:add\",\n			\"setting:timeout:modify\",\n			\"setting:timeout:remove\",\n			\"setting:timeout:find\",\n			\"interface:case:logInfo\",\n			\"feedback\",\n			\"feedback:list\",\n			\"feedback:list:find\",\n			\"feedback:list:remove\",\n			\"feedback:list:reply\",\n			\"feedback:my\",\n			\"feedback:my:modify\",\n			\"feedback:my:remove\",\n			\"feedback:my:find\",\n			\"feedback:my:add\"\n		],\n		\"userId\":1,\n		\"token\":\"3dee54ff-4eda-41d1-96a0-baf9dbd9b8bc\",\n		\"username\":\"123\",\n		\"isEnable\":1\n	}\n}', '10', '123', '0', '2021-04-13 18:42:23', null, 'SN20210413184222hg9nw60378', 'SND20210413184222hg9nw60378', '[{\"date\":\"2021-04-13 18:42:23:223\",\"typeDesc\":\"执行用例\",\"name\":\"用户登录\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-13 18:42:23:271\",\"typeDesc\":\"执行用例\",\"name\":\"用户登录\",\"id\":36,\"time\":50,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '2');
+INSERT INTO `t_interface_case_execute_log` VALUES ('37', '429', 'test', 'http://localhost:1080//some/path?cartId=123&type=123', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '93', '123', '0', '2021-04-15 13:28:00', null, null, null, '[{\"date\":\"2021-04-15 13:28:00:339\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":6,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:28:00:494\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":37,\"time\":161,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('38', '429', 'test', 'http://localhost:1080//some/path?cartId=123&type=123', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '10', '123', '1', '2021-04-15 13:28:49', null, null, null, '[{\"date\":\"2021-04-15 13:28:49:396\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:28:49:446\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":38,\"time\":52,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('39', '429', 'test', 'http://localhost:1080//some/path?cartId=123', '0', '', '{\n	\"type\":\"123\"\n}', '', null, '', '{\"type\":\"123\"}', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '17', '123', '1', '2021-04-15 13:29:31', null, null, null, '[{\"date\":\"2021-04-15 13:29:30:759\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:29:30:806\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":39,\"time\":50,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('40', '429', 'test', 'http://localhost:1080//some/path?type=123', '0', '', '{\n	\"cartId\":\"123\"\n}', '', null, '', '{\"cartId\":\"123\"}', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '6', '123', '1', '2021-04-15 13:29:58', null, null, null, '[{\"date\":\"2021-04-15 13:29:57:964\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:29:58:022\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":40,\"time\":59,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('41', '429', 'test', 'http://localhost:1080//some/path?type=123', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '128', '123', '1', '2021-04-15 13:31:11', null, null, null, '[{\"date\":\"2021-04-15 13:31:11:078\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:31:11:239\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":41,\"time\":163,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('42', '429', 'test', 'http://localhost:1080//some/path?cartId=123', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '12', '123', '1', '2021-04-15 13:31:21', null, null, null, '[{\"date\":\"2021-04-15 13:31:20:990\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:31:21:030\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":42,\"time\":42,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('43', '429', 'test', 'http://localhost:1080//some/path', '0', '', '{\n	\"cartId\":\"123\"\n}', '', null, '', '{\"cartId\":\"123\"}', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '37', '123', '1', '2021-04-15 13:31:41', null, null, null, '[{\"date\":\"2021-04-15 13:31:40:854\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":3,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:31:40:917\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":43,\"time\":66,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('44', '429', 'test', 'http://localhost:1080//some/path', '0', '', '{\n	\"cartId\":\"123\"\n}', '', null, '', '{\"cartId\":\"123\"}', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '14', '123', '1', '2021-04-15 13:32:00', null, null, null, '[{\"date\":\"2021-04-15 13:31:59:998\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:32:00:061\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":44,\"time\":65,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('45', '429', 'test', 'http://localhost:1080//some/path', '0', '', '{\n	\"cartId\":\"123\"\n}', '', null, '', '{\"cartId\":\"123\"}', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '166', '123', '1', '2021-04-15 13:32:42', null, null, null, '[{\"date\":\"2021-04-15 13:32:41:535\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":3,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:32:41:755\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":45,\"time\":223,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('46', '429', 'test', 'http://localhost:1080//some/path/123', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '142', '123', '1', '2021-04-15 13:34:13', null, null, null, '[{\"date\":\"2021-04-15 13:34:12:796\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":1,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:34:12:966\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":46,\"time\":171,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('47', '429', 'test', 'http://localhost:1080//some/path/123', '0', '', '', '', null, '', '', null, null, '200', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"18\"]\n}', 'some_response_body', '54', '123', '0', '2021-04-15 13:38:16', null, null, null, '[{\"date\":\"2021-04-15 13:38:15:575\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":4,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:38:15:673\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":47,\"time\":102,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('48', '429', 'test', 'http://localhost:1080//some/path/123', '0', '', '', '', null, '', '', null, null, '200', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"18\"]\n}', 'some_response_body', '16', '123', '0', '2021-04-15 13:38:36', null, null, null, '[{\"date\":\"2021-04-15 13:38:36:038\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":3,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:38:36:096\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":48,\"time\":61,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('49', '429', 'test', 'http://localhost:1080//some/path', '0', '', '{\n	\"cartId\":\"123\"\n}', '', null, '', '{\"cartId\":\"123\"}', null, null, '200', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"18\"]\n}', 'some_response_body', '17', '123', '0', '2021-04-15 13:39:19', null, null, null, '[{\"date\":\"2021-04-15 13:39:18:588\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":1,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:39:18:651\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":49,\"time\":64,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('50', '429', 'test', 'http://localhost:1080//some/path', '0', '', '{\n	\"cartId\":\"1245\"\n}', '', null, '', '{\"cartId\":\"1245\"}', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '21', '123', '1', '2021-04-15 13:39:24', null, null, null, '[{\"date\":\"2021-04-15 13:39:23:757\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:39:23:810\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":50,\"time\":54,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('51', '429', 'test', 'http://localhost:1080//some/path', '0', '', '{\n	\"name\":\"123\",\n	\"value\":\"123\"\n}', '', null, '', '{\"name\":\"123\",\"value\":\"123\"}', null, null, '200', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"18\"]\n}', 'some_response_body', '17', '123', '0', '2021-04-15 13:40:11', null, null, null, '[{\"date\":\"2021-04-15 13:40:10:638\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:40:10:702\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":51,\"time\":66,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('52', '429', 'test', 'http://localhost:1080//some/path', '0', '', '{\n	\"name\":\"123\"\n}', '', null, '', '{\"name\":\"123\"}', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '6', '123', '1', '2021-04-15 13:40:18', null, null, null, '[{\"date\":\"2021-04-15 13:40:18:053\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:40:18:083\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":52,\"time\":32,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('53', '429', 'test', 'http://localhost:1080//some/path', '0', '', '{\n	\"name\":\"123\",\n	\"value\":\"1253\"\n}', '', null, '', '{\"name\":\"123\",\"value\":\"1253\"}', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '22', '123', '1', '2021-04-15 13:40:24', null, null, null, '[{\"date\":\"2021-04-15 13:40:24:461\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:40:24:507\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":53,\"time\":48,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('54', '429', 'test', 'http://localhost:1080//some/path/123', '0', '', '', '', null, '', '', null, null, '200', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"18\"]\n}', 'some_response_body', '17', '123', '0', '2021-04-15 13:47:55', null, null, null, '[{\"date\":\"2021-04-15 13:47:55:116\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:47:55:197\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":54,\"time\":83,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('55', '429', 'test', 'http://localhost:1080//some/path/123/123', '0', '', '', '', null, '', '', null, null, '200', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"18\"]\n}', 'some_response_body', '16', '123', '0', '2021-04-15 13:48:23', null, null, null, '[{\"date\":\"2021-04-15 13:48:22:557\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:48:22:619\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":55,\"time\":64,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('56', '429', 'test', 'http://localhost:1080//some/path/123', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '7', '123', '1', '2021-04-15 13:48:28', null, null, null, '[{\"date\":\"2021-04-15 13:48:28:052\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 13:48:28:109\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":56,\"time\":59,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('57', '429', 'test', 'http://localhost:1080//some/path', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '15', '123', '1', '2021-04-15 14:41:23', null, null, null, '[{\"date\":\"2021-04-15 14:41:23:107\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":1,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 14:41:23:156\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":57,\"time\":50,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('58', '429', 'test', 'http://localhost:1080//some/path', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '7', '123', '1', '2021-04-15 14:41:30', null, null, null, '[{\"date\":\"2021-04-15 14:41:29:537\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 14:41:29:591\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":58,\"time\":56,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('59', '429', 'test', 'http://localhost:1080//some/path', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '12', '123', '1', '2021-04-15 14:41:45', null, null, null, '[{\"date\":\"2021-04-15 14:41:45:338\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 14:41:45:402\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":59,\"time\":66,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('60', '429', 'test', 'http://localhost:1080//some/path', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '5', '123', '1', '2021-04-15 14:41:48', null, null, null, '[{\"date\":\"2021-04-15 14:41:48:025\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 14:41:48:055\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":60,\"time\":32,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('61', '429', 'test', 'http://localhost:1080//some/path', '0', '', '', '', null, '', '', null, null, '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '7', '123', '1', '2021-04-15 14:41:55', null, null, null, '[{\"date\":\"2021-04-15 14:41:54:639\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 14:41:54:691\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":61,\"time\":54,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('62', '429', 'test', 'http://localhost:1080//some/path', '1', '', '', '', 'some_stringsome_stringsome_string', '', '', null, 'some_stringsome_stringsome_string', '200', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"18\"]\n}', 'some_response_body', '14', '123', '0', '2021-04-15 14:42:14', null, null, null, '[{\"date\":\"2021-04-15 14:42:13:688\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 14:42:13:725\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":62,\"time\":39,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('63', '429', 'test', 'http://localhost:1080//some/path', '1', '', '', '', 'some_stringsome_stringsome_string', '', '', null, 'some_stringsome_stringsome_string', '200', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"18\"]\n}', 'some_response_body', '10', '123', '0', '2021-04-15 14:42:15', null, null, null, '[{\"date\":\"2021-04-15 14:42:14:640\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 14:42:14:697\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":63,\"time\":59,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('64', '429', 'test', 'http://localhost:1080//some/path', '1', '', '', '', 'som', '', '', null, 'som', '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '34', '123', '1', '2021-04-15 14:42:23', null, null, null, '[{\"date\":\"2021-04-15 14:42:22:833\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 14:42:22:900\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":64,\"time\":69,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('65', '429', 'test', 'http://localhost:1080//some/path', '1', '', '', '', 'som', '', '', null, 'som', '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '20', '123', '1', '2021-04-15 15:59:38', null, null, null, '[{\"date\":\"2021-04-15 15:59:37:634\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":11,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 15:59:37:709\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":65,\"time\":86,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('66', '429', 'test', 'http://localhost:1080//some/path', '1', '', '', '', 'som', '', '', null, 'som', '404', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"0\"]\n}', 'null', '7', '123', '1', '2021-04-15 16:00:05', null, null, null, '[{\"date\":\"2021-04-15 16:00:05:452\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":1,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 16:00:05:485\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":66,\"time\":34,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
+INSERT INTO `t_interface_case_execute_log` VALUES ('67', '429', 'test', 'http://localhost:1080//some/path', '1', '', '', '', 'som', '', '', null, 'som', '200', '{\n	\"connection\":[\"keep-alive\"],\n	\"content-length\":[\"18\"]\n}', 'some_response_body', '9', '123', '0', '2021-04-15 16:01:31', null, null, null, '[{\"date\":\"2021-04-15 16:01:31:332\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"time\":2,\"type\":\"CASE_START\",\"desc\":\"开始执行\"},{\"date\":\"2021-04-15 16:01:31:382\",\"typeDesc\":\"执行用例\",\"name\":\"test\",\"id\":67,\"time\":52,\"type\":\"CASE_END\",\"desc\":\"执行完成\"}]', '1', '0');
 
 -- ----------------------------
 -- Table structure for t_interface_case_rely_data
@@ -590,17 +654,16 @@ CREATE TABLE `t_mock_api` (
   `method` varchar(20) DEFAULT NULL COMMENT '请求方式',
   `response_code` int DEFAULT NULL COMMENT '状态码',
   `response_headers` varchar(1000) DEFAULT NULL COMMENT '响应头',
-  `response_cookie` varchar(1000) DEFAULT NULL COMMENT '响应cookie',
   `response_body` mediumtext COMMENT '响应body',
   `response_delay` int DEFAULT NULL COMMENT '响应时延ms',
   `status` tinyint DEFAULT NULL COMMENT '0启用1禁用',
   `created_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `response_headers_enable_rely` tinyint DEFAULT NULL COMMENT '0是1否 是否解析headers依赖',
-  `response_cookie_enable_rely` tinyint DEFAULT NULL COMMENT '0是1否 是否解析cookie依赖',
   `response_body_enable_rely` tinyint DEFAULT NULL COMMENT '0是1否 是否解析body依赖',
   `creator_id` int DEFAULT NULL COMMENT '创建人id',
   `creator_name` varchar(30) DEFAULT NULL COMMENT '创建人名称',
+  `response_body_type` tinyint DEFAULT NULL COMMENT '0文本1json2xml3html',
   PRIMARY KEY (`api_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -615,8 +678,8 @@ DROP TABLE IF EXISTS `t_mock_hit_policy`;
 CREATE TABLE `t_mock_hit_policy` (
   `id` int NOT NULL AUTO_INCREMENT,
   `api_id` int DEFAULT NULL COMMENT 'api_id',
-  `match_scope` tinyint DEFAULT NULL COMMENT '0请求头1请求params2请求body3请求cookie',
-  `match_type` tinyint DEFAULT NULL COMMENT '0固定值1正则2json schema3xpath4jsonpath',
+  `match_scope` tinyint DEFAULT NULL COMMENT '0请求头1请求params2请求body',
+  `match_type` tinyint DEFAULT NULL COMMENT '0固定值1正则2jsonschema3xpath4jsonpath5包含',
   `name` varchar(200) DEFAULT NULL COMMENT '名称',
   `value` varchar(200) DEFAULT NULL COMMENT '值',
   `status` tinyint DEFAULT NULL COMMENT '0启用1禁用',
@@ -648,7 +711,7 @@ CREATE TABLE `t_mock_sever` (
 -- ----------------------------
 -- Records of t_mock_sever
 -- ----------------------------
-INSERT INTO `t_mock_sever` VALUES ('1', '6666', '127.0.0.1', '7777', '123', '1', '123', '2021-04-14 17:07:46', '2021-04-14 19:26:23');
+INSERT INTO `t_mock_sever` VALUES ('1', '7733', '127.0.0.1', '7777', '123', '-1', '', '2021-04-14 17:07:46', '2021-04-15 12:32:08');
 INSERT INTO `t_mock_sever` VALUES ('3', '5555', '', null, '', '1', '123', '2021-04-14 19:24:01', '2021-04-14 19:24:23');
 
 -- ----------------------------
@@ -663,12 +726,13 @@ CREATE TABLE `t_module` (
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`module_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_module
 -- ----------------------------
 INSERT INTO `t_module` VALUES ('24', '14', '用户管理', null, '2021-03-08 15:24:31', '2021-03-08 15:24:31');
+INSERT INTO `t_module` VALUES ('25', '15', 'Mock', null, '2021-04-15 13:27:28', '2021-04-15 13:27:28');
 
 -- ----------------------------
 -- Table structure for t_permission
@@ -999,12 +1063,13 @@ CREATE TABLE `t_project` (
   `prod_domain` varchar(30) DEFAULT NULL COMMENT '正式环境域名',
   PRIMARY KEY (`project_id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_project
 -- ----------------------------
-INSERT INTO `t_project` VALUES ('24', 'Alex', null, 'http://localhost:7777', null, null, 'http://localhost:7777', 'http://localhost:7777', 'http://localhost:7777', 'http://localhost:7777');
+INSERT INTO `t_project` VALUES ('24', 'Alex', '', 'https://localhost:7777', null, null, 'https://localhost:7777', 'https://localhost:7777', 'https://localhost:7777', 'https://localhost:7777');
+INSERT INTO `t_project` VALUES ('25', 'MockTest', null, 'http://localhost:1080/', null, null, 'http://localhost:1080/', 'http://localhost:1080/', 'http://localhost:1080/', 'http://localhost:1080/');
 
 -- ----------------------------
 -- Table structure for t_rely_data
