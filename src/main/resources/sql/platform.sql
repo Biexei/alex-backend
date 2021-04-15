@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
-Source Server Version : 80020
+Source Server         : localhost
+Source Server Version : 80019
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80020
+Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2021-04-15 16:52:15
+Date: 2021-04-15 20:33:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -649,6 +649,7 @@ INSERT INTO `t_interface_suite_processor` VALUES ('53', '35', '1', '0', null, ''
 DROP TABLE IF EXISTS `t_mock_api`;
 CREATE TABLE `t_mock_api` (
   `api_id` int NOT NULL AUTO_INCREMENT,
+  `server_id` int DEFAULT NULL,
   `desc` varchar(30) DEFAULT NULL COMMENT '描述',
   `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '请求地址',
   `method` varchar(20) DEFAULT NULL COMMENT '请求方式',
@@ -665,11 +666,12 @@ CREATE TABLE `t_mock_api` (
   `creator_name` varchar(30) DEFAULT NULL COMMENT '创建人名称',
   `response_body_type` tinyint DEFAULT NULL COMMENT '0文本1json2xml3html',
   PRIMARY KEY (`api_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_mock_api
 -- ----------------------------
+INSERT INTO `t_mock_api` VALUES ('1', '1', 'test', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for t_mock_hit_policy
@@ -684,11 +686,12 @@ CREATE TABLE `t_mock_hit_policy` (
   `value` varchar(200) DEFAULT NULL COMMENT '值',
   `status` tinyint DEFAULT NULL COMMENT '0启用1禁用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_mock_hit_policy
 -- ----------------------------
+INSERT INTO `t_mock_hit_policy` VALUES ('1', '1', '1', '1', null, null, null);
 
 -- ----------------------------
 -- Table structure for t_mock_sever

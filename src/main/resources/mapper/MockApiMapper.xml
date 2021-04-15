@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.MockHitPolicyMapper">
+    <insert id="insertMockApi" parameterType="org.alex.platform.pojo.MockApiDO" useGeneratedKeys="true" keyProperty="apiId">
+        insert into `t_mock_api`
+        (`api_id`, `server_id`, `desc`, `url`, `method`, `response_code`,`response_headers`,
+        `response_body`, `response_delay`, `status`, `created_time`, `update_time`,
+        `response_code`,`response_headers_enable_rely`,`response_body_enable_rely`,`creator_id`,
+        `creator_name`,`response_body_type`)
+        values
+        (#{apiId},#{serverId},#{desc},#{url},#{method},#{responseCode},#{responseHeaders}
+        #{responseBody},#{responseDelay},#{status},#{createdTime},#{updateTime},
+        #{responseCode},#{responseHeadersEnableRely},#{responseBodyEnableRely},#{creatorId},
+        #{creatorName},#{responseBodyType})
+    </insert>
+    <update id="updateMockApi" parameterType="org.alex.platform.pojo.MockApiDO">
+        update `t_mock_api`
+        <set>
+            <if test="serverId!=null">`server_id`=#{serverId},</if>
+            `desc`=#{desc},
+            `url`=#{url},
+            `method`=#{method},
+            `response_code`=#{responseCode},
+            `response_headers`=#{responseHeaders},
+            `response_body`=#{responseBody},
+            `response_delay`=#{responseDelay},
+            `status`=#{status},
+            <if test="createdTime!=null">`created_time`=#{createdTime},</if>
+            <if test="updateTime!=null">`update_time`=#{updateTime},</if>
+            `response_code`=#{responseCode},
+            `response_headers_enable_rely`=#{responseHeadersEnableRely},
+            `response_body_enable_rely`=#{responseBodyEnableRely},
+            `response_body_type`=#{responseBodyType},
+        </set>
+        <where>
+            `api_id` = #{apiId}
+        </where>
+    </update>
+    <sql id="selectList">
+        select
+        `server`.`server_id`,`server`.`port`,`server`.`remote_host`,`server`.`remote_port`,
+
+        `api`.`api_id`,`api`.`desc`,`api`.`url`,`api`.`method`,`api`.`response_code`,`api`.`response_headers`,`api`.`response_body`,
+        `api`.`response_delay`,`api`.`status`,`api`.`created_time`,`api`.`update_time`,`api`.`response_headers_enable_rely`,
+        `api`.`response_body_enable_rely`,`api`.`creator_id`,`api`.`creator_name`,`api`.`response_body_type`
+        from `t_mock_api` as `api`
+        left JOIN `t_mock_sever` as `server`
+        on `api`.`server_id` = `server`.`server_id`
+    </sql>
+    <select id="selectMockApiList" parameterType="org.alex.platform.pojo.MockApiDTO" resultType="org.alex.platform.pojo.MockApiListVO">
+        <include refid="selectList"></include>
+        <where>
+            <if test="apiId!=null">and `api_id`=#{apiId}</if>
+            <if test="serverId!=null">and `server_id`=#{serverId}</if>
+            <if test="port!=null">and `port`=#{port}</if>
+            <if test="desc!=null">and `desc`=#{desc}</if>
+            <if test="url!=null">and `url`=#{url}</if>
+            <if test="method!=null">and `method`=#{method}</if>
+            <if test="status!=null">and `status`=#{url}</if>
+        </where>
+    </select>
+    <select id="selectMockApiByServerId" parameterType="Integer" resultType="org.alex.platform.pojo.MockApiListVO">
+        <include refid="selectList"></include>
+        <where>
+            `api`.`server_id` = #{serverId}
+        </where>
+    </select>
+    <resultMap id="main" type="org.alex.platform.pojo.MockApiInfoVO">
+
+        <result column="server_id" property="serverId"/>
+        <result column="port" property="port"/>
+        <result column="remote_host" property="remoteHost"/>
+        <result column="remote_port" property="remotePort"/>
+
+        <result column="api_id" property="apiId"/>
+        <result column="desc" property="desc"/>
+        <result column="url" property="url"/>
+        <result column="method" property="method"/>
+        <result column="response_code" property="responseCode"/>
+        <result column="response_headers" property="responseHeaders"/>
+        <result column="response_body" property="responseBody"/>
+        <result column="response_delay" property="responseDelay"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="response_headers_enable_rely" property="responseHeadersEnableRely"/>
+        <result column="response_body_enable_rely" property="responseBodyEnableRely"/>
+        <result column="creator_id" property="creatorId"/>
+        <result column="creator_name" property="creatorName"/>
+        <result column="response_body_type" property="responseBodyType"/>
+
+        <collection property="policies" ofType="org.alex.platform.pojo.MockHitPolicyVO">
+            <result column="id" property="id"/>
+            <result column="match_scope" property="matchScope"/>
+            <result column="match_type" property="matchType"/>
+            <result column="name" property="name"/>
+            <result column="value" property="value"/>
+            <result column="policy_status" property="status"/>
+        </collection>
+    </resultMap>
+    <select id="selectMockApiById" parameterType="Integer" resultMap="main">
+        select
+        `server`.`server_id`,`server`.`port`,`server`.`remote_host`,`server`.`remote_port`,
+
+        `api`.`api_id`,`api`.`desc`,`api`.`url`,`api`.`method`,`api`.`response_code`,`api`.`response_headers`,`api`.`response_body`,
+        `api`.`response_delay`,`api`.`status`,`api`.`created_time`,`api`.`update_time`,`api`.`response_headers_enable_rely`,
+        `api`.`response_body_enable_rely`,`api`.`creator_id`,`api`.`creator_name`,`api`.`response_body_type`,
+
+        `policy`.`id`,`policy`.`match_scope`, `policy`.`match_type`, `policy`.`name`, `policy`.`value`, `policy`.`status` as `policy_status`
+        from `t_mock_api` as `api`
+
+        left JOIN `t_mock_sever` as `server`
+        on `api`.`server_id` = `server`.`server_id`
+        LEFT JOIN `t_mock_hit_policy` `policy`
+        on `api`.`api_id` = `policy`.`api_id`
+
+        <where>
+            `api`.`api_id` = #{apiId}
+        </where>
+    </select>
+
+    <delete id="deleteMockApiById">
+        delete
+        from `t_mock_api`
+        where `api_id` = #{apiId}
+    </delete>
+</mapper>

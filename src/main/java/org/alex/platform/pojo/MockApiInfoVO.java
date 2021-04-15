@@ -6,6 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 public class MockApiInfoVO {
+    private Integer serverId;
+    private Integer port;
+    private String remoteHost;
+    private Integer remotePort;
+
     private Integer apiId;
     private String desc;
     private String url;
@@ -26,6 +31,38 @@ public class MockApiInfoVO {
     private Byte responseBodyType;
 
     private List<MockHitPolicyVO> policies;
+
+    public Integer getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(Integer serverId) {
+        this.serverId = serverId;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    public String getRemoteHost() {
+        return remoteHost;
+    }
+
+    public void setRemoteHost(String remoteHost) {
+        this.remoteHost = remoteHost;
+    }
+
+    public Integer getRemotePort() {
+        return remotePort;
+    }
+
+    public void setRemotePort(Integer remotePort) {
+        this.remotePort = remotePort;
+    }
 
     public Integer getApiId() {
         return apiId;

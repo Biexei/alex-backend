@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class MockApiDO implements Serializable {
     private Integer apiId;
+    private Integer serverId;
     private String desc;
     private String url;
     private String method;
@@ -24,6 +25,14 @@ public class MockApiDO implements Serializable {
     private Integer creatorId;
     private String creatorName;
     private Byte responseBodyType;
+
+    public Integer getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(Integer serverId) {
+        this.serverId = serverId;
+    }
 
     public Integer getApiId() {
         return apiId;

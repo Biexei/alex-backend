@@ -22,5 +22,7 @@ public interface MockHitPolicyMapper {
 
     List<MockHitPolicyVO> selectMockHitPolicyByApiId(Integer apiId);
 
+    List<Integer> selectIdByApiId(Integer apiId);
+
     void deleteMockHitPolicyByApiId(Integer apiId);
 }

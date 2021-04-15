@@ -54,6 +54,11 @@ public class MockHitPolicyServiceImpl implements MockHitPolicyService {
         policyMapper.deleteMockHitPolicyByApiId(apiId);
     }
 
+    @Override
+    public List<Integer> findIdByApiId(Integer apiId) {
+        return policyMapper.selectIdByApiId(apiId);
+    }
+
     private void checkDO(MockHitPolicyDO mockHitPolicyDO) throws ValidException {
         Integer apiId = mockHitPolicyDO.getApiId();
         Byte matchScope = mockHitPolicyDO.getMatchScope();

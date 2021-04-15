@@ -21,4 +21,6 @@ public interface MockHitPolicyService {
     List<MockHitPolicyVO> findMockHitPolicyByApiId(Integer apiId);
 
     void removeMockHitPolicyByApiId(Integer apiId);
+
+    List<Integer> findIdByApiId(Integer apiId);
 }

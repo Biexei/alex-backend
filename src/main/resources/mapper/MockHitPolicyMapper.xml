@@ -48,6 +48,11 @@
         from `t_mock_hit_policy`
         where `api_id`=#{apiId}
     </select>
+    <select id="selectIdByApiId" parameterType="Integer" resultType="Integer">
+        select `id`
+        from `t_mock_hit_policy`
+        where `api_id`=#{apiId}
+    </select>
     <delete id="deleteMockHitPolicyByApiId" parameterType="Integer">
         delete from `t_mock_sever`
         where `api_id`=#{apiId}

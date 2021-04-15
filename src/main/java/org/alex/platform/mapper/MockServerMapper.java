@@ -10,11 +10,11 @@ import java.util.List;
 
 @Repository
 public interface MockServerMapper {
-    void insertMockServer(MockServerDO MockServerDO);
+    void insertMockServer(MockServerDO mockServerDO);
 
-    void updateMockServer(MockServerDO MockServerDO);
+    void updateMockServer(MockServerDO mockServerDO);
 
-    List<MockServerVO> selectMockServer(MockServerDTO MockServerDTO);
+    List<MockServerVO> selectMockServer(MockServerDTO mockServerDTO);
 
     MockServerVO selectMockServerById(Integer serverId);
 

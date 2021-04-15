@@ -4,11 +4,28 @@ import java.io.Serializable;
 
 public class MockApiDTO implements Serializable {
     private Integer apiId;
+    private Integer serverId;
+    private Integer port;
     private String desc;
     private String url;
     private String method;
-    private Integer responseCode;
     private Byte status;
+
+    public Integer getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(Integer serverId) {
+        this.serverId = serverId;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
 
     public Integer getApiId() {
         return apiId;
@@ -40,14 +57,6 @@ public class MockApiDTO implements Serializable {
 
     public void setMethod(String method) {
         this.method = method;
-    }
-
-    public Integer getResponseCode() {
-        return responseCode;
-    }
-
-    public void setResponseCode(Integer responseCode) {
-        this.responseCode = responseCode;
     }
 
     public Byte getStatus() {
