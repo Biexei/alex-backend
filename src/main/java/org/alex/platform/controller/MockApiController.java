@@ -30,7 +30,7 @@ public class MockApiController {
     }
 
     @PostMapping("/modify")
-    public Result modifyMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws ValidException {
+    public Result modifyMockApiAndPolicy(@RequestBody MockApiAndPolicyDO policyDO) throws ValidException {
         mockApiService.modifyMockApiAndPolicy(policyDO);
         return Result.success("修改成功");
     }

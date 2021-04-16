@@ -33,7 +33,11 @@ public class RequestHandler {
      * @param value 请求头值
      */
     public void setHeaderByRegex(String name, String value) {
-        this.request.withHeader(header(name, value));
+        if(value == null) {
+            this.request.withHeader(header(name));
+        } else {
+            this.request.withHeader(header(name, value));
+        }
     }
 
     /** 值JsonSchema

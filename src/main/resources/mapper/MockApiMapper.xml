@@ -93,6 +93,7 @@
 
         <collection property="policies" ofType="org.alex.platform.pojo.MockHitPolicyVO">
             <result column="id" property="id"/>
+            <result column="policy_api_id" property="apiId"/>
             <result column="match_scope" property="matchScope"/>
             <result column="match_type" property="matchType"/>
             <result column="name" property="name"/>
@@ -108,7 +109,8 @@
         `api`.`response_delay`,`api`.`status`,`api`.`created_time`,`api`.`update_time`,`api`.`response_headers_enable_rely`,
         `api`.`response_body_enable_rely`,`api`.`creator_id`,`api`.`creator_name`,`api`.`response_body_type`,
 
-        `policy`.`id`,`policy`.`match_scope`, `policy`.`match_type`, `policy`.`name`, `policy`.`value`, `policy`.`status` as `policy_status`
+        `policy`.`id`, `policy`.`api_id` as `policy_api_id`, `policy`.`match_scope`, `policy`.`match_type`,
+        `policy`.`name`, `policy`.`value`, `policy`.`status` as `policy_status`
         from `t_mock_api` as `api`
 
         left JOIN `t_mock_sever` as `server`

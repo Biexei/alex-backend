@@ -5,6 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public class MockApiListVO {
+    private Boolean portRunning;
+
     private Integer serverId;
     private Integer port;
     private String remoteHost;
@@ -28,6 +30,14 @@ public class MockApiListVO {
     private Integer creatorId;
     private String creatorName;
     private Byte responseBodyType;
+
+    public Boolean getPortRunning() {
+        return portRunning;
+    }
+
+    public void setPortRunning(Boolean portRunning) {
+        this.portRunning = portRunning;
+    }
 
     public Integer getServerId() {
         return serverId;

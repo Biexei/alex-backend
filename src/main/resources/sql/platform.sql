@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
-Source Server Version : 80020
+Source Server         : localhost
+Source Server Version : 80019
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80020
+Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2021-04-16 16:52:35
+Date: 2021-04-16 21:24:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -666,12 +666,12 @@ CREATE TABLE `t_mock_api` (
   `creator_name` varchar(30) DEFAULT NULL COMMENT '创建人名称',
   `response_body_type` tinyint DEFAULT NULL COMMENT '0文本1json2xml3html',
   PRIMARY KEY (`api_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_mock_api
 -- ----------------------------
-INSERT INTO `t_mock_api` VALUES ('4', '1', '123', 'aaa', 'AA', '200', '123', '123', null, null, '2021-04-16 16:20:40', '2021-04-16 16:20:40', '1', '1', '1', '123', '0');
+INSERT INTO `t_mock_api` VALUES ('5', '1', '123', '/get', 'GET', '123', '123', '123', null, '1', '2021-04-16 18:11:28', '2021-04-16 20:41:22', '0', '0', '1', '123', '0');
 
 -- ----------------------------
 -- Table structure for t_mock_hit_policy
@@ -680,18 +680,17 @@ DROP TABLE IF EXISTS `t_mock_hit_policy`;
 CREATE TABLE `t_mock_hit_policy` (
   `id` int NOT NULL AUTO_INCREMENT,
   `api_id` int DEFAULT NULL COMMENT 'api_id',
-  `match_scope` tinyint DEFAULT NULL COMMENT '0请求头1请求params2请求body',
-  `match_type` tinyint DEFAULT NULL COMMENT '0固定值1正则2jsonschema3xpath4jsonpath5包含',
+  `match_scope` tinyint DEFAULT NULL COMMENT '0请求头1请求body2pathparams3请求queryparams',
+  `match_type` tinyint DEFAULT NULL COMMENT '0固定值1包含2正则3jsonschema4xpath5jsonpath',
   `name` varchar(200) DEFAULT NULL COMMENT '名称',
   `value` varchar(200) DEFAULT NULL COMMENT '值',
   `status` tinyint DEFAULT NULL COMMENT '0启用1禁用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_mock_hit_policy
 -- ----------------------------
-INSERT INTO `t_mock_hit_policy` VALUES ('2', '4', '2', '0', 'aa', 'aa', '0');
 
 -- ----------------------------
 -- Table structure for t_mock_sever
@@ -747,7 +746,7 @@ CREATE TABLE `t_permission` (
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限名称',
   `parent_id` int DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -884,6 +883,11 @@ INSERT INTO `t_permission` VALUES ('217', 'mock:node:remove', '删除', '214');
 INSERT INTO `t_permission` VALUES ('218', 'mock:node:find', '查询', '214');
 INSERT INTO `t_permission` VALUES ('219', 'mock:node:start', '启用', '214');
 INSERT INTO `t_permission` VALUES ('220', 'mock:node:stop', '停用', '214');
+INSERT INTO `t_permission` VALUES ('221', 'mock:api', '接口管理', '213');
+INSERT INTO `t_permission` VALUES ('222', 'mock:api:add', '添加', '221');
+INSERT INTO `t_permission` VALUES ('223', 'mock:api:modify', '修改', '221');
+INSERT INTO `t_permission` VALUES ('224', 'mock:api:remove', '删除', '221');
+INSERT INTO `t_permission` VALUES ('225', 'mock:api:query', '查询', '221');
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -895,7 +899,7 @@ CREATE TABLE `t_permission_role_ref` (
   `role_id` int DEFAULT NULL COMMENT '权限编号',
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=192 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=197 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
@@ -1048,6 +1052,11 @@ INSERT INTO `t_permission_role_ref` VALUES ('188', '217', '1', '2021-04-14 19:45
 INSERT INTO `t_permission_role_ref` VALUES ('189', '218', '1', '2021-04-14 19:45:41');
 INSERT INTO `t_permission_role_ref` VALUES ('190', '219', '1', '2021-04-14 19:45:42');
 INSERT INTO `t_permission_role_ref` VALUES ('191', '220', '1', '2021-04-14 19:45:42');
+INSERT INTO `t_permission_role_ref` VALUES ('192', '221', '1', '2021-04-16 21:22:41');
+INSERT INTO `t_permission_role_ref` VALUES ('193', '222', '1', '2021-04-16 21:22:41');
+INSERT INTO `t_permission_role_ref` VALUES ('194', '223', '1', '2021-04-16 21:22:42');
+INSERT INTO `t_permission_role_ref` VALUES ('195', '225', '1', '2021-04-16 21:22:42');
+INSERT INTO `t_permission_role_ref` VALUES ('196', '224', '1', '2021-04-16 21:22:43');
 
 -- ----------------------------
 -- Table structure for t_project

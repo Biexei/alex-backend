@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.MockApiMapper;
+import org.alex.platform.mock.MockServerPool;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.MockApiService;
 import org.alex.platform.service.MockHitPolicyService;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MockApiServiceImpl implements MockApiService {
@@ -108,7 +110,13 @@ public class MockApiServiceImpl implements MockApiService {
     @Override
     public PageInfo<MockApiListVO> findMockApiList(MockApiDTO mockApiDTO, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo<>(mockApiMapper.selectMockApiList(mockApiDTO));
+        PageInfo<MockApiListVO> pages = new PageInfo<>(mockApiMapper.selectMockApiList(mockApiDTO));
+        List<MockApiListVO> result  = pages.getList().stream().peek(page -> {
+            Integer port = page.getPort();
+            page.setPortRunning(MockServerPool.isRunning(port));
+        }).collect(Collectors.toList());
+        pages.setList(result);
+        return pages;
     }
 
     @Override
