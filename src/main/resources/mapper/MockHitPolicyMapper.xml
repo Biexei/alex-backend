@@ -54,7 +54,7 @@
         where `api_id`=#{apiId}
     </select>
     <delete id="deleteMockHitPolicyByApiId" parameterType="Integer">
-        delete from `t_mock_sever`
+        delete from `t_mock_hit_policy`
         where `api_id`=#{apiId}
     </delete>
 </mapper>

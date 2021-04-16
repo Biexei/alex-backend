@@ -1,9 +1,9 @@
 package org.alex.platform.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MockApiAndPolicyDO {
-    private MockApiDO mockApiDO;
+public class MockApiAndPolicyDO extends MockApiDO implements Serializable {
     private List<MockHitPolicyDO> policies;
 
     public List<MockHitPolicyDO> getPolicies() {
@@ -12,13 +12,5 @@ public class MockApiAndPolicyDO {
 
     public void setPolicies(List<MockHitPolicyDO> policies) {
         this.policies = policies;
-    }
-
-    public MockApiDO getMockApiDO() {
-        return mockApiDO;
-    }
-
-    public void setMockApiDO(MockApiDO mockApiDO) {
-        this.mockApiDO = mockApiDO;
     }
 }

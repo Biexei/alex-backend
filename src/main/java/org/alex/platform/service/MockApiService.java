@@ -7,15 +7,15 @@ import org.alex.platform.pojo.*;
 import java.util.List;
 
 public interface MockApiService {
-    MockApiDO insertMockApi(MockApiDO mockApiDO) throws ValidException;
+    MockApiDO saveMockApi(MockApiDO mockApiDO) throws ValidException;
 
-    void insertMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws ValidException;
+    void saveMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws ValidException;
 
     void modifyMockApi(MockApiDO mockApiDO) throws ValidException;
 
     void modifyMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws ValidException;
 
-    PageInfo<MockApiListVO> findMockApiList(MockApiDTO MockApiDTO, Integer pageNum, Integer pageSize);
+    PageInfo<MockApiListVO> findMockApiList(MockApiDTO mockApiDTO, Integer pageNum, Integer pageSize);
 
     List<MockApiListVO> findMockApiByServerId(Integer serverId);
 

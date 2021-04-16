@@ -70,10 +70,10 @@ public class MockHitPolicyServiceImpl implements MockHitPolicyService {
         ValidUtil.notNUll(matchScope, "作用域不能为空");
         ValidUtil.size(matchScope, 0, 2, "作用域参数错误");
         ValidUtil.notNUll(matchType, "作用类型不能为空");
-        ValidUtil.size(matchScope, 0, 5, "作用类型参数错误");
+        ValidUtil.size(matchType, 0, 5, "作用类型参数错误");
         ValidUtil.notNUll(value, "值不能为空");
         ValidUtil.notEmpty(value, "值不能为空");
         ValidUtil.notNUll(status, "状态不能为空");
-        ValidUtil.size(matchScope, 0, 1, "状态参数错误");
+        ValidUtil.size(status, 0, 1, "状态参数错误");
     }
 }

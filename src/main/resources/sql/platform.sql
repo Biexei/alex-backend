@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 80019
+Source Server         : 本地
+Source Server Version : 80020
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80019
+Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-04-15 20:33:48
+Date: 2021-04-16 16:52:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -666,12 +666,12 @@ CREATE TABLE `t_mock_api` (
   `creator_name` varchar(30) DEFAULT NULL COMMENT '创建人名称',
   `response_body_type` tinyint DEFAULT NULL COMMENT '0文本1json2xml3html',
   PRIMARY KEY (`api_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_mock_api
 -- ----------------------------
-INSERT INTO `t_mock_api` VALUES ('1', '1', 'test', null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `t_mock_api` VALUES ('4', '1', '123', 'aaa', 'AA', '200', '123', '123', null, null, '2021-04-16 16:20:40', '2021-04-16 16:20:40', '1', '1', '1', '123', '0');
 
 -- ----------------------------
 -- Table structure for t_mock_hit_policy
@@ -686,12 +686,12 @@ CREATE TABLE `t_mock_hit_policy` (
   `value` varchar(200) DEFAULT NULL COMMENT '值',
   `status` tinyint DEFAULT NULL COMMENT '0启用1禁用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_mock_hit_policy
 -- ----------------------------
-INSERT INTO `t_mock_hit_policy` VALUES ('1', '1', '1', '1', null, null, null);
+INSERT INTO `t_mock_hit_policy` VALUES ('2', '4', '2', '0', 'aa', 'aa', '0');
 
 -- ----------------------------
 -- Table structure for t_mock_sever
@@ -714,7 +714,7 @@ CREATE TABLE `t_mock_sever` (
 -- ----------------------------
 -- Records of t_mock_sever
 -- ----------------------------
-INSERT INTO `t_mock_sever` VALUES ('1', '7733', '127.0.0.1', '7777', '123', '-1', '', '2021-04-14 17:07:46', '2021-04-15 12:32:08');
+INSERT INTO `t_mock_sever` VALUES ('1', '7733', '127.0.0.1', '7777', '123', '1', '', '2021-04-14 17:07:46', '2021-04-15 12:32:08');
 INSERT INTO `t_mock_sever` VALUES ('3', '5555', '', null, '', '1', '123', '2021-04-14 19:24:01', '2021-04-14 19:24:23');
 
 -- ----------------------------

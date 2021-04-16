@@ -26,19 +26,27 @@ public class MockApiServiceImpl implements MockApiService {
     MockServerService mockServerService;
 
     @Override
-    public MockApiDO insertMockApi(MockApiDO mockApiDO) throws ValidException {
+    public MockApiDO saveMockApi(MockApiDO mockApiDO) throws ValidException {
+        Byte responseBodyEnableRely = mockApiDO.getResponseBodyEnableRely();
+        Byte responseHeadersEnableRely = mockApiDO.getResponseHeadersEnableRely();
+        mockApiDO.setResponseBodyEnableRely(responseBodyEnableRely == null ? (byte)0 : responseBodyEnableRely);
+        mockApiDO.setResponseHeadersEnableRely(responseHeadersEnableRely == null ? (byte)0 : responseHeadersEnableRely);
         checkMockApiDO(mockApiDO);
         Date date = new Date();
         mockApiDO.setCreatedTime(date);
         mockApiDO.setUpdateTime(date);
+        String method = mockApiDO.getMethod();
+        if (method != null) {
+            mockApiDO.setMethod(method.toUpperCase());
+        }
+        mockApiMapper.insertMockApi(mockApiDO);
         return mockApiDO;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void insertMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws ValidException {
-        MockApiDO mockApiDO = policyDO.getMockApiDO();
-        MockApiDO mockApi = this.insertMockApi(mockApiDO);
+    public void saveMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws ValidException {
+        MockApiDO mockApi = this.saveMockApi(policyDO);
         Integer apiId = mockApi.getApiId();
         List<MockHitPolicyDO> policies = policyDO.getPolicies();
         if (policies != null && !policies.isEmpty()) {
@@ -51,9 +59,17 @@ public class MockApiServiceImpl implements MockApiService {
 
     @Override
     public void modifyMockApi(MockApiDO mockApiDO) throws ValidException {
+        Byte responseBodyEnableRely = mockApiDO.getResponseBodyEnableRely();
+        Byte responseHeadersEnableRely = mockApiDO.getResponseHeadersEnableRely();
+        mockApiDO.setResponseBodyEnableRely(responseBodyEnableRely == null ? (byte)0 : responseBodyEnableRely);
+        mockApiDO.setResponseHeadersEnableRely(responseHeadersEnableRely == null ? (byte)0 : responseHeadersEnableRely);
         Integer apiId = mockApiDO.getApiId();
         ValidUtil.notNUll(apiId, "参数错误");
         checkMockApiDO(mockApiDO);
+        String method = mockApiDO.getMethod();
+        if (method != null) {
+            mockApiDO.setMethod(method.toUpperCase());
+        }
         mockApiDO.setUpdateTime(new Date());
         mockApiMapper.updateMockApi(mockApiDO);
     }
@@ -61,9 +77,8 @@ public class MockApiServiceImpl implements MockApiService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void modifyMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws ValidException {
-        MockApiDO mockApiDO = policyDO.getMockApiDO();
-        Integer apiId = mockApiDO.getApiId();
-        this.modifyMockApi(mockApiDO);
+        Integer apiId = policyDO.getApiId();
+        this.modifyMockApi(policyDO);
         List<MockHitPolicyDO> policies = policyDO.getPolicies();
         if (policies == null || policies.isEmpty()) {
             mockHitPolicyService.removeMockHitPolicyByApiId(apiId);
@@ -106,9 +121,11 @@ public class MockApiServiceImpl implements MockApiService {
         return mockApiMapper.selectMockApiById(apiId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void removeMockApiById(Integer apiId) {
         mockApiMapper.deleteMockApiById(apiId);
+        mockHitPolicyService.removeMockHitPolicyByApiId(apiId);
     }
 
     private void checkMockApiDO(MockApiDO mockApiDO) throws ValidException {
@@ -122,7 +139,7 @@ public class MockApiServiceImpl implements MockApiService {
         Byte responseBodyType = mockApiDO.getResponseBodyType();
         ValidUtil.notNUll(serverId, "请选择服务编号");
         ValidUtil.notNUll(mockServerService.findMockServerById(serverId), "请选择服务编号");
-        ValidUtil.notNUll(url, "请输入URL");
+        ValidUtil.notNUll(url, "请输入Url");
         ValidUtil.length(url, 1, 200, "URL长度需为[0, 200]");
         ValidUtil.notNUll(method, "请输入请求方式");
         ValidUtil.notEmpty(method, "请输入请求方式");
@@ -131,10 +148,10 @@ public class MockApiServiceImpl implements MockApiService {
         if (responseHeaders != null) {
             ValidUtil.length(responseHeaders,0, 2000, "响应头长度需为[1, 2000]");
         }
-        ValidUtil.notNUll(responseBodyEnableRely, "请选择是否解析响应体依赖");
-        ValidUtil.size(responseBodyEnableRely, 0, 1, "是否解析响应体依赖参数错误");
         ValidUtil.notNUll(responseHeadersEnableRely, "请选择是否解析响应头依赖");
         ValidUtil.size(responseHeadersEnableRely, 0, 1, "是否解析响应头依赖参数错误");
+        ValidUtil.notNUll(responseBodyEnableRely, "请选择是否解析响应体依赖");
+        ValidUtil.size(responseBodyEnableRely, 0, 1, "是否解析响应体依赖参数错误");
         ValidUtil.notNUll(responseBodyType, "请选择响应体类型");
         ValidUtil.size(responseHeadersEnableRely, 0, 1, "响应体类型参数错误");
     }

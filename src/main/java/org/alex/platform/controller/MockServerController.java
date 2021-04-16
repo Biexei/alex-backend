@@ -58,7 +58,7 @@ public class MockServerController {
     }
 
     @GetMapping("/remove/{serverId}")
-    Result removeMockServer(@PathVariable Integer serverId) {
+    Result removeMockServer(@PathVariable Integer serverId) throws BusinessException {
         mockServerService.removeMockServer(serverId);
         return Result.success();
     }

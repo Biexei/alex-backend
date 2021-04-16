@@ -20,7 +20,7 @@ public interface MockServerService {
 
     MockServerVO findMockServerById(Integer serverId);
 
-    void removeMockServer(Integer serverId);
+    void removeMockServer(Integer serverId) throws BusinessException;
 
     MockServerVO checkPortUnique(Integer serverId, Integer port);
 

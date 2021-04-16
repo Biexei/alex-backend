@@ -6,12 +6,13 @@ import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.MockServerMapper;
 import org.alex.platform.mock.MockServerPool;
+import org.alex.platform.pojo.MockApiListVO;
 import org.alex.platform.pojo.MockServerDO;
 import org.alex.platform.pojo.MockServerDTO;
 import org.alex.platform.pojo.MockServerVO;
+import org.alex.platform.service.MockApiService;
 import org.alex.platform.service.MockServerService;
 import org.alex.platform.util.ValidUtil;
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 public class MockServerServiceImpl implements MockServerService {
     @Autowired
     MockServerMapper mockServerMapper;
+    @Autowired
+    MockApiService mockApiService;
 
     private static final Logger LOG = LoggerFactory.getLogger(MockServerServiceImpl.class);
 
@@ -125,8 +128,12 @@ public class MockServerServiceImpl implements MockServerService {
      * @param serverId serverId
      */
     @Override
-    public void removeMockServer(Integer serverId) {
+    public void removeMockServer(Integer serverId) throws BusinessException {
         MockServerVO mockServerVO = mockServerMapper.selectMockServerById(serverId);
+        List<MockApiListVO> mockApi = mockApiService.findMockApiByServerId(serverId);
+        if (!mockApi.isEmpty()) {
+            throw new BusinessException("请先删除其关联的mock api");
+        }
         Integer port = mockServerVO.getPort();
         // 关闭mock server
         MockServerPool.stop(port);
