@@ -21,9 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.annotation.PostConstruct;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +31,10 @@ public class RestUtil {
     @Autowired
     HttpSettingMapper httpSettingMapper;
 
+    private static final String[] DEFAULT_USER_AGENT = {"Alex"};
+    private static final String[] DEFAULT_ACCEPT = {"*/*"};
+    private static final String[] DEFAULT_ACCEPT_ENCODING = {"gzip, deflate, br"};
+    private static final String[] DEFAULT_ACCEPT_LANGUAGE = {"zh-CN,zh;q=0.9"};
     private static final int DEFAULT_CONNECT_TIMEOUT = 30 * 1000;
     private static final int DEFAULT_READ_TIMEOUT = 30 * 1000;
     private static RestUtil restUtil;
@@ -108,7 +110,7 @@ public class RestUtil {
             throws BusinessException {
 
         RestTemplate restTemplate = RestUtil.getInstance();
-        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpHeaders httpHeaders = getDefaultHeader();
 
         if (StringUtils.isEmpty(url)) {
             throw new BusinessException("url should not be empty or null");
@@ -202,7 +204,7 @@ public class RestUtil {
             throws BusinessException {
 
         RestTemplate restTemplate = RestUtil.getInstance();
-        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpHeaders httpHeaders = getDefaultHeader();
 
         if (StringUtils.isEmpty(url)) {
             throw new BusinessException("url should not be empty or null");
@@ -374,5 +376,14 @@ public class RestUtil {
         } else {
             return null;
         }
+    }
+
+    private static HttpHeaders getDefaultHeader() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.put("User-Agent", Arrays.asList(DEFAULT_USER_AGENT));
+        httpHeaders.put("Accept", Arrays.asList(DEFAULT_ACCEPT));
+        httpHeaders.put("Accept-Encoding", Arrays.asList(DEFAULT_ACCEPT_ENCODING));
+        httpHeaders.put("Accept-Language", Arrays.asList(DEFAULT_ACCEPT_LANGUAGE));
+        return httpHeaders;
     }
 }

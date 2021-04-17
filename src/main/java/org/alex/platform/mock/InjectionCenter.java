@@ -200,7 +200,12 @@ public class InjectionCenter {
             headers = interfaceCaseService.parseRelyData(headers, NoUtil.genChainNo(), null, (byte)0,
                     null, null, null, null, NoUtil.genCasePreNo());
         }
-        JSONObject object = JSONObject.parseObject(headers);
+        JSONObject object;
+        try {
+            object = JSONObject.parseObject(headers);
+        } catch (Exception e) {
+            throw new BusinessException("response header must be json object string");
+        }
         if (object != null) {
             for (Map.Entry entry: object.entrySet()) {
                 Object key = entry.getKey();
