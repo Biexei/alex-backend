@@ -54,7 +54,7 @@
             <if test="apiId!=null">and `api_id`=#{apiId}</if>
             <if test="serverId!=null">and `server`.`server_id`=#{serverId}</if>
             <if test="port!=null">and `port`=#{port}</if>
-            <if test="desc!=null">and `desc`=#{desc}</if>
+            <if test="desc!=null">and `api`.`desc`=#{desc}</if>
             <if test="url!=null">and `url`=#{url}</if>
             <if test="method!=null">and `method`=#{method}</if>
         </where>
