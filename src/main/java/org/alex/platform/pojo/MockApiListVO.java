@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class MockApiListVO {
     private Boolean portRunning;
+    private Boolean apiRunning;
 
     private Integer serverId;
     private Integer port;
@@ -20,7 +21,6 @@ public class MockApiListVO {
     private String responseHeaders;
     private String responseBody;
     private Integer responseDelay;
-    private Byte status;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -30,6 +30,14 @@ public class MockApiListVO {
     private Integer creatorId;
     private String creatorName;
     private Byte responseBodyType;
+
+    public Boolean getApiRunning() {
+        return apiRunning;
+    }
+
+    public void setApiRunning(Boolean apiRunning) {
+        this.apiRunning = apiRunning;
+    }
 
     public Boolean getPortRunning() {
         return portRunning;
@@ -133,14 +141,6 @@ public class MockApiListVO {
 
     public void setResponseDelay(Integer responseDelay) {
         this.responseDelay = responseDelay;
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
     }
 
     public Date getCreatedTime() {

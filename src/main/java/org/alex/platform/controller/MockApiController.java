@@ -2,6 +2,9 @@ package org.alex.platform.controller;
 
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
+import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ParseException;
+import org.alex.platform.exception.SqlException;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.MockApiAndPolicyDO;
 import org.alex.platform.pojo.MockApiDTO;
@@ -20,7 +23,7 @@ public class MockApiController {
     MockApiService mockApiService;
 
     @PostMapping("/save")
-    public Result saveMockApiAndPolicy(@RequestBody MockApiAndPolicyDO policyDO, HttpServletRequest request) throws ValidException {
+    public Result saveMockApiAndPolicy(@RequestBody MockApiAndPolicyDO policyDO, HttpServletRequest request) throws BusinessException, ParseException, SqlException {
         int userId = loginUserInfo.getUserId(request);
         String realName = loginUserInfo.getRealName(request);
         policyDO.setCreatorId(userId);
@@ -30,7 +33,7 @@ public class MockApiController {
     }
 
     @PostMapping("/modify")
-    public Result modifyMockApiAndPolicy(@RequestBody MockApiAndPolicyDO policyDO) throws ValidException {
+    public Result modifyMockApiAndPolicy(@RequestBody MockApiAndPolicyDO policyDO) throws BusinessException, ParseException, SqlException {
         mockApiService.modifyMockApiAndPolicy(policyDO);
         return Result.success("修改成功");
     }
@@ -50,6 +53,18 @@ public class MockApiController {
     @GetMapping("/remove/{apiId}")
     public Result removeMockApiById(@PathVariable Integer apiId) {
         mockApiService.removeMockApiById(apiId);
+        return Result.success();
+    }
+
+    @GetMapping("/stop/{apiId}")
+    public Result stopApi(@PathVariable Integer apiId) {
+        mockApiService.stopApi(apiId);
+        return Result.success();
+    }
+
+    @GetMapping("/restart/{apiId}")
+    public Result restartApi(@PathVariable Integer apiId) throws BusinessException, ParseException, SqlException {
+        mockApiService.restartApi(apiId);
         return Result.success();
     }
 }

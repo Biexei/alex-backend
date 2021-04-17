@@ -1,9 +1,16 @@
 package org.alex.platform.mock;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.exception.BusinessException;
 import org.mockserver.integration.ClientAndServer;
+import org.mockserver.mock.Expectation;
+import org.mockserver.model.HttpRequest;
+import org.mockserver.model.RequestDefinition;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,6 +78,29 @@ public class MockServerPool {
         return mockServerClient;
     }
 
+
+    public static boolean apiIsRunning(Integer port, HttpRequest request, String url) {
+        ArrayList<String> pathList = new ArrayList<>();
+        if (!isRunning(port)) {
+            return false;
+        }
+        try {
+            ClientAndServer clientAndServer = justGet(port);
+            Expectation[] expectations = clientAndServer.retrieveActiveExpectations(request);
+            JSONArray array = JSONArray.parseArray(JSON.toJSONString(expectations));
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject jsonObject = array.getJSONObject(i);
+                JSONObject httpRequest = jsonObject.getJSONObject("httpRequest");
+                JSONObject path = httpRequest.getJSONObject("path");
+                String pathValue = path.getString("value");
+                pathList.add(pathValue);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return pathList.contains(url);
+    }
+
     /**
      * 判断端口是否已启用MockServer
      * @param port 端口
@@ -110,13 +140,42 @@ public class MockServerPool {
     /**
      * 清空所有MockSever
      */
-    public static void clear() {
+    public static void stopAllMockSever() {
         HashMap<String, ClientAndServer> instance = MockServerPool.getInstance();
         for(Map.Entry<String, ClientAndServer> entry : instance.entrySet()) {
             ClientAndServer mockServer = entry.getValue();
             mockServer.stop(true);
         }
         instance.clear();
+    }
+
+    /**
+     * 清空mock server下所有api
+     * @param port 指定端口
+     */
+    public static void clearByPort(Integer port) {
+        if (isRunning(port)) {
+            HashMap<String, ClientAndServer> instance = MockServerPool.getInstance();
+            ClientAndServer clientAndServer = instance.get(String.valueOf(port));
+            if (clientAndServer != null) {
+                clientAndServer.reset();
+            }
+        }
+    }
+
+    /**
+     * 清空mock server 下指定路径的api
+     * @param port 指定端口
+     * @param path path
+     */
+    public static void clearByPath(Integer port, String path) {
+        if (isRunning(port)) {
+            HashMap<String, ClientAndServer> instance = MockServerPool.getInstance();
+            ClientAndServer clientAndServer = instance.get(String.valueOf(port));
+            if (clientAndServer != null) {
+                clientAndServer.clear(HttpRequest.request().withPath(path));
+            }
+        }
     }
 
     /**
@@ -162,6 +221,16 @@ public class MockServerPool {
             }
         } else {
             return start(remoteHost, remotePort, port);
+        }
+    }
+
+    public static ClientAndServer justGet(Integer port) throws BusinessException {
+        HashMap<String, ClientAndServer> instance = MockServerPool.getInstance();
+        ClientAndServer server = instance.get(String.valueOf(port));
+        if (server == null) {
+            throw new BusinessException("获取mock server失败");
+        } else {
+            return server;
         }
     }
 }

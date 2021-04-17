@@ -1,6 +1,9 @@
 package org.alex.platform.mock;
 
+import org.alex.platform.exception.BusinessException;
 import org.mockserver.model.HttpRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.mockserver.model.Header.header;
 import static org.mockserver.model.Header.schemaHeader;
@@ -8,14 +11,44 @@ import static org.mockserver.model.JsonPathBody.jsonPath;
 import static org.mockserver.model.JsonSchemaBody.jsonSchema;
 import static org.mockserver.model.Parameter.param;
 import static org.mockserver.model.Parameter.schemaParam;
+import static org.mockserver.model.RegexBody.regex;
 import static org.mockserver.model.StringBody.subString;
 import static org.mockserver.model.XPathBody.xpath;
 
 public class RequestHandler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RequestHandler.class);
+
     HttpRequest request;
 
-    public RequestHandler(HttpRequest request) {
+    protected RequestHandler(HttpRequest request) {
         this.request = request;
+    }
+
+    /**
+     * 设置请求头 支持正则
+     * @param method 请求方式
+     */
+    protected void setMethod(String method) throws BusinessException {
+        try {
+            this.request.withMethod(method);
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求方式");
+        }
+    }
+
+    /**
+     * 设置url 支持正则
+     * @param url 请求url
+     */
+    protected void setUrl(String url) throws BusinessException {
+        try {
+            this.request.withPath(url);
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求地址");
+        }
     }
 
     /** 固定值
@@ -23,20 +56,30 @@ public class RequestHandler {
      * @param name 请求头名称
      * @param value 请求头值
      */
-    public void setHeader(String name, String value) {
-        this.request.withHeader(name, value);
+    protected void setHeader(String name, String value) throws BusinessException {
+        try {
+            this.request.withHeader(name, value);
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求头");
+        }
     }
 
     /** 名称+值正则
-     * 请求头名称和值符合JsonSchema
+     * 请求头名称和值符合正则
      * @param name 请求头名称
      * @param value 请求头值
      */
-    public void setHeaderByRegex(String name, String value) {
-        if(value == null) {
-            this.request.withHeader(header(name));
-        } else {
-            this.request.withHeader(header(name, value));
+    protected void setHeaderByRegex(String name, String value) throws BusinessException {
+        try {
+            if(value == null) {
+                this.request.withHeader(header(name));
+            } else {
+                this.request.withHeader(header(name, value));
+            }
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求头");
         }
     }
 
@@ -45,8 +88,13 @@ public class RequestHandler {
      * @param name 请求头名称
      * @param value 请求头值
      */
-    public void setHeaderByJsonSchema(String name, String value) {
-        this.request.withHeaders(schemaHeader(name, value));
+    protected void setHeaderByJsonSchema(String name, String value) throws BusinessException {
+        try {
+            this.request.withHeaders(schemaHeader(name, value));
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求头");
+        }
     }
 
 
@@ -56,8 +104,13 @@ public class RequestHandler {
      * @param name param名称
      * @param value param值
      */
-    public void setPathParam(String name, String value) {
-        this.request.withPathParameter(name, value);
+    protected void setPathParam(String name, String value) throws BusinessException {
+        try {
+            this.request.withPathParameter(name, value);
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查path param");
+        }
     }
 
     /** 值正则
@@ -65,8 +118,13 @@ public class RequestHandler {
      * @param name param名称
      * @param value param值
      */
-    public void setPathParamByRegex(String name, String value) {
-        this.request.withPathParameter(param(name, value));
+    protected void setPathParamByRegex(String name, String value) throws BusinessException {
+        try {
+            this.request.withPathParameter(param(name, value));
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查path param");
+        }
     }
 
     /** 值JsonSchema
@@ -74,8 +132,13 @@ public class RequestHandler {
      * @param name param名称
      * @param value param值
      */
-    public void setPathParamByJsonSchema(String name, String value) {
-        this.request.withPathParameter(schemaParam(name, value));
+    protected void setPathParamByJsonSchema(String name, String value) throws BusinessException {
+        try {
+            this.request.withPathParameter(schemaParam(name, value));
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查path param");
+        }
     }
 
 
@@ -85,8 +148,13 @@ public class RequestHandler {
      * @param name param名称
      * @param value param值
      */
-    public void setQueryParam(String name, String value) {
-        this.request.withQueryStringParameter(name, value);
+    protected void setQueryParam(String name, String value) throws BusinessException {
+        try {
+            this.request.withQueryStringParameter(name, value);
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查query param");
+        }
     }
 
     /** 值正则
@@ -94,8 +162,13 @@ public class RequestHandler {
      * @param name param名称
      * @param value param值
      */
-    public void setQueryParamByRegex(String name, String value) {
-        this.request.withQueryStringParameter(param(name, value));
+    protected void setQueryParamByRegex(String name, String value) throws BusinessException {
+        try {
+            this.request.withQueryStringParameter(param(name, value));
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查query param");
+        }
     }
 
     /** 值JsonSchema
@@ -103,8 +176,13 @@ public class RequestHandler {
      * @param name param名称
      * @param value param值
      */
-    public void setQueryParamByJsonSchema(String name, String value) {
-        this.request.withQueryStringParameter(schemaParam(name, value));
+    protected void setQueryParamByJsonSchema(String name, String value) throws BusinessException {
+        try {
+            this.request.withQueryStringParameter(schemaParam(name, value));
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查query param");
+        }
     }
 
 
@@ -112,39 +190,77 @@ public class RequestHandler {
      * 请求body为该字符串
      * @param body body
      */
-    public void setBody(String body) {
-        this.request.withBody(body);
+    protected void setBody(String body) throws BusinessException {
+        try {
+            this.request.withBody(body);
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求body");
+        }
+    }
+
+    /** 正则
+     * 请求body匹配该正则
+     * @param regex body
+     */
+    protected void setBodyRegex(String regex) throws BusinessException {
+        try {
+            this.request.withBody(regex(regex));
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求body");
+        }
     }
 
     /** 包含
      * 请求body包含该字符串
      * @param subBody 包含内容
      */
-    public void setBodyByContains(String subBody) {
-        this.request.withBody(subString(subBody));
+    protected void setBodyByContains(String subBody) throws BusinessException {
+        try {
+            this.request.withBody(subString(subBody));
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求body");
+        }
     }
 
     /** xpath
      * 请求body匹配xpath
      * @param xpath xpath
      */
-    public void setBodyByXpath(String xpath) {
-        this.request.withBody(xpath(xpath));
+    protected void setBodyByXpath(String xpath) throws BusinessException {
+        try {
+            this.request.withBody(xpath(xpath));
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求body");
+        }
     }
 
     /** jsonPath
      * 请求body匹配jsonPath
      * @param jsonPath jsonPath
      */
-    public void setBodyByJsonPath(String jsonPath) {
-        this.request.withBody(jsonPath(jsonPath));
+    protected void setBodyByJsonPath(String jsonPath) throws BusinessException {
+        try {
+            this.request.withBody(jsonPath(jsonPath));
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求body");
+        }
     }
 
     /** json schema
      * 请求body匹配json schema
      * @param jsonSchema jsonSchema
      */
-    public void setBodyByJsonSchema(String jsonSchema) {
-        this.request.withBody(jsonSchema(jsonSchema));
+    protected void setBodyByJsonSchema(String jsonSchema) throws BusinessException {
+        try {
+            this.request.withBody(jsonSchema(jsonSchema));
+        } catch (Exception e) {
+            LOG.error("{}", e.getMessage(), e);
+            throw new BusinessException("请检查请求body");
+        }
     }
 }

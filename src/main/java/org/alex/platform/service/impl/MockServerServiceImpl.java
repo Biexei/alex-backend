@@ -208,7 +208,7 @@ public class MockServerServiceImpl implements MockServerService {
      */
     @Override
     public void stopAllMockServer() {
-        MockServerPool.clear();
+        MockServerPool.stopAllMockSever();
     }
 
     /**

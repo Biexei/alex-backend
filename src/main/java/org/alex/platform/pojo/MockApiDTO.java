@@ -9,7 +9,6 @@ public class MockApiDTO implements Serializable {
     private String desc;
     private String url;
     private String method;
-    private Byte status;
 
     public Integer getServerId() {
         return serverId;
@@ -57,13 +56,5 @@ public class MockApiDTO implements Serializable {
 
     public void setMethod(String method) {
         this.method = method;
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
     }
 }

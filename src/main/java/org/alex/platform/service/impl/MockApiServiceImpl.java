@@ -1,15 +1,23 @@
 package org.alex.platform.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.exception.BusinessException;
+import org.alex.platform.exception.ParseException;
+import org.alex.platform.exception.SqlException;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.MockApiMapper;
+import org.alex.platform.mock.InjectionCenter;
 import org.alex.platform.mock.MockServerPool;
 import org.alex.platform.pojo.*;
 import org.alex.platform.service.MockApiService;
 import org.alex.platform.service.MockHitPolicyService;
 import org.alex.platform.service.MockServerService;
 import org.alex.platform.util.ValidUtil;
+import org.mockserver.integration.ClientAndServer;
+import org.mockserver.mock.Expectation;
+import org.mockserver.model.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,20 +34,23 @@ public class MockApiServiceImpl implements MockApiService {
     MockHitPolicyService mockHitPolicyService;
     @Autowired
     MockServerService mockServerService;
+    @Autowired
+    InjectionCenter injectionCenter;
 
     @Override
     public MockApiDO saveMockApi(MockApiDO mockApiDO) throws ValidException {
-        Byte responseBodyEnableRely = mockApiDO.getResponseBodyEnableRely();
-        Byte responseHeadersEnableRely = mockApiDO.getResponseHeadersEnableRely();
-        mockApiDO.setResponseBodyEnableRely(responseBodyEnableRely == null ? (byte)0 : responseBodyEnableRely);
-        mockApiDO.setResponseHeadersEnableRely(responseHeadersEnableRely == null ? (byte)0 : responseHeadersEnableRely);
         checkMockApiDO(mockApiDO);
         Date date = new Date();
         mockApiDO.setCreatedTime(date);
         mockApiDO.setUpdateTime(date);
+        Integer serverId = mockApiDO.getServerId();
+        String url = mockApiDO.getUrl();
         String method = mockApiDO.getMethod();
         if (method != null) {
             mockApiDO.setMethod(method.toUpperCase());
+        }
+        if (!mockApiMapper.checkUrlUnion4Insert(serverId, url).isEmpty()) {
+            throw new ValidException("该服务url重复");
         }
         mockApiMapper.insertMockApi(mockApiDO);
         return mockApiDO;
@@ -47,7 +58,8 @@ public class MockApiServiceImpl implements MockApiService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void saveMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws ValidException {
+    public void saveMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws BusinessException, ParseException, SqlException {
+        // 入库
         MockApiDO mockApi = this.saveMockApi(policyDO);
         Integer apiId = mockApi.getApiId();
         List<MockHitPolicyDO> policies = policyDO.getPolicies();
@@ -57,14 +69,14 @@ public class MockApiServiceImpl implements MockApiService {
                 mockHitPolicyService.saveMockHitPolicy(policy);
             }
         }
+        // mock server 添加该api
+        injectionCenter.injectByDO(policyDO);
     }
 
     @Override
     public void modifyMockApi(MockApiDO mockApiDO) throws ValidException {
-        Byte responseBodyEnableRely = mockApiDO.getResponseBodyEnableRely();
-        Byte responseHeadersEnableRely = mockApiDO.getResponseHeadersEnableRely();
-        mockApiDO.setResponseBodyEnableRely(responseBodyEnableRely == null ? (byte)0 : responseBodyEnableRely);
-        mockApiDO.setResponseHeadersEnableRely(responseHeadersEnableRely == null ? (byte)0 : responseHeadersEnableRely);
+        String url = mockApiDO.getUrl();
+        Integer serverId = mockApiDO.getServerId();
         Integer apiId = mockApiDO.getApiId();
         ValidUtil.notNUll(apiId, "参数错误");
         checkMockApiDO(mockApiDO);
@@ -73,13 +85,19 @@ public class MockApiServiceImpl implements MockApiService {
             mockApiDO.setMethod(method.toUpperCase());
         }
         mockApiDO.setUpdateTime(new Date());
+        if (!mockApiMapper.checkUrlUnion4Update(apiId, serverId, url).isEmpty()) {
+            throw new ValidException("该服务url重复");
+        }
         mockApiMapper.updateMockApi(mockApiDO);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void modifyMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws ValidException {
+    public void modifyMockApiAndPolicy(MockApiAndPolicyDO policyDO) throws BusinessException, ParseException, SqlException {
         Integer apiId = policyDO.getApiId();
+        // mock server 删除改之前的api
+        injectionCenter.delete(apiId);
+
         this.modifyMockApi(policyDO);
         List<MockHitPolicyDO> policies = policyDO.getPolicies();
         if (policies == null || policies.isEmpty()) {
@@ -105,6 +123,9 @@ public class MockApiServiceImpl implements MockApiService {
                 mockHitPolicyService.removeMockHitPolicyById(id);
             }
         }
+
+        // mock server 启用
+        injectionCenter.injectByDO(policyDO);
     }
 
     @Override
@@ -113,7 +134,18 @@ public class MockApiServiceImpl implements MockApiService {
         PageInfo<MockApiListVO> pages = new PageInfo<>(mockApiMapper.selectMockApiList(mockApiDTO));
         List<MockApiListVO> result  = pages.getList().stream().peek(page -> {
             Integer port = page.getPort();
-            page.setPortRunning(MockServerPool.isRunning(port));
+            Integer apiId = page.getApiId();
+            String method = page.getMethod();
+            String url = page.getUrl();
+            List<MockHitPolicyVO> policies = mockHitPolicyService.findMockHitPolicyByApiId(apiId);
+            boolean running = MockServerPool.isRunning(port);
+            page.setPortRunning(running);
+            try {
+                HttpRequest httpRequest = injectionCenter.injectRequest(new HttpRequest(), method, url, policies);
+                page.setApiRunning(MockServerPool.apiIsRunning(port, httpRequest, url));
+            } catch (BusinessException e) {
+                page.setApiRunning(false);
+            }
         }).collect(Collectors.toList());
         pages.setList(result);
         return pages;
@@ -132,8 +164,21 @@ public class MockApiServiceImpl implements MockApiService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void removeMockApiById(Integer apiId) {
+        // mock server 删除该api
+        injectionCenter.delete(apiId);
         mockApiMapper.deleteMockApiById(apiId);
         mockHitPolicyService.removeMockHitPolicyByApiId(apiId);
+    }
+
+    @Override
+    public void stopApi(Integer apiId) {
+        injectionCenter.delete(apiId);
+    }
+
+    @Override
+    public void restartApi(Integer apiId) throws BusinessException, ParseException, SqlException {
+        injectionCenter.delete(apiId);
+        injectionCenter.injectById(apiId);
     }
 
     private void checkMockApiDO(MockApiDO mockApiDO) throws ValidException {
@@ -147,11 +192,10 @@ public class MockApiServiceImpl implements MockApiService {
         Byte responseBodyType = mockApiDO.getResponseBodyType();
         ValidUtil.notNUll(serverId, "请选择服务编号");
         ValidUtil.notNUll(mockServerService.findMockServerById(serverId), "请选择服务编号");
-        ValidUtil.notNUll(url, "请输入Url");
-        ValidUtil.length(url, 1, 200, "URL长度需为[0, 200]");
+        ValidUtil.notNUll(url, "请输入url");
+        ValidUtil.length(url, 1, 200, "url长度需为[0, 200]");
         ValidUtil.notNUll(method, "请输入请求方式");
-        ValidUtil.notEmpty(method, "请输入请求方式");
-        ValidUtil.length(url, 1, 20, "URL长度需为[1, 20]");
+        ValidUtil.length(method, 1, 20, "请求方式长度需为[1, 20]");
         ValidUtil.notNUll(responseCode, "请输入响应状态码");
         if (responseHeaders != null) {
             ValidUtil.length(responseHeaders,0, 2000, "响应头长度需为[1, 2000]");

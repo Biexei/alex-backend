@@ -1,5 +1,6 @@
 package org.alex.platform;
 
+import org.mockserver.configuration.ConfigurationProperties;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.matchers.Times;
 import org.mockserver.mock.Expectation;
@@ -26,9 +27,19 @@ public class MockTest {
 
         ClientAndServer server = new ClientAndServer(1080);
 
+
         server.when(
                 request()
                         .withPath("/some/path")
+        )
+                .respond(
+                        response()
+                                .withBody("some_response_body")
+                );
+
+        server.when(
+                request()
+                        .withPath("/some/path1")
         )
                 .respond(
                         response()

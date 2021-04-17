@@ -15,7 +15,6 @@ public class MockApiDO implements Serializable {
     private String responseHeaders;
     private String responseBody;
     private Integer responseDelay;
-    private Byte status;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -96,14 +95,6 @@ public class MockApiDO implements Serializable {
 
     public void setResponseDelay(Integer responseDelay) {
         this.responseDelay = responseDelay;
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
     }
 
     public Date getCreatedTime() {
