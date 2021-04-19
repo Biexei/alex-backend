@@ -320,6 +320,28 @@ public class InvokeCenter {
     }
 
     /**
+     * 返回整形随机数
+     *
+     * @param minLen 最小长度
+     * @param maxLen 最大长度
+     * @return 返回整形随机数
+     */
+    public String randomInt(String minLen, String maxLen) {
+        int min;
+        int max;
+        try {
+            min = Integer.parseInt(minLen);
+            max = Integer.parseInt(maxLen);
+        } catch (NumberFormatException e) {
+            return "0";
+        }
+        if (min <= 0 || max <= 0 || min > max) {
+            return "0";
+        }
+        return RandomUtil.randomNumString(min, max);
+    }
+
+    /**
      * 返回大写随机数
      *
      * @param length 长度
@@ -335,6 +357,30 @@ public class InvokeCenter {
         if (len <= 0) {
             return "A";
         }
+        return RandomStringUtils.random(len, 65, 90, false, false);
+    }
+
+
+    /**
+     * 返回大写随机数
+     *
+     * @param minLen 最小长度
+     * @param maxLen 最大长度
+     * @return 返回大写随机数
+     */
+    public String randomUpper(String minLen, String maxLen) {
+        int min;
+        int max;
+        try {
+            min = Integer.parseInt(minLen);
+            max = Integer.parseInt(maxLen);
+        } catch (NumberFormatException e) {
+            return "A";
+        }
+        if (min <= 0 || max <= 0 || min > max) {
+            return "A";
+        }
+        int len = RandomUtil.randomInt(min, max);
         return RandomStringUtils.random(len, 65, 90, false, false);
     }
 
@@ -358,6 +404,29 @@ public class InvokeCenter {
     }
 
     /**
+     * 返回小写随机数
+     *
+     * @param minLen 最小长度
+     * @param maxLen 最大长度
+     * @return 返回小写随机数
+     */
+    public String randomLower(String minLen, String maxLen) {
+        int min;
+        int max;
+        try {
+            min = Integer.parseInt(minLen);
+            max = Integer.parseInt(maxLen);
+        } catch (NumberFormatException e) {
+            return "A";
+        }
+        if (min <= 0 || max <= 0 || min > max) {
+            return "A";
+        }
+        int len = RandomUtil.randomInt(min, max);
+        return RandomStringUtils.random(len, 97, 122, false, false);
+    }
+
+    /**
      * 返回英文随机数
      *
      * @param length 长度
@@ -369,11 +438,40 @@ public class InvokeCenter {
         try {
             len = Integer.parseInt(length);
         } catch (NumberFormatException e) {
-            return "a";
+            return "q";
         }
         if (len <= 0) {
-            return "a";
+            return "q";
         }
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < len; i++) {
+            sb.append(s.charAt(random.nextInt(s.length())));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 返回英文随机数
+     *
+     * @param minLen 最小长度
+     * @param maxLen 最大长度
+     * @return 返回英文随机数
+     */
+    public String randomEn(String minLen, String maxLen) {
+        String s = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+        int min;
+        int max;
+        try {
+            min = Integer.parseInt(minLen);
+            max = Integer.parseInt(maxLen);
+        } catch (NumberFormatException e) {
+            return "q";
+        }
+        if (min <= 0 || max <= 0 || min > max) {
+            return "q";
+        }
+        int len = RandomUtil.randomInt(min, max);
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < len; i++) {
@@ -405,6 +503,81 @@ public class InvokeCenter {
             sb.append(s.charAt(random.nextInt(s.length())));
         }
         return sb.toString();
+    }
+
+    /**
+     * 返回英文随机数
+     *
+     * @param minLen 最小长度
+     * @param maxLen 最大长度
+     * @return 返回英文随机数
+     */
+    public String randomIllegal(String minLen, String maxLen) {
+        String s = "!@#$%^&*()_+-/,.\\ <>";
+        int min;
+        int max;
+        try {
+            min = Integer.parseInt(minLen);
+            max = Integer.parseInt(maxLen);
+        } catch (NumberFormatException e) {
+            return "#";
+        }
+        if (min <= 0 || max <= 0 || min > max) {
+            return "#";
+        }
+        int len = RandomUtil.randomInt(min, max);
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < len; i++) {
+            sb.append(s.charAt(random.nextInt(s.length())));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 返回随机BigDecimal
+     *
+     * @param minSize 最小值
+     * @param maxSize 最大值
+     * @return 返回BigDecimal
+     */
+    public String nextNum(String minSize, String maxSize) {
+        BigDecimal min;
+        BigDecimal max;
+        try {
+            min = new BigDecimal(minSize);
+            max = new BigDecimal(maxSize);
+        } catch (Exception e) {
+            return "0.0";
+        }
+        try {
+            return RandomUtil.randomBigDecimal(min, max).toString();
+        } catch (Exception e) {
+            return "0.0";
+        }
+    }
+
+    /**
+     * 返回随机int
+     *
+     * @param minSize 最小值
+     * @param maxSize 最大值
+     * @return 返回BigDecimal
+     */
+    public String nextInt(String minSize, String maxSize) {
+        int min;
+        int max;
+        try {
+            min = Integer.parseInt(minSize);
+            max = Integer.parseInt(maxSize);
+        } catch (Exception e) {
+            return "0";
+        }
+        try {
+            return String.valueOf(RandomUtil.randomInt(min, max));
+        } catch (Exception e) {
+            return "0";
+        }
     }
 
     /**

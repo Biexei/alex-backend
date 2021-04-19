@@ -1,7 +1,6 @@
 package org.alex.platform.util;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Random;
 
 public class RandomUtil {
@@ -146,8 +145,8 @@ public class RandomUtil {
     }
 
     public static void main(String[] args) {
-        BigDecimal min = new BigDecimal("0.11");
-        BigDecimal max = new BigDecimal("0.12");
-        System.out.println(RandomUtil.randomBigDecimal(min, max));
+        BigDecimal a = new BigDecimal("2");
+        BigDecimal b = new BigDecimal("1");
+        System.out.println(RandomUtil.randomBigDecimal(a, b));
     }
 }

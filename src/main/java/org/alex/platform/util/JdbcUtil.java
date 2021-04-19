@@ -115,14 +115,14 @@ public class JdbcUtil {
                 List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, removeAfterParams);
                 ArrayList sqlResultArray = JSONObject.parseObject(ParseUtil.parseJson(JSON.toJSONString(list, SerializerFeature.WriteMapNullValue), jsonPath), ArrayList.class);
                 if (sqlResultArray.isEmpty()) {
-                    LOG.warn("sql语句提取参数为空, sql={}, json path={}, params={}", sql, jsonPath, removeAfterParams);
-                    throw new SqlException(String.format("sql语句提取参数为空, sql=%s, json path=%s, params=%s", sql, jsonPath, Arrays.toString(removeAfterParams)));
+                    LOG.warn("sql语句提取结果为空, sql={}, json path={}, params={}", sql, jsonPath, removeAfterParams);
+                    throw new SqlException(String.format("sql语句提取结果为空, sql=%s, json path=%s, params=%s", sql, jsonPath, Arrays.toString(removeAfterParams)));
                 }
                 if (sqlResultArray.size() == 1) {
                     Object o = sqlResultArray.get(0);
                     if (o == null) {
-                        LOG.warn("sql语句提取参数为空, sql={}, json path={}, params={}", sql, jsonPath, removeAfterParams);
-                        throw new SqlException(String.format("sql语句提取参数为空, sql=%s, json path=%s, params=%s", sql, jsonPath, Arrays.toString(removeAfterParams)));
+                        LOG.warn("sql语句提取结果为空, sql={}, json path={}, params={}", sql, jsonPath, removeAfterParams);
+                        throw new SqlException(String.format("sql语句提取结果为空, sql=%s, json path=%s, params=%s", sql, jsonPath, Arrays.toString(removeAfterParams)));
                     }
                     return o.toString();
                 } else {
