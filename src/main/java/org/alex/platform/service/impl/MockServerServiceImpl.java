@@ -231,15 +231,8 @@ public class MockServerServiceImpl implements MockServerService {
     }
 
     public void checkDO(MockServerDO mockServerDO) throws ValidException {
-        int[] blackPort = {2049, 3659, 4045, 6000, 6665, 6666, 6667, 6668, 6669, 80, 8080};
         Integer port = mockServerDO.getPort();
-        if (port <= 100) {
-            throw new ValidException("非法端口");
-        }
         ValidUtil.notNUll(port, "端口号不能为空");
-        if (-1 != Arrays.binarySearch(blackPort, port)) {
-            throw new ValidException("非法端口");
-        }
     }
 }
 
