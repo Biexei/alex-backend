@@ -2,6 +2,7 @@ package org.alex.platform.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.core.parser.Parser;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
@@ -47,6 +48,8 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
     RedisUtil redisUtil;
     @Autowired
     InterfaceSuiteProcessorService interfaceSuiteProcessorService;
+    @Autowired
+    Parser parser;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceSuiteCaseRefServiceImpl.class);
 
     /**
@@ -452,7 +455,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             InterfaceSuiteProcessorVO interfaceSuiteProcessorVO = processorList.get(0);
             // 获取依赖表达式
             String value = interfaceSuiteProcessorVO.getValue();
-            interfaceCaseService.parseRelyData(value, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
+            parser.parseDependency(value, NoUtil.genChainNo(), suiteId, (byte) 1, suiteLogDetailNo,
                     null, null, null, null);
         }
     }
@@ -478,7 +481,7 @@ public class InterfaceSuiteCaseRefServiceImpl implements InterfaceSuiteCaseRefSe
             // 获取0执行依赖1公共头2公共params3公共data
             String value = interfaceSuiteProcessorVO.getValue();
             if (value != null) {
-                value = interfaceCaseService.parseRelyData(value, NoUtil.genChainNo(), suiteId, (byte) 1,
+                value = parser.parseDependency(value, NoUtil.genChainNo(), suiteId, (byte) 1,
                         suiteLogDetailNo,null, null, null, null);
             }
             return value;

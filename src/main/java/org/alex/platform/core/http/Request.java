@@ -1,4 +1,4 @@
-package org.alex.platform.util;
+package org.alex.platform.core.http;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -21,23 +21,28 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.annotation.PostConstruct;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
 @SuppressWarnings({"unchecked","rawtypes"})
-public class RestUtil {
+public class Request {
     @Autowired
     HttpSettingMapper httpSettingMapper;
+
+    private static Request restUtil;
 
     private static final String[] DEFAULT_USER_AGENT = {"Alex"};
     private static final String[] DEFAULT_ACCEPT = {"*/*"};
     private static final String[] DEFAULT_ACCEPT_ENCODING = {"gzip, deflate, br"};
     private static final String[] DEFAULT_ACCEPT_LANGUAGE = {"zh-CN,zh;q=0.9"};
+
     private static final int DEFAULT_CONNECT_TIMEOUT = 30 * 1000;
     private static final int DEFAULT_READ_TIMEOUT = 30 * 1000;
-    private static RestUtil restUtil;
 
     private static class SingleRestTemplate {
         private static final RestTemplate INSTANCE = new RestTemplate();
@@ -109,7 +114,7 @@ public class RestUtil {
     public static ResponseEntity get(String url, HashMap<String, String> headers, HashMap<String, String> params)
             throws BusinessException {
 
-        RestTemplate restTemplate = RestUtil.getInstance();
+        RestTemplate restTemplate = Request.getInstance();
         HttpHeaders httpHeaders = getDefaultHeader();
 
         if (StringUtils.isEmpty(url)) {
@@ -203,7 +208,7 @@ public class RestUtil {
                                                 HashMap<String, String> params, HashMap<String, String> data, String json)
             throws BusinessException {
 
-        RestTemplate restTemplate = RestUtil.getInstance();
+        RestTemplate restTemplate = Request.getInstance();
         HttpHeaders httpHeaders = getDefaultHeader();
 
         if (StringUtils.isEmpty(url)) {

@@ -1,6 +1,7 @@
 package org.alex.platform.mock;
 
 import com.alibaba.fastjson.JSONObject;
+import org.alex.platform.core.parser.Parser;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
@@ -30,6 +31,8 @@ public class InjectionCenter {
     InterfaceCaseService interfaceCaseService;
     @Autowired
     MockHitPolicyService mockHitPolicyService;
+    @Autowired
+    Parser parser;
 
 
     /**
@@ -197,7 +200,7 @@ public class InjectionCenter {
         // 设置响应头
         String headers = responseHeaders;
         if (responseHeadersEnableRely == 0 && headers != null) { // 解析后再加入
-            headers = interfaceCaseService.parseRelyData(headers, NoUtil.genChainNo(), null, (byte)0,
+            headers = parser.parseDependency(headers, NoUtil.genChainNo(), null, (byte)0,
                     null, null, null, null, NoUtil.genCasePreNo());
         }
         JSONObject object;
@@ -216,7 +219,7 @@ public class InjectionCenter {
         // 设置响应正文
         String body = responseBody;
         if (responseBodyEnableRely == 0 && body != null) { // 解析后再加入
-            body = interfaceCaseService.parseRelyData(body, NoUtil.genChainNo(), null, (byte)0,
+            body = parser.parseDependency(body, NoUtil.genChainNo(), null, (byte)0,
                     null, null, null, null, NoUtil.genCasePreNo());
         }
         if (responseBodyType == 0) { //0文本1json2xml3html
