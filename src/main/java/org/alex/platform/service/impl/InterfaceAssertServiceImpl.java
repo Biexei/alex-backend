@@ -119,7 +119,7 @@ public class InterfaceAssertServiceImpl implements InterfaceAssertService {
 
         Byte operator = interfaceAssertDO.getOperator();
         ValidUtil.notNUll(operator, "操作符不能为空");
-        ValidUtil.size(operator, 0, 9,"操作符必须为0~9");
+        ValidUtil.size(operator, 0, 10,"操作符必须为0~10");
 
         String exceptedResult = interfaceAssertDO.getExceptedResult();
         if (operator != 8 && operator != 9) {

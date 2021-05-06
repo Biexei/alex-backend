@@ -143,10 +143,4 @@ public class RandomUtil {
             return bigDecimalValue;
         }
     }
-
-    public static void main(String[] args) {
-        BigDecimal a = new BigDecimal("2");
-        BigDecimal b = new BigDecimal("1");
-        System.out.println(RandomUtil.randomBigDecimal(a, b));
-    }
 }

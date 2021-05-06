@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public class AssertUtil {
 
-    //  操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re、8/isNull、9/notNull
+    //  操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re、8/isNull、9/notNull、10/contains
 
     /**
      * 断言工具类
@@ -85,12 +85,19 @@ public class AssertUtil {
                 flag = result.matches(exceptedResult);
                 break;
             }
+            // null
             case 8: {
                 flag = result == null;
                 break;
             }
+            // not null
             case 9: {
                 flag = result != null;
+                break;
+            }
+            // contains
+            case 10: {
+                flag = result.contains(exceptedResult);
                 break;
             }
             default:
