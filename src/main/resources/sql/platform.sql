@@ -1267,7 +1267,7 @@ CREATE TABLE `t_user` (
   `real_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '真实姓名',
   `role_id` int DEFAULT NULL COMMENT '角色类型',
   PRIMARY KEY (`user_id`),
-  KEY `username` (`username`)
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=575 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
