@@ -1,12 +1,7 @@
 package org.alex.platform.pojo;
 
-
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,6 +13,16 @@ public class UserVO implements Serializable {
     private Byte isEnable;
     private String realName;
     private Integer roleId;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createdTime;
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
 
     public Integer getUserId() {
         return userId;
