@@ -26,7 +26,6 @@ public class UserDO implements Serializable {
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
-    @NotNull(message = "昵称不能为空")
     @Size(max = 20, message = "昵称长度必须小于20")
     private String realName;
     private Integer roleId;

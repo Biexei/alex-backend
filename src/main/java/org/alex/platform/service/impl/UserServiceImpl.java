@@ -100,12 +100,15 @@ public class UserServiceImpl implements UserService {
     public void registerUser(UserDO userDO) throws BusinessException {
         String username = userDO.getUsername();
         String password = userDO.getPassword();
+
         Date date = new Date();
+        userDO.setRealName(username);
         userDO.setCreatedTime(date);
         userDO.setUpdateTime(date);
         userDO.setIsEnable((byte) 1);
         userDO.setRoleId(null);
         userDO.setSex((byte) 1);
+
         ValidUtil.notNUll(password, "请完善用户信息");
         ValidUtil.length(password, 3, 20, "密码长度必须为3~20");
         if (userMapper.selectUserByName(username) != null) {
