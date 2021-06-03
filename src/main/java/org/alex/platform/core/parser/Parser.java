@@ -325,11 +325,14 @@ public class Parser implements Node {
                     RelyDataVO relyDataVO = relyDataService.findRelyDataByName(relyName);
                     if (null == relyDataVO) {
                         LOG.warn("未找到该依赖数值，relyName={}", relyName);
-                        throw new ParseException("未找到该依赖数值, ${" + relyName + "}");
+                        throw new ParseException("未找到该依赖数值${" + relyName + "}");
                     } else {
                         int type = relyDataVO.getType();
                         if (type == 0) {
                             String value = relyDataVO.getValue();
+                            if (relyDataVO.getAnalysisRely().intValue() == 0) { // 使能解析依赖
+                                value = parseDependency(value, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
+                            }
                             s = s.replace(findStr, value);
                             redisUtil.stackPush(chainNo, chainNode(RelyType.CONST, relyDataVO.getId(), relyName, value, TimeUtil.now()-start, null));
                         } else if (type >= 2 && type <= 6) {
@@ -394,6 +397,9 @@ public class Parser implements Node {
                                 redisUtil.stackPush(chainNo, chainNode(RelyType.SQL_SCRIPT, relyDataVO.getId(), relyName, sqlResult, TimeUtil.now()-start, null));
                             }
                             s = s.replace(findStr, sqlResult);
+                        } else {
+                            LOG.warn("未找到该依赖数值，relyName={}，请确保该依赖不是方法", relyName);
+                            throw new ParseException("未找到该依赖数值${" + relyName + "}，请确保该依赖不是方法");
                         }
                     }
                 } else {

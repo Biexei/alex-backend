@@ -31,6 +31,7 @@ public class ExceptionController {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Result globalException(Exception e) {
+        LOG.warn(ExceptionUtil.msg(e));
         if (e instanceof BusinessException || e instanceof SqlException) {
             LOG.warn(ExceptionUtil.msg(e));
             return Result.fail(501, e.getMessage());

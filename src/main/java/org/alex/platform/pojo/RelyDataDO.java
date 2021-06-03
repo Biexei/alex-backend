@@ -11,12 +11,15 @@ import java.util.Date;
 
 public class RelyDataDO implements Serializable {
     private Integer id;
+    @NotNull(message = "依赖名称不允许为空")
     @NotEmpty(message = "依赖名称不允许为空")
     @Size(min = 1, max = 100, message = "依赖名称长度必须为[1,100]")
     @Pattern(regexp = "\\w+", message = "依赖名称必须为字母数字下划线")
     private String name;
+    @NotNull(message = "固定值/方法声明/SQL不允许为空")
     @NotEmpty(message = "固定值/方法声明/SQL不允许为空")
     private String value;
+    @NotNull(message = "依赖描述不允许为空")
     @NotEmpty(message = "依赖描述不允许为空")
     @Size(min = 1, max = 200, message = "依赖描述长度必须为[1,200]")
     private String desc;

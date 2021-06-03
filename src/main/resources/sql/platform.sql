@@ -859,7 +859,7 @@ INSERT INTO `t_permission` VALUES ('144', 'data_center:rely_init_method', '预�
 INSERT INTO `t_permission` VALUES ('146', 'data_center:rely_init_method:modify', '修改', '144');
 INSERT INTO `t_permission` VALUES ('147', 'data_center:rely_init_method:remove', '删除', '144');
 INSERT INTO `t_permission` VALUES ('148', 'data_center:rely_init_method:find', '查询', '144');
-INSERT INTO `t_permission` VALUES ('149', 'data_center:rely_fixed_data', '固定字符', '124');
+INSERT INTO `t_permission` VALUES ('149', 'data_center:rely_fixed_data', '环境变量', '124');
 INSERT INTO `t_permission` VALUES ('150', 'data_center:rely_fixed_data:add', '新增', '149');
 INSERT INTO `t_permission` VALUES ('151', 'data_center:rely_fixed_data:modify', '修改', '149');
 INSERT INTO `t_permission` VALUES ('152', 'data_center:rely_fixed_data:remove', '删除', '149');

@@ -30,7 +30,7 @@ public class RelyDataServiceImpl implements RelyDataService {
 
     @Override
     public void saveRelyData(RelyDataDO relyDO) throws BusinessException {
-        RelyDataDO relyDataDO = relyDataDOWrapper(relyDO);
+        RelyDataDO relyDataDO = relyDataDOChecker(relyDO);
         String name = relyDataDO.getName();
         // name不能在在于t_interface_case_rely_data
         if (null != interfaceCaseRelyDataMapper.selectIfRelyDataByName(name)) {
@@ -50,7 +50,7 @@ public class RelyDataServiceImpl implements RelyDataService {
 
     @Override
     public void modifyRelyData(RelyDataDO relyDO) throws BusinessException {
-        RelyDataDO relyDataDO = relyDataDOWrapper(relyDO);
+        RelyDataDO relyDataDO = relyDataDOChecker(relyDO);
         String name = relyDataDO.getName();
         // name不能在在于t_interface_case_rely_data
         if (null != interfaceCaseRelyDataMapper.selectIfRelyDataByName(name)) {
@@ -118,16 +118,16 @@ public class RelyDataServiceImpl implements RelyDataService {
     }
 
     /**
-     * DO装饰器 参数校验以及参数处理
+     * DO校验器 参数校验以及参数处理
      * @param relyDataDO relyDataDO
      * @return DO
      * @throws ValidException 参数校验
      */
-    private RelyDataDO relyDataDOWrapper(RelyDataDO relyDataDO) throws BusinessException {
+    private RelyDataDO relyDataDOChecker(RelyDataDO relyDataDO) throws BusinessException {
         String name = relyDataDO.getName();
         Byte type = relyDataDO.getType();
-        // sql类型的依赖值不能包含依赖名称
-        if (relyDataDO.getType() > 1) { //0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
+        // 依赖内容都不能包含依赖本身, 反射方法内部数据不做校验
+        if (relyDataDO.getType() != 1) { //0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
             String sql = relyDataDO.getValue();
             Pattern pattern = Pattern.compile("\\$\\{.+?\\}");
             Matcher matcher = pattern.matcher(sql);
@@ -139,28 +139,35 @@ public class RelyDataServiceImpl implements RelyDataService {
                     relyName = relyName.substring(0, index);
                 }
                 if (relyName.equals(name)) {
-                    throw new BusinessException("依赖禁止引用自身");
+                    if (relyDataDO.getAnalysisRely().intValue() == 0) {// 使能解析依赖才检查
+                        throw new BusinessException("禁止引用自身");
+                    }
                 }
+                // 为防止嵌套引用，故暂不支持引用接口依赖
+                // name不能在在于t_interface_case_rely_data
+                if (null != interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName)) {
+                    LOG.warn("禁止引用接口依赖：" + relyName);
+                    throw new BusinessException("禁止引用接口依赖" );
+                }
+
             }
         }
         if (type != 3) { // 非新增语句时，将enable_return 设为 null
             relyDataDO.setEnableReturn(null);
         }
-        if (type < 2) { // 0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
+        if (type == 1) { // 0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
             relyDataDO.setAnalysisRely(null);
+        } else {
+            ValidUtil.notNUll(relyDataDO.getAnalysisRely(), "是否解析依赖不能为空");
         }
         // 校验参数
         Byte analysisRely = relyDataDO.getAnalysisRely();
         Byte enableReturn = relyDataDO.getEnableReturn();
-        try {
-            if (analysisRely != null) {
-                ValidUtil.size(analysisRely, 0, 1, "参数非法");
-            }
-            if (enableReturn != null) {
-                ValidUtil.size(enableReturn, 0, 1, "参数非法");
-            }
-        } catch (ValidException e) {
-            throw new BusinessException(e.getMessage());
+        if (analysisRely != null) {
+            ValidUtil.size(analysisRely, 0, 1, "参数非法");
+        }
+        if (enableReturn != null) {
+            ValidUtil.size(enableReturn, 0, 1, "参数非法");
         }
         return relyDataDO;
     }
