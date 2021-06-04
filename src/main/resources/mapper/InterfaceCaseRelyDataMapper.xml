@@ -13,6 +13,10 @@
             <if test="extractExpression != null">`extract_expression`,</if>
             <if test="createdTime != null">`created_time`,</if>
             <if test="updateTime != null">`update_time`,</if>
+            <if test="creatorId != null">`creator_id`,</if>
+            <if test="creatorName != null">`creator_name`,</if>
+            <if test="othersDeletable != null">`others_deletable`,</if>
+            <if test="othersModifiable != null">`others_modifiable`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="relyCaseId != null">#{relyCaseId},</if>
@@ -22,6 +26,10 @@
             <if test="extractExpression != null">#{extractExpression},</if>
             <if test="createdTime != null">#{createdTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="creatorName != null">#{creatorName},</if>
+            <if test="othersDeletable != null">#{othersDeletable},</if>
+            <if test="othersModifiable != null">#{othersModifiable},</if>
         </trim>
     </insert>
     <update id="updateIfRelyData" parameterType="org.alex.platform.pojo.InterfaceCaseRelyDataDO">
@@ -34,6 +42,8 @@
             <if test="extractExpression != null">`extract_expression` = #{extractExpression},</if>
             <if test="createdTime != null">`created_time` = #{createdTime},</if>
             <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="othersDeletable != null">`others_deletable` = #{othersDeletable},</if>
+            <if test="othersModifiable != null">`others_modifiable` = #{othersModifiable},</if>
         </set>
         where `rely_id` = #{relyId}
     </update>
@@ -43,6 +53,7 @@
     </delete>
     <select id="selectIfRelyDataById" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceCaseRelyDataVO">
         select `r`.`rely_id`, `r`.`rely_case_id`, `r`.`rely_name`, `r`.`rely_desc`, `r`.`content_type`,
+        `r`.`others_deletable`, `r`.`others_modifiable`, `r`.`creator_id`, `r`.`creator_name`,
         `r`.`extract_expression`, `r`.`created_time`,`r`.`update_time`, `c`.`url` as `case_url`, `c`.`desc` as `case_desc`
         from `t_interface_case_rely_data` as `r`
         left join `t_interface_case` as `c` on `r`.`rely_case_id` = `c`.`case_id`
@@ -51,6 +62,7 @@
 
     <select id="selectIfRelyDataByName" parameterType="String" resultType="org.alex.platform.pojo.InterfaceCaseRelyDataVO">
         select `r`.`rely_id`, `r`.`rely_case_id`, `r`.`rely_name`, `r`.`rely_desc`, `r`.`content_type`,
+        `r`.`others_deletable`, `r`.`others_modifiable`, `r`.`creator_id`, `r`.`creator_name`,
         `r`.`extract_expression`, `r`.`created_time`,`r`.`update_time`, `c`.`url` as `case_url`, `c`.`desc` as `case_desc`
         from `t_interface_case_rely_data` as `r`
         left join `t_interface_case` as `c` on `r`.`rely_case_id` = `c`.`case_id`
@@ -59,6 +71,7 @@
 
     <select id="checkRelyName" parameterType="org.alex.platform.pojo.InterfaceCaseRelyDataDO" resultType="org.alex.platform.pojo.InterfaceCaseRelyDataVO">
         select `r`.`rely_id`, `r`.`rely_case_id`, `r`.`rely_name`, `r`.`rely_desc`, `r`.`content_type`,
+        `r`.`others_deletable`, `r`.`others_modifiable`, `r`.`creator_id`, `r`.`creator_name`,
         `r`.`extract_expression`, `r`.`created_time`,`r`.`update_time`, `c`.`url` as `case_url`, `c`.`desc` as `case_desc`
         from `t_interface_case_rely_data` as `r`
         left join `t_interface_case` as `c` on `r`.`rely_case_id` = `c`.`case_id`
@@ -67,6 +80,7 @@
 
     <select id="selectIfRelyDataList" parameterType="org.alex.platform.pojo.InterfaceCaseRelyDataDTO" resultType="org.alex.platform.pojo.InterfaceCaseRelyDataVO">
         select `r`.`rely_id`, `r`.`rely_case_id`, `r`.`rely_name`, `r`.`rely_desc`, `r`.`content_type`,
+        `r`.`others_deletable`, `r`.`others_modifiable`, `r`.`creator_id`, `r`.`creator_name`,
         `r`.`extract_expression`, `r`.`created_time`,`r`.`update_time`, `c`.`url` as `case_url`, `c`.`desc` as `case_desc`
         from `t_interface_case_rely_data` as `r`
         left join `t_interface_case` as `c` on `r`.`rely_case_id` = `c`.`case_id`
@@ -81,6 +95,10 @@
             <if test="caseDesc != null">and `c`.`desc` like concat('%',#{caseDesc},'%')</if>
             <if test="createdStartTime != null">and `r`.`created_time` &gt;= #{createdStartTime}</if>
             <if test="createdEndTime != null">and `r`.`created_time` &lt;= #{createdEndTime}</if>
+            <if test="creatorId != null">and `c`.`creator_id` = #{creatorId}</if>
+            <if test="creatorName != null">and `c`.`creator_name` like concat('%',#{creatorName},'%')</if>
+            <if test="othersDeletable != null">and `c`.`others_deletable` = #{othersDeletable}</if>
+            <if test="othersModifiable != null">and `c`.`others_modifiable` = #{othersModifiable}</if>
         </where>
     </select>
 </mapper>

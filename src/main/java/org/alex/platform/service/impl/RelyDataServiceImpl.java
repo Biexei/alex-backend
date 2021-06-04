@@ -2,6 +2,7 @@ package org.alex.platform.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.InterfaceCaseRelyDataMapper;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,6 +26,8 @@ import java.util.regex.Pattern;
 public class RelyDataServiceImpl implements RelyDataService {
     @Autowired
     RelyDataMapper relyDataMapper;
+    @Autowired
+    LoginUserInfo loginUserInfo;
     @Autowired
     InterfaceCaseRelyDataMapper interfaceCaseRelyDataMapper;
     private static final Logger LOG = LoggerFactory.getLogger(RelyDataServiceImpl.class);
@@ -49,9 +53,31 @@ public class RelyDataServiceImpl implements RelyDataService {
     }
 
     @Override
-    public void modifyRelyData(RelyDataDO relyDO) throws BusinessException {
+    public void modifyRelyData(RelyDataDO relyDO, HttpServletRequest request) throws BusinessException {
         RelyDataDO relyDataDO = relyDataDOChecker(relyDO);
         String name = relyDataDO.getName();
+
+        // 获取当前编辑人userId
+        int userId = loginUserInfo.getUserId(request);
+        Integer relyId = relyDataDO.getId();
+        RelyDataVO relyDataVO = this.findRelyDataById(relyId);
+        Byte type = relyDataVO.getType();
+        Byte modifiable = relyDataVO.getOthersModifiable();
+        Integer creatorId = relyDataVO.getCreatorId();
+        if (type != 1) { // 反射方法
+            if (modifiable == null || creatorId == null) {
+                throw new BusinessException("仅允许创建人修改");
+            }
+            if (creatorId != userId) {
+                if (modifiable.intValue() == 1) {
+                    throw new BusinessException("仅允许创建人修改");
+                }
+                // 当前编辑人与创建人不一致时，不允许修改othersModifiable和othersDeletable字段
+                relyDataVO.setOthersDeletable(null);
+                relyDataVO.setOthersModifiable(null);
+            }
+        }
+
         // name不能在在于t_interface_case_rely_data
         if (null != interfaceCaseRelyDataMapper.selectIfRelyDataByName(name)) {
             LOG.warn("依赖名称已存在于接口依赖，relyName={}", name);
@@ -107,8 +133,18 @@ public class RelyDataServiceImpl implements RelyDataService {
      * @throws BusinessException BusinessException
      */
     @Override
-    public void removeRelyDataById(Integer id) throws BusinessException {
+    public void removeRelyDataById(Integer id, HttpServletRequest request) throws BusinessException {
         RelyDataVO relyDataVO = relyDataMapper.selectRelyDataById(id);
+        // 获取当前删除人userId
+        int userId = loginUserInfo.getUserId(request);
+        Byte deletable = relyDataVO.getOthersDeletable();
+        Integer creatorId = relyDataVO.getCreatorId();
+        if (deletable == null ||  creatorId == null) {
+            throw new BusinessException("仅允许创建人删除");
+        }
+        if (creatorId != userId && deletable.intValue() == 1) {
+            throw new BusinessException("仅允许创建人删除");
+        }
         // 依赖类型 0固定值 1反射方法 2sql 反射方法不允许删除
         if (relyDataVO.getType() == 1) {
             LOG.warn("预置方法不允许删除");
@@ -158,6 +194,10 @@ public class RelyDataServiceImpl implements RelyDataService {
         if (type == 1) { // 0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
             relyDataDO.setAnalysisRely(null);
         } else {
+            ValidUtil.notNUll(relyDataDO.getOthersModifiable(), "请选择是否允许其他人编辑");
+            ValidUtil.notNUll(relyDataDO.getOthersDeletable(), "请选择是否允许其他人删除");
+            ValidUtil.size(relyDataDO.getOthersModifiable(), 0, 1, "请选择是否允许其他人编辑");
+            ValidUtil.size(relyDataDO.getOthersDeletable(), 0, 1, "请选择是否允许其他人删除");
             ValidUtil.notNUll(relyDataDO.getAnalysisRely(), "是否解析依赖不能为空");
         }
         // 校验参数

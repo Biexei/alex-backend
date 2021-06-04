@@ -1,10 +1,12 @@
 package org.alex.platform.controller;
 
+import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.pojo.RelyDataDO;
 import org.alex.platform.pojo.RelyDataDTO;
 import org.alex.platform.service.RelyDataService;
+import org.mockserver.model.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class RelyDataController {
     @Autowired
     RelyDataService relyDataService;
+    @Autowired
+    LoginUserInfo loginUserInfo;
 
     /**
      * 新增依赖数据
@@ -25,7 +31,11 @@ public class RelyDataController {
      * @throws BusinessException BusinessException
      */
     @PostMapping("/rely/save")
-    public Result saveRelyData(@Validated RelyDataDO relyDataDO) throws BusinessException {
+    public Result saveRelyData(@Validated RelyDataDO relyDataDO, HttpServletRequest request) throws BusinessException {
+        int userId = loginUserInfo.getUserId(request);
+        String realName = loginUserInfo.getRealName(request);
+        relyDataDO.setCreatorId(userId);
+        relyDataDO.setCreatorName(realName);
         relyDataService.saveRelyData(relyDataDO);
         return Result.success("新增成功");
     }
@@ -38,8 +48,8 @@ public class RelyDataController {
      * @throws BusinessException BusinessException
      */
     @PostMapping("/rely/modify")
-    public Result modifyRelyData(@Validated RelyDataDO relyDataDO) throws BusinessException {
-        relyDataService.modifyRelyData(relyDataDO);
+    public Result modifyRelyData(@Validated RelyDataDO relyDataDO, HttpServletRequest request) throws BusinessException {
+        relyDataService.modifyRelyData(relyDataDO, request);
         return Result.success("修改成功");
     }
 
@@ -77,8 +87,8 @@ public class RelyDataController {
      * @throws BusinessException BusinessException
      */
     @GetMapping("/rely/remove/{id}")
-    public Result removeRelyData(@PathVariable Integer id) throws BusinessException {
-        relyDataService.removeRelyDataById(id);
+    public Result removeRelyData(@PathVariable Integer id, HttpServletRequest request) throws BusinessException {
+        relyDataService.removeRelyDataById(id, request);
         return Result.success("删除成功");
     }
 }

@@ -15,6 +15,10 @@
            <if test="updateTime!=null">`update_time`,</if>
            <if test="analysisRely!=null">`analysis_rely`,</if>
            <if test="enableReturn!=null">`enable_return`,</if>
+           <if test="creatorId != null">`creator_id`,</if>
+           <if test="creatorName != null">`creator_name`,</if>
+           <if test="othersDeletable != null">`others_deletable`,</if>
+           <if test="othersModifiable != null">`others_modifiable`,</if>
        </trim>
        <trim prefix="value(" suffix=")" suffixOverrides=",">
            <if test="name!=null">#{name},</if>
@@ -26,6 +30,10 @@
            <if test="updateTime!=null">#{updateTime},</if>
            <if test="analysisRely!=null">#{analysisRely},</if>
            <if test="enableReturn!=null">#{enableReturn},</if>
+           <if test="creatorId != null">#{creatorId},</if>
+           <if test="creatorName != null">#{creatorName},</if>
+           <if test="othersDeletable != null">#{othersDeletable},</if>
+           <if test="othersModifiable != null">#{othersModifiable},</if>
        </trim>
     </insert>
 <!--    <update id="updateRelyData" parameterType="org.alex.platform.pojo.RelyDataDO">-->
@@ -54,11 +62,14 @@
             `update_time`=#{updateTime},
             `analysis_rely`=#{analysisRely},
             `enable_return`=#{enableReturn},
+            <if test="othersDeletable != null">`others_deletable` = #{othersDeletable},</if>
+            <if test="othersModifiable != null">`others_modifiable` = #{othersModifiable},</if>
         </set>
         where `id` = #{id}
     </update>
     <select id="selectRelyDataById" parameterType="Integer" resultType="org.alex.platform.pojo.RelyDataVO">
         select `rd`.`id`,`rd`.`name`,`rd`.`value`,`rd`.`desc`,`rd`.`type`,`rd`.`datasource_id`,
+        `rd`.`others_deletable`, `rd`.`others_modifiable`, `rd`.`creator_id`, `rd`.`creator_name`,
         `db`.`name` as `db_name`,`rd`.`created_time`,`rd`.`update_time`, `rd`.`analysis_rely`, `rd`.`enable_return`
         from `t_rely_data` as `rd`
         left join t_db as `db`
@@ -67,6 +78,7 @@
     </select>
     <select id="selectRelyDataByName" parameterType="String" resultType="org.alex.platform.pojo.RelyDataVO">
         select `rd`.`id`,`rd`.`name`,`rd`.`value`,`rd`.`desc`,`rd`.`type`,`rd`.`datasource_id`,
+        `rd`.`others_deletable`, `rd`.`others_modifiable`, `rd`.`creator_id`, `rd`.`creator_name`,
         `db`.`name` as `db_name`,`rd`.`created_time`,`rd`.`update_time`, `rd`.`analysis_rely`, `rd`.`enable_return`
         from `t_rely_data` as `rd`
         left join t_db as `db`
@@ -75,6 +87,7 @@
     </select>
     <select id="selectRelyDataList" parameterType="org.alex.platform.pojo.RelyDataDTO" resultType="org.alex.platform.pojo.RelyDataVO">
         select `rd`.`id`,`rd`.`name`,`rd`.`value`,`rd`.`desc`,`rd`.`type`,`rd`.`datasource_id`,
+        `rd`.`others_deletable`, `rd`.`others_modifiable`, `rd`.`creator_id`, `rd`.`creator_name`,
         `db`.`name` as `db_name`,`rd`.`created_time`,`rd`.`update_time`, `rd`.`analysis_rely`, `rd`.`enable_return`
         from `t_rely_data` as `rd`
         left join t_db as `db`
@@ -96,6 +109,10 @@
             <if test="dbName!=null">and `db`.`name` like concat('%',#{dbName},'%')</if>
             <if test="createdTime!=null">and `rd`.`created_time` &gt;= #{createdTime}</if>
             <if test="updateTime!=null">and `rd`.`update_time` &lt;= #{updateTime}</if>
+            <if test="creatorId != null">and `rd`.`creator_id` = #{creatorId}</if>
+            <if test="creatorName != null">and `rd`.`creator_name` like concat('%',#{creatorName},'%')</if>
+            <if test="othersDeletable != null">and `rd`.`others_deletable` = #{othersDeletable}</if>
+            <if test="othersModifiable != null">and `rd`.`others_modifiable` = #{othersModifiable}</if>
         </where>
     </select>
     <delete id="deleteRelyDataById" parameterType="Integer">
@@ -103,6 +120,7 @@
     </delete>
     <select id="checkName" parameterType="org.alex.platform.pojo.RelyDataDO" resultType="org.alex.platform.pojo.RelyDataVO">
         select `rd`.`id`,`rd`.`name`,`rd`.`value`,`rd`.`desc`,`rd`.`type`,`rd`.`datasource_id`,
+        `rd`.`others_deletable`, `rd`.`others_modifiable`, `rd`.`creator_id`, `rd`.`creator_name`,
         `rd`.`created_time`,`rd`.`update_time`, `rd`.`analysis_rely`, `rd`.`enable_return`
         from `t_rely_data` as `rd`
         where `rd`.`id`!=#{id} and `rd`.`name`=#{name}

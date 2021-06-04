@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,6 +45,8 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
     ProjectService projectService;
     @Autowired
     RedisUtil redisUtil;
+    @Autowired
+    LoginUserInfo loginUserInfo;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseRelyDataServiceImpl.class);
 
     /**
@@ -87,7 +91,25 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
      * @throws BusinessException 用例编号不存在/依赖名称已存在与其它依赖/依赖名称已存在与接口依赖检查
      */
     @Override
-    public void modifyIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
+    public void modifyIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO, HttpServletRequest request) throws BusinessException {
+        // 获取当前编辑人userId
+        int userId = loginUserInfo.getUserId(request);
+        Integer relyId = ifRelyDataDO.getRelyId();
+        InterfaceCaseRelyDataVO ifRelyData = this.findIfRelyData(relyId);
+        Byte modifiable = ifRelyData.getOthersModifiable();
+        Integer creatorId = ifRelyData.getCreatorId();
+        if (modifiable == null ||  creatorId == null) {
+            throw new BusinessException("仅允许创建人修改");
+        }
+        if (creatorId != userId) {
+            if (modifiable.intValue() == 1) {
+                throw new BusinessException("仅允许创建人修改");
+            }
+            // 当前编辑人与创建人不一致时，不允许修改othersModifiable和othersDeletable字段
+            ifRelyDataDO.setOthersDeletable(null);
+            ifRelyDataDO.setOthersModifiable(null);
+        }
+
         // 检查提取表达式
         Byte contentType = ifRelyDataDO.getContentType(); // 提取数据类型   0json/1html/2header/
         String extractExpression = ifRelyDataDO.getExtractExpression();
@@ -171,7 +193,18 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
      * @param relyId 依赖编号
      */
     @Override
-    public void removeIfRelyData(Integer relyId) {
+    public void removeIfRelyData(Integer relyId, HttpServletRequest request) throws BusinessException {
+        // 获取当前删除人userId
+        int userId = loginUserInfo.getUserId(request);
+        InterfaceCaseRelyDataVO ifRelyData = this.findIfRelyData(relyId);
+        Byte deletable = ifRelyData.getOthersDeletable();
+        Integer creatorId = ifRelyData.getCreatorId();
+        if (deletable == null ||  creatorId == null) {
+            throw new BusinessException("仅允许创建人删除");
+        }
+        if (creatorId != userId && deletable.intValue() == 1) {
+            throw new BusinessException("仅允许创建人删除");
+        }
         ifRelyDataMapper.deleteIfRelyData(relyId);
     }
 

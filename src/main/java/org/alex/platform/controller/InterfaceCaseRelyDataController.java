@@ -34,10 +34,14 @@ public class InterfaceCaseRelyDataController {
      * @throws BusinessException BusinessException
      */
     @PostMapping("/interface/rely/save")
-    public Result saveIfRelyData(@Validated InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
+    public Result saveIfRelyData(@Validated InterfaceCaseRelyDataDO ifRelyDataDO, HttpServletRequest request) throws BusinessException {
+        int userId = loginUserInfo.getUserId(request);
+        String realName = loginUserInfo.getRealName(request);
         Date date = new Date();
         ifRelyDataDO.setCreatedTime(date);
         ifRelyDataDO.setUpdateTime(date);
+        ifRelyDataDO.setCreatorId(userId);
+        ifRelyDataDO.setCreatorName(realName);
         ifCaseService.saveIfRelyData(ifRelyDataDO);
         return Result.success("新增成功");
     }
@@ -50,9 +54,9 @@ public class InterfaceCaseRelyDataController {
      * @throws BusinessException BusinessException
      */
     @PostMapping("/interface/rely/modify")
-    public Result modifyIfRelyData(@Validated InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
+    public Result modifyIfRelyData(@Validated InterfaceCaseRelyDataDO ifRelyDataDO, HttpServletRequest request) throws BusinessException {
         ifRelyDataDO.setUpdateTime(new Date());
-        ifCaseService.modifyIfRelyData(ifRelyDataDO);
+        ifCaseService.modifyIfRelyData(ifRelyDataDO, request);
         return Result.success("修改成功");
     }
 
@@ -89,8 +93,8 @@ public class InterfaceCaseRelyDataController {
      * @return Result
      */
     @GetMapping("/interface/rely/remove/{relyId}")
-    public Result removeIfRelyData(@PathVariable Integer relyId) {
-        ifCaseService.removeIfRelyData(relyId);
+    public Result removeIfRelyData(@PathVariable Integer relyId, HttpServletRequest request) throws BusinessException {
+        ifCaseService.removeIfRelyData(relyId, request);
         return Result.success("删除成功");
     }
 

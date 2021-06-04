@@ -2,10 +2,7 @@ package org.alex.platform.pojo;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -32,6 +29,43 @@ public class RelyDataDO implements Serializable {
     private Date updateTime;
     private Byte analysisRely;
     private Byte enableReturn;
+
+    private Integer creatorId;
+    private String creatorName;
+    private Byte othersDeletable;
+    private Byte othersModifiable;
+
+    public Integer getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public Byte getOthersDeletable() {
+        return othersDeletable;
+    }
+
+    public void setOthersDeletable(Byte othersDeletable) {
+        this.othersDeletable = othersDeletable;
+    }
+
+    public Byte getOthersModifiable() {
+        return othersModifiable;
+    }
+
+    public void setOthersModifiable(Byte othersModifiable) {
+        this.othersModifiable = othersModifiable;
+    }
 
     public Byte getAnalysisRely() {
         return analysisRely;

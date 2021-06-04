@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-04-19 17:06:26
+Date: 2021-06-04 15:06:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -483,14 +483,18 @@ CREATE TABLE `t_interface_case_rely_data` (
   `extract_expression` varchar(50) DEFAULT NULL COMMENT '提取表达式',
   `created_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
+  `creator_id` int DEFAULT NULL COMMENT '创建人用户编号',
+  `creator_name` varchar(30) DEFAULT NULL COMMENT '创建人昵称',
+  `others_deletable` tinyint DEFAULT NULL COMMENT '非创建人能否删除0是1否',
+  `others_modifiable` tinyint DEFAULT NULL COMMENT '非创建人能否修改0是1否',
   PRIMARY KEY (`rely_id`),
   UNIQUE KEY `rely_name` (`rely_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_interface_case_rely_data
 -- ----------------------------
-INSERT INTO `t_interface_case_rely_data` VALUES ('14', '277', 'Token', '获取登录token', '0', '$..data.token', '2021-03-08 15:27:29', '2021-03-08 15:27:37');
+INSERT INTO `t_interface_case_rely_data` VALUES ('14', '277', 'Token', '获取登录token', '0', '$..data.token', '2021-03-08 15:27:29', '2021-06-04 14:11:21', '1', '123', '0', '0');
 
 -- ----------------------------
 -- Table structure for t_interface_case_suite
@@ -1150,51 +1154,55 @@ CREATE TABLE `t_rely_data` (
   `update_time` datetime DEFAULT NULL,
   `enable_return` tinyint DEFAULT NULL COMMENT '0是1否当type=3（新增）时，是否返回自增主键',
   `analysis_rely` tinyint DEFAULT NULL COMMENT '0是1否当type<2时，是否解析sql中的依赖',
+  `creator_id` int DEFAULT NULL COMMENT '创建人用户编号',
+  `creator_name` varchar(30) DEFAULT NULL COMMENT '创建人用户昵称',
+  `others_deletable` tinyint DEFAULT NULL COMMENT '非创建人能否删除0是1否',
+  `others_modifiable` tinyint DEFAULT NULL COMMENT '非创建人能否修改0是1否',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_rely_data
 -- ----------------------------
-INSERT INTO `t_rely_data` VALUES ('1', 'md5', 'md5(String s)', 'md5加密，引用方式示例：${md5(\"123456\")}', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58', null, null);
-INSERT INTO `t_rely_data` VALUES ('2', 'uuid', 'uuid()', '获取uuid，引用方式示例：${uuid()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:29:54', null, null);
-INSERT INTO `t_rely_data` VALUES ('3', 'base64', 'base64(String s)', 'base64加密，引用方式示例：${base64(\"123456\")}', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58', null, null);
-INSERT INTO `t_rely_data` VALUES ('4', 'timestamp', 'timestamp()', '获取当前时间戳ms，引用方式示例：${timestamp()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
-INSERT INTO `t_rely_data` VALUES ('5', 'timestamps', 'timestamps()', '获取当前时间戳s，引用方式示例：${timestamps()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
-INSERT INTO `t_rely_data` VALUES ('6', 'now', 'now(String format)', '获取当前时间，引用方式示例：${now(\"yyyy-MM-dd HH:mm:ss\")}，重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-10-21 16:18:07', null, null);
-INSERT INTO `t_rely_data` VALUES ('9', 'time', 'time(String operator, String amount, String format)', '获取相较于当前时间的指定时间，operator：y、M、d、h、m、s；分别对应：年、月、日、时、分、秒，amount：数额，format：格式，如yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58', null, null);
-INSERT INTO `t_rely_data` VALUES ('10', 'yesterday', 'yesterday(String format)', '获取当前时间对应的昨天，引用方式示例：${yesterday(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:06', null, null);
-INSERT INTO `t_rely_data` VALUES ('11', 'lastMonth', 'lastMonth(String format)', '获取当前时间对应的上个月，引用方式示例：${lastMonth(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:10', null, null);
-INSERT INTO `t_rely_data` VALUES ('12', 'nextMonth', 'nextMonth(String format)', '获取当前时间对应的下个月，引用方式示例：${nextMonth(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:13', null, null);
-INSERT INTO `t_rely_data` VALUES ('13', 'lastYear', 'lastYear(String format)', '获取当前时间对应的去年，引用方式示例：${lastYear(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:16', null, null);
-INSERT INTO `t_rely_data` VALUES ('14', 'nextYear', 'nextYear(String format)', '获取当前时间对应的明年，引用方式示例：${nextYear(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:19', null, null);
-INSERT INTO `t_rely_data` VALUES ('16', 'randomInt', 'randomInt(String length)', '获取指定长度的随机整数，引用方式示例：${randomInt(\"10\")}；\nrandomInt(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:35', null, null);
-INSERT INTO `t_rely_data` VALUES ('17', 'randomUpper', 'randomUpper(String length)', '获取指定长度的随机大写英文，引用方式示例：${randomUpper(\"10\")}；\nrandomUpper(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:38', null, null);
-INSERT INTO `t_rely_data` VALUES ('18', 'randomLower', 'randomLower(String length)', '获取指定长度的随机小写英文，引用方式示例：${randomLower(\"10\")}；\nrandomLower(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:41', null, null);
-INSERT INTO `t_rely_data` VALUES ('19', 'randomEn', 'randomEn(String length)', '获取指定长度的随机英文，引用方式示例：${randomEn(\"10\")}；\nrandomEn(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:27', null, null);
-INSERT INTO `t_rely_data` VALUES ('20', 'randomIllegal', 'randomIllegal(String length)', '获取指定长度的非法字符，引用方式示例：${randomIllegal(\"10\")}；\nrandomIllegal(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null);
-INSERT INTO `t_rely_data` VALUES ('21', 'nextNum', 'nextNum(String minSize, String maxSize)', '获取指定大小的数字，引用方式示例：${randomIllegal(\"1.0\", \"2.0\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null);
-INSERT INTO `t_rely_data` VALUES ('22', 'nextInt', 'nextInt(String minSize, String maxSize)', '获取指定大小的整型数字，引用方式示例：${randomIllegal(\"1\", \"2\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null);
-INSERT INTO `t_rely_data` VALUES ('23', 'cs', '长沙', '长沙市，引用方式示例：${cs}', '0', null, '2020-09-02 11:37:06', '2020-10-02 09:35:17', null, null);
-INSERT INTO `t_rely_data` VALUES ('29', 'city', 'city()', '随机城市，引用方式示例：${city()}', '1', null, '2020-10-21 15:26:23', '2020-10-21 15:26:32', null, null);
-INSERT INTO `t_rely_data` VALUES ('30', 'province', 'province()', '随机省份，引用方式示例：${province()}', '1', null, '2020-10-21 16:16:16', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('31', 'country', 'country()', '随机国家，引用方式示例：${country()}', '1', null, '2020-10-21 16:16:20', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('32', 'phone', 'phone()', '随机手机号码，引用方式示例：${phone()}', '1', null, '2020-10-21 16:16:26', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('33', 'email', 'email()', '随机邮箱，引用方式示例：${email()}', '1', null, '2020-10-21 16:16:28', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('34', 'mac', 'mac()', '随机mac地址，引用方式示例：${mac()}', '1', null, '2020-10-21 16:16:30', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('35', 'book', 'book()', '随机书名，引用方式示例：${book()}', '1', null, '2020-10-21 16:16:35', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('36', 'name', 'name()', '随机中文名称，引用方式示例：${name()}', '1', null, '2020-10-21 16:16:37', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('37', 'ipv4', 'ipv4()', '随机ipv4地址，引用方式示例：${ipv4()}', '1', null, '2020-10-21 16:16:40', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('38', 'privateIpv4', 'privateIpv4()', '随机私有ipv4地址，引用方式示例：${privateIpv4()}', '1', null, '2020-10-21 16:16:42', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('39', 'publicIpv4', 'publicIpv4()', '随机公有ipv4地址，引用方式示例：${publicIpv4()}', '1', null, '2020-10-21 16:16:44', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('40', 'ipv6', 'ipv6()', '随机ipv6地址，引用方式示例：${ipv6()}', '1', null, '2020-10-21 16:16:47', null, null, null);
-INSERT INTO `t_rely_data` VALUES ('41', 'InterfaceCaseTable', 'select * from t_interface_case where case_id = ?', '查询根据用例编号查询t_interface_case', '2', '1', '2021-03-08 15:32:57', '2021-03-31 11:43:19', null, '1');
-INSERT INTO `t_rely_data` VALUES ('44', 'InsertUser', 'INSERT INTO `platform`.`t_user` (`username`, `password`, `job_number`, `sex`, `is_enable`, `created_time`, `update_time`, `real_name`, `role_id`) VALUES (\'${timestamp()}\', \'18e29620f058e8bf085bfed74fdf5e82\', \'\', \'1\', \'1\', NULL, \'2021-03-10 16:08:51\', \'123\', \'1\');', '新增用户', '3', '1', '2021-03-30 13:44:05', '2021-04-02 10:23:07', '0', '0');
-INSERT INTO `t_rely_data` VALUES ('46', 'pick', 'pick(String... args)', '参数列表任选值，引用方式示例：${pick(\"1\", \"2\", \"3\")}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
-INSERT INTO `t_rely_data` VALUES ('47', 'inversePick', 'inversePick(String... args)', '参数列表返选值，引用方式示例：${inversePick(\"1\", \"2\", \"3\")}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
-INSERT INTO `t_rely_data` VALUES ('48', 'select', 'select(String dbId, String sql, String returnType)', '随机任选查询结果(仅支持单列)，returnType可选值有[integer, float, double, number, string],引用方式示例：${pick(\"1\", \"select username from t_user where id > 3\", \"integer\")}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
-INSERT INTO `t_rely_data` VALUES ('49', 'inverseSelect', 'inverseSelect(String dbId, String sql, String returnType)', '随机反选查询结果(仅支持单列)，returnType可选值有[integer, float, double, number, string],引用方式示例：${pick(\"1\", \"select username from t_user where id > 3\", \"integer\")}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null);
+INSERT INTO `t_rely_data` VALUES ('1', 'md5', 'md5(String s)', 'md5加密，引用方式示例：${md5(\"123456\")}', '1', null, '2020-09-02 11:37:06', '2021-06-04 14:43:57', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('2', 'uuid', 'uuid()', '获取uuid，引用方式示例：${uuid()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:29:54', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('3', 'base64', 'base64(String s)', 'base64加密，引用方式示例：${base64(\"123456\")}', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('4', 'timestamp', 'timestamp()', '获取当前时间戳ms，引用方式示例：${timestamp()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('5', 'timestamps', 'timestamps()', '获取当前时间戳s，引用方式示例：${timestamps()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('6', 'now', 'now(String format)', '获取当前时间，引用方式示例：${now(\"yyyy-MM-dd HH:mm:ss\")}，重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-10-21 16:18:07', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('9', 'time', 'time(String operator, String amount, String format)', '获取相较于当前时间的指定时间，operator：y、M、d、h、m、s；分别对应：年、月、日、时、分、秒，amount：数额，format：格式，如yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('10', 'yesterday', 'yesterday(String format)', '获取当前时间对应的昨天，引用方式示例：${yesterday(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:06', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('11', 'lastMonth', 'lastMonth(String format)', '获取当前时间对应的上个月，引用方式示例：${lastMonth(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:10', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('12', 'nextMonth', 'nextMonth(String format)', '获取当前时间对应的下个月，引用方式示例：${nextMonth(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:13', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('13', 'lastYear', 'lastYear(String format)', '获取当前时间对应的去年，引用方式示例：${lastYear(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:16', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('14', 'nextYear', 'nextYear(String format)', '获取当前时间对应的明年，引用方式示例：${nextYear(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:19', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('16', 'randomInt', 'randomInt(String length)', '获取指定长度的随机整数，引用方式示例：${randomInt(\"10\")}；\nrandomInt(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:35', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('17', 'randomUpper', 'randomUpper(String length)', '获取指定长度的随机大写英文，引用方式示例：${randomUpper(\"10\")}；\nrandomUpper(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:38', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('18', 'randomLower', 'randomLower(String length)', '获取指定长度的随机小写英文，引用方式示例：${randomLower(\"10\")}；\nrandomLower(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:41', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('19', 'randomEn', 'randomEn(String length)', '获取指定长度的随机英文，引用方式示例：${randomEn(\"10\")}；\nrandomEn(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:27', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('20', 'randomIllegal', 'randomIllegal(String length)', '获取指定长度的非法字符，引用方式示例：${randomIllegal(\"10\")}；\nrandomIllegal(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('21', 'nextNum', 'nextNum(String minSize, String maxSize)', '获取指定大小的数字，引用方式示例：${randomIllegal(\"1.0\", \"2.0\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('22', 'nextInt', 'nextInt(String minSize, String maxSize)', '获取指定大小的整型数字，引用方式示例：${randomIllegal(\"1\", \"2\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('23', 'cs', '长沙', '长沙市，引用方式示例：${cs}', '0', null, '2020-09-02 11:37:06', '2021-06-04 10:32:24', null, '1', '1', '123', '0', '0');
+INSERT INTO `t_rely_data` VALUES ('29', 'city', 'city()', '随机城市，引用方式示例：${city()}', '1', null, '2020-10-21 15:26:23', '2020-10-21 15:26:32', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('30', 'province', 'province()', '随机省份，引用方式示例：${province()}', '1', null, '2020-10-21 16:16:16', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('31', 'country', 'country()', '随机国家，引用方式示例：${country()}', '1', null, '2020-10-21 16:16:20', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('32', 'phone', 'phone()', '随机手机号码，引用方式示例：${phone()}', '1', null, '2020-10-21 16:16:26', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('33', 'email', 'email()', '随机邮箱，引用方式示例：${email()}', '1', null, '2020-10-21 16:16:28', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('34', 'mac', 'mac()', '随机mac地址，引用方式示例：${mac()}', '1', null, '2020-10-21 16:16:30', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('35', 'book', 'book()', '随机书名，引用方式示例：${book()}', '1', null, '2020-10-21 16:16:35', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('36', 'name', 'name()', '随机中文名称，引用方式示例：${name()}', '1', null, '2020-10-21 16:16:37', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('37', 'ipv4', 'ipv4()', '随机ipv4地址，引用方式示例：${ipv4()}', '1', null, '2020-10-21 16:16:40', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('38', 'privateIpv4', 'privateIpv4()', '随机私有ipv4地址，引用方式示例：${privateIpv4()}', '1', null, '2020-10-21 16:16:42', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('39', 'publicIpv4', 'publicIpv4()', '随机公有ipv4地址，引用方式示例：${publicIpv4()}', '1', null, '2020-10-21 16:16:44', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('40', 'ipv6', 'ipv6()', '随机ipv6地址，引用方式示例：${ipv6()}', '1', null, '2020-10-21 16:16:47', null, null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('41', 'InterfaceCaseTable', 'select * from t_interface_case where case_id = ?', '查询根据用例编号查询t_interface_case', '2', '1', '2021-03-08 15:32:57', '2021-06-04 14:34:52', null, '1', '1', '123', '1', '1');
+INSERT INTO `t_rely_data` VALUES ('44', 'InsertUser', 'INSERT INTO `platform`.`t_user` (`username`, `password`, `job_number`, `sex`, `is_enable`, `created_time`, `update_time`, `real_name`, `role_id`) VALUES (\'${timestamp()}\', \'18e29620f058e8bf085bfed74fdf5e82\', \'\', \'1\', \'1\', NULL, \'2021-03-10 16:08:51\', \'123\', \'1\');', '新增用户', '3', '1', '2021-03-30 13:44:05', '2021-06-04 14:44:31', '0', '0', '1', '123', '0', '0');
+INSERT INTO `t_rely_data` VALUES ('46', 'pick', 'pick(String... args)', '参数列表任选值，引用方式示例：${pick(\"1\", \"2\", \"3\")}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('47', 'inversePick', 'inversePick(String... args)', '参数列表返选值，引用方式示例：${inversePick(\"1\", \"2\", \"3\")}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('48', 'select', 'select(String dbId, String sql, String returnType)', '随机任选查询结果(仅支持单列)，returnType可选值有[integer, float, double, number, string],引用方式示例：${pick(\"1\", \"select username from t_user where id > 3\", \"integer\")}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('49', 'inverseSelect', 'inverseSelect(String dbId, String sql, String returnType)', '随机反选查询结果(仅支持单列)，returnType可选值有[integer, float, double, number, string],引用方式示例：${pick(\"1\", \"select username from t_user where id > 3\", \"integer\")}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for t_role
@@ -1273,5 +1281,5 @@ CREATE TABLE `t_user` (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1', '123', '18e29620f058e8bf085bfed74fdf5e82', '', '1', '1', null, '2021-03-10 16:08:51', '123', '1');
-INSERT INTO `t_user` VALUES ('555', 'youke', '123', '1', '1', '1', '2021-03-12 20:42:04', '2021-03-12 20:42:04', 'youke', '4');
+INSERT INTO `t_user` VALUES ('1', '123', '18e29620f058e8bf085bfed74fdf5e82', '', '1', '1', null, '2021-03-10 16:08:51', '超级管理员', '1');
+INSERT INTO `t_user` VALUES ('555', 'youke', '18e29620f058e8bf085bfed74fdf5e82', '1', '1', '1', '2021-03-12 20:42:04', '2021-06-04 11:22:01', 'youke', '1');

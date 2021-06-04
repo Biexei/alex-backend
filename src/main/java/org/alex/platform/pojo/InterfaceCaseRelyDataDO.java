@@ -23,6 +23,49 @@ public class InterfaceCaseRelyDataDO implements Serializable {
     private Date createdTime;
     private Date updateTime;
 
+    private Integer creatorId;
+    private String creatorName;
+    @NotNull(message = "请选择是否允许其他人删除")
+    @Min(value = 0, message = "请选择是否允许其他人删除")
+    @Max(value = 1, message = "请选择是否允许其他人删除")
+    private Byte othersDeletable;
+    @NotNull(message = "请选择是否允许其他人编辑")
+    @Min(value = 0, message = "请选择是否允许其他人编辑")
+    @Max(value = 1, message = "请选择是否允许其他人编辑")
+    private Byte othersModifiable;
+
+    public Integer getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public Byte getOthersDeletable() {
+        return othersDeletable;
+    }
+
+    public void setOthersDeletable(Byte othersDeletable) {
+        this.othersDeletable = othersDeletable;
+    }
+
+    public Byte getOthersModifiable() {
+        return othersModifiable;
+    }
+
+    public void setOthersModifiable(Byte othersModifiable) {
+        this.othersModifiable = othersModifiable;
+    }
+
     public Integer getRelyId() {
         return relyId;
     }

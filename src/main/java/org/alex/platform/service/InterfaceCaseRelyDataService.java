@@ -8,13 +8,13 @@ import org.alex.platform.pojo.InterfaceCaseRelyDataDO;
 import org.alex.platform.pojo.InterfaceCaseRelyDataDTO;
 import org.alex.platform.pojo.InterfaceCaseRelyDataVO;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 
 public interface InterfaceCaseRelyDataService {
     void saveIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException;
 
-    void modifyIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException;
+    void modifyIfRelyData(InterfaceCaseRelyDataDO ifRelyDataDO, HttpServletRequest request) throws BusinessException;
 
     PageInfo<InterfaceCaseRelyDataVO> findIfRelyDataList(InterfaceCaseRelyDataDTO ifRelyDataDTO, Integer pageNum, Integer pageSize);
 
@@ -22,7 +22,7 @@ public interface InterfaceCaseRelyDataService {
 
     InterfaceCaseRelyDataVO findIfRelyDataByName(String relyName);
 
-    void removeIfRelyData(Integer relyId);
+    void removeIfRelyData(Integer relyId, HttpServletRequest request) throws BusinessException;
 
     String checkRelyResult(Integer relyId, String executor) throws ParseException, SqlException, BusinessException;
 
