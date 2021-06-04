@@ -5,28 +5,23 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.alex.platform.enums.CaseRule;
-import org.alex.platform.exception.BusinessException;
-import org.alex.platform.generator.Generator;
+import org.alex.platform.generator.StaticGenerator;
 import org.alex.platform.generator.Main;
 import org.alex.platform.util.CommandUtil;
 import org.alex.platform.util.FileUtil;
-import org.alex.platform.util.JsonUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class CaseGenTest {
     @Autowired
-    Generator generator;
+    StaticGenerator staticGenerator;
     @Autowired
     Main main;
 
@@ -44,7 +39,7 @@ public class CaseGenTest {
         privateConfig.put("allowNull", false);
         privateConfig.put("allowRepeat", false);
 
-        System.out.println(generator.genSingleField(key, desc, type, privateConfig));
+        System.out.println(staticGenerator.genSingleField(key, desc, type, privateConfig));
     }
 
     @Test
@@ -59,7 +54,7 @@ public class CaseGenTest {
         privateConfig.put("allowNull", false);
         privateConfig.put("allowRepeat", false);
 
-        System.out.println(generator.genSingleField(key, desc, type, privateConfig));
+        System.out.println(staticGenerator.genSingleField(key, desc, type, privateConfig));
     }
 
     @Test
@@ -75,7 +70,7 @@ public class CaseGenTest {
         privateConfig.put("allowNull", false);
         privateConfig.put("allowRepeat", false);
 
-        System.out.println(generator.genSingleField(key, desc, type, privateConfig));
+        System.out.println(staticGenerator.genSingleField(key, desc, type, privateConfig));
     }
 
     @Test
@@ -95,7 +90,7 @@ public class CaseGenTest {
         privateConfig.put("allowNull", false);
         privateConfig.put("allowRepeat", false);
 
-        System.out.println(generator.genSingleField(key, desc, type, privateConfig));
+        System.out.println(staticGenerator.genSingleField(key, desc, type, privateConfig));
     }
 
     @Test

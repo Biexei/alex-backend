@@ -18,7 +18,7 @@ import java.util.LinkedHashMap;
 public class Main {
 
     @Autowired
-    Generator generator;
+    StaticGenerator staticGenerator;
     @Autowired
     RedisUtil redisUtil;
     @Autowired
@@ -54,7 +54,7 @@ public class Main {
                 String desc = jo.getString("desc");
                 String type = jo.getString("type");
                 JSONObject config = jo.getJSONObject("config");
-                itemList.add(generator.genSingleField(name, desc, type, config));
+                itemList.add(staticGenerator.genSingleField(name, desc, type, config));
             }
         }
 

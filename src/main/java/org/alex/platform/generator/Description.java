@@ -73,10 +73,6 @@ public class Description {
         return String.format("%s|%s|恰好为最大值|%s|", desc, key, max);
     }
 
-    protected String desc4SizeRepeat(String key, String desc, BigDecimal min, BigDecimal max) {
-        return String.format("%s|%s|大小在区间[%s,%s]内-重复", desc, key, min, max);
-    }
-
     protected String desc4InDb(String key, String desc) {
         return String.format("%s|%s|值存在于表内", desc, key);
     }
@@ -85,9 +81,6 @@ public class Description {
         return String.format("%s|%s|值不存在于表内", desc, key);
     }
 
-    protected String desc4DbRepeat(String key, String desc) {
-        return String.format("%s|%s|值存在于表内-重复", desc, key);
-    }
 
     protected String desc4InArray(String key, String desc) {
         return String.format("%s|%s|值存在于数组内", desc, key);
@@ -97,15 +90,7 @@ public class Description {
         return String.format("%s|%s|值不存在于数组内", desc, key);
     }
 
-    protected String desc4ArrayRepeat(String key, String desc) {
-        return String.format("%s|%s|值存在于数组内-重复", desc, key);
-    }
-
     protected String desc4Const(String key, String desc, Object value) {
         return String.format("%s|%s|值为常量%s", desc, key, value);
-    }
-
-    protected String desc4ConstRepeat(String key, String desc) {
-        return String.format("%s|%s|常量值-重复", desc, key);
     }
 }

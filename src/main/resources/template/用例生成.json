@@ -16,7 +16,6 @@
 			"type": "String、Number、Integer、Float、InDb、NotInDb、Const、InArray、NotInArray",
 			"globalConfig": {
 				"allowNull": true,
-				"allowRepeat": false
 			},
 			"stringConfig": {
 				"allowIllegal": true,
