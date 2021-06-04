@@ -118,4 +118,16 @@ public class CaseGenTest {
         String cmd = "python src\\main\\resources\\python\\ort.py";
         System.out.println(CommandUtil.exec(cmd));
     }
+
+    @Test
+    public void tt() {
+        String name = "timestamp";
+        String param0 = "";
+        String param1 = "123";
+        String[] param2 = {"123", "a"};
+        System.out.println(staticGenerator.function(name));
+        System.out.println(staticGenerator.function(name, param0));
+        System.out.println(staticGenerator.function(name, param1));
+        System.out.println(staticGenerator.function(name, param2));
+    }
 }

@@ -174,4 +174,22 @@ public interface Generator {
         }
         return jsonObject;
     }
+
+    /**
+     * 根据方法名称和参数，生成调用函数字符串
+     * @param name 方法名称
+     * @param params 动态参数
+     * @return ${xx()}
+     */
+    default String function(String name, String... params) {
+        if (params.length == 0) {
+            return String.format("${%s()}", name);
+        }
+        StringBuilder p = new StringBuilder();
+        for (String param : params) {
+            p.append("\"").append(param).append("\", ");
+        }
+        p = new StringBuilder(p.substring(0, p.length() - 2));
+        return String.format("${%s(%s)}", name, p.toString());
+    }
 }
