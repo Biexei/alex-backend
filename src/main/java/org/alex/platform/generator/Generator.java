@@ -34,7 +34,7 @@ public interface Generator {
                         Integer maxLen, Boolean allowNull);
 
     /**
-     * 生成字段类型为String的用例
+     * 生成字段类型为Number的用例
      * @param key 字段名称
      * @param desc 字段描述
      * @param min 最小值
@@ -181,12 +181,13 @@ public interface Generator {
      * @param params 动态参数
      * @return ${xx()}
      */
-    default String function(String name, String... params) {
+    default String function(String name, Object... params) {
         if (params.length == 0) {
             return String.format("${%s()}", name);
         }
         StringBuilder p = new StringBuilder();
-        for (String param : params) {
+        for (Object paramObject : params) {
+            String param = paramObject.toString();
             p.append("\"").append(param).append("\", ");
         }
         p = new StringBuilder(p.substring(0, p.length() - 2));

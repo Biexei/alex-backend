@@ -481,6 +481,60 @@ public class InvokeCenter {
     }
 
     /**
+     * 返回随机数字字母
+     *
+     * @param length 长度
+     * @return 返回英文随机数
+     */
+    public String randomLegal(String length) {
+        String s = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+        int len;
+        try {
+            len = Integer.parseInt(length);
+        } catch (NumberFormatException e) {
+            return "q";
+        }
+        if (len <= 0) {
+            return "q";
+        }
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < len; i++) {
+            sb.append(s.charAt(random.nextInt(s.length())));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 返回随机数字字母
+     *
+     * @param minLen 最小长度
+     * @param maxLen 最大长度
+     * @return 返回英文随机数
+     */
+    public String randomLegal(String minLen, String maxLen) {
+        String s = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+        int min;
+        int max;
+        try {
+            min = Integer.parseInt(minLen);
+            max = Integer.parseInt(maxLen);
+        } catch (NumberFormatException e) {
+            return "q";
+        }
+        if (min <= 0 || max <= 0 || min > max) {
+            return "q";
+        }
+        int len = RandomUtil.randomInt(min, max);
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < len; i++) {
+            sb.append(s.charAt(random.nextInt(s.length())));
+        }
+        return sb.toString();
+    }
+
+    /**
      * 返回英文随机数
      *
      * @param length 长度

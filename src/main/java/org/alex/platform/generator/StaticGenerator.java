@@ -144,7 +144,7 @@ public class StaticGenerator implements Generator {
     }
 
     /**
-     * 生成字段类型为String的用例
+     * 生成字段类型为Number的用例
      * @param key 字段名称
      * @param desc 字段描述
      * @param min 最小值

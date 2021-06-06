@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
-Source Server Version : 80020
+Source Server         : localhost
+Source Server Version : 80019
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80020
+Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2021-06-04 15:06:10
+Date: 2021-06-06 21:10:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1182,9 +1182,10 @@ INSERT INTO `t_rely_data` VALUES ('17', 'randomUpper', 'randomUpper(String lengt
 INSERT INTO `t_rely_data` VALUES ('18', 'randomLower', 'randomLower(String length)', '获取指定长度的随机小写英文，引用方式示例：${randomLower(\"10\")}；\nrandomLower(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:41', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('19', 'randomEn', 'randomEn(String length)', '获取指定长度的随机英文，引用方式示例：${randomEn(\"10\")}；\nrandomEn(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:27', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('20', 'randomIllegal', 'randomIllegal(String length)', '获取指定长度的非法字符，引用方式示例：${randomIllegal(\"10\")}；\nrandomIllegal(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
-INSERT INTO `t_rely_data` VALUES ('21', 'nextNum', 'nextNum(String minSize, String maxSize)', '获取指定大小的数字，引用方式示例：${randomIllegal(\"1.0\", \"2.0\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
-INSERT INTO `t_rely_data` VALUES ('22', 'nextInt', 'nextInt(String minSize, String maxSize)', '获取指定大小的整型数字，引用方式示例：${randomIllegal(\"1\", \"2\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
-INSERT INTO `t_rely_data` VALUES ('23', 'cs', '长沙', '长沙市，引用方式示例：${cs}', '0', null, '2020-09-02 11:37:06', '2021-06-04 10:32:24', null, '1', '1', '123', '0', '0');
+INSERT INTO `t_rely_data` VALUES ('21', 'randomLegal', 'randomLegal(String length)', '获取指定长度字母数字，引用方式示例：${randomLegal(\"10\")}；\randomLegal(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('22', 'nextNum', 'nextNum(String minSize, String maxSize)', '获取指定大小的数字，引用方式示例：${randomIllegal(\"1.0\", \"2.0\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('23', 'nextInt', 'nextInt(String minSize, String maxSize)', '获取指定大小的整型数字，引用方式示例：${randomIllegal(\"1\", \"2\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('24', 'cs', '长沙', '长沙市，引用方式示例：${cs}', '0', null, '2020-09-02 11:37:06', '2021-06-04 10:32:24', null, '1', '1', '123', '0', '0');
 INSERT INTO `t_rely_data` VALUES ('29', 'city', 'city()', '随机城市，引用方式示例：${city()}', '1', null, '2020-10-21 15:26:23', '2020-10-21 15:26:32', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('30', 'province', 'province()', '随机省份，引用方式示例：${province()}', '1', null, '2020-10-21 16:16:16', null, null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('31', 'country', 'country()', '随机国家，引用方式示例：${country()}', '1', null, '2020-10-21 16:16:20', null, null, null, null, null, null, null);
