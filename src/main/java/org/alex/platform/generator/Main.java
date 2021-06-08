@@ -20,12 +20,25 @@ public class Main {
     @Autowired
     StaticGenerator staticGenerator;
     @Autowired
+    DynamicGenerator dynamicGenerator;
+    @Autowired
+    Inventory inventory;
+    @Autowired
     RedisUtil redisUtil;
     @Autowired
     Rule rule;
 
+    /**
+     *
+     * @param schemaFileObject 用例约束文件对象
+     * @param caseRule 用例生成类型枚举 笛卡尔积/正交法
+     * @param isReturnMix 是否返回组合属性
+     * @param dataType 数据类型 1静态数据 2尽可能使用动态数据
+     * @return 测试用例
+     * @throws Exception Exception
+     */
     @SuppressWarnings({"unchecked","rawtypes"})
-    public JSONArray generateCase(JSONObject schemaFileObject, CaseRule caseRule, Boolean isReturnMix) throws Exception {
+    public JSONArray generateCase(JSONObject schemaFileObject, CaseRule caseRule, Boolean isReturnMix, Integer dataType) throws Exception {
         // 读取配置文件
         JSONObject property = schemaFileObject.getJSONObject("property");
         Integer projectId = property.getInteger("projectId");
@@ -54,7 +67,11 @@ public class Main {
                 String desc = jo.getString("desc");
                 String type = jo.getString("type");
                 JSONObject config = jo.getJSONObject("config");
-                itemList.add(staticGenerator.genSingleField(name, desc, type, config));
+                if (dataType == 1) {
+                    itemList.add(inventory.genSingleField(staticGenerator, name, desc, type, config));
+                } else {
+                    itemList.add(inventory.genSingleField(dynamicGenerator, name, desc, type, config));
+                }
             }
         }
 

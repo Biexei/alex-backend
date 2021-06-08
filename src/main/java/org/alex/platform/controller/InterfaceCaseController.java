@@ -67,15 +67,24 @@ public class InterfaceCaseController {
     /**
      * 上传约束文件自动生成测试用例并下载
      * @param file  约束文件
-     * @param type  1正交法 2笛卡尔积
+     * @param genRule  1正交法 2笛卡尔积 3仅生成单属性
+     * @param dataType  1静态数据 2尽可能动态数据
      * @param response 文件下载输入
      * @throws BusinessException 业务异常
      */
     @PostMapping("/interface/case/generator")
-    public Result generatorInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer type,
-                                         HttpServletResponse response) throws Exception {
-        CaseRule caseRule = type == 1 ? CaseRule.ORT : CaseRule.CARTESIAN;
-        JSONArray array = interfaceCaseImportService.generatorInterfaceCase(file, caseRule, response);
+    public Result generatorInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer genRule,
+                                         @RequestParam Integer dataType, HttpServletResponse response) throws Exception {
+        CaseRule caseRule = null;
+        boolean isReturnMix = true;
+        if (genRule == 1) {
+            caseRule = CaseRule.ORT;
+        } else if (genRule == 2) {
+            caseRule = CaseRule.CARTESIAN;
+        } else {
+            isReturnMix = false;
+        }
+        JSONArray array = interfaceCaseImportService.generatorInterfaceCase(file, caseRule, response, isReturnMix, dataType);
         return Result.success(String.format("成功生成%s条用例", array.size()), array);
     }
 

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.alex.platform.enums.CaseRule;
+import org.alex.platform.generator.Inventory;
 import org.alex.platform.generator.StaticGenerator;
 import org.alex.platform.generator.Main;
 import org.alex.platform.util.CommandUtil;
@@ -24,6 +25,8 @@ public class CaseGenTest {
     StaticGenerator staticGenerator;
     @Autowired
     Main main;
+    @Autowired
+    Inventory inventory;
 
     @Test
     public void doStringTest() throws Exception {
@@ -39,7 +42,7 @@ public class CaseGenTest {
         privateConfig.put("allowNull", false);
         privateConfig.put("allowRepeat", false);
 
-        System.out.println(staticGenerator.genSingleField(key, desc, type, privateConfig));
+        System.out.println(inventory.genSingleField(staticGenerator, key, desc, type, privateConfig));
     }
 
     @Test
@@ -54,7 +57,7 @@ public class CaseGenTest {
         privateConfig.put("allowNull", false);
         privateConfig.put("allowRepeat", false);
 
-        System.out.println(staticGenerator.genSingleField(key, desc, type, privateConfig));
+        System.out.println(inventory.genSingleField(staticGenerator, key, desc, type, privateConfig));
     }
 
     @Test
@@ -70,7 +73,7 @@ public class CaseGenTest {
         privateConfig.put("allowNull", false);
         privateConfig.put("allowRepeat", false);
 
-        System.out.println(staticGenerator.genSingleField(key, desc, type, privateConfig));
+        System.out.println(inventory.genSingleField(staticGenerator, key, desc, type, privateConfig));
     }
 
     @Test
@@ -90,14 +93,14 @@ public class CaseGenTest {
         privateConfig.put("allowNull", false);
         privateConfig.put("allowRepeat", false);
 
-        System.out.println(staticGenerator.genSingleField(key, desc, type, privateConfig));
+        System.out.println(inventory.genSingleField(staticGenerator, key, desc, type, privateConfig));
     }
 
     @Test
     public void testMain() throws Exception {
         String jsonStr = FileUtil.readByBuffer("C:\\Users\\beix\\IdeaProjects\\platform\\src\\main\\resources\\template\\用户注册接口自动生成用例约束示例.json", StandardCharsets.UTF_8);
         JSONObject schema = JSONObject.parseObject(jsonStr);
-        System.out.println(JSON.toJSONString(main.generateCase(schema, CaseRule.CARTESIAN, false),
+        System.out.println(JSON.toJSONString(main.generateCase(schema, CaseRule.CARTESIAN, false, 1),
                 SerializerFeature.DisableCircularReferenceDetect,
                 SerializerFeature.WriteMapNullValue));
     }

@@ -3,7 +3,6 @@ package org.alex.platform.generator;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.alex.platform.enums.CaseType;
-import org.alex.platform.enums.FieldType;
 import org.alex.platform.enums.ResultType;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ValidException;
@@ -18,6 +17,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * 静态生成测试用例
+ */
 @Component
 public class StaticGenerator implements Generator {
     @Autowired
@@ -26,56 +28,6 @@ public class StaticGenerator implements Generator {
     Description description;
     @Autowired
     DbService dbService;
-
-    @Override
-    public JSONArray genSingleField(String key, String desc, String type, JSONObject config) throws Exception {
-        type = FieldType.getFieldType(type);
-        Boolean allowNull = config.getBoolean("allowNull");
-
-        switch (type) {
-            case "string":
-                Boolean allowIllegal = config.getBoolean("allowIllegal");
-                Boolean allowEmpty = config.getBoolean("allowEmpty");
-                Integer minLen = config.getInteger("minLen");
-                Integer maxLen = config.getInteger("maxLen");
-                filter.valid4String(allowIllegal, allowEmpty, minLen, maxLen, allowNull);
-                return genString(key, desc, allowIllegal, allowEmpty, minLen, maxLen, allowNull);
-            case "number":
-                BigDecimal min = config.getBigDecimal("min");
-                BigDecimal max = config.getBigDecimal("max");
-                filter.valid4Number(min, max, allowNull);
-                return genNumber(key, desc, min, max, allowNull);
-            case "inDb":
-            case "notInDb": {
-                Integer dbId = config.getInteger("dbId");
-                String sql = config.getString("sql");
-                String elementType = config.getString("elementType");
-                filter.valid4DbData(dbId, sql, elementType, allowNull);
-                if (type.equals("inDb")) {
-                    return genInDb(key, desc, dbId, sql, elementType, allowNull);
-                } else {
-                    return genNotInDb(key, desc, dbId, sql, elementType, allowNull);
-                }
-            }
-            case "const":
-                Object value = config.get("value");
-                filter.valid4Const(value, allowNull);
-                return genConst(key, desc, value, allowNull);
-            case "inArray":
-            case "notInArray": {
-                String elementType = config.getString("elementType");
-                JSONArray arrayValue = config.getJSONArray("value");
-                filter.valid4ArrayData(elementType, arrayValue, allowNull);
-                if (type.equals("inArray")) {
-                    return genInArray(key, desc, arrayValue, elementType, allowNull);
-                } else {
-                    return genNotInArray(key, desc, arrayValue, elementType, allowNull);
-                }
-            }
-            default:
-                throw new ValidException("unknown type : " + type);
-        }
-    }
 
     /**
      * 生成字段类型为String的用例

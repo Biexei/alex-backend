@@ -8,16 +8,6 @@ import org.alex.platform.exception.ValidException;
 import java.math.BigDecimal;
 
 public interface Generator {
-    /**
-     * 为指定类型的属性，生成其可能的有效/无效值
-     * @param key 字段名称
-     * @param desc 字段描述
-     * @param type 类型
-     * @param config 配置
-     * @return 有效值和无效值数组
-     * @throws Exception Exception
-     */
-    JSONArray genSingleField(String key, String desc, String type, JSONObject config) throws Exception;
 
     /**
      * 生成字段类型为String的用例
@@ -188,6 +178,24 @@ public interface Generator {
         StringBuilder p = new StringBuilder();
         for (Object paramObject : params) {
             String param = paramObject.toString();
+            p.append("\"").append(param).append("\", ");
+        }
+        p = new StringBuilder(p.substring(0, p.length() - 2));
+        return String.format("${%s(%s)}", name, p.toString());
+    }
+
+    /**
+     * 根据方法名称和参数，生成调用函数字符串
+     * @param name 方法名称
+     * @param params 动态参数
+     * @return ${xx()}
+     */
+    default String function(String name, String... params) {
+        if (params.length == 0) {
+            return String.format("${%s()}", name);
+        }
+        StringBuilder p = new StringBuilder();
+        for (String param : params) {
             p.append("\"").append(param).append("\", ");
         }
         p = new StringBuilder(p.substring(0, p.length() - 2));
