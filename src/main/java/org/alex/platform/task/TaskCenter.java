@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -75,12 +76,13 @@ public class TaskCenter {
                         Integer totalSuccess = suiteLog.getTotalSuccess();
                         Integer totalFailed = suiteLog.getTotalFailed();
                         Integer totalError= suiteLog.getTotalError();
-                        String successRate = totalSuccess/totalCase*100 + "%";
+                        double successRate = new BigDecimal((float)totalSuccess/totalCase).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                        String successRateS = successRate*100 + "%";
                         String title = "Alex定时任务通知";
                         String text = String.format("执行编号：%s\r\n耗时：%sms\r\n执行于：%s\r\n" +
                                 "执行类型：接口测试套件\r\n" + "总用例数：%s\r\n成功数：%s\r\n失败数：%s\r\n" +
                                 "错误数：%s\r\n成功率：%s\r\n更多详情请前往Alex接口自动化测试平台查看!",
-                                suiteLogNo, runTime, time, totalCase, totalSuccess, totalFailed, totalError, successRate);
+                                suiteLogNo, runTime, time, totalCase, totalSuccess, totalFailed, totalError, successRateS);
                         mailService.send(title, text, emails);
                         LOG.info("定时任务执行邮件发送成功");
                     } catch (BusinessException e) {
