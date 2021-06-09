@@ -17,6 +17,19 @@ public class ValueTest {
 
     @Test
     public void doTest() {
-        System.out.println(JSON.toJSONString(mapper.selectPermissionByParentId(0), SerializerFeature.DisableCircularReferenceDetect));
+        //System.out.println(JSON.toJSONString(mapper.selectPermissionByParentId(0), SerializerFeature.DisableCircularReferenceDetect));
+        System.out.println(JSON.toJSONString(function("name", "123", "123")));
+    }
+
+    public String function(String name, String... params) {
+        if (params.length == 0) {
+            return String.format("${%s()}", name);
+        }
+        StringBuilder p = new StringBuilder();
+        for (String param : params) {
+            p.append("\"").append(param).append("\", ");
+        }
+        p = new StringBuilder(p.substring(0, p.length() - 2));
+        return String.format("${%s(%s)}", name, p.toString());
     }
 }

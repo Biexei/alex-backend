@@ -7,6 +7,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.alex.platform.enums.CaseRule;
 import org.alex.platform.util.NoUtil;
 import org.alex.platform.util.RedisUtil;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -125,11 +126,11 @@ public class Main {
             cs.put("doc", doc);
             cs.put("headers", headers);
             if (schemaType.equalsIgnoreCase("data")) {
-                cs.put("data", JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue, SerializerFeature.UseSingleQuotes));
+                cs.put("data", StringEscapeUtils.unescapeJava(JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue)));
             } else if (schemaType.equalsIgnoreCase("json")) {
-                cs.put("json", JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue, SerializerFeature.UseSingleQuotes));
+                cs.put("json", StringEscapeUtils.unescapeJava(JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue)));
             } else {
-                cs.put("params", JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue, SerializerFeature.UseSingleQuotes));
+                cs.put("params", StringEscapeUtils.unescapeJava(JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue)));
             }
             cs.put("asserts", isValidEquivalenceClass ? validEquivalenceClassAssert : invalidEquivalenceClassAssert);
             result.add(cs);
