@@ -126,11 +126,12 @@ public class Main {
             cs.put("doc", doc);
             cs.put("headers", headers);
             if (schemaType.equalsIgnoreCase("data")) {
-                cs.put("data", StringEscapeUtils.unescapeJava(JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue)));
+                cs.put("data", JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue));
             } else if (schemaType.equalsIgnoreCase("json")) {
-                cs.put("json", StringEscapeUtils.unescapeJava(JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue)));
+                cs.put("json", JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue).
+                        replace("\\\\\\", "\\").replace("\\\"", "\""));
             } else {
-                cs.put("params", StringEscapeUtils.unescapeJava(JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue)));
+                cs.put("params", JSON.toJSONString(fieldObject, SerializerFeature.WriteMapNullValue));
             }
             cs.put("asserts", isValidEquivalenceClass ? validEquivalenceClassAssert : invalidEquivalenceClassAssert);
             result.add(cs);

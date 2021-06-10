@@ -17,8 +17,14 @@ TRUNCATE t_interface_suite_processor;
 TRUNCATE t_mock_api;
 TRUNCATE t_mock_hit_policy;
 TRUNCATE t_mock_sever;
-TRUNCATE t_module;
+
 TRUNCATE t_project;
+INSERT INTO `platform`.`t_project` (`project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`, `dev_domain`, `test_domain`, `stg_domain`, `prod_domain`) VALUES ('1', 'Alex', '', 'http://127.0.0.1:7777', NULL, NULL, 'http://127.0.0.1:7777', 'http://127.0.0.1:7777', 'http://127.0.0.1:7777', 'http://127.0.0.1:7777');
+TRUNCATE t_module;
+INSERT INTO `platform`.`t_module` (`project_id`, `module_id`, `name`, `desc`, `created_time`, `update_time`) VALUES ('1', '1', '用户登录', NULL, '2021-06-09 12:41:16', '2021-06-09 12:41:16');
+
+
+
 TRUNCATE t_task;
 TRUNCATE t_task_email_ref;
 

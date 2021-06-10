@@ -70,8 +70,22 @@ public class ImportCaseServiceImpl implements ImportCaseService {
         template.setDoc(doc);
         template.setHeaders(headers);
         template.setParams(params);
-        template.setData(data);
-        template.setJson(json);
+        if (data == null && json == null) {
+            template.setBodyType((byte) 9); // none
+            template.setRaw(null);
+            template.setRawType(null);
+        } else {
+            if (json != null) {
+                template.setBodyType((byte) 2); // raw
+                template.setRaw(json);
+                template.setRawType("JSON");
+            } else {
+                template.setBodyType((byte) 1); // x-www-form-encoded
+                template.setFormDataEncoded(data);
+                template.setRaw(null);
+                template.setRawType(null);
+            }
+        }
         template.setCreater(creator);
         template.setCreatedTime(date);
         template.setUpdateTime(date);
@@ -144,8 +158,22 @@ public class ImportCaseServiceImpl implements ImportCaseService {
         template.setDoc(doc);
         template.setHeaders(headers);
         template.setParams(params);
-        template.setData(data);
-        template.setJson(json);
+        if (data == null && json == null) {
+            template.setBodyType((byte) 9); // none
+            template.setRaw(null);
+            template.setRawType(null);
+        } else {
+            if (json != null) {
+                template.setBodyType((byte) 2); // raw
+                template.setRaw(json);
+                template.setRawType("JSON");
+            } else {
+                template.setBodyType((byte) 1); // x-www-form-encoded
+                template.setFormDataEncoded(data);
+                template.setRaw(null);
+                template.setRawType(null);
+            }
+        }
         template.setCreater(creator);
         template.setCreatedTime(date);
         template.setUpdateTime(date);

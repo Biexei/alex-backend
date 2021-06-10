@@ -32,9 +32,14 @@ public class InterfaceCaseDO implements Serializable {
     @Size(max = 1000, message = "请求参数长度必须小于等于1000")
     private String params;
     @Size(max = 1000, message = "请求表单数据长度必须小于等于1000")
-    private String data;
-    @Size(max = 1000, message = "请求json数据长度必须小于等于1000")
-    private String json;
+    private String formData;
+    @Size(max = 1000, message = "请求表单数据(编码)长度必须小于等于1000")
+    private String formDataEncoded;
+    @Size(max = 1000, message = "请求raw数据长度必须小于等于1000")
+    private String raw;
+    private String rawType;
+    @NotNull(message = "body类型不能为空")
+    private Byte bodyType;
     @NotNull(message = "创建者不能为空")
     @Size(min = 1, max = 20, message = "创建者长度必须为1~20")
     @NotNull(message = "创建者不能为空")
@@ -45,22 +50,6 @@ public class InterfaceCaseDO implements Serializable {
     private Date updateTime;
     private Byte source;
     private String importNo;
-
-    public Byte getSource() {
-        return source;
-    }
-
-    public void setSource(Byte source) {
-        this.source = source;
-    }
-
-    public String getImportNo() {
-        return importNo;
-    }
-
-    public void setImportNo(String importNo) {
-        this.importNo = importNo;
-    }
 
     public Integer getModuleId() {
         return moduleId;
@@ -142,20 +131,44 @@ public class InterfaceCaseDO implements Serializable {
         this.params = params;
     }
 
-    public String getData() {
-        return data;
+    public String getFormData() {
+        return formData;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setFormData(String formData) {
+        this.formData = formData;
     }
 
-    public String getJson() {
-        return json;
+    public String getFormDataEncoded() {
+        return formDataEncoded;
     }
 
-    public void setJson(String json) {
-        this.json = json;
+    public void setFormDataEncoded(String formDataEncoded) {
+        this.formDataEncoded = formDataEncoded;
+    }
+
+    public String getRaw() {
+        return raw;
+    }
+
+    public void setRaw(String raw) {
+        this.raw = raw;
+    }
+
+    public String getRawType() {
+        return rawType;
+    }
+
+    public void setRawType(String rawType) {
+        this.rawType = rawType;
+    }
+
+    public Byte getBodyType() {
+        return bodyType;
+    }
+
+    public void setBodyType(Byte bodyType) {
+        this.bodyType = bodyType;
     }
 
     public String getCreater() {
@@ -182,6 +195,22 @@ public class InterfaceCaseDO implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Byte getSource() {
+        return source;
+    }
+
+    public void setSource(Byte source) {
+        this.source = source;
+    }
+
+    public String getImportNo() {
+        return importNo;
+    }
+
+    public void setImportNo(String importNo) {
+        this.importNo = importNo;
+    }
+
     @Override
     public String toString() {
         return "InterfaceCaseDO{" +
@@ -195,11 +224,16 @@ public class InterfaceCaseDO implements Serializable {
                 ", doc='" + doc + '\'' +
                 ", headers='" + headers + '\'' +
                 ", params='" + params + '\'' +
-                ", data='" + data + '\'' +
-                ", json='" + json + '\'' +
+                ", formData='" + formData + '\'' +
+                ", formDataEncoded='" + formDataEncoded + '\'' +
+                ", raw='" + raw + '\'' +
+                ", rawType='" + rawType + '\'' +
+                ", bodyType=" + bodyType +
                 ", creater='" + creater + '\'' +
                 ", createdTime=" + createdTime +
                 ", updateTime=" + updateTime +
+                ", source=" + source +
+                ", importNo='" + importNo + '\'' +
                 '}';
     }
 }

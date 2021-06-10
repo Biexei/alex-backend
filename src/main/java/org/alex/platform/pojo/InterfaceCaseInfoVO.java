@@ -15,8 +15,11 @@ public class InterfaceCaseInfoVO implements Serializable {
     private String doc;
     private String headers;
     private String params;
-    private String data;
-    private String json;
+    private String formData;
+    private String formDataEncoded;
+    private String raw;
+    private String rawType;
+    private Byte bodyType;
     private String creater;
     private Date createdTime;
     private Byte source;
@@ -24,38 +27,6 @@ public class InterfaceCaseInfoVO implements Serializable {
     private List<InterfaceAssertVO> asserts;
     private List<InterfaceProcessorDO> postProcessors;
     private List<InterfacePreCaseVO> preCases;
-
-    public Byte getSource() {
-        return source;
-    }
-
-    public void setSource(Byte source) {
-        this.source = source;
-    }
-
-    public String getImportNo() {
-        return importNo;
-    }
-
-    public void setImportNo(String importNo) {
-        this.importNo = importNo;
-    }
-
-    public List<InterfacePreCaseVO> getPreCases() {
-        return preCases;
-    }
-
-    public void setPreCases(List<InterfacePreCaseVO> preCases) {
-        this.preCases = preCases;
-    }
-
-    public List<InterfaceProcessorDO> getPostProcessors() {
-        return postProcessors;
-    }
-
-    public void setPostProcessors(List<InterfaceProcessorDO> postProcessors) {
-        this.postProcessors = postProcessors;
-    }
 
     public Integer getProjectId() {
         return projectId;
@@ -137,20 +108,44 @@ public class InterfaceCaseInfoVO implements Serializable {
         this.params = params;
     }
 
-    public String getData() {
-        return data;
+    public String getFormData() {
+        return formData;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setFormData(String formData) {
+        this.formData = formData;
     }
 
-    public String getJson() {
-        return json;
+    public String getFormDataEncoded() {
+        return formDataEncoded;
     }
 
-    public void setJson(String json) {
-        this.json = json;
+    public void setFormDataEncoded(String formDataEncoded) {
+        this.formDataEncoded = formDataEncoded;
+    }
+
+    public String getRaw() {
+        return raw;
+    }
+
+    public void setRaw(String raw) {
+        this.raw = raw;
+    }
+
+    public String getRawType() {
+        return rawType;
+    }
+
+    public void setRawType(String rawType) {
+        this.rawType = rawType;
+    }
+
+    public Byte getBodyType() {
+        return bodyType;
+    }
+
+    public void setBodyType(Byte bodyType) {
+        this.bodyType = bodyType;
     }
 
     public String getCreater() {
@@ -169,11 +164,71 @@ public class InterfaceCaseInfoVO implements Serializable {
         this.createdTime = createdTime;
     }
 
+    public Byte getSource() {
+        return source;
+    }
+
+    public void setSource(Byte source) {
+        this.source = source;
+    }
+
+    public String getImportNo() {
+        return importNo;
+    }
+
+    public void setImportNo(String importNo) {
+        this.importNo = importNo;
+    }
+
     public List<InterfaceAssertVO> getAsserts() {
         return asserts;
     }
 
     public void setAsserts(List<InterfaceAssertVO> asserts) {
         this.asserts = asserts;
+    }
+
+    public List<InterfaceProcessorDO> getPostProcessors() {
+        return postProcessors;
+    }
+
+    public void setPostProcessors(List<InterfaceProcessorDO> postProcessors) {
+        this.postProcessors = postProcessors;
+    }
+
+    public List<InterfacePreCaseVO> getPreCases() {
+        return preCases;
+    }
+
+    public void setPreCases(List<InterfacePreCaseVO> preCases) {
+        this.preCases = preCases;
+    }
+
+    @Override
+    public String toString() {
+        return "InterfaceCaseInfoVO{" +
+                "projectId=" + projectId +
+                ", moduleId=" + moduleId +
+                ", caseId=" + caseId +
+                ", url='" + url + '\'' +
+                ", method=" + method +
+                ", desc='" + desc + '\'' +
+                ", level=" + level +
+                ", doc='" + doc + '\'' +
+                ", headers='" + headers + '\'' +
+                ", params='" + params + '\'' +
+                ", formData='" + formData + '\'' +
+                ", formDataEncoded='" + formDataEncoded + '\'' +
+                ", raw='" + raw + '\'' +
+                ", rawType='" + rawType + '\'' +
+                ", bodyType=" + bodyType +
+                ", creater='" + creater + '\'' +
+                ", createdTime=" + createdTime +
+                ", source=" + source +
+                ", importNo='" + importNo + '\'' +
+                ", asserts=" + asserts +
+                ", postProcessors=" + postProcessors +
+                ", preCases=" + preCases +
+                '}';
     }
 }

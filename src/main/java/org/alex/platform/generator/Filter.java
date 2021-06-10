@@ -18,8 +18,7 @@ public class Filter {
     @Autowired
     DbService dbService;
 
-    public void valid4String(Boolean allowIllegal, Boolean allowEmpty, Integer minLen, Integer maxLen, Boolean allowNull) throws ValidException {
-        ValidUtil.notNUll(allowIllegal, "String field valid error, allowIllegal should not be null");
+    public void valid4String(Boolean allowEmpty, Integer minLen, Integer maxLen, Boolean allowNull) throws ValidException {
         ValidUtil.notNUll(allowEmpty, "String field valid error, allowEmpty should not be null");
         ValidUtil.notNUll(minLen, "String field valid error, minLen should not be null");
         ValidUtil.notNUll(maxLen, "String field valid error, maxLen should not be null");

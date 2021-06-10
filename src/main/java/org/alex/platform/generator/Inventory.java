@@ -34,7 +34,7 @@ public class Inventory {
                 Boolean allowEmpty = config.getBoolean("allowEmpty");
                 Integer minLen = config.getInteger("minLen");
                 Integer maxLen = config.getInteger("maxLen");
-                filter.valid4String(allowIllegal, allowEmpty, minLen, maxLen, allowNull);
+                filter.valid4String(allowEmpty, minLen, maxLen, allowNull);
                 return generator.genString(key, desc, allowIllegal, allowEmpty, minLen, maxLen, allowNull);
             case "number":
                 BigDecimal min = config.getBigDecimal("min");

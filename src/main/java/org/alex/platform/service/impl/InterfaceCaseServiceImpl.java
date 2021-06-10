@@ -8,6 +8,7 @@ import org.alex.platform.mapper.*;
 import org.alex.platform.pojo.*;
 import org.alex.platform.pojo.param.ExecuteInterfaceCaseParam;
 import org.alex.platform.service.*;
+import org.alex.platform.util.ValidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,13 +59,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         Integer moduleId = interfaceCaseDO.getModuleId();
         Integer projectId = interfaceCaseDO.getProjectId();
 
-        String data = interfaceCaseDO.getData();
-        String json = interfaceCaseDO.getJson();
-
-        //data json 只能任传其一
-        if (data != null && json != null) {
-            LOG.warn("新增接口测试用例，data/json只能任传其一");
-            throw new BusinessException("data/json只能任传其一");
+        Byte bodyType = interfaceCaseDO.getBodyType();
+        if (bodyType >= 3 && bodyType != 9) {
+            throw new BusinessException("bodyType参数错误");
         }
 
         ModuleDTO moduleDTO = new ModuleDTO();
@@ -94,6 +91,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         List<InterfacePreCaseDO> preCases = interfaceCaseDTO.getPreCases();
         if (!preCases.isEmpty()) {
             for (InterfacePreCaseDO interfacePreCaseDO : preCases) {
+                ValidUtil.notNUll(interfacePreCaseDO.getPreCaseId(), "前置用例编号不能为空");
                 if (interfacePreCaseDO.getPreCaseId().equals(caseId)) {
                     LOG.error("系统疑似受到攻击, 前置用例编号等于当前自增用例编号");
                     throw new BusinessException("参数非法");
@@ -136,6 +134,11 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             throw new BusinessException("参数错误，缺少caseId");
         }
 
+        Byte bodyType = interfaceCaseDTO.getBodyType();
+        if (bodyType >= 3 && bodyType != 9) {
+            throw new BusinessException("bodyType参数错误");
+        }
+
         Date updateTime = new Date();
         interfaceCaseDTO.setUpdateTime(updateTime);
         InterfaceCaseDO interfaceCaseDO = new InterfaceCaseDO();
@@ -149,18 +152,22 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         interfaceCaseDO.setDoc(interfaceCaseDTO.getDoc());
         interfaceCaseDO.setHeaders(interfaceCaseDTO.getHeaders());
         interfaceCaseDO.setParams(interfaceCaseDTO.getParams());
-        interfaceCaseDO.setData(interfaceCaseDTO.getData());
-        interfaceCaseDO.setJson(interfaceCaseDTO.getJson());
+        interfaceCaseDO.setFormData(interfaceCaseDTO.getFormData());
+        interfaceCaseDO.setFormDataEncoded(interfaceCaseDTO.getFormDataEncoded());
+        interfaceCaseDO.setRaw(interfaceCaseDTO.getRaw());
+        interfaceCaseDO.setRawType(interfaceCaseDTO.getRawType());
+        interfaceCaseDO.setBodyType(interfaceCaseDTO.getBodyType());
         interfaceCaseDO.setCreater(interfaceCaseDTO.getCreater());
         interfaceCaseDO.setUpdateTime(interfaceCaseDTO.getUpdateTime());
 
         String headers = interfaceCaseDO.getHeaders();
         String params = interfaceCaseDO.getParams();
-        String data = interfaceCaseDO.getData();
-        String json = interfaceCaseDO.getJson();
+        String formData = interfaceCaseDO.getFormData();
+        String formDataEncoded = interfaceCaseDO.getFormDataEncoded();
+        String raw = interfaceCaseDO.getRaw();
 
         // 编辑的时候如果注入依赖为接口依赖，并且依赖接口为当前接口，应该禁止，避免造成死循环
-        String checkStr = headers + " " + params + " " + data + " " + json + " ";
+        String checkStr = headers + " " + params + " " + formData + " " + formDataEncoded + " " + "" + raw;
         Pattern p = Pattern.compile("\\$\\{.+?}");
         Matcher matcher = p.matcher(checkStr);
         while (matcher.find()) {
@@ -238,6 +245,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         List<Integer> preIdList = interfacePreCaseService.findInterfacePreIdByParentId(interfaceCaseDTO.getCaseId());
         if (preCases != null) {
             for(InterfacePreCaseDO interfacePreCaseDO : preCases) {
+                ValidUtil.notNUll(interfacePreCaseDO.getPreCaseId(), "前置用例编号不能为空");
                 interfacePreCaseDO.setParentCaseId(interfaceCaseDTO.getCaseId());
                 // 1.修改已存在的
                 interfacePreCaseService.modifyInterfacePreCase(interfacePreCaseDO);

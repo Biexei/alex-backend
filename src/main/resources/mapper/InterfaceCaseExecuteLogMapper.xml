@@ -11,8 +11,7 @@
             <if test="caseMethod != null">`case_method`,</if>
             <if test="requestHeaders != null">`request_headers`,</if>
             <if test="requestParams != null">`request_params`,</if>
-            <if test="requestData != null">`request_data`,</if>
-            <if test="requestJson != null">`request_json`,</if>
+            <if test="requestBody != null">`request_body`,</if>
             <if test="responseCode != null">`response_code`,</if>
             <if test="responseHeaders != null">`response_headers`,</if>
             <if test="responseBody != null">`response_body`,</if>
@@ -28,9 +27,10 @@
             <if test="isFailedRetry != null">`is_failed_retry`,</if>
             <if test="rawRequestHeaders != null">`raw_request_headers`,</if>
             <if test="rawRequestParams != null">`raw_request_params`,</if>
-            <if test="rawRequestData != null">`raw_request_data`,</if>
-            <if test="rawRequestJson != null">`raw_request_json`,</if>
+            <if test="rawRequestBody != null">`raw_request_body`,</if>
             <if test="source != null">`source`,</if>
+            <if test="rawType != null">`raw_type`,</if>
+            <if test="bodyType != null">`body_type`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="caseId != null">#{caseId},</if>
@@ -38,8 +38,7 @@
             <if test="caseMethod != null">#{caseMethod},</if>
             <if test="requestHeaders != null">#{requestHeaders},</if>
             <if test="requestParams != null">#{requestParams},</if>
-            <if test="requestData != null">#{requestData},</if>
-            <if test="requestJson != null">#{requestJson},</if>
+            <if test="requestBody != null">#{requestBody},</if>
             <if test="responseCode != null">#{responseCode},</if>
             <if test="responseHeaders != null">#{responseHeaders},</if>
             <if test="responseBody != null">#{responseBody},</if>
@@ -55,9 +54,10 @@
             <if test="isFailedRetry != null">#{isFailedRetry},</if>
             <if test="rawRequestHeaders != null">#{rawRequestHeaders},</if>
             <if test="rawRequestParams != null">#{rawRequestParams},</if>
-            <if test="rawRequestData != null">#{rawRequestData},</if>
-            <if test="rawRequestJson != null">#{rawRequestJson},</if>
+            <if test="rawRequestBody != null">#{rawRequestBody},</if>
             <if test="source != null">#{source},</if>
+            <if test="rawType != null">#{rawType},</if>
+            <if test="bodyType != null">#{bodyType},</if>
         </trim>
     </insert>
     <select id="selectExecuteList" parameterType="org.alex.platform.pojo.InterfaceCaseExecuteLogListDTO"
@@ -109,12 +109,10 @@
         <result column="case_method" property="caseMethod"/>
         <result column="request_headers" property="requestHeaders"/>
         <result column="request_params" property="requestParams"/>
-        <result column="request_data" property="requestData"/>
-        <result column="request_json" property="requestJson"/>
+        <result column="request_body" property="requestBody"/>
         <result column="raw_request_headers" property="rawRequestHeaders"/>
         <result column="raw_request_params" property="rawRequestParams"/>
-        <result column="raw_request_data" property="rawRequestData"/>
-        <result column="raw_request_json" property="rawRequestJson"/>
+        <result column="raw_request_body" property="rawRequestBody"/>
         <result column="response_code" property="responseCode"/>
         <result column="response_headers" property="responseHeaders"/>
         <result column="response_body" property="responseBody"/>
@@ -129,18 +127,19 @@
         <result column="chain" property="chain"/>
         <result column="is_failed_retry" property="isFailedRetry"/>
         <result column="source" property="source"/>
+        <result column="raw_type" property="rawType"/>
+        <result column="body_type" property="bodyType"/>
         <collection property="assertList" resultMap="assertList" ofType="org.alex.platform.pojo.InterfaceAssertLogListVO"/>
     </resultMap>
 
     <select id="selectExecute" parameterType="Integer" resultMap="interfaceCaseExecuteVO">
-        select `elog`.`id`, `elog`.`case_id`, `elog`.`case_url`, `elog`.`case_method`,`elog`.`case_desc`, `elog`.`request_headers`, `elog`.`request_params`,
-        `elog`.`request_data`, `elog`.`request_json`, `elog`.`response_code`, `elog`.`response_headers`,`elog`.`source`,
+        select `elog`.`id`, `elog`.`case_id`, `elog`.`case_url`, `elog`.`case_method`,`elog`.`case_desc`,
+        `elog`.`request_headers`, `elog`.`request_params`,`elog`.`request_body`, `elog`.`response_code`, `elog`.`response_headers`,`elog`.`source`,
         `elog`.`response_body`, `elog`.`executer`, `elog`.`status`, `elog`.`created_time`, `elog`.`error_message`,
         `alog`.`assert_name`, `alog`.`type`, `alog`.`expression`, `alog`.`operator`, `alog`.`excepted_result`, `alog`.`order`,
-        `alog`.`actual_result`, `alog`.`status` as `assert_status`, `alog`.`error_message` as `assert_error_message` ,
+        `alog`.`actual_result`, `alog`.`status` as `assert_status`, `alog`.`error_message` as `assert_error_message` ,`alog`.`raw_excepted_result`,
         `elog`.`run_time`,`elog`.`suite_log_no`,`elog`.`suite_log_detail_no`,`elog`.`chain`,`elog`.`is_failed_retry`,
-        `elog`.`raw_request_headers`,`elog`.`raw_request_params`,`elog`.`raw_request_data`,`elog`.`raw_request_json`,
-        `alog`.`raw_excepted_result`
+        `elog`.`raw_request_headers`,`elog`.`raw_request_params`,`elog`.`raw_request_body`,`elog`.`raw_type`, `elog`.`body_type`
         from `t_interface_case_execute_log` as `elog`
         left join `t_interface_assert_log` as `alog` on `elog`.id = `alog`.`execute_log_id`
         where `elog`.`id` = #{executeId}
@@ -155,8 +154,7 @@
             <if test="caseMethod != null">`case_method` = #{caseMethod},</if>
             <if test="requestHeaders != null">`request_headers` = #{requestHeaders},</if>
             <if test="requestParams != null">`request_params` = #{requestParams},</if>
-            <if test="requestData != null">`request_data` = #{requestData},</if>
-            <if test="requestJson != null">`request_json` = #{requestJson},</if>
+            <if test="requestBody != null">`request_body` = #{requestBody},</if>
             <if test="responseCode != null">`response_code` = #{responseCode},</if>
             <if test="responseHeaders != null">`response_headers` = #{responseHeaders},</if>
             <if test="responseBody != null">`response_body` = #{responseBody},</if>
@@ -171,9 +169,10 @@
             <if test="isFailedRetry != null">`is_failed_retry` = #{isFailedRetry},</if>
             <if test="rawRequestHeaders != null">`raw_request_headers` = #{rawRequestHeaders},</if>
             <if test="rawRequestParams != null">`raw_request_params` = #{rawRequestParams},</if>
-            <if test="rawRequestData != null">`raw_request_data` = #{rawRequestData},</if>
-            <if test="rawRequestJson != null">`raw_request_json` = #{rawRequestJson},</if>
+            <if test="rawRequestBody != null">`raw_request_body` = #{rawRequestBody},</if>
             <if test="source != null">`source` = #{source},</if>
+            <if test="rawType != null">`raw_type` = #{rawType},</if>
+            <if test="bodyType != null">`body_type` = #{bodyType},</if>
         </set>
         where `id` = #{id}
     </update>

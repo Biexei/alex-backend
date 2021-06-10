@@ -20,6 +20,8 @@ import org.alex.platform.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
@@ -120,14 +122,28 @@ public class ExecuteHandler implements Node {
             url = env.domain(projectVO, runDev) + interfaceCaseInfoVO.getUrl();
         }
         String desc = interfaceCaseInfoVO.getDesc();
+
         String headers = interfaceCaseInfoVO.getHeaders();
         String params = interfaceCaseInfoVO.getParams();
-        String data = interfaceCaseInfoVO.getData();
-        String json = interfaceCaseInfoVO.getJson();
+        String formData = interfaceCaseInfoVO.getFormData();
+        String formDataEncoded = interfaceCaseInfoVO.getFormDataEncoded();
+        String raw = interfaceCaseInfoVO.getRaw();
+        String rawType = interfaceCaseInfoVO.getRawType();
+        Byte bodyType = interfaceCaseInfoVO.getBodyType();
+
         String rawHeaders = headers;
         String rawParams = params;
-        String rawData = data;
-        String rawJson = json;
+        String rawBody;
+        String requestBody = null; // 记录请求日志body字段
+        if (bodyType == 0) { //form-data
+            rawBody = formData;
+        } else if (bodyType == 1) { //x-www-form-encoded
+            rawBody = formDataEncoded;
+        } else if (bodyType == 2) { //raw
+            rawBody = raw;
+        } else { //none
+            rawBody = null;
+        }
         Byte method = interfaceCaseInfoVO.getMethod();
         List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
         LOG.info("1.获取case详情，caseId={}，用例详情={}", interfaceCaseId, interfaceCaseInfoVO);
@@ -167,7 +183,8 @@ public class ExecuteHandler implements Node {
         ResponseEntity responseEntity = null;
         HashMap headersMap = null;
         HashMap paramsMap = null;
-        HashMap dataMap = null;
+        HashMap formDataEncodedMap = null;
+        HashMap formDataMap = null;
         try {
             // 清洗
             if (null != headers) {
@@ -180,15 +197,23 @@ public class ExecuteHandler implements Node {
                 LOG.info("清洗params，清洗前的内容={}", rawParams);
                 LOG.info("清洗params，清洗后的内容={}", params);
             }
-            if (null != data) {
-                data = parser.parseDependency(data, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
-                LOG.info("清洗data，清洗前的内容={}", rawData);
-                LOG.info("清洗data，清洗后的内容={}", data);
-            }
-            if (null != json) {
-                json = parser.parseDependency(json, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
-                LOG.info("清洗json，清洗前的内容={}", rawJson);
-                LOG.info("清洗json，清洗后的内容={}", json);
+
+            if (bodyType == 0) { //form-data
+                formData = parser.parseDependency(formData, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
+                LOG.info("清洗body，form-data，清洗前的内容={}", rawBody);
+                LOG.info("清洗body，form-data，清洗后的内容={}", formData);
+            } else if (bodyType == 1) { //x-www-form-encoded
+                formDataEncoded = parser.parseDependency(formDataEncoded, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
+                LOG.info("清洗body，x-www-form-encoded，清洗前的内容={}", rawBody);
+                LOG.info("清洗body，x-www-form-encoded，清洗后的内容={}", formDataEncoded);
+            } else if (bodyType == 2) { //raw
+                raw = parser.parseDependency(raw, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
+                LOG.info("清洗body，raw，清洗前的内容={}", rawBody);
+                LOG.info("清洗body，raw，清洗后的内容={}", raw);
+            } else if (bodyType == 9) { //none
+                LOG.info("body type为none，不清洗");
+            } else {
+                throw new BusinessException("bodyType参数错误");
             }
 
             headersMap = JSONObject.parseObject(headers, HashMap.class);
@@ -207,40 +232,64 @@ public class ExecuteHandler implements Node {
                 }
                 paramsMap = globalParams;
             }
-            dataMap = JSONObject.parseObject(data, HashMap.class);
-            // 合并公共data
-            if (globalData != null) {
-                if (dataMap == null && json == null) {
-                    dataMap = globalData;
-                } else if (dataMap != null){
-                    globalData.putAll(dataMap);
-                    dataMap = globalData;
+            // 合并公共formDataEncoded
+            if (bodyType == 0) {
+                formDataMap = JSONObject.parseObject(formData, HashMap.class);
+            } else if (bodyType == 1) { //x-www-form-encoded
+                formDataEncodedMap = JSONObject.parseObject(formDataEncoded, HashMap.class);
+                if (globalData != null) {
+                    if (formDataEncodedMap != null) {
+                        globalParams.putAll(formDataEncodedMap);
+                    }
+                    formDataEncodedMap = globalData;
                 }
             }
-            if (method == 0) { //get
-                long startTime = System.currentTimeMillis();
-                responseEntity = Request.get(url, headersMap, paramsMap);
-                runTime = System.currentTimeMillis() - startTime;
-            } else if (method == 1) { //post
-                long startTime = System.currentTimeMillis();
-                responseEntity = Request.post(url, headersMap, paramsMap, dataMap, json);
-                runTime = System.currentTimeMillis() - startTime;
-            } else if (method == 2) { //patch
-                long startTime = System.currentTimeMillis();
-                responseEntity = Request.patch(url, headersMap, paramsMap, dataMap, json);
-                runTime = System.currentTimeMillis() - startTime;
-            } else if (method == 3) { //put
-                long startTime = System.currentTimeMillis();
-                responseEntity = Request.put(url, headersMap, paramsMap, dataMap, json);
-                runTime = System.currentTimeMillis() - startTime;
-            } else if (method == 4) { //delete
-                long startTime = System.currentTimeMillis();
-                responseEntity = Request.delete(url, headersMap, paramsMap, dataMap, json);
-                runTime = System.currentTimeMillis() - startTime;
+
+            // 确定请求方式
+            HttpMethod methodEnum;
+            if (method == 0) {
+                methodEnum = HttpMethod.GET;
+            } else if (method == 1) {
+                methodEnum = HttpMethod.POST;
+            } else if (method == 2) {
+                methodEnum = HttpMethod.PATCH;
+            } else if (method == 3) {
+                methodEnum = HttpMethod.PUT;
+            } else if (method == 4) {
+                methodEnum = HttpMethod.DELETE;
             } else {
                 LOG.error("不支持的请求方式");
                 throw new BusinessException("不支持的请求方式");
             }
+
+            // 确定请求bodyType
+            long startTime = System.currentTimeMillis();
+            if (bodyType == 0) { //form-data
+                requestBody = JSON.toJSONString(formDataMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(formDataMap, SerializerFeature.PrettyFormat);
+                responseEntity = Request.requestPro(methodEnum, url, headersMap, paramsMap, formDataMap, MediaType.MULTIPART_FORM_DATA);
+            } else if (bodyType == 1) { //x-www-form-encoded
+                requestBody = JSON.toJSONString(formDataEncodedMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(formDataEncodedMap, SerializerFeature.PrettyFormat);
+                responseEntity = Request.requestPro(methodEnum, url, headersMap, paramsMap, formDataEncodedMap, MediaType.APPLICATION_FORM_URLENCODED);
+            } else if (bodyType == 2) { //raw
+                requestBody = raw;
+                if ("Text".equalsIgnoreCase(rawType)) {
+                    responseEntity = Request.requestPro(methodEnum, url, headersMap, paramsMap, raw, MediaType.TEXT_PLAIN);
+                } else if ("JSON".equalsIgnoreCase(rawType)) {
+                    responseEntity = Request.requestPro(methodEnum, url, headersMap, paramsMap, raw, MediaType.APPLICATION_JSON);
+                } else if ("HTML".equalsIgnoreCase(rawType)) {
+                    responseEntity = Request.requestPro(methodEnum, url, headersMap, paramsMap, raw, MediaType.TEXT_HTML);
+                } else if ("XML".equalsIgnoreCase(rawType)) {
+                    responseEntity = Request.requestPro(methodEnum, url, headersMap, paramsMap, raw, MediaType.APPLICATION_XML);
+                } else {
+                    throw new BusinessException("rawType参数错误");
+                }
+            } else if (bodyType == 9) { //none
+                requestBody = null;
+                responseEntity = Request.requestPro(methodEnum, url, headersMap, paramsMap, null);
+            } else {
+                throw new BusinessException("bodyType参数错误");
+            }
+            runTime = System.currentTimeMillis() - startTime;
         } catch (ParseException | BusinessException | SqlException e) {
             // 自定义异常
             caseStatus = 2;
@@ -272,12 +321,10 @@ public class ExecuteHandler implements Node {
             executeLogDO.setCaseMethod(method);
             executeLogDO.setRequestHeaders(JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat));
             executeLogDO.setRequestParams(JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat));
-            executeLogDO.setRequestData(JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat));
-            executeLogDO.setRequestJson(json);
+            executeLogDO.setRequestBody(requestBody);
             executeLogDO.setRawRequestHeaders(rawHeaders);
             executeLogDO.setRawRequestParams(rawParams);
-            executeLogDO.setRawRequestData(rawData);
-            executeLogDO.setRawRequestJson(rawJson);
+            executeLogDO.setRawRequestBody(rawBody);
             executeLogDO.setResponseCode(null);
             executeLogDO.setResponseHeaders(null);
             executeLogDO.setResponseBody(null);
@@ -292,6 +339,8 @@ public class ExecuteHandler implements Node {
             executeLogDO.setSuiteLogDetailNo(suiteLogDetailNo);
             executeLogDO.setIsFailedRetry(isFailedRetry);
             executeLogDO.setSource(source);
+            executeLogDO.setRawType(rawType);
+            executeLogDO.setBodyType(bodyType);
             InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
             // 返回自增id
             Integer executeLogId = executedLogDO.getId();
@@ -322,12 +371,10 @@ public class ExecuteHandler implements Node {
             executeLogDO.setCaseMethod(method);
             executeLogDO.setRequestHeaders(JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(headersMap, SerializerFeature.PrettyFormat));
             executeLogDO.setRequestParams(JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(paramsMap, SerializerFeature.PrettyFormat));
-            executeLogDO.setRequestData(JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat).equals("null") ? "" : JSON.toJSONString(dataMap, SerializerFeature.PrettyFormat));
-            executeLogDO.setRequestJson(json);
+            executeLogDO.setRequestBody(requestBody);
             executeLogDO.setRawRequestHeaders(rawHeaders);
             executeLogDO.setRawRequestParams(rawParams);
-            executeLogDO.setRawRequestData(rawData);
-            executeLogDO.setRawRequestJson(rawJson);
+            executeLogDO.setRawRequestBody(rawBody);
             executeLogDO.setResponseCode(responseCode);
             executeLogDO.setResponseHeaders(responseHeaders);
             executeLogDO.setResponseBody(responseBody);
@@ -340,6 +387,8 @@ public class ExecuteHandler implements Node {
             executeLogDO.setSuiteLogDetailNo(suiteLogDetailNo);
             executeLogDO.setIsFailedRetry(isFailedRetry);
             executeLogDO.setSource(source);
+            executeLogDO.setRawType(rawType);
+            executeLogDO.setBodyType(bodyType);
             InterfaceCaseExecuteLogDO executedLogDO = executeLogService.saveExecuteLog(executeLogDO);
             // 4.保存断言日志表，获取运行日志自增id然后在断言日志表中写入断言信息，断言日志都成功后再将日志修改状态为0成功
             // 日志自增id
@@ -374,23 +423,22 @@ public class ExecuteHandler implements Node {
                             try {
                                 switch (type) {
                                     case 3:
-                                        s = ParseUtil.parseHttpHeader(responseEntity, expression);
-                                        // 2021.03.08 将header调整为用key取值而不是jsonPath
-                                        //s = ParseUtil.parseJson(headers, expression);
+                                        s = ParseUtil.parseJson(headers, expression);
                                         break;
                                     case 4:
                                         s = ParseUtil.parseJson(params, expression);
                                         break;
                                     case 5:
-                                        s = ParseUtil.parseJson(data, expression);
+                                        s = ParseUtil.parseJson(formDataEncoded, expression);
                                         break;
                                     case 6:
-                                        s = ParseUtil.parseJson(json, expression);
+                                        s = ParseUtil.parseJson(raw, expression);
                                         break;
                                 }
                             } catch (ParseException e) {
                                 isThrowException = true;
                                 exceptionMsg = e.getMessage();
+                                errorMsg = e.getMessage();
                             }
                             ArrayList jsonPathArray = JSONObject.parseObject(s, ArrayList.class);
                             if (jsonPathArray.isEmpty()) {
@@ -402,7 +450,7 @@ public class ExecuteHandler implements Node {
                                 } else {
                                     status = 1;
                                     LOG.warn("jsonPath提取内容为空，jsonPath={}", expression);
-                                    errorMsg = "处理器" + name + "提取类型为空，提取表达式为：" + expression;
+                                    errorMsg = "用例执行失败，" + "处理器" + name + "提取结果为空，提取表达式为：" + expression + "，用例编号为：" + interfaceCaseId;
                                 }
                             } else {
                                 isDefaultValue = 1;
@@ -457,6 +505,7 @@ public class ExecuteHandler implements Node {
                                     afterPostProcessorLogDo.setErrorMessage(errorMsg);
                                     executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
                                     LOG.info("处理器运行错误，主动将用例执行状态置为错误");
+                                    throw new BusinessException("请求参数缓存出错，" + errorMsg);
                                 } else {
                                     if (casePreNo != null) { //如果为前置用例，仅写入前置用例域，
                                         redisUtil.hashPut(casePreNo, name, value);
@@ -493,6 +542,7 @@ public class ExecuteHandler implements Node {
                                 afterPostProcessorLogDo.setErrorMessage(exceptionMsg);
                                 executeLogService.modifyExecuteLog(afterPostProcessorLogDo);
                                 LOG.info("处理器解析出错，主动将用例执行状态置为错误");
+                                throw new BusinessException("请求参数缓存出错，" + errorMsg);
                             }
                         }
                     }
@@ -564,8 +614,8 @@ public class ExecuteHandler implements Node {
                         LOG.info("断言实际结果={}, 类型={}, 响应Body={}, 提取表达式={}", actualResult, "html", responseBody, expression);
                         resultList = JSONObject.parseObject(actualResult, ArrayList.class);
                     } else if (type == 2) { // header
-                        actualResult = ParseUtil.parseHttpHeader(responseEntity, expression);
-                        LOG.info("断言实际结果={}, 类型={}, 响应header={}, 提取表达式={}", actualResult, "header", JSON.toJSONString(responseEntity.getHeaders()), expression);
+                        actualResult = ParseUtil.parseJson(Request.headers(responseEntity), expression);
+                        LOG.info("断言实际结果={}, 类型={}, 响应header={}, 提取表达式={}", actualResult, "header", Request.headers(responseEntity), expression);
                         resultList = JSONObject.parseObject(actualResult, ArrayList.class);
                     } else if (type == 3) { // responseCode
                         actualResult = String.valueOf(ParseUtil.parseHttpCode(responseEntity));
@@ -583,7 +633,15 @@ public class ExecuteHandler implements Node {
                         if (resultList.size() == 1) {
                             Object o = resultList.get(0);
                             actualResult = o == null ? null : o.toString();
-                            //actualResult = resultList.get(0).toString();
+                            if (type == 2) {
+                                JSONArray var1 = JSON.parseArray(actualResult);
+                                if (var1.size() == 1) {
+                                    Object var2 = var1.get(0);
+                                    actualResult = var2 == null ? null : var2.toString();
+                                } else {
+                                    actualResult = JSON.toJSONString(var1);
+                                }
+                            }
                         } else {
                             actualResult = JSON.toJSONString(resultList);
                         }
@@ -675,7 +733,7 @@ public class ExecuteHandler implements Node {
                                 } else {
                                     status = 1;
                                     LOG.warn("response-json提取内容为空，jsonPath={}", expression);
-                                    errorMsg = "处理器" + name + "提取类型为空，提取表达式为：" + expression;
+                                    errorMsg = "处理器" + name + "提取结果为空，提取表达式为：" + expression;
                                 }
                             } else {
                                 isDefaultValue = 1;
@@ -705,7 +763,7 @@ public class ExecuteHandler implements Node {
                                 } else {
                                     status = 1;
                                     LOG.warn("response-xml提取内容为空，xpath={}", expression);
-                                    errorMsg = "处理器" + name + "提取类型为空，提取表达式为：" + expression;
+                                    errorMsg = "处理器" + name + "提取结果为空，提取表达式为：" + expression;
                                 }
                             } else {
                                 isDefaultValue = 1;
@@ -719,7 +777,14 @@ public class ExecuteHandler implements Node {
                                 LOG.info("提取类型={}，提取表达式={}，写入缓存内容={}", "response-xml", expression, value);
                             }
                         } else if (type == 2) { //header
-                            JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders, HashMap.class).get(expression);
+                            String s = "[]";
+                            try {
+                                s = ParseUtil.parseJson(responseHeaders, expression);
+                            } catch (ParseException e) {
+                                isThrowException = true;
+                                exceptionMsg = e.getMessage();
+                            }
+                            ArrayList headerArray = JSONObject.parseObject(s, ArrayList.class);
                             if (headerArray == null || headerArray.isEmpty()) {
                                 if (haveDefaultValue == 0) {
                                     isDefaultValue = 0;
@@ -728,14 +793,20 @@ public class ExecuteHandler implements Node {
                                 } else {
                                     status = 1;
                                     LOG.warn("header提取内容为空，header={}", expression);
-                                    errorMsg = "处理器" + name + "提取类型为空，提取表达式为：" + expression;
+                                    errorMsg = "处理器" + name + "提取结果为空，提取表达式为：" + expression;
                                 }
                             } else {
                                 isDefaultValue = 1;
                                 if (headerArray.size() == 1) {
                                     Object o = headerArray.get(0);
                                     value = o == null ? null : o.toString();
-                                    //value = headerArray.get(0).toString();
+                                    JSONArray var1 = JSON.parseArray(value);
+                                    if (var1.size() == 1) {
+                                        Object var2 = var1.get(0);
+                                        value = var2 == null ? null : var2.toString();
+                                    } else {
+                                        value = JSON.toJSONString(var1);
+                                    }
                                 } else {
                                     value = JSON.toJSONString(headerArray);
                                 }

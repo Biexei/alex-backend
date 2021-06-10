@@ -76,11 +76,13 @@ public class Parser implements Node {
     public String parseDependency(String s, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo,
                                 HashMap globalHeaders, HashMap globalParams, HashMap globalData, String casePreNo)
             throws ParseException, BusinessException, SqlException {
-
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
         // 解析处理器
         s = parseProcessor(s, suiteLogDetailNo, casePreNo, chainNo);
 
-        LOG.info("--------------------------------------开始字符串解析流程--------------------------------------");
+        LOG.info("--------------------------------------开始字符ParseUtil串解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
         Byte runEnv;
         if (suiteId == null) {
@@ -456,8 +458,7 @@ public class Parser implements Node {
                             }
                             LOG.info("xml提取值并替换后的结果={}", s);
                         } else if (contentType == 2) { // headers
-                            JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders,
-                                    HashMap.class).get(expression);
+                            ArrayList headerArray = JSONObject.parseObject(ParseUtil.parseJson(responseHeaders, expression), ArrayList.class);
                             if (headerArray == null || headerArray.isEmpty()) {
                                 LOG.warn("未找到请求头，header={}", expression);
                                 throw new ParseException("未找到请求头:" + expression);
@@ -503,6 +504,9 @@ public class Parser implements Node {
     public String parseProcessor(String s, String suiteLogDetailNo, String casePreNo, String chainNo) throws ParseException {
         LOG.info("--------------------------------------开始处理器提取解析流程--------------------------------------");
         LOG.info("--------------------------------------待解析字符串原文={}", s);
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
         Pattern pattern = Pattern.compile("#\\{.+?}");
         Matcher matcher = pattern.matcher(s);
         while (matcher.find()) {

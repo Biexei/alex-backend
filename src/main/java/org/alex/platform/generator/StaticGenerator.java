@@ -85,13 +85,14 @@ public class StaticGenerator implements Generator {
         //E.恰好为最小长度-1
         result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4LessLength(key, desc, minLen, 1), RandomUtil.randomLegalStringByLength(minLen - 1), key));
 
-        //4.非法字符
-        if (allowIllegal) {
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4IllegalLength(key, desc, minLen, maxLen), RandomUtil.randomIllegalString(minLen, maxLen), key));
-        } else {
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4IllegalLength(key, desc, minLen, maxLen), RandomUtil.randomIllegalString(minLen, maxLen), key));
+        if (allowIllegal != null) {
+            //4.非法字符
+            if (allowIllegal) {
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4IllegalLength(key, desc, minLen, maxLen), RandomUtil.randomIllegalString(minLen, maxLen), key));
+            } else {
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4IllegalLength(key, desc, minLen, maxLen), RandomUtil.randomIllegalString(minLen, maxLen), key));
+            }
         }
-
         return result;
     }
 

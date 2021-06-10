@@ -240,6 +240,122 @@ public class Request {
     }
 
     /**
+     * @param httpMethod 请求方式
+     * @param url 请求地址
+     * @param headers 请求头
+     * @param params 请求参数
+     * @param body 请求body
+     * @param mediaType 请求body类型
+     * @return 响应实体
+     * @throws BusinessException 业务异常
+     */
+    public static ResponseEntity requestPro(HttpMethod httpMethod, String url, HashMap<String, String> headers,
+                                            HashMap<String, String> params, String body, MediaType mediaType)
+            throws BusinessException {
+
+        RestTemplate restTemplate = Request.getInstance();
+        HttpHeaders httpHeaders = getDefaultHeader();
+
+        if (StringUtils.isEmpty(url)) {
+            throw new BusinessException("url error");
+        }
+
+        HashMap<String, Object> urlParamsWrapper = urlParamsWrapper(url, params);
+        url = (String) urlParamsWrapper.get("url");
+        params = (HashMap<String, String>) urlParamsWrapper.get("params");
+
+        if (params != null && !params.isEmpty()) {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(hashMap2LinkedMultiValueMap(params));
+            url = builder.toUriString();
+        }
+        httpHeaders.setContentType(mediaType);
+        if (headers != null) {
+            httpHeaders.setAll(headers);
+        }
+        if (body != null && !body.isEmpty()) {
+            return restTemplate.exchange(url, httpMethod, new HttpEntity(body, httpHeaders), String.class);
+        } else {
+            return restTemplate.exchange(url, httpMethod, new HttpEntity(httpHeaders), String.class);
+        }
+    }
+
+    /**
+     * @param httpMethod 请求方式
+     * @param url 请求地址
+     * @param headers 请求头
+     * @param params 请求参数
+     * @param body 请求body
+     * @param mediaType 请求body类型
+     * @return 响应实体
+     * @throws BusinessException 业务异常
+     */
+    public static ResponseEntity requestPro(HttpMethod httpMethod, String url, HashMap<String, String> headers,
+                                            HashMap<String, String> params, HashMap<String, String> body, MediaType mediaType)
+            throws BusinessException {
+
+        RestTemplate restTemplate = Request.getInstance();
+        HttpHeaders httpHeaders = getDefaultHeader();
+
+        if (StringUtils.isEmpty(url)) {
+            throw new BusinessException("url error");
+        }
+
+        HashMap<String, Object> urlParamsWrapper = urlParamsWrapper(url, params);
+        url = (String) urlParamsWrapper.get("url");
+        params = (HashMap<String, String>) urlParamsWrapper.get("params");
+
+        if (params != null && !params.isEmpty()) {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(hashMap2LinkedMultiValueMap(params));
+            url = builder.toUriString();
+        }
+        httpHeaders.setContentType(mediaType);
+        if (headers != null) {
+            httpHeaders.setAll(headers);
+        }
+        if (body != null && !body.isEmpty()) {
+            LinkedMultiValueMap<String, String> form = hashMap2LinkedMultiValueMap(body);
+            return restTemplate.exchange(url, httpMethod, new HttpEntity(form, httpHeaders), String.class);
+        } else {
+            return restTemplate.exchange(url, httpMethod, new HttpEntity(httpHeaders), String.class);
+        }
+    }
+
+    /**
+     * @param httpMethod 请求方式
+     * @param url 请求地址
+     * @param headers 请求头
+     * @param params 请求参数
+     * @param mediaType 请求body类型
+     * @return 响应实体
+     * @throws BusinessException 业务异常
+     */
+    public static ResponseEntity requestPro(HttpMethod httpMethod, String url, HashMap<String, String> headers,
+                                            HashMap<String, String> params, MediaType mediaType)
+            throws BusinessException {
+
+        RestTemplate restTemplate = Request.getInstance();
+        HttpHeaders httpHeaders = getDefaultHeader();
+
+        if (StringUtils.isEmpty(url)) {
+            throw new BusinessException("url error");
+        }
+
+        HashMap<String, Object> urlParamsWrapper = urlParamsWrapper(url, params);
+        url = (String) urlParamsWrapper.get("url");
+        params = (HashMap<String, String>) urlParamsWrapper.get("params");
+
+        if (params != null && !params.isEmpty()) {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(hashMap2LinkedMultiValueMap(params));
+            url = builder.toUriString();
+        }
+        httpHeaders.setContentType(mediaType);
+        if (headers != null) {
+            httpHeaders.setAll(headers);
+        }
+        return restTemplate.exchange(url, httpMethod, new HttpEntity(httpHeaders), String.class);
+    }
+
+    /**
      * 解析url参数
      * @param url url
      * @param params params

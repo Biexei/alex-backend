@@ -88,13 +88,14 @@ public class DynamicGenerator implements Generator{
         result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4LessLength(key, desc, minLen, 1), randomMinSubOne, key));
 
         //4.非法字符
-        String randomIllegalString = this.function("randomIllegal", minLen, maxLen);
-        if (allowIllegal) {
-            result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4IllegalLength(key, desc, minLen, maxLen), randomIllegalString, key));
-        } else {
-            result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4IllegalLength(key, desc, minLen, maxLen), randomIllegalString, key));
+        if (allowIllegal != null) {
+            String randomIllegalString = this.function("randomIllegal", minLen, maxLen);
+            if (allowIllegal) {
+                result.add(model(CaseType.VALID_EQUIVALENCE_CLASS, description.desc4IllegalLength(key, desc, minLen, maxLen), randomIllegalString, key));
+            } else {
+                result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4IllegalLength(key, desc, minLen, maxLen), randomIllegalString, key));
+            }
         }
-
         return result;
     }
 
