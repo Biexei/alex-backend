@@ -21,42 +21,42 @@ public class Env {
     private static final Logger LOG = LoggerFactory.getLogger(Env.class);
 
     public String domain(Integer projectId, Byte runEnv) throws BusinessException {
-        String domain;
         ProjectVO projectVO = projectService.findProjectById(projectId);
-        if (runEnv == 0) {
-            domain = projectVO.getDevDomain();
-        } else if (runEnv == 1) {
-            domain = projectVO.getTestDomain();
-        } else if (runEnv == 2) {
-            domain = projectVO.getStgDomain();
-        } else if (runEnv == 3) {
-            domain = projectVO.getProdDomain();
-        } else if (runEnv == 4) {
-            domain = projectVO.getDomain();
-        } else {
-            LOG.error("运行环境错误，invalid runDev={}", runEnv);
-            throw new BusinessException("运行环境错误");
-        }
-        return domain;
+        return domain(projectVO, runEnv);
     }
 
     public String domain(ProjectVO projectVO, Byte runEnv) throws BusinessException {
-        String domain;
+        String host;
+        String protocol;
+        Integer port;
         if (runEnv == 0) {
-            domain = projectVO.getDevDomain();
+            host = projectVO.getDevDomain();
+            protocol = projectVO.getDevProtocol();
+            port = projectVO.getDevPort();
         } else if (runEnv == 1) {
-            domain = projectVO.getTestDomain();
+            host = projectVO.getTestDomain();
+            protocol = projectVO.getTestProtocol();
+            port = projectVO.getTestPort();
         } else if (runEnv == 2) {
-            domain = projectVO.getStgDomain();
+            host = projectVO.getStgDomain();
+            protocol = projectVO.getStgProtocol();
+            port = projectVO.getStgPort();
         } else if (runEnv == 3) {
-            domain = projectVO.getProdDomain();
+            host = projectVO.getProdDomain();
+            protocol = projectVO.getProdProtocol();
+            port = projectVO.getProdPort();
         } else if (runEnv == 4) {
-            domain = projectVO.getDomain();
+            host = projectVO.getDomain();
+            protocol = projectVO.getProtocol();
+            port = projectVO.getPort();
         } else {
             LOG.error("运行环境错误，invalid runDev={}", runEnv);
             throw new BusinessException("运行环境错误");
         }
-        return domain;
+        if (port != null) {
+            return protocol + "://" + host + ":" + port;
+        }
+        return protocol + "://" + host;
     }
 
     /**
@@ -68,43 +68,7 @@ public class Env {
      */
     public DbConnection datasource(Integer dbId, Byte runEnv) throws BusinessException {
         DbVO dbVO = dbService.findDbById(dbId);
-        // 0启动 1禁用
-        int status = dbVO.getStatus();
-        if (status == 1) {
-            LOG.warn("数据源已被禁用，dbName={}", dbVO.getName());
-            throw new BusinessException("数据源已被禁用");
-        }
-        String url;
-        String username;
-        String password;
-        if (runEnv == 4) {
-            url = dbVO.getUrl();
-            username = dbVO.getUsername();
-            password = dbVO.getPassword();
-        } else if (runEnv == 0) {
-            url = dbVO.getDevUrl();
-            username = dbVO.getDevUsername();
-            password = dbVO.getDevPassword();
-        } else if (runEnv == 1) {
-            url = dbVO.getTestUrl();
-            username = dbVO.getTestUsername();
-            password = dbVO.getTestPassword();
-        } else if (runEnv == 2) {
-            url = dbVO.getStgUrl();
-            username = dbVO.getStgUsername();
-            password = dbVO.getStgPassword();
-        } else if (runEnv == 3) {
-            url = dbVO.getProdUrl();
-            username = dbVO.getProdUsername();
-            password = dbVO.getProdPassword();
-        } else {
-            throw new BusinessException("数据源确定运行环境时出错");
-        }
-        DbConnection connection = new DbConnection();
-        connection.setUrl(url);
-        connection.setUsername(username);
-        connection.setPassword(password);
-        return connection;
+        return datasource(dbVO, runEnv);
     }
 
     /**

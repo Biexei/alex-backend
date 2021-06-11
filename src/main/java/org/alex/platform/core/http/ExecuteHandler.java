@@ -110,7 +110,7 @@ public class ExecuteHandler implements Node {
         String desc = interfaceCaseInfoVO.getDesc();
         String url;
         if (suiteId == null) { // 未指定suiteId进入调试模式,使用domain
-            url = projectVO.getDomain() + interfaceCaseInfoVO.getUrl();
+            url = env.domain(projectVO, (byte)4) + interfaceCaseInfoVO.getUrl();
         } else { // 指定suiteId则获取suite运行环境
             // 根据suiteId获取运行环境
             InterfaceCaseSuiteVO suiteVO = ifSuiteService.findInterfaceCaseSuiteById(suiteId);

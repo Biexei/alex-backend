@@ -19,7 +19,7 @@ TRUNCATE t_mock_hit_policy;
 TRUNCATE t_mock_sever;
 
 TRUNCATE t_project;
-INSERT INTO `platform`.`t_project` (`project_id`, `name`, `desc`, `domain`, `created_time`, `update_time`, `dev_domain`, `test_domain`, `stg_domain`, `prod_domain`) VALUES ('1', 'Alex', '', 'http://127.0.0.1:7777', NULL, NULL, 'http://127.0.0.1:7777', 'http://127.0.0.1:7777', 'http://127.0.0.1:7777', 'http://127.0.0.1:7777');
+INSERT INTO `platform`.`t_project` (`project_id`, `name`, `desc`, `protocol`, `port`, `domain`, `dev_protocol`, `dev_port`, `dev_domain`, `test_protocol`, `test_port`, `test_domain`, `stg_protocol`, `stg_port`, `stg_domain`, `prod_protocol`, `prod_port`, `prod_domain`, `created_time`, `update_time`) VALUES ('1', 'Alex', '', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', NULL, NULL);
 TRUNCATE t_module;
 INSERT INTO `platform`.`t_module` (`project_id`, `module_id`, `name`, `desc`, `created_time`, `update_time`) VALUES ('1', '1', '用户登录', NULL, '2021-06-09 12:41:16', '2021-06-09 12:41:16');
 

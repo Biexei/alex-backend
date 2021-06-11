@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-06-10 16:54:56
+Date: 2021-06-11 16:57:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -851,13 +851,23 @@ CREATE TABLE `t_project` (
   `project_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '项目名称',
   `desc` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '项目描述',
+  `protocol` varchar(10) DEFAULT NULL,
+  `port` int DEFAULT NULL,
   `domain` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '项目地址',
+  `dev_protocol` varchar(10) DEFAULT NULL,
+  `dev_port` int DEFAULT NULL,
+  `dev_domain` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '开发环境域名',
+  `test_protocol` varchar(10) DEFAULT NULL,
+  `test_port` int DEFAULT NULL,
+  `test_domain` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '测试环境域名',
+  `stg_protocol` varchar(10) DEFAULT NULL,
+  `stg_port` int DEFAULT NULL,
+  `stg_domain` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '预上线环境域名',
+  `prod_protocol` varchar(10) DEFAULT NULL,
+  `prod_port` int DEFAULT NULL,
+  `prod_domain` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '正式环境域名',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `dev_domain` varchar(30) DEFAULT NULL COMMENT '开发环境域名',
-  `test_domain` varchar(30) DEFAULT NULL COMMENT '测试环境域名',
-  `stg_domain` varchar(30) DEFAULT NULL COMMENT '预上线环境域名',
-  `prod_domain` varchar(30) DEFAULT NULL COMMENT '正式环境域名',
   PRIMARY KEY (`project_id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -865,7 +875,7 @@ CREATE TABLE `t_project` (
 -- ----------------------------
 -- Records of t_project
 -- ----------------------------
-INSERT INTO `t_project` VALUES ('1', 'Alex', '', 'http://127.0.0.1:7777', null, null, 'http://127.0.0.1:7777', 'http://127.0.0.1:7777', 'http://127.0.0.1:7777', 'http://127.0.0.1:7777');
+INSERT INTO `t_project` VALUES ('1', 'Alex', '', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', null, null);
 
 -- ----------------------------
 -- Table structure for t_rely_data
