@@ -747,7 +747,7 @@ public class InvokeCenter {
         String url = datasource.getUrl();
         String username = datasource.getUsername();
         String password = datasource.getPassword();
-        String resultType = ResultType.getResultType(returnType);
+        String resultType = ResultType.getResultType(returnType).toLowerCase();
         if (resultType.equals("integer")) {
             List<Integer> list = JdbcUtil.queryForList(url, username, password, sql, Integer.class);
             return String.valueOf(list.get(new Random().nextInt(list.size())));
@@ -781,7 +781,7 @@ public class InvokeCenter {
         String url = datasource.getUrl();
         String username = datasource.getUsername();
         String password = datasource.getPassword();
-        String resultType = ResultType.getResultType(returnType);
+        String resultType = ResultType.getResultType(returnType).toLowerCase();
         if (resultType.equals("integer")) {
             List<Integer> list = JdbcUtil.queryForList(url, username, password, sql, Integer.class);
             int randomRow = list.get(new Random().nextInt(list.size()));
