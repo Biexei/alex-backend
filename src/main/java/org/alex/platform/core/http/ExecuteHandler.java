@@ -26,10 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Component
 @SuppressWarnings({"unchecked","rawtypes"})
@@ -110,7 +107,7 @@ public class ExecuteHandler implements Node {
         Integer projectId = interfaceCaseInfoVO.getProjectId();
 
         ProjectVO projectVO = projectService.findProjectById(projectId);
-        // 获取项目域名
+        String desc = interfaceCaseInfoVO.getDesc();
         String url;
         if (suiteId == null) { // 未指定suiteId进入调试模式,使用domain
             url = projectVO.getDomain() + interfaceCaseInfoVO.getUrl();
@@ -121,12 +118,12 @@ public class ExecuteHandler implements Node {
             // 0dev 1test 2stg 3prod 4debug调试模式
             url = env.domain(projectVO, runDev) + interfaceCaseInfoVO.getUrl();
         }
-        String desc = interfaceCaseInfoVO.getDesc();
 
-        String headers = interfaceCaseInfoVO.getHeaders();
-        String params = interfaceCaseInfoVO.getParams();
-        String formData = interfaceCaseInfoVO.getFormData();
-        String formDataEncoded = interfaceCaseInfoVO.getFormDataEncoded();
+        String headers = kvCast(interfaceCaseInfoVO.getHeaders());
+        String params = kvCast(interfaceCaseInfoVO.getParams());
+        String formData = kvCast(interfaceCaseInfoVO.getFormData());
+        String formDataEncoded = kvCast(interfaceCaseInfoVO.getFormDataEncoded());
+
         String raw = interfaceCaseInfoVO.getRaw();
         String rawType = interfaceCaseInfoVO.getRawType();
         Byte bodyType = interfaceCaseInfoVO.getBodyType();
@@ -733,7 +730,7 @@ public class ExecuteHandler implements Node {
                                 } else {
                                     status = 1;
                                     LOG.warn("response-json提取内容为空，jsonPath={}", expression);
-                                    errorMsg = "处理器" + name + "提取结果为空，提取表达式为：" + expression;
+                                    errorMsg = "响应数据缓存出错，" + "用例执行失败，" + "处理器" + name + "提取结果为空，提取表达式为：" + expression + "，用例编号为：" + interfaceCaseId;
                                 }
                             } else {
                                 isDefaultValue = 1;
@@ -763,7 +760,7 @@ public class ExecuteHandler implements Node {
                                 } else {
                                     status = 1;
                                     LOG.warn("response-xml提取内容为空，xpath={}", expression);
-                                    errorMsg = "处理器" + name + "提取结果为空，提取表达式为：" + expression;
+                                    errorMsg = "响应数据缓存出错，" + "用例执行失败，" + "处理器" + name + "提取结果为空，提取表达式为：" + expression + "，用例编号为：" + interfaceCaseId;
                                 }
                             } else {
                                 isDefaultValue = 1;
@@ -793,7 +790,7 @@ public class ExecuteHandler implements Node {
                                 } else {
                                     status = 1;
                                     LOG.warn("header提取内容为空，header={}", expression);
-                                    errorMsg = "处理器" + name + "提取结果为空，提取表达式为：" + expression;
+                                    errorMsg = "响应数据缓存出错，" + "用例执行失败，" + "处理器" + name + "提取结果为空，提取表达式为：" + expression + "，用例编号为：" + interfaceCaseId;
                                 }
                             } else {
                                 isDefaultValue = 1;
@@ -905,6 +902,34 @@ public class ExecuteHandler implements Node {
             modifyChain.setChain(JSON.toJSONString(redisUtil.stackGetAll(chainNo)));
             executeLogService.modifyExecuteLog(modifyChain);
             return executedLogId;
+        }
+    }
+
+    /**
+     * 将前端包含name、value、checked、value的对象数组转成对象
+     * @param text header、param、form、formEncoded
+     * @return 转换后的
+     */
+    private String kvCast(String text) throws BusinessException {
+        try {
+            JSONObject object = new JSONObject();
+            JSONArray array = JSON.parseArray(text);
+            if (array != null && !array.isEmpty()) {
+                array.forEach(item -> {
+                    String s = JSON.toJSONString(item);
+                    JSONObject var1 = JSON.parseObject(s);
+                    String name = var1.getString("name");
+                    String value = var1.getString("value");
+                    boolean checked = var1.getBooleanValue("checked");
+                    if (checked) {
+                        object.put(name, value);
+                    }
+                });
+                return JSON.toJSONString(object);
+            }
+            return null;
+        } catch (Exception e) {
+            throw new BusinessException("headers/params/form-data/form-data-encoded格式错误");
         }
     }
 }

@@ -1,7 +1,9 @@
 package org.alex.platform.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.enums.AssertOperator;
 import org.alex.platform.enums.AssertType;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ImportCaseServiceImpl implements ImportCaseService {
@@ -52,9 +55,9 @@ public class ImportCaseServiceImpl implements ImportCaseService {
         String desc = jsonObject.getString("desc");
         Byte level = level2key(jsonObject.getString("level"));
         String doc = jsonObject.getString("doc");
-        String headers = jsonObject.getString("headers");
-        String params = jsonObject.getString("params");
-        String data = jsonObject.getString("data");
+        String headers = kvCast(jsonObject.getString("headers"));
+        String params = kvCast(jsonObject.getString("params"));
+        String data = kvCast(jsonObject.getString("data"));
         if (data != null && data.isEmpty()) {
             data = null;
         }
@@ -139,9 +142,9 @@ public class ImportCaseServiceImpl implements ImportCaseService {
         desc = (String)row.get(4);
         level = level2key((String)row.get(5));
         doc = (String)row.get(6);
-        headers = (String)row.get(7);
-        params = (String)row.get(8);
-        data = (String)row.get(9);
+        headers = kvCast((String)row.get(7));
+        params = kvCast((String)row.get(8));
+        data = kvCast((String)row.get(9));
         if (data != null && data.isEmpty()) {
             data = null;
         }
@@ -268,5 +271,32 @@ public class ImportCaseServiceImpl implements ImportCaseService {
             return 0;
         }
         return AssertOperator.getAssertOperatorKey(assertOperatorStr);
+    }
+
+    /**
+     * 将name、value对象转成name、value、checked、desc的对象数组
+     * @param text header、param、form-data、form-data-encoded
+     * @return 转换结果
+     */
+    private String kvCast(String text) throws BusinessException {
+        try {
+            if (text != null && !text.isEmpty()) {
+                JSONArray array = new JSONArray();
+                JSONObject object = JSON.parseObject(text);
+                for (Map.Entry<String, Object> entry : object.entrySet()) {
+                    JSONObject var1 = new JSONObject();
+                    var1.put("name", entry.getKey());
+                    var1.put("value", entry.getValue() == null ? null : entry.getValue().toString());
+                    var1.put("checked", true);
+                    var1.put("desc", null);
+                    array.add(var1);
+                }
+                return JSON.toJSONString(array, SerializerFeature.WriteMapNullValue);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            throw new BusinessException("headers/params/form-data/form-data-encoded格式错误");
+        }
     }
 }
