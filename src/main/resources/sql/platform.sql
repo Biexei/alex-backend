@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-06-11 16:57:29
+Date: 2021-06-16 10:33:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -184,11 +184,11 @@ CREATE TABLE `t_interface_case` (
   `desc` varchar(1000) DEFAULT NULL COMMENT '用例描述',
   `level` tinyint DEFAULT NULL COMMENT '用例级别0高，1中，2低',
   `doc` varchar(200) DEFAULT NULL COMMENT '接口文档地址',
-  `headers` varchar(1000) DEFAULT NULL COMMENT '请求头',
-  `params` varchar(1000) DEFAULT NULL COMMENT '请求参数',
-  `form_data_encoded` varchar(1000) DEFAULT NULL COMMENT 'formdataencoded',
-  `form_data` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '请求formdata',
-  `raw` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '请求体',
+  `headers` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '请求头',
+  `params` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '请求参数',
+  `form_data_encoded` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'formdataencoded',
+  `form_data` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '请求formdata',
+  `raw` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '请求体',
   `raw_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'raw类型 "Text" "JSON" "HTML" "XML"',
   `body_type` tinyint DEFAULT NULL COMMENT '请求体类型0form-data 1x-www-form-Encoded 2raw 9none',
   `creater` varchar(20) DEFAULT NULL COMMENT '用例创建人',
@@ -215,12 +215,12 @@ CREATE TABLE `t_interface_case_execute_log` (
   `case_desc` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用例描述',
   `case_url` varchar(300) DEFAULT NULL COMMENT '请求地址',
   `case_method` tinyint DEFAULT NULL COMMENT '0get,1post,2patch,3put,4delete',
-  `request_headers` varchar(1000) DEFAULT NULL COMMENT '请求头',
-  `request_params` varchar(1000) DEFAULT NULL COMMENT '请求参数',
-  `request_body` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `raw_request_headers` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '未清洗依赖数据前的原始header',
-  `raw_request_params` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '未清洗依赖数据前的原始params',
-  `raw_request_body` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '未清洗依赖数据前的原始json',
+  `request_headers` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '请求头',
+  `request_params` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '请求参数',
+  `request_body` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `raw_request_headers` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '未清洗依赖数据前的原始header',
+  `raw_request_params` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '未清洗依赖数据前的原始params',
+  `raw_request_body` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '未清洗依赖数据前的原始json',
   `response_code` int DEFAULT NULL COMMENT '响应状态码',
   `response_headers` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '响应头',
   `response_body` mediumtext COMMENT '响应正文',

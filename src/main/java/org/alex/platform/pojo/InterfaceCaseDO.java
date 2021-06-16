@@ -27,15 +27,10 @@ public class InterfaceCaseDO implements Serializable {
     private Byte level;
     @Size(max = 200, message = "接口文档地址长度必须小于等于200")
     private String doc;
-    @Size(max = 1000, message = "请求头长度必须小于等于1000")
     private String headers;
-    @Size(max = 1000, message = "请求参数长度必须小于等于1000")
     private String params;
-    @Size(max = 1000, message = "请求表单数据长度必须小于等于1000")
     private String formData;
-    @Size(max = 1000, message = "请求表单数据(编码)长度必须小于等于1000")
     private String formDataEncoded;
-    @Size(max = 1000, message = "请求raw数据长度必须小于等于1000")
     private String raw;
     private String rawType;
     @NotNull(message = "body类型不能为空")
