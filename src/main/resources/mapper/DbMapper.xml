@@ -60,22 +60,22 @@
             `desc`=#{desc},
             `url`=#{url},
             `username`=#{username},
-            `password`=#{password},
+            <if test="password!=null">`password`=#{password},</if>
             `created_time`=#{createdTime},
             `update_time`=#{updateTime},
             `status`=#{status},
             `dev_url`=#{devUrl},
             `dev_username`=#{devUsername},
-            `dev_password`=#{devPassword},
+            <if test="devPassword!=null">`dev_password`=#{devPassword},</if>
             `test_url`=#{testUrl},
             `test_username`=#{testUsername},
-            `test_password`=#{testPassword},
+            <if test="testPassword!=null">`test_password`=#{testPassword},</if>
             `stg_url`=#{stgUrl},
             `stg_username`=#{stgUsername},
-            `stg_password`=#{stgPassword},
+            <if test="stgPassword!=null">`stg_password`=#{stgPassword},</if>
             `prod_url`=#{prodUrl},
             `prod_username`=#{prodUsername},
-            `prod_password`=#{prodPassword},
+            <if test="prodPassword!=null">`prod_password`=#{prodPassword},</if>
         </set>
         where `id` = #{id}
     </update>
@@ -95,15 +95,11 @@
         from `t_db` where `name` = #{name}
     </select>
     <select id="checkDbName" parameterType="org.alex.platform.pojo.DbDO" resultType="org.alex.platform.pojo.DbVO">
-        select `id`,`name`,`type`,`desc`,`url`,`username`,`password`,`created_time`,`update_time`,`status`,
-        `dev_url`,`dev_username`,`dev_password`,`test_url`,`test_username`,`test_password`,`stg_url`,`stg_username`,
-        `stg_password`,`prod_url`,`prod_username`,`prod_password`
+        select `id`,`name`
         from `t_db` where `name` = #{name} and `id` != #{id}
     </select>
     <select id="selectDbList" parameterType="org.alex.platform.pojo.DbDTO" resultType="org.alex.platform.pojo.DbVO">
-        select `id`,`name`,`type`,`desc`,`url`,`username`,`password`,`created_time`,`update_time`,`status`,
-        `dev_url`,`dev_username`,`dev_password`,`test_url`,`test_username`,`test_password`,`stg_url`,`stg_username`,
-        `stg_password`,`prod_url`,`prod_username`,`prod_password`
+        select `id`,`name`,`type`,`desc`,`created_time`,`update_time`,`status`
         from `t_db`
         <where>
             <if test="id!=id">and `id`=#{id}</if>

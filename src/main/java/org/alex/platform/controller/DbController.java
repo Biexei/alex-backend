@@ -4,6 +4,7 @@ import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.pojo.DbDO;
 import org.alex.platform.pojo.DbDTO;
+import org.alex.platform.pojo.DbVO;
 import org.alex.platform.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -51,7 +52,13 @@ public class DbController {
      */
     @GetMapping("/db/{id}")
     public Result findDbById(@PathVariable Integer id) {
-        return Result.success(dbService.findDbById(id));
+        DbVO db = dbService.findDbById(id);
+        db.setPassword(null);
+        db.setDevPassword(null);
+        db.setProdPassword(null);
+        db.setStgPassword(null);
+        db.setTestPassword(null);
+        return Result.success(db);
     }
 
     /**
