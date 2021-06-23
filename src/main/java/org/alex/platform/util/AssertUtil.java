@@ -23,7 +23,7 @@ public class AssertUtil {
                 new BigDecimal(result);
                 new BigDecimal(exceptedResult);
             } catch (Exception e) {
-                throw new BusinessException("字符串不支持<、>、<=、>=操作");
+                throw new BusinessException("不支持该操作符");
             }
         }
         boolean flag;

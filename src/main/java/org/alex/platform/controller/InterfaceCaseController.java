@@ -190,15 +190,19 @@ public class InterfaceCaseController {
     @GetMapping("/interface/case/execute/{caseId}")
     public Result executeInterfaceCase(@PathVariable Integer caseId, HttpServletRequest request) throws BusinessException {
         String executor = loginUserInfo.getRealName(request);
-        Integer executeLog = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId, executor,
-                null, NoUtil.genChainNo(), null, (byte) 1,
-                null, null, null, null, (byte)0, null));
-        Byte status = executeLogService.findExecute(executeLog).getStatus();
-        if (status == 0) {
-            return Result.success("执行成功");
-        } else if (status == 1) {
-            return Result.fail("执行失败");
-        } else {
+        try {
+            Integer executeLog = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId, executor,
+                    null, NoUtil.genChainNo(), null, (byte) 1,
+                    null, null, null, null, (byte)0, null));
+            Byte status = executeLogService.findExecute(executeLog).getStatus();
+            if (status == 0) {
+                return Result.success("执行成功");
+            } else if (status == 1) {
+                return Result.fail("执行失败");
+            } else {
+                return Result.fail("执行错误");
+            }
+        } catch (BusinessException e) {
             return Result.fail("执行错误");
         }
     }

@@ -31,29 +31,17 @@ public class ParseUtil {
         try {
             JXDocument document = JXDocument.create(xmlText);
             List<JXNode> nodes = document.selN(xpath);
-            List<String> result = new ArrayList();
+            List<String> result = new ArrayList<>();
             for (JXNode node : nodes) {
                 result.add(node.toString());
             }
             return JSON.toJSONString(result);
         } catch (Exception e) {
-            LOG.error("xpath解析异常，xml={}，xpath={}", xmlText, xpath);
-            throw new ParseException("XPATH解析异常，xpath: " + xpath);
+            String msg = String.format("xpath parse error! xml/html=[%s], xpath=[%s], error-msg=[%s]",
+                    xmlText, xpath, e.getMessage());
+            LOG.error(msg);
+            throw new ParseException(msg);
         }
-
-//        List<String> result = new ArrayList<>();
-//        try {
-//            Document document = new SAXReader().read(new StringReader(xmlText));
-//            List<Node> nodes = document.selectNodes(xpath);
-//            for (Node node : nodes) {
-//                result.add(node.getText());
-//            }
-//        } catch (DocumentException e) {
-//            throw new ParseException("xml格式错误");
-//        } catch (Exception e) {
-//            throw new ParseException("未找到该元素，请确保xpath无误");
-//        }
-//        return JSON.toJSONString(result);
     }
 
     /**
@@ -77,8 +65,9 @@ public class ParseUtil {
     public static String parseHttpHeader(ResponseEntity entity, String headerName) throws ParseException {
         HttpHeaders headerMap = entity.getHeaders();
         if (!headerMap.containsKey(headerName)) {
-            LOG.error("解析响应头， 未找到该headerName， headerName={}", headerName);
-            throw new ParseException("响应头中未找到该元素，请确保header无误");
+            String msg = String.format("header name not found! header-name=[%s]", headerName);
+            LOG.error(msg);
+            throw new ParseException(msg);
         }
         return JSON.toJSONString(entity.getHeaders().get(headerName));
     }
@@ -94,8 +83,10 @@ public class ParseUtil {
         try {
             return JSON.toJSONString(JsonPath.read(jsonText, jsonPath));
         } catch (Exception e) {
-            LOG.error("jsonPath解析异常，jsonText={}，jsonPath={}", jsonText, jsonPath);
-            throw new ParseException("jsonPath解析异常，jsonPath: " + jsonPath);
+            String msg = String.format("json parse error! json=[%s], json-path=[%s], error-msg=[%s]",
+                    jsonText, jsonPath, e.getMessage());
+            LOG.error(msg);
+            throw new ParseException(msg);
         }
     }
 }
