@@ -17,6 +17,7 @@ TRUNCATE t_interface_suite_processor;
 TRUNCATE t_mock_api;
 TRUNCATE t_mock_hit_policy;
 TRUNCATE t_mock_sever;
+TRUNCATE t_user_login_log;
 
 TRUNCATE t_project;
 INSERT INTO `platform`.`t_project` (`project_id`, `name`, `desc`, `protocol`, `port`, `domain`, `dev_protocol`, `dev_port`, `dev_domain`, `test_protocol`, `test_port`, `test_domain`, `stg_protocol`, `stg_port`, `stg_domain`, `prod_protocol`, `prod_port`, `prod_domain`, `created_time`, `update_time`) VALUES ('1', 'Alex', '', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', 'http', '7777', '127.0.0.1', NULL, NULL);
@@ -131,7 +132,7 @@ INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('175', 'interface:case_log:chain', '链路跟踪', '172');
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('176', 'interface:assert_log', '断言日志', '154');
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('177', 'interface:assert_log:find', '查询', '176');
-INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('178', 'setting', '配置中心', '0');
+INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('178', 'setting', '系统设置', '0');
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('179', 'setting:email', '邮箱管理', '178');
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('180', 'setting:email:add', '新增', '179');
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('181', 'setting:email:modify', '修改', '179');
@@ -181,6 +182,9 @@ INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('225', 'mock:api:query', '查询', '221');
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('226', 'mock:api:stop', '停止', '221');
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('227', 'mock:api:restart', '重启', '221');
+INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('228', 'setting:loginLog', '登录日志', '178');
+INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('229', 'setting:loginLog:find', '查询', '228');
+
 
 TRUNCATE t_permission_role_ref;
 INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('31', '89', '1', '2021-03-12 19:58:20');
@@ -338,5 +342,8 @@ INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`
 INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('196', '224', '1', '2021-04-16 21:22:43');
 INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('197', '226', '1', '2021-04-17 15:03:12');
 INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('198', '227', '1', '2021-04-17 16:04:29');
+INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('199', '228', '1', '2021-06-27 18:15:31');
+INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('200', '229', '1', '2021-06-27 18:15:32');
+
 
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.UserLoginLogMapper">
+    <select id="selectUserLoginLogList" parameterType="org.alex.platform.pojo.UserLoginLogDTO" resultType="org.alex.platform.pojo.UserLoginLogVO">
+        select `id`, `user_id`, `user_name`, `ip`, `login_time`
+        from `t_user_login_log`
+        <where>
+            <if test="id!=null">and `id` = #{id}</if>
+            <if test="userId!=null">and `user_id` = #{userId}</if>
+            <if test="userName!=null">and `user_name` like concat("%", #{userName},"%")</if>
+            <if test="ip!=null">and `ip` like concat("%", #{ip},"%")</if>
+            <if test="loginStartTime!=null">and `login_time` &gt;= #{loginStartTime}</if>
+            <if test="loginEndTime!=null">and `login_time` &lt;= #{loginEndTime}</if>
+        </where>
+        order by `id` desc
+    </select>
+
+    <insert id="insertUserLoginLog" parameterType="org.alex.platform.pojo.UserLoginLogDO">
+        insert into `t_user_login_log`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            `id`,
+            `user_id`,
+            `user_name`,
+            `ip`,
+            `login_time`,
+        </trim>
+        <trim prefix="value(" suffix=")" suffixOverrides=",">
+            #{id},
+            #{userId},
+            #{userName},
+            #{ip},
+            #{loginTime},
+        </trim>
+    </insert>
+</mapper>

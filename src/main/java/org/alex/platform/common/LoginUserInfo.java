@@ -43,6 +43,23 @@ public class LoginUserInfo {
     }
 
     /**
+     * 获取登录用户user name
+     * @param request request
+     * @return 登录账号
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public String getUserName(HttpServletRequest request) {
+        HashMap<String, Object> map = (HashMap)getLoginUserInfo(request);
+        String executor;
+        try {
+            executor = map.get("userName").toString();
+        } catch (Exception e) {
+            executor = "";
+        }
+        return executor;
+    }
+
+    /**
      * 获取登录用户id
      * @param request request
      * @return user id

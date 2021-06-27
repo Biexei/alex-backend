@@ -5,8 +5,10 @@ import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.pojo.UserDO;
+import org.alex.platform.pojo.UserLoginLogDO;
 import org.alex.platform.pojo.UserVO;
 import org.alex.platform.service.RoleService;
+import org.alex.platform.service.UserLoginLogService;
 import org.alex.platform.service.UserService;
 import org.alex.platform.util.MD5Util;
 import org.alex.platform.util.NoUtil;
@@ -18,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -33,6 +36,8 @@ public class UserController {
     LoginUserInfo loginUserInfo;
     @Autowired
     RoleService roleService;
+    @Autowired
+    UserLoginLogService userLoginLogService;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
@@ -128,7 +133,7 @@ public class UserController {
      */
     @PostMapping("/user/login")
     @ResponseBody
-    public Result login(String username, String password) {
+    public Result login(String username, String password, HttpServletRequest request) {
         if (null == username || "".equals(username) || null == password || "".equals(password)) {
             LOG.error("帐号名或者密码错误");
             return Result.fail("帐号名或者密码错误");
@@ -147,9 +152,18 @@ public class UserController {
             userMap.put("realName", userInfo.getRealName());
             userMap.put("isEnable", userInfo.getIsEnable());
             Integer roleId = userInfo.getRoleId();
+            // 写入权限
             JSONArray permissionCodeArray = roleService.findPermissionCodeArrayByRoleId(roleId);
             userMap.put("permission", permissionCodeArray);
+            // 写入token
             redisUtil.set(token, userMap, 60*30);
+            // 写入登录日志
+            UserLoginLogDO userLoginLogDO = new UserLoginLogDO();
+            userLoginLogDO.setUserId(userInfo.getUserId());
+            userLoginLogDO.setUserName(userInfo.getUsername());
+            userLoginLogDO.setIp(userLoginLogService.getIpAddr(request));
+            userLoginLogDO.setLoginTime(new Date());
+            userLoginLogService.saveUserLoginLog(userLoginLogDO);
             return Result.success("登录成功", userMap);
         } else {
             LOG.error("帐号名或者密码错误");

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
-Source Server Version : 80020
+Source Server         : localhost
+Source Server Version : 80019
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80020
+Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2021-06-16 10:33:43
+Date: 2021-06-27 18:26:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -527,7 +527,7 @@ CREATE TABLE `t_permission` (
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限名称',
   `parent_id` int DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -621,7 +621,7 @@ INSERT INTO `t_permission` VALUES ('174', 'interface:case_log:detail', '详情',
 INSERT INTO `t_permission` VALUES ('175', 'interface:case_log:chain', '链路跟踪', '172');
 INSERT INTO `t_permission` VALUES ('176', 'interface:assert_log', '断言日志', '154');
 INSERT INTO `t_permission` VALUES ('177', 'interface:assert_log:find', '查询', '176');
-INSERT INTO `t_permission` VALUES ('178', 'setting', '配置中心', '0');
+INSERT INTO `t_permission` VALUES ('178', 'setting', '系统设置', '0');
 INSERT INTO `t_permission` VALUES ('179', 'setting:email', '邮箱管理', '178');
 INSERT INTO `t_permission` VALUES ('180', 'setting:email:add', '新增', '179');
 INSERT INTO `t_permission` VALUES ('181', 'setting:email:modify', '修改', '179');
@@ -671,6 +671,8 @@ INSERT INTO `t_permission` VALUES ('224', 'mock:api:remove', '删除', '221');
 INSERT INTO `t_permission` VALUES ('225', 'mock:api:query', '查询', '221');
 INSERT INTO `t_permission` VALUES ('226', 'mock:api:stop', '停止', '221');
 INSERT INTO `t_permission` VALUES ('227', 'mock:api:restart', '重启', '221');
+INSERT INTO `t_permission` VALUES ('228', 'setting:loginLog', '登录日志', '178');
+INSERT INTO `t_permission` VALUES ('229', 'setting:loginLog:find', '查询', '228');
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -682,7 +684,7 @@ CREATE TABLE `t_permission_role_ref` (
   `role_id` int DEFAULT NULL COMMENT '权限编号',
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
@@ -842,6 +844,8 @@ INSERT INTO `t_permission_role_ref` VALUES ('195', '225', '1', '2021-04-16 21:22
 INSERT INTO `t_permission_role_ref` VALUES ('196', '224', '1', '2021-04-16 21:22:43');
 INSERT INTO `t_permission_role_ref` VALUES ('197', '226', '1', '2021-04-17 15:03:12');
 INSERT INTO `t_permission_role_ref` VALUES ('198', '227', '1', '2021-04-17 16:04:29');
+INSERT INTO `t_permission_role_ref` VALUES ('199', '228', '1', '2021-06-27 18:15:31');
+INSERT INTO `t_permission_role_ref` VALUES ('200', '229', '1', '2021-06-27 18:15:32');
 
 -- ----------------------------
 -- Table structure for t_project
@@ -1019,3 +1023,20 @@ CREATE TABLE `t_user` (
 -- Records of t_user
 -- ----------------------------
 INSERT INTO `t_user` VALUES ('1', '123', '18e29620f058e8bf085bfed74fdf5e82', '', '1', '1', null, '2021-03-10 16:08:51', '超级管理员', '1');
+
+-- ----------------------------
+-- Table structure for t_user_login_log
+-- ----------------------------
+DROP TABLE IF EXISTS `t_user_login_log`;
+CREATE TABLE `t_user_login_log` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL COMMENT 'user_id',
+  `user_name` varchar(30) DEFAULT NULL COMMENT 'username',
+  `ip` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'ip地址',
+  `login_time` datetime DEFAULT NULL COMMENT '登录时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of t_user_login_log
+-- ----------------------------
