@@ -194,7 +194,7 @@ CREATE TABLE `t_interface_case` (
   `creater` varchar(20) DEFAULT NULL COMMENT '用例创建人',
   `created_time` datetime DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime DEFAULT NULL COMMENT '修改日期',
-  `source` tinyint DEFAULT NULL COMMENT '来源0新增1excel导入2csv导入3json导入4yaml导入',
+  `source` tinyint DEFAULT NULL COMMENT '来源0新增1excel导入2csv导入3json导入4yaml导入5har导入',
   `import_no` varchar(100) DEFAULT NULL COMMENT '导入编号',
   PRIMARY KEY (`case_id`),
   KEY `project_id` (`project_id`),

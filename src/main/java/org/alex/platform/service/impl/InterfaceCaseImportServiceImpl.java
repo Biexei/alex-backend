@@ -51,7 +51,9 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
 
     @Override
     @SuppressWarnings({"rawtypes"})
-    public HashMap<String, Integer> importCase(MultipartFile file, Integer requestImportType, Integer suiteId,
+    public HashMap<String, Integer> importCase(MultipartFile file,
+                                               Integer projectId, Integer moduleId,
+                                               Integer requestImportType, Integer suiteId,
                                                HttpServletRequest request) throws BusinessException {
         String creator = userInfo.getRealName(request);
         String importNum = NoUtil.genIfImportNo();
@@ -175,6 +177,31 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
             for (int i = 0; i < caseArray.size(); i++) {
                 try {
                     Integer caseId = importCaseService.insertCaseByJsonYaml(caseArray.getJSONObject(i), creator, (byte) 4, importNum);
+                    successNum++;
+                    addCase2Suite(caseId, suiteId);
+                    LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
+                } catch (Exception e) {
+                    failedNum++;
+                    LOG.error("新增失败，当前索引值：{}", i);
+                    LOG.error(ExceptionUtil.msg(e));
+                }
+            }
+        } else if (type.equalsIgnoreCase("har") && requestImportType == 5 ) {
+            LOG.info("导入方式：har");
+            JSONArray entries;
+            String fileContent = FileUtil.readByBufferReader(fis, StandardCharsets.UTF_8);
+            try {
+                entries = JSON.parseObject(fileContent).getJSONObject("log").getJSONArray("entries");
+            } catch (Exception e) {
+                LOG.error(ExceptionUtil.msg(e));
+                throw new BusinessException("har文件读取异常");
+            }
+            totalNum = entries.size();
+            LOG.info("总行数：{}", totalNum);
+            LOG.info("开始解析json对象并新增");
+            for (int i = 0; i < entries.size(); i++) {
+                try {
+                    Integer caseId = importCaseService.insertCaseByHar(entries.getJSONObject(i), projectId, moduleId, creator, importNum);
                     successNum++;
                     addCase2Suite(caseId, suiteId);
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);

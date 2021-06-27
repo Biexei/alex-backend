@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -192,6 +193,96 @@ public class ImportCaseServiceImpl implements ImportCaseService {
     }
 
     /**
+     * 根据har导入用例
+     * @param entry har文件的entries数组中的item
+     * @param projectId 项目编号
+     * @param moduleId 模块编号
+     * @param creator 创建人
+     * @param importNum 导入编号
+     * @return 自增用例编号
+     * @throws BusinessException 业务异常
+     */
+    @Override
+    public Integer insertCaseByHar(JSONObject entry, Integer projectId, Integer moduleId, String creator, String importNum) throws BusinessException {
+        JSONObject request = entry.getJSONObject("request");
+        JSONObject postData = request.getJSONObject("postData");
+
+        JSONArray params = postData.getJSONArray("params");
+        String mimeType = postData.getString("mimeType").toLowerCase();
+        String text = postData.getString("text");
+
+        JSONArray queryString = request.getJSONArray("queryString");
+        JSONArray headers = request.getJSONArray("headers");
+        String url = request.getString("url");
+        String method = request.getString("method");
+
+        // 新增测试用例主表
+        InterfaceCaseDO template = new InterfaceCaseDO();
+        template.setProjectId(projectId);
+        template.setModuleId(moduleId);
+        template.setUrl(URI.create(url).getPath());
+        template.setMethod(this.method2key(method));
+        template.setDesc("");
+        template.setLevel((byte)0);
+        template.setDoc(null);
+        template.setHeaders(headers.isEmpty() ? null : this.kvCast(headers));
+        template.setParams(queryString.isEmpty() ? null : this.kvCast(queryString));
+        // 0form-data 1x-www-form-Encoded 2raw 9none
+        if (mimeType.isEmpty()) {
+            template.setFormData(null);
+            template.setFormDataEncoded(null);
+            template.setBodyType((byte)9);
+            template.setRaw(null);
+            template.setRawType(null);
+         // multipart/form-data不处理，因为har导出来的格式不是k&v
+//        } else if (mimeType.contains("multipart/form-data")) {
+//            template.setFormData(this.kvCast(params));
+//            template.setFormDataEncoded(null);
+//            template.setBodyType((byte)0);
+//            template.setRaw(null);
+//            template.setRawType(null);
+        } else if (mimeType.contains("application/x-www-form-urlencoded")) {
+            template.setFormData(null);
+            template.setFormDataEncoded(this.kvCast(params));
+            template.setBodyType((byte)1);
+            template.setRaw(null);
+            template.setRawType(null);
+        } else if (mimeType.contains("application/json")) {
+            template.setFormData(null);
+            template.setFormDataEncoded(null);
+            template.setBodyType((byte)2);
+            template.setRaw(text);
+            template.setRawType("JSON");
+        } else if (mimeType.contains("text/html")) {
+            template.setFormData(null);
+            template.setFormDataEncoded(null);
+            template.setBodyType((byte)2);
+            template.setRaw(text);
+            template.setRawType("HTML");
+        } else if (mimeType.contains("text/xml")) {
+            template.setFormData(null);
+            template.setFormDataEncoded(null);
+            template.setBodyType((byte)2);
+            template.setRaw(text);
+            template.setRawType("XML");
+        } else {
+            template.setFormData(null);
+            template.setFormDataEncoded(null);
+            template.setBodyType((byte)2);
+            template.setRaw(text);
+            template.setRawType("Text");
+        }
+        template.setCreater(creator);
+        Date date = new Date();
+        template.setCreatedTime(date);
+        template.setUpdateTime(date);
+        template.setSource((byte)5);
+        template.setImportNo(importNum);
+        InterfaceCaseDO interfaceCaseDO = interfaceCaseService.saveInterfaceCase(template);
+        return interfaceCaseDO.getCaseId();
+    }
+
+    /**
      * 插入断言表
      * @param assertArray 断言数组
      * @param caseId 用例编号
@@ -297,6 +388,31 @@ public class ImportCaseServiceImpl implements ImportCaseService {
             }
         } catch (Exception e) {
             throw new BusinessException("headers/params/form-data/form-data-encoded格式错误");
+        }
+    }
+
+    /**
+     * har的postData.params、queryString、headers转换
+     * @param a postData.params、queryString、headers
+     * @return 转换结果
+     */
+    private String kvCast(JSONArray a) throws BusinessException {
+        try {
+            if (a != null && !a.isEmpty()) {
+                JSONArray array = new JSONArray();
+                for (int i = 0; i < a.size(); i++) {
+                    JSONObject object = a.getJSONObject(i);
+                    // object自带name、value
+                    object.put("checked", true);
+                    object.put("desc", null);
+                    array.add(object);
+                }
+                return JSON.toJSONString(array, SerializerFeature.WriteMapNullValue);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            throw new BusinessException("har格式错误");
         }
     }
 }

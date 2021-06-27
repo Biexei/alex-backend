@@ -59,8 +59,9 @@ public class InterfaceCaseController {
      */
     @PostMapping("/interface/case/import")
     public Result importInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer type,
+                                      @RequestParam(required = false) Integer projectId, @RequestParam(required = false) Integer moduleId,
                                       @RequestParam(required = false) Integer suiteId, HttpServletRequest request) throws BusinessException {
-        HashMap<String, Integer> result = interfaceCaseImportService.importCase(file, type, suiteId, request);
+        HashMap<String, Integer> result = interfaceCaseImportService.importCase(file, projectId, moduleId, type, suiteId, request);
         return Result.success(result);
     }
 
@@ -116,11 +117,11 @@ public class InterfaceCaseController {
         } else if (type == 4) {
             response.setHeader("Content-Disposition", "attachment;filename=" + yaml);
             FileUtil.download(basePath + yaml, StandardCharsets.UTF_8, response);
-        } else if (type == 5) {
+        } else if (type == 10) {
             response.setHeader("Content-Disposition", "attachment;filename=" +
                     new String(caseGeneratorTemplate.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
             FileUtil.download(basePath + caseGeneratorTemplate, StandardCharsets.UTF_8, response);
-        } else if (type == 6) {
+        } else if (type == 11) {
             response.setHeader("Content-Disposition", "attachment;filename=" +
                     new String(caseGeneratorIntroduce.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
             FileUtil.download(readMeBasePath + caseGeneratorIntroduce, StandardCharsets.UTF_8, response);

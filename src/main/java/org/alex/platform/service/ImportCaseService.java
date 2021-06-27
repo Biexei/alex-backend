@@ -13,4 +13,7 @@ public interface ImportCaseService {
     @Transactional(rollbackFor = Exception.class)
     @SuppressWarnings({"rawtypes"})
     Integer insertCaseByOffice(List row, String creator, byte source, String importNum) throws BusinessException;
+
+    @Transactional(rollbackFor = Exception.class)
+    Integer insertCaseByHar(JSONObject entry, Integer projectId, Integer moduleId, String creator, String importNum) throws BusinessException;
 }

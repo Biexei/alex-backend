@@ -81,6 +81,9 @@ public class ExecuteHandler implements Node {
 
         // 获取case详情
         InterfaceCaseInfoVO interfaceCaseInfoVO = interfaceCaseService.findInterfaceCaseByCaseId(interfaceCaseId);
+        if (interfaceCaseInfoVO == null) {
+            throw new BusinessException("用例信息不存在");
+        }
         String desc = interfaceCaseInfoVO.getDesc();
         Integer projectId = interfaceCaseInfoVO.getProjectId();
 
