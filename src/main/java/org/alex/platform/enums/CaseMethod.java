@@ -9,7 +9,10 @@ public enum CaseMethod {
     POST("post", (byte)1),
     PATCH("patch", (byte)2),
     PUT("put", (byte)3),
-    DELETE("delete", (byte)4);
+    DELETE("delete", (byte)4),
+    HEAD("head", (byte)5),
+    OPTIONS("options", (byte)6),
+    TRACE("trace", (byte)7);
 
     private final String methodName;
     private final Byte methodNum;

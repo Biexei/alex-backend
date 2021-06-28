@@ -321,6 +321,12 @@ public class ExecuteHandler implements Node {
             return HttpMethod.PUT;
         } else if (methodByte == 4) {
             return HttpMethod.DELETE;
+        } else if (methodByte == 5) {
+            return HttpMethod.HEAD;
+        } else if (methodByte == 6) {
+            return HttpMethod.OPTIONS;
+        } else if (methodByte == 7) {
+            return HttpMethod.TRACE;
         } else {
             LOG.error("not supported the http method");
             throw new BusinessException("not supported the http method");
@@ -698,11 +704,13 @@ public class ExecuteHandler implements Node {
                                      Long runTime, String executor, String suiteLogNo, String suiteLogDetailNo,
                                      Byte isFailedRetry, Byte source, String rawType, Byte bodyType, Byte caseStatus) {
         String temp = responseBody;
-        try {
-            JSONObject responseBodyObject = JSONObject.parseObject(temp);
-            responseBody = JSON.toJSONString(responseBodyObject, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue);
-        } catch (Exception e) {
-            responseBody = temp;
+        if (!temp.equals("")) {
+            try {
+                JSONObject responseBodyObject = JSONObject.parseObject(temp);
+                responseBody = JSON.toJSONString(responseBodyObject, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue);
+            } catch (Exception e) {
+                responseBody = temp;
+            }
         }
         InterfaceCaseExecuteLogDO executeLogDO = new InterfaceCaseExecuteLogDO();
         executeLogDO.setCaseId(interfaceCaseId);
