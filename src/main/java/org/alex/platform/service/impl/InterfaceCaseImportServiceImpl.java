@@ -101,7 +101,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
             LOG.info("开始按行读取并新增");
             for (int i = 0; i < result.size(); i++) {
                 try {
-                    Integer caseId = importCaseService.insertCaseByOffice(result.get(i), creator, (byte) 1, importNum);
+                    Integer caseId = importCaseService.insertCaseByOffice(result.get(i), projectId, moduleId, creator, (byte) 1, importNum);
                     successNum++;
                     addCase2Suite(caseId, suiteId);
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
@@ -125,7 +125,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
             LOG.info("开始按行读取并新增");
             for (int i = 0; i < result.size(); i++) {
                 try {
-                    Integer caseId = importCaseService.insertCaseByOffice(result.get(i), creator, (byte) 2, importNum);
+                    Integer caseId = importCaseService.insertCaseByOffice(result.get(i), projectId, moduleId, creator, (byte) 2, importNum);
                     successNum++;
                     addCase2Suite(caseId, suiteId);
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
@@ -150,7 +150,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
             LOG.info("开始解析json对象并新增");
             for (int i = 0; i < caseArray.size(); i++) {
                 try {
-                    Integer caseId = importCaseService.insertCaseByJsonYaml(caseArray.getJSONObject(i), creator, (byte) 3, importNum);
+                    Integer caseId = importCaseService.insertCaseByJsonYaml(caseArray.getJSONObject(i), projectId, moduleId, creator, (byte) 3, importNum);
                     successNum++;
                     addCase2Suite(caseId, suiteId);
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);
@@ -176,7 +176,7 @@ public class InterfaceCaseImportServiceImpl implements InterfaceCaseImportServic
             LOG.info("开始解析yaml对象并新增");
             for (int i = 0; i < caseArray.size(); i++) {
                 try {
-                    Integer caseId = importCaseService.insertCaseByJsonYaml(caseArray.getJSONObject(i), creator, (byte) 4, importNum);
+                    Integer caseId = importCaseService.insertCaseByJsonYaml(caseArray.getJSONObject(i), projectId, moduleId, creator, (byte) 4, importNum);
                     successNum++;
                     addCase2Suite(caseId, suiteId);
                     LOG.info("新增成功，当前索引值：{}，用例编号：{}", i, caseId);

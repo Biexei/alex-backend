@@ -1,7 +1,5 @@
 [
 	{
-		"projectId": Number项目编号,
-		"moduleId": Number模块编号,
 		"url": String"请求地址",
 		"method": String"请求方式",
 		"desc": String"用例描述",
@@ -23,8 +21,6 @@
 		]
 	},
 	{
-		"projectId": ,
-		"moduleId": ,
 		"url": "",
 		"method": "",
 		"desc": "",

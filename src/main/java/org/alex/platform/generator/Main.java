@@ -7,7 +7,6 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.alex.platform.enums.CaseRule;
 import org.alex.platform.util.NoUtil;
 import org.alex.platform.util.RedisUtil;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,8 +41,6 @@ public class Main {
     public JSONArray generateCase(JSONObject schemaFileObject, CaseRule caseRule, Boolean isReturnMix, Integer dataType) throws Exception {
         // 读取配置文件
         JSONObject property = schemaFileObject.getJSONObject("property");
-        Integer projectId = property.getInteger("projectId");
-        Integer moduleId = property.getInteger("moduleId");
         String url = property.getString("url");
         String caseDesc = property.getString("desc");
         String method = property.getString("method");
@@ -117,8 +114,6 @@ public class Main {
                 }
             }
             JSONObject cs = new JSONObject(new LinkedHashMap());
-            cs.put("projectId", projectId);
-            cs.put("moduleId", moduleId);
             cs.put("url", url);
             cs.put("method", method);
             cs.put("desc", isValidEquivalenceClass ? "有效等价类 " + caseName.toString() : "无效等价类 " + caseName.toString());

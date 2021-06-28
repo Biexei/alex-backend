@@ -38,19 +38,19 @@ public class ImportCaseServiceImpl implements ImportCaseService {
     /**
      * 根据json/yaml导入插入用例
      * @param jsonObject json对象
+     * @param projectId 项目编号
+     * @param moduleId 模块编号
      * @param creator 创建人
      * @param source 来源 3json 4yaml
      * @param importNum 导入编号
      * @return 自增用例编号
      */
     @Override
-    public Integer insertCaseByJsonYaml(JSONObject jsonObject, String creator, byte source, String importNum) throws BusinessException {
+    public Integer insertCaseByJsonYaml(JSONObject jsonObject, Integer projectId, Integer moduleId, String creator, byte source, String importNum) throws BusinessException {
 
         ImportCaseTemplate template = new ImportCaseTemplate();
         Date date = new Date();
 
-        Integer projectId = jsonObject.getInteger("projectId");
-        Integer moduleId = jsonObject.getInteger("moduleId");
         String url = jsonObject.getString("url");
         Byte method = method2key(jsonObject.getString("method"));
         String desc = jsonObject.getString("desc");
@@ -106,6 +106,8 @@ public class ImportCaseServiceImpl implements ImportCaseService {
     /**
      * 根据excel、csv导入插入用例
      * @param row excel、csv row数据
+     * @param projectId 项目编号
+     * @param moduleId 模块编号
      * @param creator 创建人
      * @param source 来源 1excel 2csv
      * @param importNum 导入编号
@@ -114,12 +116,10 @@ public class ImportCaseServiceImpl implements ImportCaseService {
      */
     @SuppressWarnings({"rawtypes"})
     @Override
-    public Integer insertCaseByOffice(List row, String creator, byte source, String importNum) throws BusinessException {
+    public Integer insertCaseByOffice(List row, Integer projectId, Integer moduleId, String creator, byte source, String importNum) throws BusinessException {
         ImportCaseTemplate template = new ImportCaseTemplate();
         Date date = new Date();
 
-        int projectId;
-        int moduleId;
         byte method;
         String url;
         String desc;
@@ -131,13 +131,6 @@ public class ImportCaseServiceImpl implements ImportCaseService {
         String json;
         String assertStr;
 
-        if (source == 1) { //来源 1excel 2csv
-            projectId = ((Double) row.get(0)).intValue();
-            moduleId = ((Double) row.get(1)).intValue();
-        } else {
-            projectId = Integer.parseInt((String)row.get(0));
-            moduleId = Integer.parseInt((String)row.get(1));
-        }
         method = method2key((String)row.get(2));
         url = (String)row.get(3);
         desc = (String)row.get(4);

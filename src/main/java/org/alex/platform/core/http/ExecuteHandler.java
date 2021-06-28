@@ -225,7 +225,7 @@ public class ExecuteHandler implements Node {
             caseStatus = 2;
             e.printStackTrace();
             LOG.error(ExceptionUtil.msg(e));
-            exceptionMessage = ExceptionUtil.msg(e);
+            exceptionMessage = e.getMessage();
         }
 
         int responseCode;
@@ -545,7 +545,7 @@ public class ExecuteHandler implements Node {
             } catch (Exception e) {
                 assertStatus = 2;
                 LOG.error("assertion failure, errorMsg={}", ExceptionUtil.msg(e));
-                assertErrorMessage = ExceptionUtil.msg(e);
+                assertErrorMessage = e.getMessage();
             }
             assertLogDO.setActualResult(actualResult);
             assertLogDO.setStatus(assertStatus);

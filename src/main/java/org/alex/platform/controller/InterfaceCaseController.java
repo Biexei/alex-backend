@@ -59,8 +59,14 @@ public class InterfaceCaseController {
      */
     @PostMapping("/interface/case/import")
     public Result importInterfaceCase(@RequestParam MultipartFile file, @RequestParam Integer type,
-                                      @RequestParam(required = false) Integer projectId, @RequestParam(required = false) Integer moduleId,
+                                      @RequestParam Integer projectId, @RequestParam Integer moduleId,
                                       @RequestParam(required = false) Integer suiteId, HttpServletRequest request) throws BusinessException {
+        if (projectId == null) {
+            throw new BusinessException("请选择项目编号");
+        }
+        if (moduleId == null) {
+            throw new BusinessException("请选择模块编号");
+        }
         HashMap<String, Integer> result = interfaceCaseImportService.importCase(file, projectId, moduleId, type, suiteId, request);
         return Result.success(result);
     }
