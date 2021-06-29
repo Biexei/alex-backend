@@ -126,7 +126,7 @@ public class Request {
         if (params == null) {
             return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity(httpHeaders), String.class);
         } else {
-            HashMap<String, Object> urlParamsWrapper = urlParamsWrapper(url, params);
+            HashMap<String, Object> urlParamsWrapper = pathVariableParser(url, params);
             url = (String) urlParamsWrapper.get("url");
             params = (HashMap<String, String>) urlParamsWrapper.get("params");
             return restTemplate.exchange(UriComponentsBuilder.fromHttpUrl(url).queryParams(hashMap2LinkedMultiValueMap(params))
@@ -221,7 +221,7 @@ public class Request {
             throw new BusinessException("data or json ?");
         }
 
-        HashMap<String, Object> urlParamsWrapper = urlParamsWrapper(url, params);
+        HashMap<String, Object> urlParamsWrapper = pathVariableParser(url, params);
         url = (String) urlParamsWrapper.get("url");
         params = (HashMap<String, String>) urlParamsWrapper.get("params");
 
@@ -260,7 +260,7 @@ public class Request {
             throw new BusinessException("url error");
         }
 
-        HashMap<String, Object> urlParamsWrapper = urlParamsWrapper(url, params);
+        HashMap<String, Object> urlParamsWrapper = pathVariableParser(url, params);
         url = (String) urlParamsWrapper.get("url");
         params = (HashMap<String, String>) urlParamsWrapper.get("params");
 
@@ -300,7 +300,7 @@ public class Request {
             throw new BusinessException("url error");
         }
 
-        HashMap<String, Object> urlParamsWrapper = urlParamsWrapper(url, params);
+        HashMap<String, Object> urlParamsWrapper = pathVariableParser(url, params);
         url = (String) urlParamsWrapper.get("url");
         params = (HashMap<String, String>) urlParamsWrapper.get("params");
 
@@ -339,10 +339,10 @@ public class Request {
         if (StringUtils.isEmpty(url)) {
             throw new BusinessException("url error");
         }
-
-        HashMap<String, Object> urlParamsWrapper = urlParamsWrapper(url, params);
-        url = (String) urlParamsWrapper.get("url");
-        params = (HashMap<String, String>) urlParamsWrapper.get("params");
+        //由调用方自行处理URL参数
+//        HashMap<String, Object> urlParamsWrapper = pathVariableParser(url, params);
+//        url = (String) urlParamsWrapper.get("url");
+//        params = (HashMap<String, String>) urlParamsWrapper.get("params");
 
         if (params != null && !params.isEmpty()) {
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(hashMap2LinkedMultiValueMap(params));
@@ -362,7 +362,7 @@ public class Request {
      * @return 返回解析后的url和params字典
      * @throws BusinessException 解析失败 未找到key
      */
-    private static HashMap<String, Object> urlParamsWrapper(String url, HashMap<String, String> params) throws BusinessException {
+    public static HashMap<String, Object> pathVariableParser(String url, HashMap<String, String> params) throws BusinessException {
         Pattern p = Pattern.compile("\\{(\\w)+}");
         Matcher m = p.matcher(url);
         HashMap<String, Object> result = new HashMap<>();

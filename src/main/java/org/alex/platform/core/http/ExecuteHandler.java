@@ -204,6 +204,11 @@ public class ExecuteHandler implements Node {
             // formData 不合并
             formDataMap = JSONObject.parseObject(formData, HashMap.class);
 
+            // 处理URL参数
+            HashMap<String, Object> urlParamsWrapper = Request.pathVariableParser(url, paramsMap);
+            url = (String) urlParamsWrapper.get("url");
+            paramsMap = (HashMap<String, String>) urlParamsWrapper.get("params");
+
             // 确定请求方式
             HttpMethod methodEnum = this.httpMethod(method);
             // 确定日志记录最终记录的rawBody
@@ -544,10 +549,6 @@ public class ExecuteHandler implements Node {
                     LOG.warn("assertion failure");
                     assertStatus = 1;
                 }
-            } catch (BusinessException | ParseException e) {
-                assertStatus = 2;
-                LOG.error("assertion failure, errorMsg={}", ExceptionUtil.msg(e));
-                assertErrorMessage = e.getMessage();
             } catch (Exception e) {
                 assertStatus = 2;
                 LOG.error("assertion failure, errorMsg={}", ExceptionUtil.msg(e));
