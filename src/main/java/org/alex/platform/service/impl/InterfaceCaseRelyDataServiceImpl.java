@@ -157,9 +157,11 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             // 查询项目URL
             ProjectDO projectDO = new ProjectDO();
             projectDO.setProjectId(projectId);
-            String domain = projectService.findProject(projectDO).getDomain();
-            String url = interfaceCaseRelyDataVO.getCaseUrl();
-            interfaceCaseRelyDataVO.setCaseUrl(domain + url);
+            ProjectDO projectVO = projectService.findProject(projectDO);
+            String domain = projectVO.getDomain();
+            String protocol = projectVO.getProtocol();
+            Integer port = projectVO.getPort();
+            interfaceCaseRelyDataVO.setCaseUrl(protocol + "://" + domain + ":" + port);
             list.add(interfaceCaseRelyDataVO);
         }
         return new PageInfo(list);
