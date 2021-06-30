@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @Service
 public class ModuleServiceImpl implements ModuleService {
@@ -39,6 +40,16 @@ public class ModuleServiceImpl implements ModuleService {
     public PageInfo<Serializable> findModuleList(ModuleDTO moduleDto, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo(moduleMapper.selectModuleList(moduleDto));
+    }
+
+    /**
+     * 查看模块列表（不分页）
+     * @param projectId 项目编号
+     * @return
+     */
+    @Override
+    public ArrayList<ModuleDO> findAllModuleList(Integer projectId) {
+        return new ArrayList(moduleMapper.selectAllModuleList(projectId));
     }
 
     /**

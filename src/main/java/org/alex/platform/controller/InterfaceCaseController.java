@@ -163,11 +163,23 @@ public class InterfaceCaseController {
     }
 
     /**
+     * 懒加载树型展示用例列表
+     *
+     * @param level 树层级0代表project级别、1代表module级别、2代表case级别
+     * @param id level为0时，不接受该参数，默认返回全部项目列表
+     *           level为1时，id为项目编号，返回该项目下所有模块
+     *           level为2时，id为模块编号，返回该模块下所有用例
+     * @return Result
+     */
+    @GetMapping("/interface/case/tree")
+    public Result caseTree(Integer level, Integer id) {
+        return Result.success(interfaceCaseService.caseTree(level, id));
+    }
+
+    /**
      * 获取接口测试用例列表
      *
      * @param interfaceCaseListDTO interfaceCaseListDTO
-     * @param pageNum              pageNum
-     * @param pageSize             pageSize
      * @return Result
      */
     @GetMapping("/interface/case/list")
@@ -195,7 +207,7 @@ public class InterfaceCaseController {
      * @return Result
      */
     @GetMapping("/interface/case/execute/{caseId}")
-    public Result executeInterfaceCase(@PathVariable Integer caseId, HttpServletRequest request) throws BusinessException {
+    public Result executeInterfaceCase(@PathVariable Integer caseId, HttpServletRequest request) {
         String executor = loginUserInfo.getRealName(request);
         try {
             Integer executeLog = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId, executor,

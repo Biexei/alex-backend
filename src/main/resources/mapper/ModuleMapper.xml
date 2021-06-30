@@ -53,6 +53,11 @@
         </where>
     </select>
 
+    <select id="selectAllModuleList" resultType="org.alex.platform.pojo.ModuleDO" parameterType="Integer">
+        select `project_id`,`module_id`,`name`,`desc`,`created_time`, `update_time`
+        from `t_module`
+    </select>
+
     <insert id="insertModule" parameterType="org.alex.platform.pojo.ModuleDO">
         insert into t_module
         <trim prefix="(" suffix=")" suffixOverrides=",">

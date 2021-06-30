@@ -1,5 +1,7 @@
 package org.alex.platform.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.core.http.ExecuteHandler;
@@ -41,6 +43,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     InterfacePreCaseService interfacePreCaseService;
     @Autowired
     ExecuteHandler executeHandler;
+    @Autowired
+    ProjectService projectService;
+    @Autowired
+    ModuleService moduleService;
 
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseServiceImpl.class);
 
@@ -359,6 +365,17 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     }
 
     /**
+     * 获取接口测试用例列表(不分页)
+     *
+     * @param interfaceCaseListDTO interfaceCaseListDTO
+     * @return PageInfo<InterfaceCaseListVO>
+     */
+    @Override
+    public ArrayList<InterfaceCaseListVO> findAllInterfaceCaseList(InterfaceCaseListDTO interfaceCaseListDTO) {
+        return new ArrayList(interfaceCaseMapper.selectInterfaceCaseList(interfaceCaseListDTO));
+    }
+
+    /**
      * 获取接口测试用例详情
      *
      * @param caseId 用例编号
@@ -378,5 +395,54 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     @Override
     public Integer executeInterfaceCase(ExecuteInterfaceCaseParam executeInterfaceCaseParam) throws BusinessException {
         return executeHandler.executeInterfaceCase(executeInterfaceCaseParam);
+    }
+
+    /**
+     * 懒加载获取树型case列表
+     * @param level 树层级0代表project级别、1代表module级别、2代表case级别
+     * @param id level为0时，不接受该参数，默认返回全部项目列表
+     *           level为1时，id为项目编号，返回该项目下所有模块
+     *           level为2时，id为模块编号，返回该模块下所有用例
+     * @return tree
+     */
+    @Override
+    public JSONArray caseTree(Integer level, Integer id) {
+        JSONArray result = new JSONArray();
+        if (level == 0) {
+            List<ProjectDO> projectList = projectService.findAllProject(null);
+            projectList.forEach(projectDO -> {
+                JSONObject object = new JSONObject();
+                object.put("label", projectDO.getName());
+                object.put("scope", "project");
+                object.put("number", projectDO.getProjectId());
+                object.put("leaf", false);
+                result.add(object);
+            });
+        } else if (level == 1) {
+            ArrayList<ModuleDO> moduleList = moduleService.findAllModuleList(id);
+            moduleList.forEach(moduleDO -> {
+                JSONObject object = new JSONObject();
+                object.put("label", moduleDO.getName());
+                object.put("scope", "module");
+                object.put("number", moduleDO.getModuleId());
+                object.put("leaf", false);
+                result.add(object);
+            });
+        } else if (level == 2) {
+            InterfaceCaseListDTO dto = new InterfaceCaseListDTO();
+            dto.setModuleId(id);
+            ArrayList<InterfaceCaseListVO> caseList = this.findAllInterfaceCaseList(dto);
+            caseList.forEach(cs -> {
+                JSONObject object = new JSONObject();
+                object.put("label", cs.getDesc());
+                object.put("scope", "case");
+                object.put("number", cs.getCaseId());
+                object.put("projectName", cs.getProjectName());
+                object.put("moduleName", cs.getModuleName());
+                object.put("leaf", true);
+                result.add(object);
+            });
+        }
+        return result;
     }
 }
