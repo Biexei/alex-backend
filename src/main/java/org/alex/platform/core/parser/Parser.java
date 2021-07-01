@@ -104,8 +104,8 @@ public class Parser implements Node {
                 LOG.info("--------------------------------------进入数组下标取值模式");
                 if (relyName.indexOf("[") != relyName.lastIndexOf("[") ||
                         relyName.indexOf("]") != relyName.lastIndexOf("]")) {
-                    LOG.warn("数据取值语法错误，relyName={}", relyName);
-                    throw new ParseException("数组取值语法错误");
+                    LOG.error("array index error, relyName={}", relyName);
+                    throw new ParseException("array index error");
                 }
                 String indexStr = relyName.substring(relyName.indexOf("[") + 1, relyName.length() - 1);
                 try {
@@ -118,33 +118,38 @@ public class Parser implements Node {
                     LOG.info("根据relyName查询用例信息，relyName={}", relyName);
                     InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = ifCaseRelyDataService.findIfRelyDataByName(relyName);
                     if (null == interfaceCaseRelyDataVO) {
-                        LOG.warn("未找到对应的用例信息，relyName={}", relyName);
-                        throw new ParseException("未找到该依赖数值, ${" + relyName + "}");
+                        String nf = String.format("dependency ${%s} not found", relyName);
+                        LOG.error(nf);
+                        throw new ParseException(nf);
                     }
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     LOG.info("获取到的用例编号={}", caseId);
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(
                             caseId, "系统调度", null, chainNo, suiteId,
-                            isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, (byte)4, casePreNo));
+                            isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, (byte)4, casePreNo, false));
 
                     LOG.info("执行用例编号={}，执行日志编号={}", caseId, executeLogId);
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
-                        LOG.warn("前置用例执行未通过，执行用例编号={}，执行日志编号={}", caseId, executeLogId);
-                        throw new BusinessException("前置用例执行未通过");
+                        String nf = String.format("dependency related case [%s] execution failed or error, " +
+                                "the execution log id was [%s]", caseId, executeLogId);
+                        LOG.error(nf);
+                        throw new BusinessException(nf);
                     }
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
                     String responseBody = interfaceCaseExecuteLogVO.getResponseBody();
                     String responseHeaders = interfaceCaseExecuteLogVO.getResponseHeaders();
-                    LOG.warn("前置用例responseBody={}", responseBody);
-                    LOG.warn("前置用例responseHeaders={}", responseHeaders);
+                    LOG.info("依赖用例responseBody={}", responseBody);
+                    LOG.info("依赖用例responseHeaders={}", responseHeaders);
                     int contentType = (int) interfaceCaseRelyDataVO.getContentType();
                     String expression = interfaceCaseRelyDataVO.getExtractExpression();
                     try {
                         if (contentType == 0) { // json
                             ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, expression), ArrayList.class);
                             if (jsonPathArray.isEmpty()) {
-                                LOG.warn("jsonPath提取内容为空，jsonPath={}", expression);
-                                throw new ParseException(expression + "提取内容为空");
+                                String nf = String.format("case dependency [%s] json-path extract content was null, " +
+                                        "the case id was [%s], the execution log id was [%s], the expression was [%s]", relyName, caseId, executeLogId, expression);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             }
                             try {
                                 String value = jsonPathArray.get(index).toString();
@@ -152,14 +157,17 @@ public class Parser implements Node {
                                 s = s.replace(findStr, value);
                                 LOG.info("jsonPath提取值并替换后的结果={}", s);
                             } catch (Exception e) {
-                                LOG.warn("jsonPath数组下表越界，relyName={}, index={}", relyName, index);
-                                throw new ParseException(relyName + " 数组下标越界");
+                                String nf = String.format("json-path index out of bounds, case dependency [%s], index [%s]", relyName, index);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             }
                         } else if (contentType == 1) { // html
                             ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
                             if (xpathArray.isEmpty()) {
-                                LOG.warn("xpath提取内容为空，xpath={}", expression);
-                                throw new ParseException(expression + "提取内容为空");
+                                String nf = String.format("case dependency [%s] xpath extract content was null, " +
+                                        "the case id was [%s], the execution log id was [%s], the expression was [%s]", relyName, caseId, executeLogId, expression);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             }
                             try {
                                 String value = xpathArray.get(index).toString();
@@ -167,14 +175,17 @@ public class Parser implements Node {
                                 s = s.replace(findStr, value);
                                 LOG.info("xpath提取值并替换后的结果={}", s);
                             } catch (Exception e) {
-                                LOG.warn("xpath数组下表越界，relyName={}, index={}", relyName, index);
-                                throw new ParseException(relyName + " 数组下标越界");
+                                String nf = String.format("xpath index out of bounds, case dependency [%s], index [%s]", relyName, index);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             }
                         } else if (contentType == 2) { // headers
                             JSONArray headerArray = (JSONArray) JSONObject.parseObject(responseHeaders, HashMap.class).get(expression);
                             if (null == headerArray || headerArray.isEmpty()) {
-                                LOG.warn("未找到请求头，header={}", expression);
-                                throw new ParseException("未找到请求头:" + expression);
+                                String nf = String.format("case dependency [%s] headers extract content was null, " +
+                                        "the case id was [%s], the execution log id was [%s], the expression was [%s]", relyName, caseId, executeLogId, expression);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             }
                             try {
                                 String value = headerArray.get(index).toString();
@@ -182,22 +193,23 @@ public class Parser implements Node {
                                 s = s.replace(findStr, value);
                                 LOG.info("header提取值并替换后的结果={}", s);
                             } catch (Exception e) {
-                                LOG.warn("header数组下表越界，header={}, index={}", expression, index);
-                                throw new ParseException(expression + " 数组下标越界");
+                                String nf = String.format("header index out of bounds, case dependency [%s], index [%s]", relyName, index);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             }
                         } else {
-                            throw new BusinessException("不支持该contentType");
+                            throw new BusinessException("not supported the extract type");
                         }
                     } catch (BusinessException e) {
-                        LOG.error("不支持该contentType");
-                        throw new BusinessException("不支持该contentType");
+                        LOG.error("not supported the extract type");
+                        throw new BusinessException("not supported the extract type");
                     } catch (Exception e) {
-                        LOG.error("下标取值模式执行异常，errorMsg={}", ExceptionUtil.msg(e));
+                        LOG.error("extra by array error , " + ExceptionUtil.msg(e));
                         throw new ParseException(e.getMessage());
                     }
                 } catch (NumberFormatException e) {
-                    LOG.error("数组下标只能为数字");
-                    throw new ParseException("数组下标只能为数字");
+                    LOG.error("array index argument illegal");
+                    throw new ParseException("array index argument illegal");
                 }
 // 进入预置方法/动态SQL模式
             } else if (Pattern.matches("\\w+\\((,?|(\".*\")?|\\s?)+\\)$", relyName)) {
@@ -205,17 +217,19 @@ public class Parser implements Node {
                 LOG.info("--------------------------------------进入预置方法/动态SQL模式");
                 if (relyName.indexOf("(") != relyName.lastIndexOf("(") ||
                         relyName.indexOf(")") != relyName.lastIndexOf(")")) {
-                    LOG.warn("预置方法/动态SQL语法错误， string={}", relyName);
-                    throw new ParseException("预置方法/动态SQL语法错误");
+                    String nf = String.format("dependency init method or sql [%s] syntax error", relyName);
+                    LOG.error(nf);
+                    throw new ParseException(nf);
                 }
                 String methodName = relyName.substring(0, relyName.indexOf("("));
-                LOG.warn("预置方法名称/动态SQL依赖名称={}", methodName);
+                LOG.info("预置方法名称/动态SQL依赖名称={}", methodName);
                 String[] params = relyName.substring(relyName.indexOf("(") + 1, relyName.length() - 1)
                         .replaceAll(",\\s+", ",").split(",");
                 RelyDataVO relyDataVO = relyDataService.findRelyDataByName(methodName);
                 if (null == relyDataVO) {
-                    LOG.warn("未找到该预置方法/动态SQL依赖名称， string={}", methodName);
-                    throw new ParseException("未找到该预置方法/动态SQL依赖名称");
+                    String nf = String.format("init method or sql [%s] not found", relyName);
+                    LOG.error(nf);
+                    throw new ParseException(nf);
                 }
                 byte type = relyDataVO.getType();
                 if (type == 1) { //反射方法
@@ -238,8 +252,9 @@ public class Parser implements Node {
                         s = s.replace(findStr, value);
                         LOG.info("预置方法执行并替换后的结果={}", s);
                     } catch (Exception e) {
-                        LOG.error("未找到依赖方法或者入参错误, errorMsg={}", ExceptionUtil.msg(e));
-                        throw new ParseException("未找到依赖方法或者入参错误, errorMsg=" + ExceptionUtil.msg(e));
+                        String nf = String.format("dependency init method execution error, maybe not found or parameter error, method was [%s]",methodName);
+                        LOG.error(nf);
+                        throw new ParseException(nf);
                     }
                 } else if (type >= 2 && type <= 6) { //sql 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
                     LOG.info("--------------------------------------进入动态SQL模式");
@@ -253,14 +268,16 @@ public class Parser implements Node {
                     }
                     Integer datasourceId = relyDataVO.getDatasourceId();
                     if (null == datasourceId) {
-                        LOG.warn("SQL依赖名称未找到对应的数据源");
-                        throw new ParseException("SQL依赖名称未找到对应的数据源");
+                        String nf = String.format("data source not found, the datasource id was [%s]", datasourceId);
+                        LOG.error(nf);
+                        throw new ParseException(nf);
                     }
                     DbVO dbVO = dbService.findDbById(datasourceId);
                     int status = dbVO.getStatus();
                     if (status == 1) {
-                        LOG.warn("数据源已被禁用，dbName={}", dbVO.getName());
-                        throw new ParseException("数据源已被禁用");
+                        String nf = String.format("data source access denied, the datasource id was [%s]", datasourceId);
+                        LOG.error(nf);
+                        throw new ParseException(nf);
                     }
                     DbConnection datasource = env.datasource(dbVO, runEnv);
                     String url = datasource.getUrl();
@@ -326,8 +343,9 @@ public class Parser implements Node {
                 if (null == interfaceCaseRelyDataVO) {
                     RelyDataVO relyDataVO = relyDataService.findRelyDataByName(relyName);
                     if (null == relyDataVO) {
-                        LOG.warn("未找到该依赖数值，relyName={}", relyName);
-                        throw new ParseException("未找到该依赖数值${" + relyName + "}");
+                        String nf = String.format("dependency [%s] not found", relyName);
+                        LOG.error(nf);
+                        throw new ParseException(nf);
                     } else {
                         int type = relyDataVO.getType();
                         if (type == 0) {
@@ -340,14 +358,16 @@ public class Parser implements Node {
                         } else if (type >= 2 && type <= 6) {
                             Integer datasourceId = relyDataVO.getDatasourceId();
                             if (null == datasourceId) {
-                                LOG.warn("SQL依赖名称未找到对应的数据源");
-                                throw new ParseException("SQL依赖名称未找到对应的数据源");
+                                String nf = String.format("data source not found, the datasource id was [%s]", datasourceId);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             }
                             DbVO dbVO = dbService.findDbById(datasourceId);
                             int status = dbVO.getStatus();
                             if (status == 1) {
-                                LOG.warn("数据源已被禁用，dbName={}", dbVO.getName());
-                                throw new ParseException("数据源已被禁用");
+                                String nf = String.format("data source access denied, the datasource id was [%s]", datasourceId);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             }
                             DbConnection datasource = env.datasource(dbVO, runEnv);
                             String url = datasource.getUrl();
@@ -400,38 +420,40 @@ public class Parser implements Node {
                             }
                             s = s.replace(findStr, sqlResult);
                         } else {
-                            LOG.warn("未找到该依赖数值，relyName={}，请确保该依赖不是方法", relyName);
-                            throw new ParseException("未找到该依赖数值${" + relyName + "}，请确保该依赖不是方法");
+                            String nf = String.format("dependency [%s] not found, make sure it's not method", relyName);
+                            LOG.error(nf);
+                            throw new ParseException(nf);
                         }
                     }
                 } else {
                     Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
                     Integer executeLogId = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId,
                             "系统调度", null, chainNo, suiteId, isFailedRetry, suiteLogDetailNo,
-                            globalHeaders, globalParams, globalData, (byte)4, casePreNo));
+                            globalHeaders, globalParams, globalData, (byte)4, casePreNo, false));
                     if (executeLogService.findExecute(executeLogId).getStatus() != 0) {
-                        LOG.warn("前置用例执行未通过");
-                        throw new BusinessException("前置用例执行未通过");
+                        String nf = String.format("dependency related case [%s] execution failed or error, " +
+                                "the execution log id was [%s]", caseId, executeLogId);
+                        LOG.error(nf);
+                        throw new BusinessException(nf);
                     }
                     InterfaceCaseExecuteLogVO interfaceCaseExecuteLogVO = executeLogService.findExecute(executeLogId);
                     String responseBody = interfaceCaseExecuteLogVO.getResponseBody();
                     String responseHeaders = interfaceCaseExecuteLogVO.getResponseHeaders();
-                    LOG.warn("前置用例responseBody={}", responseBody);
-                    LOG.warn("前置用例responseHeaders={}", responseHeaders);
+                    LOG.info("依赖用例responseBody={}", responseBody);
+                    LOG.info("依赖用例responseHeaders={}", responseHeaders);
                     int contentType = (int) interfaceCaseRelyDataVO.getContentType();
                     String expression = interfaceCaseRelyDataVO.getExtractExpression();
                     try {
                         if (contentType == 0) { // json
                             ArrayList jsonPathArray = JSONObject.parseObject(ParseUtil.parseJson(responseBody, expression), ArrayList.class);
                             if (jsonPathArray.isEmpty()) {
-                                LOG.warn("jsonPath提取内容为空，jsonPath={}", expression);
-                                throw new ParseException(expression + "提取内容为空");
+                                String nf = String.format("case dependency [%s] json-path extract content was null, " +
+                                        "the case id was [%s], the execution log id was [%s], the expression was [%s]", relyName, caseId, executeLogId, expression);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             }
                             if (jsonPathArray.size() == 1) {
                                 Object o = jsonPathArray.get(0);
-                                if (o == null) {
-                                    throw new BusinessException(jsonPathArray + "提取内容为空");
-                                }
                                 redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_JSON, executeLogId, relyName, o.toString(), TimeUtil.now()-start, expression));
                                 s = s.replace(findStr, o.toString());
                             } else {
@@ -442,14 +464,13 @@ public class Parser implements Node {
                         } else if (contentType == 1) { // html
                             ArrayList xpathArray = JSONObject.parseObject(ParseUtil.parseXml(responseBody, expression), ArrayList.class);
                             if (xpathArray.isEmpty()) {
-                                LOG.warn("xpath提取内容为空，jsonPath={}", expression);
-                                throw new ParseException(expression + "提取内容为空");
+                                String nf = String.format("case dependency [%s] xpath extract content was null, " +
+                                        "the case id was [%s], the execution log id was [%s], the expression was [%s]", relyName, caseId, executeLogId, expression);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             }
                             if (xpathArray.size() == 1) {
                                 Object o = xpathArray.get(0);
-                                if (o == null) {
-                                    throw new BusinessException(xpathArray + "提取内容为空");
-                                }
                                 redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HTML, executeLogId, relyName, o.toString(), TimeUtil.now()-start, expression));
                                 s = s.replace(findStr, o.toString());
                             } else {
@@ -460,14 +481,13 @@ public class Parser implements Node {
                         } else if (contentType == 2) { // headers
                             ArrayList headerArray = JSONObject.parseObject(ParseUtil.parseJson(responseHeaders, expression), ArrayList.class);
                             if (headerArray == null || headerArray.isEmpty()) {
-                                LOG.warn("未找到请求头，header={}", expression);
-                                throw new ParseException("未找到请求头:" + expression);
+                                String nf = String.format("case dependency [%s] header's json-path extract content was null, " +
+                                        "the case id was [%s], the execution log id was [%s], the expression was [%s]", relyName, caseId, executeLogId, expression);
+                                LOG.error(nf);
+                                throw new ParseException(nf);
                             } else {
                                 if (headerArray.size() == 1) {
                                     Object o = headerArray.get(0);
-                                    if (o == null) {
-                                        throw new BusinessException(headerArray + "提取内容为空");
-                                    }
                                     redisUtil.stackPush(chainNo, chainNode(RelyType.INTERFACE_HEADER, executeLogId, relyName, o.toString(), TimeUtil.now()-start, expression));
                                     s = s.replace(findStr, o.toString());
                                 } else {
@@ -477,14 +497,16 @@ public class Parser implements Node {
                                 LOG.info("header提取值并替换后的结果={}", s);
                             }
                         } else {
-                            throw new BusinessException("不支持该种取值方式");
+                            throw new BusinessException("not supported the extract type");
                         }
                     } catch (BusinessException e) {
-                        LOG.warn("不支持该种取值方式");
-                        throw new BusinessException("不支持该种取值方式");
+                        String nf = "not supported the extract type";
+                        LOG.error(nf);
+                        throw new BusinessException(nf);
                     } catch (Exception e) {
-                        LOG.error("普通依赖数据模式执行异常，errorMsg={}", ExceptionUtil.msg(e));
-                        throw new ParseException("普通依赖数据模式执行异常，errorMsg=" + ExceptionUtil.msg(e));
+                        String nf = String.format("parse dependency error, errorMsg [%s]", ExceptionUtil.msg(e));
+                        LOG.error(nf);
+                        throw new ParseException(nf);
                     }
                 }
             }
@@ -529,8 +551,9 @@ public class Parser implements Node {
                 redisResult = redisUtil.hashGet(casePreNo, postProcessorName);
             }
             if (redisResult == null) {
-                LOG.error("未找到处理器#{" + postProcessorName + "}");
-                throw new ParseException("未找到处理器#{" + postProcessorName + "}");
+                String nf = String.format("processor [%s] not found", postProcessorName);
+                LOG.error(nf);
+                throw new ParseException(nf);
             }
             String redisResultStr = redisResult.toString();
             redisUtil.stackPush(chainNo, chainNode(RelyType.READ_PROCESSOR, null, postProcessorName, redisResultStr, TimeUtil.now()-start, null));

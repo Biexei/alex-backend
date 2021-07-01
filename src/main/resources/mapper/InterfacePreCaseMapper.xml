@@ -40,7 +40,7 @@
         select `id`, `parent_case_id`, `pre_case_id`, `order`, `status`, `created_time`, `update_time`
         from `t_interface_pre_case`
         where `parent_case_id` = #{parentCaseId} and `status`=0
-        order by `status` asc
+        order by `order` asc
     </select>
 
     <select id="selectInterfacePreIdByParentId" parameterType="Integer" resultType="Integer">

@@ -182,7 +182,7 @@
         left join `t_interface_pre_case` as `pre` on `icase`.`case_id` = `pre`.`parent_case_id`
         left join `t_interface_case` as `pcase` on `pre`.`pre_case_id` = `pcase`.`case_id`
         where `icase`.`case_id` = #{caseId}
-        order by `assert`.`order` asc, `pre`.`status` asc
+        order by `assert`.`order` asc, `pre`.`order` asc
     </select>
 
     <select id="selectInterfaceCase" parameterType="Integer" resultType="org.alex.platform.pojo.InterfaceCaseDO">

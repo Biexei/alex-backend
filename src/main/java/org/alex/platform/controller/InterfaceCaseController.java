@@ -212,7 +212,7 @@ public class InterfaceCaseController {
         try {
             Integer executeLog = interfaceCaseService.executeInterfaceCase(new ExecuteInterfaceCaseParam(caseId, executor,
                     null, NoUtil.genChainNo(), null, (byte) 1,
-                    null, null, null, null, (byte)0, null));
+                    null, null, null, null, (byte)0, null, false));
             Byte status = executeLogService.findExecute(executeLog).getStatus();
             if (status == 0) {
                 return Result.success("执行成功");

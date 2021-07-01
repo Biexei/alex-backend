@@ -36,11 +36,16 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
         Integer preCaseId = interfacePreCaseDO.getPreCaseId();
         InterfaceCaseDO interfaceCaseDO = interfaceCaseMapper.selectInterfaceCase(preCaseId);
         if (interfaceCaseDO == null) {
-            LOG.error("参数非法,前置用例={}不存在", preCaseId);
-            throw new BusinessException("参数非法,前置用例不存在");
+            String errorMsg = String.format("pre-case [%s] not found", preCaseId);
+            LOG.error(errorMsg);
+            throw new BusinessException(errorMsg);
         }
         // 校验前置用例合法性
-        this.validatePreCaseForSave(interfacePreCaseDO);
+        // this.validatePreCaseForSave(interfacePreCaseDO);
+        // 2021.07.01去除该方法，变更需求为：当用例作为前置用例执行时，跳过前置用例的前置用例，仅执行自身
+
+
+        // 入库
         Date date = new Date();
         interfacePreCaseDO.setCreatedTime(date);
         interfacePreCaseDO.setUpdateTime(date);
@@ -58,16 +63,22 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
         Integer preCaseId = interfacePreCaseDO.getPreCaseId();
         InterfaceCaseDO interfaceCaseDO = interfaceCaseMapper.selectInterfaceCase(preCaseId);
         if (interfaceCaseDO == null) {
-            LOG.error("参数非法,前置用例={}不存在", preCaseId);
-            throw new BusinessException("参数非法,前置用例不存在");
+            String errorMsg = String.format("pre-case [%s] not found", preCaseId);
+            LOG.error(errorMsg);
+            throw new BusinessException(errorMsg);
         }
+        // 前置用例不能为自身
         interfacePreCaseDO.setUpdateTime(new Date());
         if (interfacePreCaseDO.getPreCaseId().equals(interfacePreCaseDO.getParentCaseId())) {
-            LOG.warn("前置用例应不能等于用例自身编号");
-            throw new BusinessException("前置用例不能为本身，请重新选择前置用例");
+            String errorMsg = "pre-case not for itself";
+            LOG.error(errorMsg);
+            throw new BusinessException(errorMsg);
         }
         // 校验前置用例合法性
-        this.validatePreCaseForModify(interfacePreCaseDO);
+        // this.validatePreCaseForModify(interfacePreCaseDO);
+        // 2021.07.01去除该方法，变更需求为：当用例作为前置用例执行时，跳过前置用例的前置用例，仅执行自身
+
+        // 入库
         interfacePreCaseMapper.updateInterfacePreCase(interfacePreCaseDO);
     }
 
@@ -129,7 +140,7 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
         List<Integer> list = this.findInterfacePreCaseIdByParentId(parentCaseId);
         returnResult.addAll(list);
         for (Integer pId : list) {
-            List<Integer> l = recursionPreCase(new ArrayList<Integer>(), pId);
+            List<Integer> l = recursionPreCase(new ArrayList<>(), pId);
             returnResult.addAll(l);
         }
         return returnResult;
@@ -140,48 +151,54 @@ public class InterfacePreCaseServiceImpl implements InterfacePreCaseService {
     }
 
     /**
+     * 2021.07.01去除该方法，变更需求为：前置用例不能含有前置用例
+     *
+     *
      * 校验前置用例（含前置用例的前置用例）是否包含自身(新增用)
      * @param interfacePreCaseDO interfacePreCaseDO
      * @throws BusinessException 前置用例（含前置用例的前置用例）不能包含本身
      */
+    @Deprecated
     private void validatePreCaseForSave(InterfacePreCaseDO interfacePreCaseDO) throws BusinessException {
         Integer parentCase = interfacePreCaseDO.getParentCaseId();
         Integer preCase = interfacePreCaseDO.getPreCaseId();
         // 校验父节点
-        List<Integer> allPreCase1 = this.recursionPreCase(new ArrayList<Integer>(), parentCase);
+        List<Integer> allPreCase1 = this.recursionPreCase(new ArrayList<>(), parentCase);
         if (allPreCase1.contains(preCase)) {
             throw new BusinessException("前置用例（含前置用例的前置用例）不能包含本身");
         }
         // 校验自身节点
-        List<Integer> allPreCase2 = this.recursionPreCase(new ArrayList<Integer>(), preCase);
+        List<Integer> allPreCase2 = this.recursionPreCase(new ArrayList<>(), preCase);
         if (allPreCase2.contains(parentCase)) {
             throw new BusinessException("前置用例（含前置用例的前置用例）不能包含本身");
         }
     }
 
     /**
+     * 2021.07.01去除该方法，变更需求为：前置用例不能含有前置用例
+     *
+     *
      * 校验前置用例（含前置用例的前置用例）是否包含自身(修改用)
      * @param interfacePreCaseDO interfacePreCaseDO
      * @throws BusinessException 前置用例（含前置用例的前置用例）不能包含本身
      */
+    @Deprecated
     private void validatePreCaseForModify(InterfacePreCaseDO interfacePreCaseDO) throws BusinessException {
         Integer parentCase = interfacePreCaseDO.getParentCaseId();
         Integer preCase = interfacePreCaseDO.getPreCaseId();
         Integer id = interfacePreCaseDO.getId();
         // 校验父节点
-        List<Integer> allPreCase1 = this.recursionPreCase(new ArrayList<Integer>(), parentCase);
+        List<Integer> allPreCase1 = this.recursionPreCase(new ArrayList<>(), parentCase);
         // 移除现有preCaseId
         List<Integer> preCaseIdList = interfacePreCaseMapper.selectInterfacePreCaseIdById(id);
         for (Integer preCaseId : preCaseIdList) {
-            if (allPreCase1.contains(preCaseId)) {
-                allPreCase1.remove(preCaseId);
-            }
+            allPreCase1.remove(preCaseId);
         }
         if (allPreCase1.contains(preCase)) {
             throw new BusinessException("前置用例（含前置用例的前置用例）不能包含本身/前置用例重复");
         }
         // 校验自身节点
-        List<Integer> allPreCase2 = this.recursionPreCase(new ArrayList<Integer>(), preCase);
+        List<Integer> allPreCase2 = this.recursionPreCase(new ArrayList<>(), preCase);
         if (allPreCase2.contains(parentCase)) {
             throw new BusinessException("前置用例（含前置用例的前置用例）不能包含本身/前置用例重复");
         }

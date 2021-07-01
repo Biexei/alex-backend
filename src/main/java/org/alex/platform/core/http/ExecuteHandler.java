@@ -78,6 +78,7 @@ public class ExecuteHandler implements Node {
         HashMap globalData = executeInterfaceCaseParam.getGlobalData();
         Byte source = executeInterfaceCaseParam.getSource();
         String casePreNo = executeInterfaceCaseParam.getCasePreNo();
+        Boolean skipPreCase = executeInterfaceCaseParam.getSkipPreCase();
 
         // 获取case详情
         InterfaceCaseInfoVO interfaceCaseInfoVO = interfaceCaseService.findInterfaceCaseByCaseId(interfaceCaseId);
@@ -145,39 +146,13 @@ public class ExecuteHandler implements Node {
         String rawParams = params;
         long runTime = 0;
 
-
-        // 执行前置用例
-        List<InterfacePreCaseDO> preCaseList = interfacePreCaseService.findInterfacePreCaseByParentId(interfaceCaseId);
-        if (!preCaseList.isEmpty()) {
-            String no = NoUtil.genCasePreNo();
-            casePreNo = no; // 重置casePreNo
-            for(InterfacePreCaseDO preCase : preCaseList) {
-                Integer caseId = preCase.getPreCaseId();
-                LOG.info("pre-case [{}] start execution....", caseId);
-                executeInterfaceCaseParam.setSource((byte)5);
-                executeInterfaceCaseParam.setCasePreNo(no);
-                executeInterfaceCaseParam.setExecutor("前置用例");
-                executeInterfaceCaseParam.setSuiteLogNo(null); // 把前置用例作为中间依赖case处理
-                executeInterfaceCaseParam.setInterfaceCaseId(caseId);
-                try {
-                    this.executeInterfaceCase(executeInterfaceCaseParam);
-                } catch (BusinessException e) {
-                    caseStatus = 2;
-                    e.printStackTrace();
-                    exceptionMessage = "pre-case execution error" + ExceptionUtil.msg(e);
-                    LOG.error(exceptionMessage);
-                }
-                LOG.info("pre-case [{}] at the end of execution", caseId);
-            }
-        }
-
-
-        // 执行case
-        ResponseEntity responseEntity = null;
+        HttpMethod methodEnum = null;
         HashMap headersMap = null;
         HashMap paramsMap = null;
-        HashMap formDataMap;
-        HashMap formDataEncodedMap;
+        HashMap formDataMap = null;
+        HashMap formDataEncodedMap = null;
+
+        // 解析依赖
         try {
             // 解析headers中的依赖
             headers = parser.parseDependency(headers, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
@@ -210,17 +185,67 @@ public class ExecuteHandler implements Node {
             paramsMap = (HashMap<String, String>) urlParamsWrapper.get("params");
 
             // 确定请求方式
-            HttpMethod methodEnum = this.httpMethod(method);
+            methodEnum = this.httpMethod(method);
             // 确定日志记录最终记录的rawBody
             rawBody = this.logRawBody(bodyType, formData, formDataEncoded, raw);
             // 确定日志记录最终记录的requestBody
             requestBody = this.logRequestBody(bodyType, formDataMap, formDataEncodedMap, raw);
+        } catch (Exception e) {
+            caseStatus = 2;
+            e.printStackTrace();
+            LOG.error(ExceptionUtil.msg(e));
+            exceptionMessage = e.getMessage();
+        }
 
-            // 发送请求
+        // 执行前置用例
+        if (!skipPreCase) {
+            List<InterfacePreCaseDO> preCaseList = interfacePreCaseService.findInterfacePreCaseByParentId(interfaceCaseId);
+            if (!preCaseList.isEmpty()) {
+                String no = NoUtil.genCasePreNo();
+                casePreNo = no; // 重置casePreNo
+                for(InterfacePreCaseDO preCase : preCaseList) {
+                    Integer caseId = preCase.getPreCaseId();
+                    LOG.info("pre-case [{}] start execution....", caseId);
+                    executeInterfaceCaseParam.setSource((byte)5);
+                    executeInterfaceCaseParam.setCasePreNo(no);
+                    executeInterfaceCaseParam.setExecutor("前置用例");
+                    executeInterfaceCaseParam.setSuiteLogNo(null); // 把前置用例作为中间依赖case处理
+                    executeInterfaceCaseParam.setInterfaceCaseId(caseId);
+                    executeInterfaceCaseParam.setSkipPreCase(true); // 当用例作为前置用例执行时，应该跳过前置用例的前置用例，仅执行自身
+                    Integer logId = this.executeInterfaceCase(executeInterfaceCaseParam);
+                    // 查询用例执行状态
+                    InterfaceCaseExecuteLogVO log = executeLogService.findExecute(logId);
+                    Byte status = log.getStatus();
+                    if (status != 0) {
+                        if (status == 1) {
+                            exceptionMessage = String.format("pre-case [%s] execution failed, " +
+                                    "others pre-case will stop running", caseId);
+                        } else {
+                            exceptionMessage = String.format("pre-case [%s] execution error, errorMsg [%s], " +
+                                    "others pre-case will stop running", caseId, log.getErrorMessage());
+                        }
+                        caseStatus = 2;
+                        LOG.error(exceptionMessage);
+                        break; // 终止循环，其它前置用例不再执行
+                    }
+                    LOG.info("pre-case [{}] at the end of execution", caseId);
+                }
+            }
+        }
+
+        // 当前置用例执行不成功, 记录日志并停止后续流程
+        if (caseStatus == 2) {
+            return this.onRequestError(interfaceCaseId, url, desc, method, headersMap, paramsMap, requestBody,
+                    rawHeaders, rawParams, rawBody, executor, exceptionMessage, runTime,
+                    suiteLogNo, suiteLogDetailNo, isFailedRetry, source, rawType, bodyType, chainNo);
+        }
+
+        // 发送请求
+        ResponseEntity responseEntity = null;
+        try {
             long startTime = System.currentTimeMillis();
             responseEntity = this.doRequest(bodyType, methodEnum, url, headersMap, paramsMap, formDataMap, formDataEncodedMap, raw, rawType);
             runTime = System.currentTimeMillis() - startTime;
-
         } catch (ResourceAccessException e) {
             caseStatus = 2;
             e.printStackTrace();
