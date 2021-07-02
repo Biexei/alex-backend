@@ -91,7 +91,6 @@ public class ExecuteHandler implements Node {
         String exceptionMessage = null; // 接收异常信息
         byte caseStatus = 0; // 运行结果 0成功 1失败 2错误
         String url;
-        String rawBody = null; // 记录请求日志的rawBody
         String requestBody = null; // 记录请求日志requestBody字段
 
         // source 来源（0用例调试 1依赖调试 2运行整个测试套件 3测试套件单个用例调试 4依赖解析 5综合用例-前置用例）
@@ -144,15 +143,62 @@ public class ExecuteHandler implements Node {
 
         String rawHeaders = headers;
         String rawParams = params;
+        // 确定日志记录最终记录的rawBody
+        String rawBody = this.logRawBody(bodyType, formData, formDataEncoded, raw);
         long runTime = 0;
 
-        HttpMethod methodEnum = null;
+
+        // 执行前置用例
+        if (!skipPreCase) {
+            List<InterfacePreCaseDO> preCaseList = interfacePreCaseService.findInterfacePreCaseByParentId(interfaceCaseId);
+            if (!preCaseList.isEmpty()) {
+                String no = NoUtil.genCasePreNo();
+                casePreNo = no; // 重置casePreNo
+                for(InterfacePreCaseDO preCase : preCaseList) {
+                    Integer caseId = preCase.getPreCaseId();
+                    LOG.info("pre-case [{}] start execution....", caseId);
+                    executeInterfaceCaseParam.setSource((byte)5);
+                    executeInterfaceCaseParam.setCasePreNo(no);
+                    executeInterfaceCaseParam.setExecutor("前置用例");
+                    executeInterfaceCaseParam.setSuiteLogNo(null); // 把前置用例作为中间依赖case处理
+                    executeInterfaceCaseParam.setInterfaceCaseId(caseId);
+                    executeInterfaceCaseParam.setSkipPreCase(true); // 当用例作为前置用例执行时，应该跳过前置用例的前置用例，仅执行自身
+                    Integer logId = this.executeInterfaceCase(executeInterfaceCaseParam);
+                    // 查询用例执行状态
+                    InterfaceCaseExecuteLogVO log = executeLogService.findExecute(logId);
+                    String caseDesc = log.getCaseDesc();
+                    Byte status = log.getStatus();
+                    if (status != 0) {
+                        if (status == 1) {
+                            exceptionMessage = String.format("pre-case [%s] [%s] execution failed, " +
+                                    "other pre-case will stop running", caseId,  caseDesc);
+                        } else {
+                            exceptionMessage = String.format("pre-case [%s] [%s] execution error, errorMsg [%s], " +
+                                    "other pre-case will stop running", caseId, caseDesc, log.getErrorMessage());
+                        }
+                        caseStatus = 2;
+                        LOG.error(exceptionMessage);
+                        break; // 终止循环，其它前置用例不再执行
+                    }
+                    LOG.info("pre-case [{}] at the end of execution", caseId);
+                }
+            }
+        }
+
+        // 当前置用例执行不成功, 记录日志并停止后续流程
+        if (caseStatus == 2) {
+            return this.onRequestError(interfaceCaseId, url, desc, method, null, null, null,
+                    rawHeaders, rawParams, rawBody, executor, exceptionMessage, runTime,
+                    suiteLogNo, suiteLogDetailNo, isFailedRetry, source, rawType, bodyType, chainNo);
+        }
+
+        // 发送请求
+        ResponseEntity responseEntity = null;
         HashMap headersMap = null;
         HashMap paramsMap = null;
-        HashMap formDataMap = null;
-        HashMap formDataEncodedMap = null;
+        HashMap formDataMap;
+        HashMap formDataEncodedMap;
 
-        // 解析依赖
         try {
             // 解析headers中的依赖
             headers = parser.parseDependency(headers, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
@@ -184,65 +230,12 @@ public class ExecuteHandler implements Node {
             url = (String) urlParamsWrapper.get("url");
             paramsMap = (HashMap<String, String>) urlParamsWrapper.get("params");
 
-            // 确定请求方式
-            methodEnum = this.httpMethod(method);
-            // 确定日志记录最终记录的rawBody
-            rawBody = this.logRawBody(bodyType, formData, formDataEncoded, raw);
             // 确定日志记录最终记录的requestBody
             requestBody = this.logRequestBody(bodyType, formDataMap, formDataEncodedMap, raw);
-        } catch (Exception e) {
-            caseStatus = 2;
-            e.printStackTrace();
-            LOG.error(ExceptionUtil.msg(e));
-            exceptionMessage = e.getMessage();
-        }
+            // 确定请求方式
+            HttpMethod methodEnum = this.httpMethod(method);
 
-        // 执行前置用例
-        if (!skipPreCase) {
-            List<InterfacePreCaseDO> preCaseList = interfacePreCaseService.findInterfacePreCaseByParentId(interfaceCaseId);
-            if (!preCaseList.isEmpty()) {
-                String no = NoUtil.genCasePreNo();
-                casePreNo = no; // 重置casePreNo
-                for(InterfacePreCaseDO preCase : preCaseList) {
-                    Integer caseId = preCase.getPreCaseId();
-                    LOG.info("pre-case [{}] start execution....", caseId);
-                    executeInterfaceCaseParam.setSource((byte)5);
-                    executeInterfaceCaseParam.setCasePreNo(no);
-                    executeInterfaceCaseParam.setExecutor("前置用例");
-                    executeInterfaceCaseParam.setSuiteLogNo(null); // 把前置用例作为中间依赖case处理
-                    executeInterfaceCaseParam.setInterfaceCaseId(caseId);
-                    executeInterfaceCaseParam.setSkipPreCase(true); // 当用例作为前置用例执行时，应该跳过前置用例的前置用例，仅执行自身
-                    Integer logId = this.executeInterfaceCase(executeInterfaceCaseParam);
-                    // 查询用例执行状态
-                    InterfaceCaseExecuteLogVO log = executeLogService.findExecute(logId);
-                    Byte status = log.getStatus();
-                    if (status != 0) {
-                        if (status == 1) {
-                            exceptionMessage = String.format("pre-case [%s] execution failed, " +
-                                    "others pre-case will stop running", caseId);
-                        } else {
-                            exceptionMessage = String.format("pre-case [%s] execution error, errorMsg [%s], " +
-                                    "others pre-case will stop running", caseId, log.getErrorMessage());
-                        }
-                        caseStatus = 2;
-                        LOG.error(exceptionMessage);
-                        break; // 终止循环，其它前置用例不再执行
-                    }
-                    LOG.info("pre-case [{}] at the end of execution", caseId);
-                }
-            }
-        }
-
-        // 当前置用例执行不成功, 记录日志并停止后续流程
-        if (caseStatus == 2) {
-            return this.onRequestError(interfaceCaseId, url, desc, method, headersMap, paramsMap, requestBody,
-                    rawHeaders, rawParams, rawBody, executor, exceptionMessage, runTime,
-                    suiteLogNo, suiteLogDetailNo, isFailedRetry, source, rawType, bodyType, chainNo);
-        }
-
-        // 发送请求
-        ResponseEntity responseEntity = null;
-        try {
+            // 发送请求
             long startTime = System.currentTimeMillis();
             responseEntity = this.doRequest(bodyType, methodEnum, url, headersMap, paramsMap, formDataMap, formDataEncodedMap, raw, rawType);
             runTime = System.currentTimeMillis() - startTime;
