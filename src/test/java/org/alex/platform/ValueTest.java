@@ -2,6 +2,7 @@ package org.alex.platform;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.alex.platform.core.parser.Parser;
 import org.alex.platform.mapper.PermissionMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,11 +15,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ValueTest {
     @Autowired
     PermissionMapper mapper;
+    @Autowired
+    Parser parser;
 
     @Test
     public void doTest() {
         //System.out.println(JSON.toJSONString(mapper.selectPermissionByParentId(0), SerializerFeature.DisableCircularReferenceDetect));
-        System.out.println(JSON.toJSONString(function("name", "123", "123")));
+        String test1 = "${name}, ${timestamp()} ${subString(\"123\")} $next[1]} ${last[1]} #{haha} ${last(\"#{token}\")}";
+        System.out.println(parser.extractDependencyName(test1));
+        System.out.println(parser.extractProcessorName(test1));
     }
 
     public String function(String name, String... params) {

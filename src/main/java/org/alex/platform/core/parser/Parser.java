@@ -33,6 +33,10 @@ import java.util.regex.Pattern;
 public class Parser implements Node {
 
     private static final Logger LOG = LoggerFactory.getLogger(Parser.class);
+    private static final String DEPENDENCY_REGEX = "\\$\\{.+?}";
+    private static final String DEPENDENCY_REGEX_INDEX = "[a-zA-Z]+\\[[0-9]+]";
+    private static final String DEPENDENCY_REGEX_PARAMS = "\\w+\\((,?|(\".*\")?|\\s?)+\\)$";
+    private static final String PROCESSOR_REGEX = "#\\{.+?}";
 
     @Autowired
     InterfaceCaseSuiteService ifSuiteService;
@@ -73,6 +77,7 @@ public class Parser implements Node {
      * @throws BusinessException BusinessException
      * @throws SqlException SqlException
      */
+
     public String parseDependency(String s, String chainNo, Integer suiteId, Byte isFailedRetry, String suiteLogDetailNo,
                                 HashMap globalHeaders, HashMap globalParams, HashMap globalData, String casePreNo)
             throws ParseException, BusinessException, SqlException {
@@ -91,7 +96,7 @@ public class Parser implements Node {
             runEnv = ifSuiteService.findInterfaceCaseSuiteById(suiteId).getRunDev();
         }
         LOG.info("--------------------------------------运行环境={}, 0dev 1test 2stg 3prod 4debug", runEnv);
-        Pattern p = Pattern.compile("\\$\\{.+?}");
+        Pattern p = Pattern.compile(DEPENDENCY_REGEX);
         Matcher matcher = p.matcher(s);
         while (matcher.find()) {
             String findStr = matcher.group();
@@ -99,7 +104,7 @@ public class Parser implements Node {
             String relyExpress = relyName; // 带索引的
             LOG.info("relyName={}", relyName);
 // 进入数组下标取值模式
-            if (Pattern.matches("[a-zA-Z]+\\[[0-9]+]", relyName)) {
+            if (Pattern.matches(DEPENDENCY_REGEX_INDEX, relyName)) {
                 long start = TimeUtil.now();
                 LOG.info("--------------------------------------进入数组下标取值模式");
                 if (relyName.indexOf("[") != relyName.lastIndexOf("[") ||
@@ -212,7 +217,7 @@ public class Parser implements Node {
                     throw new ParseException("array index argument illegal");
                 }
 // 进入预置方法/动态SQL模式
-            } else if (Pattern.matches("\\w+\\((,?|(\".*\")?|\\s?)+\\)$", relyName)) {
+            } else if (Pattern.matches(DEPENDENCY_REGEX_PARAMS, relyName)) {
                 long start = TimeUtil.now();
                 LOG.info("--------------------------------------进入预置方法/动态SQL模式");
                 if (relyName.indexOf("(") != relyName.lastIndexOf("(") ||
@@ -529,7 +534,7 @@ public class Parser implements Node {
         if (s == null || s.isEmpty()) {
             return s;
         }
-        Pattern pattern = Pattern.compile("#\\{.+?}");
+        Pattern pattern = Pattern.compile(PROCESSOR_REGEX);
         Matcher matcher = pattern.matcher(s);
         while (matcher.find()) {
             long start = TimeUtil.now();
@@ -571,5 +576,47 @@ public class Parser implements Node {
         LOG.info("--------------------------------------结束处理器提取解析流程--------------------------------------");
         LOG.info("--------------------------------------解析后的字符串为={}", s);
         return s;
+    }
+
+    /**
+     * 提取文本中的依赖(仅名称)
+     * @param text 字符串文本
+     * @return 依赖名称列表
+     */
+    public ArrayList<String> extractDependencyName(String text) {
+        // 去除处理器，否则若依赖中包含处理器将解析出错
+        text = text.replaceAll(PROCESSOR_REGEX, "");
+        ArrayList<String> list = new ArrayList<>();
+        Matcher matcher = Pattern.compile(DEPENDENCY_REGEX).matcher(text);
+        while(matcher.find()) {
+            String finds = matcher.group();
+            String dependencyExpression = finds.substring(2, finds.length() - 1);
+            if (Pattern.matches(DEPENDENCY_REGEX_INDEX, dependencyExpression)) { // 数组下标 带[]
+                String dependencyName = dependencyExpression.substring(0, dependencyExpression.indexOf("["));
+                list.add(dependencyName);
+            } else if (Pattern.matches(DEPENDENCY_REGEX_PARAMS, dependencyExpression)) { // 方法或者sql 带（）
+                String dependencyName = dependencyExpression.substring(0, dependencyExpression.indexOf("("));
+                list.add(dependencyName);
+            } else { // 普通模式
+                list.add(dependencyExpression);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 提取文本中的处理器名称
+     * @param text 字符串文本
+     * @return 依赖名称列表
+     */
+    public ArrayList<String> extractProcessorName(String text) {
+        ArrayList<String> list = new ArrayList<>();
+        Matcher matcher = Pattern.compile(PROCESSOR_REGEX).matcher(text);
+        while(matcher.find()) {
+            String finds = matcher.group();
+            String dependencyExpression = finds.substring(2, finds.length() - 1);
+            list.add(dependencyExpression);
+        }
+        return list;
     }
 }
