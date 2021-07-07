@@ -3,13 +3,14 @@ package org.alex.platform.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.common.LoginUserInfo;
+import org.alex.platform.core.parser.Parser;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.mapper.InterfaceCaseRelyDataMapper;
 import org.alex.platform.mapper.RelyDataMapper;
-import org.alex.platform.pojo.RelyDataDO;
-import org.alex.platform.pojo.RelyDataDTO;
-import org.alex.platform.pojo.RelyDataVO;
+import org.alex.platform.pojo.*;
+import org.alex.platform.service.InterfaceCaseService;
+import org.alex.platform.service.InterfacePreCaseService;
 import org.alex.platform.service.RelyDataService;
 import org.alex.platform.util.ValidUtil;
 import org.slf4j.Logger;
@@ -18,9 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 @Service
 public class RelyDataServiceImpl implements RelyDataService {
@@ -30,6 +31,13 @@ public class RelyDataServiceImpl implements RelyDataService {
     LoginUserInfo loginUserInfo;
     @Autowired
     InterfaceCaseRelyDataMapper interfaceCaseRelyDataMapper;
+    @Autowired
+    Parser parser;
+    @Autowired
+    InterfaceCaseService interfaceCaseService;
+    @Autowired
+    InterfacePreCaseService interfacePreCaseService;
+    @Autowired
     private static final Logger LOG = LoggerFactory.getLogger(RelyDataServiceImpl.class);
 
     @Override
@@ -162,36 +170,98 @@ public class RelyDataServiceImpl implements RelyDataService {
     private RelyDataDO relyDataDOChecker(RelyDataDO relyDataDO) throws BusinessException {
         String name = relyDataDO.getName();
         Byte type = relyDataDO.getType();
-        // 依赖内容都不能包含依赖本身, 反射方法内部数据不做校验
-        if (relyDataDO.getType() != 1) { //0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
-            String sql = relyDataDO.getValue();
-            Pattern pattern = Pattern.compile("\\$\\{.+?\\}");
-            Matcher matcher = pattern.matcher(sql);
-            while (matcher.find()) {
-                String findStr = matcher.group();
-                String relyName = findStr.substring(2, findStr.length() - 1);
-                if (relyName.contains("(") && relyName.contains(")")) {
-                    int index = relyName.indexOf("(");
-                    relyName = relyName.substring(0, index);
-                }
-                if (relyName.equals(name)) {
-                    if (relyDataDO.getAnalysisRely().intValue() == 0) {// 使能解析依赖才检查
-                        throw new BusinessException("禁止引用自身");
-                    }
-                }
-                // 为防止嵌套引用，故暂不支持引用接口依赖
-                // name不能在在于t_interface_case_rely_data
-                if (null != interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName)) {
-                    LOG.warn("禁止引用接口依赖：" + relyName);
-                    throw new BusinessException("禁止引用接口依赖" );
+        String value = relyDataDO.getValue();
+        // 固定值、反射方法内部数据不做校验
+        if (type > 1) { //0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
+
+            ArrayList<String> dependencyNameList = parser.extractDependencyName(value);
+
+            for (String dependencyName : dependencyNameList) {
+                // 依赖值中不能包含当前依赖名称
+                if (dependencyName.equals(name)) {
+                    throw new BusinessException("content prohibited current dependency");
                 }
 
+                // 依赖值中不能包含SQL依赖
+                RelyDataVO relyDataVO = relyDataMapper.selectRelyDataByName(dependencyName);
+                if (relyDataVO != null) {
+                    Byte relyType = relyDataVO.getType();
+                    if (relyType.intValue() > 1) {
+                        throw new BusinessException("content prohibited SQL dependency");
+                    }
+
+                    InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(dependencyName);
+                    if (null != interfaceCaseRelyDataVO) {
+                        // 如果是接口依赖，确保接口依赖本身的headers、params、form-data、form-data-encoded、raw、断言预期结果不包含当前依赖名称
+                        Integer caseId = interfaceCaseRelyDataVO.getRelyCaseId();
+                        InterfaceCaseInfoVO caseInfo = interfaceCaseService.findInterfaceCaseByCaseId(caseId);
+                        String headers = caseInfo.getHeaders();
+                        String params = caseInfo.getParams();
+                        String formData = caseInfo.getFormData();
+                        String formDataEncoded = caseInfo.getFormDataEncoded();
+                        String raw = caseInfo.getRaw();
+                        List<InterfaceAssertVO> asserts = caseInfo.getAsserts();
+                        if (parser.extractDependencyName(headers).contains(name)) {
+                            throw new BusinessException("内容中的接口依赖的header不能引用当前依赖名称");
+                        }
+                        if (parser.extractDependencyName(params).contains(name)) {
+                            throw new BusinessException("内容中的接口依赖的params不能引用当前依赖名称");
+                        }
+                        if (parser.extractDependencyName(formData).contains(name)) {
+                            throw new BusinessException("内容中的接口依赖的formData不能引用当前依赖名称");
+                        }
+                        if (parser.extractDependencyName(formDataEncoded).contains(name)) {
+                            throw new BusinessException("内容中的接口依赖的formDataEncoded不能引用当前依赖名称");
+                        }
+                        if (parser.extractDependencyName(raw).contains(name)) {
+                            throw new BusinessException("内容中的接口依赖的raw不能引用当前依赖名称");
+                        }
+                        for (InterfaceAssertVO interfaceAssertVO : asserts) {
+                            String exceptedResult = interfaceAssertVO.getExceptedResult();
+                            if (parser.extractDependencyName(exceptedResult).contains(name)) {
+                                throw new BusinessException("内容中的接口依赖的断言预期结果不能引用当前依赖名称");
+                            }
+                        }
+                        // 如果是接口依赖，确保接口依赖前置用例的headers、params、form-data、form-data-encoded、raw、断言预期结果不包含当前依赖名称
+                        List<Integer> preCaseIdList = interfacePreCaseService.findInterfacePreIdByParentId(caseId);
+                        for (Integer preCaseId : preCaseIdList) {
+                            InterfaceCaseInfoVO preCaseInfo = interfaceCaseService.findInterfaceCaseByCaseId(preCaseId);
+                            String preHeaders = preCaseInfo.getHeaders();
+                            String preParams = preCaseInfo.getParams();
+                            String preFormData = preCaseInfo.getFormData();
+                            String preFormDataEncoded = preCaseInfo.getFormDataEncoded();
+                            String preRaw = preCaseInfo.getRaw();
+                            List<InterfaceAssertVO> preCaseInfoAsserts = preCaseInfo.getAsserts();
+                            if (parser.extractDependencyName(preHeaders).contains(name)) {
+                                throw new BusinessException("内容中的接口依赖的前置用例的header不能引用当前依赖名称");
+                            }
+                            if (parser.extractDependencyName(preParams).contains(name)) {
+                                throw new BusinessException("内容中的接口依赖的前置用例的params不能引用当前依赖名称");
+                            }
+                            if (parser.extractDependencyName(preFormData).contains(name)) {
+                                throw new BusinessException("内容中的接口依赖的前置用例的formData不能引用当前依赖名称");
+                            }
+                            if (parser.extractDependencyName(preFormDataEncoded).contains(name)) {
+                                throw new BusinessException("内容中的接口依赖的前置用例的formDataEncoded不能引用当前依赖名称");
+                            }
+                            if (parser.extractDependencyName(preRaw).contains(name)) {
+                                throw new BusinessException("内容中的接口依赖的前置用例的raw不能引用当前依赖名称");
+                            }
+                            for (InterfaceAssertVO interfaceAssertVO : preCaseInfoAsserts) {
+                                String exceptedResult = interfaceAssertVO.getExceptedResult();
+                                if (parser.extractDependencyName(exceptedResult).contains(name)) {
+                                    throw new BusinessException("内容中的接口依赖的前置用例的断言预期结果不能引用当前依赖名称");
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         if (type != 3) { // 非新增语句时，将enable_return 设为 null
             relyDataDO.setEnableReturn(null);
         }
-        if (type == 1) { // 0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
+        if (type < 2) { // 0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
             relyDataDO.setAnalysisRely(null);
         } else {
             ValidUtil.notNUll(relyDataDO.getOthersModifiable(), "请选择是否允许其他人编辑");

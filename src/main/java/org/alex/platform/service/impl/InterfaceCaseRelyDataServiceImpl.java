@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.common.LoginUserInfo;
+import org.alex.platform.core.parser.Parser;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ParseException;
 import org.alex.platform.exception.SqlException;
@@ -13,10 +14,7 @@ import org.alex.platform.mapper.InterfaceCaseRelyDataMapper;
 import org.alex.platform.mapper.RelyDataMapper;
 import org.alex.platform.pojo.*;
 import org.alex.platform.pojo.param.ExecuteInterfaceCaseParam;
-import org.alex.platform.service.InterfaceCaseExecuteLogService;
-import org.alex.platform.service.InterfaceCaseRelyDataService;
-import org.alex.platform.service.InterfaceCaseService;
-import org.alex.platform.service.ProjectService;
+import org.alex.platform.service.*;
 import org.alex.platform.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataService {
@@ -47,6 +46,10 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
     RedisUtil redisUtil;
     @Autowired
     LoginUserInfo loginUserInfo;
+    @Autowired
+    InterfacePreCaseService interfacePreCaseService;
+    @Autowired
+    Parser parser;
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseRelyDataServiceImpl.class);
 
     /**
@@ -81,6 +84,8 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             LOG.warn("新增接口依赖，依赖名称已存在于接口依赖，relyName={}", relyName);
             throw new BusinessException("依赖名称已存在于接口依赖");
         }
+        // 检查依赖名称合法性
+        this.checkDependency(ifRelyDataDO);
         ifRelyDataMapper.insertIfRelyData(ifRelyDataDO);
     }
 
@@ -134,6 +139,8 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             LOG.warn("修改接口依赖，依赖名称已存在于接口依赖，relyName={}", relyName);
             throw new BusinessException("依赖名称已存在于接口依赖");
         }
+        // 检查依赖名称合法性
+        this.checkDependency(ifRelyDataDO);
         ifRelyDataMapper.updateIfRelyData(ifRelyDataDO);
     }
 
@@ -164,7 +171,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
             interfaceCaseRelyDataVO.setCaseUrl(protocol + "://" + domain + ":" + port);
             list.add(interfaceCaseRelyDataVO);
         }
-        return new PageInfo(list);
+        return new PageInfo<> (list);
     }
 
     /**
@@ -220,6 +227,7 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
      * @throws BusinessException BusinessException
      */
     @Override
+    @SuppressWarnings({"rawtypes"})
     public String checkRelyResult(Integer relyId, String executor) throws ParseException, SqlException, BusinessException {
         LOG.info("------------------------------执行接口预检操作------------------------------");
         InterfaceCaseRelyDataVO interfaceCaseRelyData = ifCaseRelyDataService.findIfRelyData(relyId);
@@ -313,6 +321,113 @@ public class InterfaceCaseRelyDataServiceImpl implements InterfaceCaseRelyDataSe
         } catch (Exception e) {
             LOG.error("预检接口依赖出现异常，errorMsg={}", ExceptionUtil.msg(e));
             throw new ParseException(e.getMessage());
+        }
+    }
+
+    /**
+     * 检查依赖名称合理性
+     * @param ifRelyDataDO ifRelyDataDO
+     * @throws BusinessException BusinessException
+     */
+    private void checkDependency(InterfaceCaseRelyDataDO ifRelyDataDO) throws BusinessException {
+        Integer relyCaseId = ifRelyDataDO.getRelyCaseId();
+        String name = ifRelyDataDO.getRelyName();
+
+        // 如果是接口依赖，确保接口依赖本身的headers、params、form-data、form-data-encoded、raw、断言预期结果不包含当前依赖名称
+        InterfaceCaseInfoVO caseInfo = interfaceCaseService.findInterfaceCaseByCaseId(relyCaseId);
+        String headers = caseInfo.getHeaders();
+        String params = caseInfo.getParams();
+        String formData = caseInfo.getFormData();
+        String formDataEncoded = caseInfo.getFormDataEncoded();
+        String raw = caseInfo.getRaw();
+        List<InterfaceAssertVO> asserts = caseInfo.getAsserts();
+
+        // 从headers中检查
+        this.checkProperty(name, headers, "headers", false);
+
+        // 从params中检查
+        this.checkProperty(name, params, "params", false);
+
+        // 从formData中检查
+        this.checkProperty(name, formData, "formData", false);
+
+        // 从formDataEncoded中检查
+        this.checkProperty(name, formDataEncoded, "formDataEncoded", false);
+
+        // 从raw中检查
+        this.checkProperty(name, raw, "raw", false);
+
+        // 从断言预期结果检查
+        for (InterfaceAssertVO interfaceAssertVO : asserts) {
+            String exceptedResult = interfaceAssertVO.getExceptedResult();
+            this.checkProperty(name, exceptedResult, "断言预期结果", false);
+        }
+
+        // 如果是接口依赖，确保接口依赖前置用例的headers、params、form-data、form-data-encoded、raw、断言预期结果不包含当前依赖名称
+        List<Integer> preCaseIdList = interfacePreCaseService.findInterfacePreIdByParentId(relyCaseId);
+        for (Integer preCaseId : preCaseIdList) {
+            InterfaceCaseInfoVO preCaseInfo = interfaceCaseService.findInterfaceCaseByCaseId(preCaseId);
+            String preHeaders = preCaseInfo.getHeaders();
+            String preParams = preCaseInfo.getParams();
+            String preFormData = preCaseInfo.getFormData();
+            String preFormDataEncoded = preCaseInfo.getFormDataEncoded();
+            String preRaw = preCaseInfo.getRaw();
+            List<InterfaceAssertVO> preCaseInfoAsserts = preCaseInfo.getAsserts();
+
+            // 从headers中检查
+            this.checkProperty(name, preHeaders, String.format("[%s]headers", preCaseId), true);
+
+            // 从params中检查
+            this.checkProperty(name, preParams, String.format("[%s]params", preCaseId), true);
+
+            // 从formData中检查
+            this.checkProperty(name, preFormData, String.format("[%s]formData", preCaseId), true);
+
+            // 从formDataEncoded中检查
+            this.checkProperty(name, preFormDataEncoded, String.format("[%s]formDataEncoded", preCaseId), true);
+
+            // 从raw中检查
+            this.checkProperty(name, preRaw, String.format("[%s]raw", preCaseId), true);
+
+            // 从断言预期结果检查
+            for (InterfaceAssertVO interfaceAssertVO : preCaseInfoAsserts) {
+                String exceptedResult = interfaceAssertVO.getExceptedResult();
+                this.checkProperty(name, exceptedResult, String.format("[%s]断言预期结果", preCaseId), true);
+            }
+        }
+    }
+
+    /**
+     * 从不同域中检查依赖名称是否合法
+     * @param dependencyName 依赖名称
+     * @param property 域，如headers、params、formdata、formdataencoded、raw
+     * @param propertyDesc 描述
+     * @param isPreCase 是否是前置用例
+     * @throws BusinessException 异常
+     */
+    private void checkProperty(String dependencyName, String property, String propertyDesc, boolean isPreCase) throws BusinessException {
+        for (String s : parser.extractDependencyName(property)) {
+            if (s.equals(dependencyName)) {
+                if (!isPreCase) {
+                    throw new BusinessException(String.format("被绑定用例%s不能引用当前依赖名称", propertyDesc));
+                } else {
+                    throw new BusinessException(String.format("被绑定用例的前置用例%s不能引用当前依赖名称", propertyDesc));
+                }
+            }
+            RelyDataVO vo = relyDataMapper.selectRelyDataByName(s);
+            if (vo != null) {
+                int type = vo.getType().intValue();
+                if (type > 1) {
+                    String value = vo.getValue();
+                    if (parser.extractDependencyName(value).contains(dependencyName)) {
+                        if (!isPreCase) {
+                            throw new BusinessException(String.format("被绑定用例%s的SQL依赖中不能引用当前依赖名称", propertyDesc));
+                        } else {
+                            throw new BusinessException(String.format("被绑定用例的前置用例%s的SQL依赖中不能引用当前依赖名称", propertyDesc));
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -355,9 +355,6 @@ public class Parser implements Node {
                         int type = relyDataVO.getType();
                         if (type == 0) {
                             String value = relyDataVO.getValue();
-                            if (relyDataVO.getAnalysisRely().intValue() == 0) { // 使能解析依赖
-                                value = parseDependency(value, chainNo, suiteId, isFailedRetry, suiteLogDetailNo, globalHeaders, globalParams, globalData, casePreNo);
-                            }
                             s = s.replace(findStr, value);
                             redisUtil.stackPush(chainNo, chainNode(RelyType.CONST, relyDataVO.getId(), relyName, value, TimeUtil.now()-start, null));
                         } else if (type >= 2 && type <= 6) {
@@ -584,21 +581,23 @@ public class Parser implements Node {
      * @return 依赖名称列表
      */
     public ArrayList<String> extractDependencyName(String text) {
-        // 去除处理器，否则若依赖中包含处理器将解析出错
-        text = text.replaceAll(PROCESSOR_REGEX, "");
         ArrayList<String> list = new ArrayList<>();
-        Matcher matcher = Pattern.compile(DEPENDENCY_REGEX).matcher(text);
-        while(matcher.find()) {
-            String finds = matcher.group();
-            String dependencyExpression = finds.substring(2, finds.length() - 1);
-            if (Pattern.matches(DEPENDENCY_REGEX_INDEX, dependencyExpression)) { // 数组下标 带[]
-                String dependencyName = dependencyExpression.substring(0, dependencyExpression.indexOf("["));
-                list.add(dependencyName);
-            } else if (Pattern.matches(DEPENDENCY_REGEX_PARAMS, dependencyExpression)) { // 方法或者sql 带（）
-                String dependencyName = dependencyExpression.substring(0, dependencyExpression.indexOf("("));
-                list.add(dependencyName);
-            } else { // 普通模式
-                list.add(dependencyExpression);
+        if (text != null) {
+            // 去除处理器，否则若依赖中包含处理器将解析出错
+            text = text.replaceAll(PROCESSOR_REGEX, "");
+            Matcher matcher = Pattern.compile(DEPENDENCY_REGEX).matcher(text);
+            while(matcher.find()) {
+                String finds = matcher.group();
+                String dependencyExpression = finds.substring(2, finds.length() - 1);
+                if (Pattern.matches(DEPENDENCY_REGEX_INDEX, dependencyExpression)) { // 数组下标 带[]
+                    String dependencyName = dependencyExpression.substring(0, dependencyExpression.indexOf("["));
+                    list.add(dependencyName);
+                } else if (Pattern.matches(DEPENDENCY_REGEX_PARAMS, dependencyExpression)) { // 方法或者sql 带（）
+                    String dependencyName = dependencyExpression.substring(0, dependencyExpression.indexOf("("));
+                    list.add(dependencyName);
+                } else { // 普通模式
+                    list.add(dependencyExpression);
+                }
             }
         }
         return list;
@@ -611,11 +610,13 @@ public class Parser implements Node {
      */
     public ArrayList<String> extractProcessorName(String text) {
         ArrayList<String> list = new ArrayList<>();
-        Matcher matcher = Pattern.compile(PROCESSOR_REGEX).matcher(text);
-        while(matcher.find()) {
-            String finds = matcher.group();
-            String dependencyExpression = finds.substring(2, finds.length() - 1);
-            list.add(dependencyExpression);
+        if (text != null) {
+            Matcher matcher = Pattern.compile(PROCESSOR_REGEX).matcher(text);
+            while(matcher.find()) {
+                String finds = matcher.group();
+                String dependencyExpression = finds.substring(2, finds.length() - 1);
+                list.add(dependencyExpression);
+            }
         }
         return list;
     }

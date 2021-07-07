@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.core.http.ExecuteHandler;
+import org.alex.platform.core.parser.Parser;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.mapper.*;
 import org.alex.platform.pojo.*;
@@ -17,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @SuppressWarnings({"unchecked","rawtypes"})
@@ -47,6 +46,10 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
     ProjectService projectService;
     @Autowired
     ModuleService moduleService;
+    @Autowired
+    Parser parser;
+    @Autowired
+    RelyDataMapper relyDataMapper;
 
     private static final Logger LOG = LoggerFactory.getLogger(InterfaceCaseServiceImpl.class);
 
@@ -97,7 +100,9 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         List<InterfacePreCaseDO> preCases = interfaceCaseDTO.getPreCases();
         if (!preCases.isEmpty()) {
             for (InterfacePreCaseDO interfacePreCaseDO : preCases) {
-                ValidUtil.notNUll(interfacePreCaseDO.getPreCaseId(), "前置用例编号不能为空");
+                Integer preCaseId = interfacePreCaseDO.getPreCaseId();
+                ValidUtil.notNUll(preCaseId, "前置用例编号不能为空");
+                ValidUtil.notNUll(this.findInterfaceCaseByCaseId(preCaseId), "前置用例编号不存在");
                 if (interfacePreCaseDO.getPreCaseId().equals(caseId)) {
                     LOG.error("系统疑似受到攻击, 前置用例编号等于当前自增用例编号");
                     throw new BusinessException("参数非法");
@@ -135,10 +140,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
 
         Integer caseId = interfaceCaseDTO.getCaseId();
 
-        if (caseId == null) {
-            LOG.error("参数错误，缺少caseId");
-            throw new BusinessException("参数错误，缺少caseId");
-        }
+        ValidUtil.notNUll(caseId, "用例编号错误");
 
         Byte bodyType = interfaceCaseDTO.getBodyType();
         if (bodyType >= 3 && bodyType != 9) {
@@ -172,23 +174,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         String formDataEncoded = interfaceCaseDO.getFormDataEncoded();
         String raw = interfaceCaseDO.getRaw();
 
-        // 编辑的时候如果注入依赖为接口依赖，并且依赖接口为当前接口，应该禁止，避免造成死循环
-        String checkStr = headers + " " + params + " " + formData + " " + formDataEncoded + " " + "" + raw;
-        Pattern p = Pattern.compile("\\$\\{.+?}");
-        Matcher matcher = p.matcher(checkStr);
-        while (matcher.find()) {
-            String findStr = matcher.group();
-            // 获取relyName
-            String relyName = findStr.substring(2, findStr.length() - 1);
-            InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName);
-            if (null != interfaceCaseRelyDataVO) {
-                int relyCaseId = interfaceCaseRelyDataVO.getRelyCaseId();
-                if (caseId == relyCaseId) {
-                    LOG.warn("修改接口测试用例，headers/params/data/json，接口依赖的用例不能为当前用例");
-                    throw new BusinessException("接口依赖的用例不能为当前用例");
-                }
-            }
-        }
+        // 检查属性中的接口依赖是否包含自身
+        this.checkDependencyInCaseProperty(caseId, headers, "headers", false);
+        this.checkDependencyInCaseProperty(caseId, params, "params", false);
+        this.checkDependencyInCaseProperty(caseId, formData, "formData", false);
+        this.checkDependencyInCaseProperty(caseId, formDataEncoded, "formDataEncoded", false);
+        this.checkDependencyInCaseProperty(caseId, raw, "raw", false);
 
         Integer moduleId = interfaceCaseDO.getModuleId();
         Integer projectId = interfaceCaseDO.getProjectId();
@@ -204,24 +195,12 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         interfaceCaseMapper.updateInterfaceCase(interfaceCaseDO);
         List<InterfaceAssertDO> asserts = interfaceCaseDTO.getAsserts();
         List<Integer> allAssertId = interfaceAssertMapper.selectAllAssertId(interfaceCaseDTO.getCaseId());
-        if (asserts != null) {
+        if (asserts != null && !asserts.isEmpty()) {
             for (InterfaceAssertDO assertDO : asserts) {
-                // 编辑的时候如果注入依赖为接口依赖，并且依赖接口为当前接口，应该禁止，避免造成死循环
-                Pattern pp = Pattern.compile("\\$\\{.+?}");
-                Matcher mm = pp.matcher(assertDO.getExceptedResult());
-                while (mm.find()) {
-                    String findStr = mm.group();
-                    // 获取relyName
-                    String relyName = findStr.substring(2, findStr.length() - 1);
-                    InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(relyName);
-                    if (null != interfaceCaseRelyDataVO) {
-                        int relyCaseId = interfaceCaseRelyDataVO.getRelyCaseId();
-                        if (caseId == relyCaseId) {
-                            LOG.warn("修改接口测试用例，assert，接口依赖的用例不能为当前用例");
-                            throw new BusinessException("接口依赖的用例不能为当前用例");
-                        }
-                    }
-                }
+
+                // 检查断言预期结果中接口依赖是否包含自身
+                String exceptedResult = assertDO.getExceptedResult();
+                this.checkDependencyInCaseProperty(caseId, exceptedResult, "断言预期结果", false);
 
                 // 修改断言表  修改存在的
                 assertDO.setCaseId(interfaceCaseDTO.getCaseId());
@@ -249,9 +228,30 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         // 修改前置用例
         List<InterfacePreCaseDO> preCases = interfaceCaseDTO.getPreCases();
         List<Integer> preIdList = interfacePreCaseService.findInterfacePreIdByParentId(interfaceCaseDTO.getCaseId());
-        if (preCases != null) {
-            for(InterfacePreCaseDO interfacePreCaseDO : preCases) {
-                ValidUtil.notNUll(interfacePreCaseDO.getPreCaseId(), "前置用例编号不能为空");
+        if (preCases != null && !preCases.isEmpty()) {
+            for (InterfacePreCaseDO interfacePreCaseDO : preCases) {
+                Integer preCaseId = interfacePreCaseDO.getPreCaseId();
+                ValidUtil.notNUll(preCaseId, "前置用例编号不能为空");
+                InterfaceCaseInfoVO preCaseVO = this.findInterfaceCaseByCaseId(preCaseId);
+                ValidUtil.notNUll(preCaseVO, "前置用例编号不存在");
+
+                // 检查前置用例属性中的接口依赖是否包含自身
+                String preHeaders = preCaseVO.getHeaders();
+                String preParams = preCaseVO.getParams();
+                String preFormData = preCaseVO.getFormData();
+                String preFormDataEncoded = preCaseVO.getFormDataEncoded();
+                String preRaw = preCaseVO.getRaw();
+                List<InterfaceAssertVO> preCaseAsserts = preCaseVO.getAsserts();
+                this.checkDependencyInCaseProperty(caseId, preHeaders, String.format("[%s]headers", preCaseId), true);
+                this.checkDependencyInCaseProperty(caseId, preParams, String.format("[%s]params", preCaseId), true);
+                this.checkDependencyInCaseProperty(caseId, preFormData, String.format("[%s]formData", preCaseId), true);
+                this.checkDependencyInCaseProperty(caseId, preFormDataEncoded, String.format("[%s]formDataEncoded", preCaseId), true);
+                this.checkDependencyInCaseProperty(caseId, preRaw, String.format("[%s]raw", preCaseId), true);
+                for (InterfaceAssertVO interfaceAssert : preCaseAsserts) {
+                    String exceptedResult = interfaceAssert.getExceptedResult();
+                    this.checkDependencyInCaseProperty(caseId, exceptedResult, String.format("[%s]断言预期结果", preCaseId), true);
+                }
+
                 interfacePreCaseDO.setParentCaseId(interfaceCaseDTO.getCaseId());
                 // 1.修改已存在的
                 interfacePreCaseService.modifyInterfacePreCase(interfacePreCaseDO);
@@ -278,7 +278,7 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
         // 修改处理器
         List<InterfaceProcessorDO> postProcessors = interfaceCaseDTO.getPostProcessors();
         List<Integer> postProcessorIdList = interfaceProcessorService.findInterfaceProcessorIdByCaseId(interfaceCaseDTO.getCaseId());
-        if (postProcessors != null) {
+        if (postProcessors != null && !postProcessors.isEmpty()) {
             for(InterfaceProcessorDO interfaceProcessorDO : postProcessors) {
                 interfaceProcessorDO.setCaseId(interfaceCaseDTO.getCaseId());
                 // 1.修改已存在的
@@ -444,5 +444,55 @@ public class InterfaceCaseServiceImpl implements InterfaceCaseService {
             });
         }
         return result;
+    }
+
+    /**
+     * 检查属性中的接口依赖是否包含自身
+     * @param caseId 用例编号
+     * @param property 域，如headers、params、formdata、formdataencoded、raw
+     * @param propertyDesc 描述
+     * @param isPreCase 是否为前置用例
+     * @throws BusinessException BusinessException
+     */
+    private void checkDependencyInCaseProperty(Integer caseId, String property, String propertyDesc, boolean isPreCase)
+            throws BusinessException {
+        ArrayList<String> dependencyOfHeaders = parser.extractDependencyName(property);
+        for (String s : dependencyOfHeaders) {
+
+            // 检查接口依赖
+            InterfaceCaseRelyDataVO interfaceCaseRelyDataVO = interfaceCaseRelyDataMapper.selectIfRelyDataByName(s);
+            if (null != interfaceCaseRelyDataVO) {
+                int relyCaseId = interfaceCaseRelyDataVO.getRelyCaseId();
+                if (caseId == relyCaseId) {
+                    if (!isPreCase) {
+                        throw new BusinessException(String.format("当前用例%s中的依赖不能引用自身", propertyDesc));
+                    } else {
+                        throw new BusinessException(String.format("当前用例的前置用例%s中的依赖不能引用自身", propertyDesc));
+                    }
+                }
+            }
+
+            // 检查SQL依赖中的接口依赖
+            RelyDataVO vo = relyDataMapper.selectRelyDataByName(s);
+            if (vo != null) {
+                int type = vo.getType().intValue();
+                if (type > 1) {
+                    String sql = vo.getValue();
+                    for (String var1 : parser.extractDependencyName(sql)) {
+                        InterfaceCaseRelyDataVO interfaceDependencyInSQL = interfaceCaseRelyDataMapper.selectIfRelyDataByName(var1);
+                        if (null != interfaceDependencyInSQL) {
+                            int relyCaseId = interfaceDependencyInSQL.getRelyCaseId();
+                            if (caseId == relyCaseId) {
+                                if (!isPreCase) {
+                                    throw new BusinessException(String.format("当前用例%s中的SQL依赖中的依赖不能引用自身", propertyDesc));
+                                } else {
+                                    throw new BusinessException(String.format("当前用例的前置用例%s中的SQL依赖中的依赖不能引用自身", propertyDesc));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
