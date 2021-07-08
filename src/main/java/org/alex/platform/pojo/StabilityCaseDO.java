@@ -18,7 +18,8 @@ public class StabilityCaseDO implements Serializable {
     private Integer caseId;
     @NotNull(message = "请选择执行方式")
     private Byte executeType;
-    @Min(value = 1, message = "请重新输入步长")
+    @Min(value = 1000, message = "请重新输入执行间隔")
+    @Max(value = 86400000, message = "请重新输入执行间隔")
     private Integer step;
     private Integer executeTimes;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -30,8 +31,8 @@ public class StabilityCaseDO implements Serializable {
     @Size(max = 255, message = "请输入长度小于255的邮件地址")
     private String emailAddress;
     @NotNull(message = "请选择日志记录内容")
-    @Max(value = 15, message = "日志记录内容参数错误")
-    @Min(value = 1, message = "日志记录内容参数错误")
+    @Max(value = 2, message = "日志记录内容参数错误")
+    @Min(value = 0, message = "日志记录内容参数错误")
     private Byte logRecordContent;
     private Integer creatorId;
     private String creatorName;
