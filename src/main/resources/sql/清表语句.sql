@@ -28,6 +28,8 @@ INSERT INTO `platform`.`t_module` (`project_id`, `module_id`, `name`, `desc`, `c
 
 TRUNCATE t_task;
 TRUNCATE t_task_email_ref;
+TRUNCATE t_stability_case;
+TRUNCATE t_stability_case_log;
 
 
 

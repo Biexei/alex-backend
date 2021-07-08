@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.StabilityCaseLogMapper">
+    <insert id="insertStabilityCaseLog" parameterType="org.alex.platform.pojo.StabilityCaseLogDO">
+        insert into `t_stability_case_log`
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            `stability_test_log_no`,
+            `stability_test_id`,
+            `stability_test_desc`,
+            `log_path`,
+            `status`,
+            `creator_id`,
+            `created_time`,
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            #{stabilityTestLogNo},
+            #{stabilityTestId},
+            #{stabilityTestDesc},
+            #{logPath},
+            #{status},
+            #{executerId},
+            #{createdTime},
+        </trim>
+    </insert>
+    <update id="updateStabilityCaseLog" parameterType="org.alex.platform.pojo.StabilityCaseLogDO">
+        update `t_stability_case_log`
+        set
+            `stability_test_log_no`=#{stabilityTestLogNo},
+            `stability_test_id`=#{stabilityTestId},
+            `stability_test_desc`=#{stabilityTestDesc},
+            `log_path`=#{logPath},
+            `status`=#{status},
+            `creator_id`=#{executerId},
+            `created_time`=#{createdTime},
+        where
+            `stability_test_log_id`=#{stabilityTestLogId}
+    </update>
+    <select id="selectStabilityCaseLogById" parameterType="Integer" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
+        select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
+            `log_path`,`status`,`creator_id`,`created_time`
+        from `t_stability_case_log`
+        where `stability_test_log_id`=#{stabilityTestLogId}
+    </select>
+    <select id="selectStabilityCaseLogByNo" parameterType="String" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
+        select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
+            `log_path`,`status`,`creator_id`,`created_time`
+        from `t_stability_case_log`
+        where `stability_test_log_no`=#{stabilityTestLogNo}
+    </select>
+    <select id="selectStabilityCaseLogByStabilityCaseId" parameterType="Integer" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
+        select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
+            `log_path`,`status`,`creator_id`,`created_time`
+        from `t_stability_case_log`
+        where `stability_test_id`=#{stabilityTestId}
+    </select>
+
+    <select id="selectStabilityCaseLogList" parameterType="org.alex.platform.pojo.StabilityCaseLogDTO" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
+        select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
+        `log_path`,`status`,`creator_id`,`created_time`
+        from `t_stability_case_log`
+        <where>
+            <if test="stabilityTestId!=null">and `stability_test_id`=#{stabilityTestId}</if>
+            <if test="stabilityTestDesc!=null">and `stability_test_desc` like concat("%",#{stabilityTestDesc},"%")</if>
+            <if test="stabilityTestLogId!=null">and `stability_test_log_id`=#{stabilityTestLogId}</if>
+            <if test="stabilityTestLogNo!=null">and `stability_test_log_no` like concat("%",#{stabilityTestLogNo},"%")</if>
+            <if test="status!=null">and `status`=#{status}</if>
+        </where>
+    </select>
+</mapper>

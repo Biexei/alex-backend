@@ -1040,3 +1040,45 @@ CREATE TABLE `t_user_login_log` (
 -- ----------------------------
 -- Records of t_user_login_log
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_stability_case
+-- ----------------------------
+DROP TABLE IF EXISTS `t_stability_case`;
+CREATE TABLE `t_stability_case` (
+  `stability_test_id` int NOT NULL,
+  `desc` varchar(30) DEFAULT NULL COMMENT '稳定性用例描述',
+  `protocol` tinyint DEFAULT NULL COMMENT '0http(s)1ws(s)2dubbo',
+  `case_id` int DEFAULT NULL COMMENT '用例编号，根据协议确定',
+  `execute_type` tinyint DEFAULT NULL COMMENT '调度方式0执行总次数   1截止至指定时间',
+  `step` int DEFAULT NULL COMMENT '多久执行一次，单位ms',
+  `execute_times` int DEFAULT NULL COMMENT '执行次数，当执行方式为0时，根据此项决定运行',
+  `execute_end_time` datetime DEFAULT NULL COMMENT '执行结束时间，当执行方式为1时，根据此项决定运行',
+  `on_error_stop` tinyint DEFAULT NULL COMMENT '请求报错是否停止0是1否',
+  `on_failed_stop` tinyint DEFAULT NULL COMMENT '请求失败（断言）是否停止0是1否',
+  `email_address` varchar(255) DEFAULT NULL COMMENT '邮箱地址',
+  `log_record_content` tinyint DEFAULT NULL COMMENT '日志中记录的字段，0响应头 1响应体 2响应头+响应体',
+  `creator_id` int DEFAULT NULL COMMENT '创建人用户编号',
+  `creator_name` varchar(30) DEFAULT NULL COMMENT '创建人帐号',
+  `created_time` datetime DEFAULT NULL COMMENT '任务创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '任务修改时间',
+  PRIMARY KEY (`stability_test_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for t_stability_case_log
+-- ----------------------------
+DROP TABLE IF EXISTS `t_stability_case_log`;
+CREATE TABLE `t_stability_case_log` (
+  `stability_test_log_id` int NOT NULL,
+  `stability_test_log_no` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '日志编号',
+  `stability_test_id` int DEFAULT NULL COMMENT '稳定性测试用例编号',
+  `stability_test_desc` varchar(30) DEFAULT NULL COMMENT '稳定性用例描述',
+  `log_path` varchar(100) DEFAULT NULL COMMENT '日志的目录',
+  `status` tinyint DEFAULT NULL COMMENT '0进行中1停止2完成',
+  `executer_id` int DEFAULT NULL COMMENT '执行人用户编号',
+  `created_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`stability_test_log_id`),
+  UNIQUE KEY `stability_test_log_no` (`stability_test_log_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

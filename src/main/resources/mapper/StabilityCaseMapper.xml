@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alex.platform.mapper.StabilityCaseMapper">
+    <insert id="insertStabilityCase" parameterType="org.alex.platform.pojo.StabilityCaseDO">
+        insert into `t_stability_case`
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            `desc`,
+            `protocol`,
+            `case_id`,
+            `execute_type`,
+            `step`,
+            `execute_times`,
+            `execute_end_time`,
+            `on_error_stop`,
+            `on_failed_stop`,
+            `email_address`,
+            `log_record_content`,
+            `creator_id`,
+            `creator_name`,
+            `created_time`,
+            `update_time`,
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            #{desc},
+            #{protocol},
+            #{caseId},
+            #{executeType},
+            #{step},
+            #{executeTimes},
+            #{executeEndTime},
+            #{onErrorStop},
+            #{onFailedStop},
+            #{emailAddress},
+            #{logRecordContent},
+            #{creatorId},
+            #{creatorName},
+            #{createdTime},
+            #{updateTime},
+        </trim>
+    </insert>
+    <update id="updateStabilityCase" parameterType="org.alex.platform.pojo.StabilityCaseDO">
+        update `t_stability_case`
+        set
+            `desc`=#{desc},
+            `protocol`=#{protocol},
+            `case_id`=#{caseId},
+            `execute_type`=#{executeType},
+            `step`=#{step},
+            `execute_times`=#{executeTimes},
+            `execute_end_time`=#{executeEndTime},
+            `on_error_stop`=#{onErrorStop},
+            `on_failed_stop`=#{onFailedStop},
+            `email_address`=#{emailAddress},
+            `log_record_content`=#{logRecordContent},
+            `update_time`=#{updateTime}
+        where
+            `stability_test_id`=#{stabilityTestId}
+    </update>
+    <delete id="deleteStabilityCaseById">
+        delete from `t_stability_case` where `stability_test_id`=#{stabilityTestId}
+    </delete>
+    <select id="selectStabilityCaseById" parameterType="Integer" resultType="org.alex.platform.pojo.StabilityCaseInfoVO">
+        select `stability_test_id`,`desc`,`protocol`,`case_id`,`execute_type`,`step`,`execute_times`,`execute_end_time`,`on_error_stop`,
+            `on_failed_stop`,`email_address`,`log_record_content`,`creator_id`,`creator_name`,`created_time`,`update_time`
+        from `t_stability_case`
+        where `stability_test_id`=#{stabilityTestId}
+    </select>
+    <select id="selectStabilityCaseList" parameterType="org.alex.platform.pojo.StabilityCaseDTO" resultType="org.alex.platform.pojo.StabilityCaseListVO">
+        select `stability_test_id`,`desc`,`protocol`,`case_id`,`execute_type`,`step`,`execute_times`,`execute_end_time`,`on_error_stop`,
+            `on_failed_stop`,`email_address`,`log_record_content`,`creator_id`,`creator_name`,`created_time`,`update_time`
+        from `t_stability_case`
+        <where>
+            <if test="stabilityTestId!=null">and `stability_test_id`=#{stabilityTestId}</if>
+            <if test="desc!=null">and `desc` like concat("%",#{desc},"%")</if>
+            <if test="protocol!=null">and `protocol`=#{protocol}</if>
+            <if test="caseId!=null">and `case_id`=#{caseId}</if>
+            <if test="creatorName!=null">and `creator_name` like concat("%",#{creatorName},"%")</if>
+            <if test="executeType!=null">and `execute_type`=#{executeType}</if>
+        </where>
+    </select>
+</mapper>
