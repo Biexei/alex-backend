@@ -13,6 +13,7 @@
             `status`,
             `creator_id`,
             `created_time`,
+            `run_env`,
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             #{stabilityTestLogNo},
@@ -22,6 +23,7 @@
             #{status},
             #{executerId},
             #{createdTime},
+            #{runEnv},
         </trim>
     </insert>
     <update id="updateStabilityCaseLog" parameterType="org.alex.platform.pojo.StabilityCaseLogDO">
@@ -32,33 +34,32 @@
             `stability_test_desc`=#{stabilityTestDesc},
             `log_path`=#{logPath},
             `status`=#{status},
-            `creator_id`=#{executerId},
-            `created_time`=#{createdTime},
+            `run_env`=#{runEnv},
         where
             `stability_test_log_id`=#{stabilityTestLogId}
     </update>
     <select id="selectStabilityCaseLogById" parameterType="Integer" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
         select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
-            `log_path`,`status`,`creator_id`,`created_time`
+            `log_path`,`status`,`creator_id`,`created_time`, `run_env`
         from `t_stability_case_log`
         where `stability_test_log_id`=#{stabilityTestLogId}
     </select>
     <select id="selectStabilityCaseLogByNo" parameterType="String" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
         select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
-            `log_path`,`status`,`creator_id`,`created_time`
+            `log_path`,`status`,`creator_id`,`created_time`, `run_env`
         from `t_stability_case_log`
         where `stability_test_log_no`=#{stabilityTestLogNo}
     </select>
     <select id="selectStabilityCaseLogByStabilityCaseId" parameterType="Integer" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
         select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
-            `log_path`,`status`,`creator_id`,`created_time`
+            `log_path`,`status`,`creator_id`,`created_time`, `run_env`
         from `t_stability_case_log`
         where `stability_test_id`=#{stabilityTestId}
     </select>
 
     <select id="selectStabilityCaseLogList" parameterType="org.alex.platform.pojo.StabilityCaseLogDTO" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
         select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
-        `log_path`,`status`,`creator_id`,`created_time`
+        `log_path`,`status`,`creator_id`,`created_time`, `run_env`
         from `t_stability_case_log`
         <where>
             <if test="stabilityTestId!=null">and `stability_test_id`=#{stabilityTestId}</if>
@@ -66,6 +67,7 @@
             <if test="stabilityTestLogId!=null">and `stability_test_log_id`=#{stabilityTestLogId}</if>
             <if test="stabilityTestLogNo!=null">and `stability_test_log_no` like concat("%",#{stabilityTestLogNo},"%")</if>
             <if test="status!=null">and `status`=#{status}</if>
+            <if test="runEnv!=null">and `run_env`=#{runEnv}</if>
         </where>
     </select>
 </mapper>

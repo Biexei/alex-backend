@@ -1,6 +1,7 @@
 package org.alex.platform.service;
 
 import com.github.pagehelper.PageInfo;
+import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.StabilityCaseDO;
 import org.alex.platform.pojo.StabilityCaseDTO;
@@ -17,4 +18,6 @@ public interface StabilityCaseService {
     PageInfo<StabilityCaseListVO> findStabilityCaseList(StabilityCaseDTO stabilityCaseDTO, Integer pageNum, Integer pageSize);
 
     void removeStabilityCaseById(Integer id);
+
+    void executeStabilityCaseById(Integer id) throws BusinessException;
 }

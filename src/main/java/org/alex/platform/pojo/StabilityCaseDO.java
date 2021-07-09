@@ -40,6 +40,10 @@ public class StabilityCaseDO implements Serializable {
     private Date createdTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    @NotNull(message = "请选择运行环境")
+    @Max(value = 4, message = "运行环境参数错误")
+    @Min(value = 0, message = "运行环境参数错误")
+    private Byte runEnv;
 
     @Override
     public String toString() {
@@ -60,7 +64,16 @@ public class StabilityCaseDO implements Serializable {
                 ", creatorName='" + creatorName + '\'' +
                 ", createdTime=" + createdTime +
                 ", updateTime=" + updateTime +
+                ", runEnv=" + runEnv +
                 '}';
+    }
+
+    public Byte getRunEnv() {
+        return runEnv;
+    }
+
+    public void setRunEnv(Byte runEnv) {
+        this.runEnv = runEnv;
     }
 
     public Integer getStabilityTestId() {

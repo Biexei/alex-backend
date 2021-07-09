@@ -7,6 +7,15 @@ public class StabilityCaseDTO {
     private  Integer caseId;
     private String creatorName;
     private Byte executeType;
+    private Byte runEnv;
+
+    public Byte getRunEnv() {
+        return runEnv;
+    }
+
+    public void setRunEnv(Byte runEnv) {
+        this.runEnv = runEnv;
+    }
 
     public Integer getStabilityTestId() {
         return stabilityTestId;

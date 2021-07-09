@@ -304,7 +304,7 @@ public class ExecuteHandler implements Node {
      * @param text header、param、form、formEncoded
      * @return 转换后的
      */
-    private String kvCast(String text) throws BusinessException {
+    public String kvCast(String text) throws BusinessException {
         try {
             JSONObject object = new JSONObject();
             JSONArray array = JSON.parseArray(text);
@@ -408,7 +408,7 @@ public class ExecuteHandler implements Node {
      * @return ResponseEntity
      * @throws BusinessException BusinessException
      */
-    private ResponseEntity doRequest(Byte bodyType, HttpMethod methodEnum,
+    public ResponseEntity doRequest(Byte bodyType, HttpMethod methodEnum,
                                      String url, HashMap headersMap, HashMap paramsMap,
                                      HashMap formDataMap, HashMap formDataEncodedMap,
                                      String raw, String rawType) throws BusinessException {

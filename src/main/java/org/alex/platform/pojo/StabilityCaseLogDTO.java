@@ -6,6 +6,15 @@ public class StabilityCaseLogDTO {
     private Integer stabilityTestLogId;
     private String stabilityTestLogNo;
     private Byte status;
+    private Byte runEnv;
+
+    public Byte getRunEnv() {
+        return runEnv;
+    }
+
+    public void setRunEnv(Byte runEnv) {
+        this.runEnv = runEnv;
+    }
 
     public Integer getStabilityTestId() {
         return stabilityTestId;

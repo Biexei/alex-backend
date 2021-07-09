@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 80019
+Source Server         : 本地
+Source Server Version : 80020
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80019
+Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-07-08 19:51:41
+Date: 2021-07-09 17:01:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -985,6 +985,7 @@ CREATE TABLE `t_stability_case` (
   `creator_name` varchar(30) DEFAULT NULL COMMENT '创建人帐号',
   `created_time` datetime DEFAULT NULL COMMENT '任务创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '任务修改时间',
+  `run_env` tinyint DEFAULT NULL COMMENT '0dev1test2stg3prod4debug',
   PRIMARY KEY (`stability_test_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1005,6 +1006,7 @@ CREATE TABLE `t_stability_case_log` (
   `status` tinyint DEFAULT NULL COMMENT '0进行中1停止2完成',
   `executer_id` int DEFAULT NULL COMMENT '执行人用户编号',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `run_env` tinyint DEFAULT NULL COMMENT '0dev1test2stg3prod4debug',
   PRIMARY KEY (`stability_test_log_id`),
   UNIQUE KEY `stability_test_log_no` (`stability_test_log_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
