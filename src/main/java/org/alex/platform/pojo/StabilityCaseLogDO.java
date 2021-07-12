@@ -12,18 +12,10 @@ public class StabilityCaseLogDO implements Serializable {
     private String stabilityTestLogNo;
     private String logPath;
     private Byte status;
-    private Integer executerId;
+    private Integer executeId;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
     private Byte runEnv;
-
-    public Byte getRunEnv() {
-        return runEnv;
-    }
-
-    public void setRunEnv(Byte runEnv) {
-        this.runEnv = runEnv;
-    }
 
     public Integer getStabilityTestId() {
         return stabilityTestId;
@@ -73,12 +65,12 @@ public class StabilityCaseLogDO implements Serializable {
         this.status = status;
     }
 
-    public Integer getExecuterId() {
-        return executerId;
+    public Integer getExecuteId() {
+        return executeId;
     }
 
-    public void setExecuterId(Integer executerId) {
-        this.executerId = executerId;
+    public void setExecuteId(Integer executeId) {
+        this.executeId = executeId;
     }
 
     public Date getCreatedTime() {
@@ -87,5 +79,13 @@ public class StabilityCaseLogDO implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Byte getRunEnv() {
+        return runEnv;
+    }
+
+    public void setRunEnv(Byte runEnv) {
+        this.runEnv = runEnv;
     }
 }

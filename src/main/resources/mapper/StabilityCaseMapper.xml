@@ -22,6 +22,7 @@
             `created_time`,
             `update_time`,
             `run_env`,
+            `last_execute_time`,
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             #{desc},
@@ -40,11 +41,12 @@
             #{createdTime},
             #{updateTime},
             #{runEnv},
+            #{lastExecuteTime},
         </trim>
     </insert>
     <update id="updateStabilityCase" parameterType="org.alex.platform.pojo.StabilityCaseDO">
         update `t_stability_case`
-        set
+        <set>
             `desc`=#{desc},
             `protocol`=#{protocol},
             `case_id`=#{caseId},
@@ -57,22 +59,32 @@
             `email_address`=#{emailAddress},
             `log_record_content`=#{logRecordContent},
             `update_time`=#{updateTime},
-            `run_env`=#{runEnv}
+            `run_env`=#{runEnv},
+            `last_execute_time`=#{lastExecuteTime},
+        </set>
         where
             `stability_test_id`=#{stabilityTestId}
+    </update>
+    <update id="updateStabilityCaseLastExecuteTime">
+        update `t_stability_case`
+        <set>
+            `last_execute_time`=#{lastExecuteTime},
+        </set>
+        where
+        `stability_test_id`=#{stabilityTestId}
     </update>
     <delete id="deleteStabilityCaseById">
         delete from `t_stability_case` where `stability_test_id`=#{stabilityTestId}
     </delete>
     <select id="selectStabilityCaseById" parameterType="Integer" resultType="org.alex.platform.pojo.StabilityCaseInfoVO">
         select `stability_test_id`,`desc`,`protocol`,`case_id`,`execute_type`,`step`,`execute_times`,`execute_end_time`,`on_error_stop`,
-            `on_failed_stop`,`email_address`,`log_record_content`,`creator_id`,`creator_name`,`created_time`,`update_time`, `run_env`
+            `on_failed_stop`,`email_address`,`log_record_content`,`creator_id`,`creator_name`,`created_time`,`update_time`, `run_env`,`last_execute_time`
         from `t_stability_case`
         where `stability_test_id`=#{stabilityTestId}
     </select>
     <select id="selectStabilityCaseList" parameterType="org.alex.platform.pojo.StabilityCaseDTO" resultType="org.alex.platform.pojo.StabilityCaseListVO">
         select `stability_test_id`,`desc`,`protocol`,`case_id`,`execute_type`,`step`,`execute_times`,`execute_end_time`,`on_error_stop`,
-            `on_failed_stop`,`email_address`,`log_record_content`,`creator_id`,`creator_name`,`created_time`,`update_time`, `run_env`
+            `on_failed_stop`,`email_address`,`log_record_content`,`creator_id`,`creator_name`,`created_time`,`update_time`, `run_env`,`last_execute_time`
         from `t_stability_case`
         <where>
             <if test="stabilityTestId!=null">and `stability_test_id`=#{stabilityTestId}</if>

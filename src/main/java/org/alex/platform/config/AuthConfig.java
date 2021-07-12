@@ -46,6 +46,6 @@ public class AuthConfig implements WebMvcConfigurer {
                 }
             }
         });
-        interceptor.addPathPatterns("/**").excludePathPatterns("/user/login", "/user/register", "/interface/template/download/*");
+        interceptor.addPathPatterns("/**").excludePathPatterns("/user/login", "/user/register", "/interface/template/download/*", "/stability/log/download/*");
     }
 }

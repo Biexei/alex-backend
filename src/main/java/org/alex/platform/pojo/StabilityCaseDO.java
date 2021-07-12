@@ -30,7 +30,6 @@ public class StabilityCaseDO implements Serializable {
     private Byte onFailedStop;
     @Size(max = 255, message = "请输入长度小于255的邮件地址")
     private String emailAddress;
-    @NotNull(message = "请选择日志记录内容")
     @Max(value = 2, message = "日志记录内容参数错误")
     @Min(value = 0, message = "日志记录内容参数错误")
     private Byte logRecordContent;
@@ -44,6 +43,8 @@ public class StabilityCaseDO implements Serializable {
     @Max(value = 4, message = "运行环境参数错误")
     @Min(value = 0, message = "运行环境参数错误")
     private Byte runEnv;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date lastExecuteTime;
 
     @Override
     public String toString() {
@@ -65,7 +66,16 @@ public class StabilityCaseDO implements Serializable {
                 ", createdTime=" + createdTime +
                 ", updateTime=" + updateTime +
                 ", runEnv=" + runEnv +
+                ", lastExecuteTime=" + lastExecuteTime +
                 '}';
+    }
+
+    public Date getLastExecuteTime() {
+        return lastExecuteTime;
+    }
+
+    public void setLastExecuteTime(Date lastExecuteTime) {
+        this.lastExecuteTime = lastExecuteTime;
     }
 
     public Byte getRunEnv() {

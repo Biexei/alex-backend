@@ -19,5 +19,7 @@ public interface StabilityCaseService {
 
     void removeStabilityCaseById(Integer id);
 
-    void executeStabilityCaseById(Integer id) throws BusinessException;
+    void executeStabilityCaseById(Integer id, Integer executeId) throws BusinessException;
+
+    void executable(Integer id) throws BusinessException;
 }

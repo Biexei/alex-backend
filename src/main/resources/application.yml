@@ -9,7 +9,7 @@ spring:
     port: 25
     default-encoding: UTF-8
     username: biexei@163.com
-    password: ZMESBQGVCPPXMGVH
+    password: UZXYNCTPDMMCCBFM
   datasource:
     url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8
     username: test
@@ -38,5 +38,5 @@ logging:
   file:
     name: src/main/resources/log/log.log
   level:
-    root: info
+    root: warn
 

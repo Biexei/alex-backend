@@ -2,6 +2,7 @@ package org.alex.platform.controller;
 
 import org.alex.platform.common.LoginUserInfo;
 import org.alex.platform.common.Result;
+import org.alex.platform.exception.BusinessException;
 import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.StabilityCaseDO;
 import org.alex.platform.pojo.StabilityCaseDTO;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 public class StabilityCaseController {
@@ -57,7 +60,17 @@ public class StabilityCaseController {
     }
 
     @GetMapping("/stability/case/execute/{id}")
-    Result executeStabilityCaseById(@PathVariable Integer id) {
-        return Result.success();
+    Result executeStabilityCaseById(@PathVariable Integer id, HttpServletRequest request) throws BusinessException {
+        int userId = loginUserInfo.getUserId(request);
+        stabilityCaseService.executable(id);
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        executorService.execute(() -> {
+            try {
+                stabilityCaseService.executeStabilityCaseById(id, userId);
+            } catch (BusinessException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return Result.success("开始执行");
     }
 }

@@ -83,4 +83,16 @@ public class NoUtil {
     public static String genPyOrtNo() {
         return "PY-ORT" + UUID.randomUUID().toString();
     }
+
+    /**
+     * 生成稳定性测试日志的编号
+     * @return 生成稳定性测试日志的编号
+     */
+    public static String genStabilityLogNo() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        String prefix = format.format(new Date());
+        String mid = RandomUtil.randomLegalStringByLength(5).toUpperCase();
+        String suffix = RandomUtil.randomNumStringByLength(5);
+        return "SPL" + prefix + mid + suffix;
+    }
 }

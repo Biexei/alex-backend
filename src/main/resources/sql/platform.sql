@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-07-09 17:01:06
+Date: 2021-07-12 18:32:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -527,7 +527,7 @@ CREATE TABLE `t_permission` (
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限名称',
   `parent_id` int DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=240 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -673,6 +673,16 @@ INSERT INTO `t_permission` VALUES ('226', 'mock:api:stop', '停止', '221');
 INSERT INTO `t_permission` VALUES ('227', 'mock:api:restart', '重启', '221');
 INSERT INTO `t_permission` VALUES ('228', 'setting:loginLog', '登录日志', '178');
 INSERT INTO `t_permission` VALUES ('229', 'setting:loginLog:find', '查询', '228');
+INSERT INTO `t_permission` VALUES ('230', 'stability', '稳定性测试', '0');
+INSERT INTO `t_permission` VALUES ('231', 'stability:case', '测试用例', '230');
+INSERT INTO `t_permission` VALUES ('232', 'stability:log', '执行日志', '230');
+INSERT INTO `t_permission` VALUES ('233', 'stability:case:add', '新增', '231');
+INSERT INTO `t_permission` VALUES ('234', 'stability:case:modify', '修改', '231');
+INSERT INTO `t_permission` VALUES ('235', 'stability:case:remove', '删除', '231');
+INSERT INTO `t_permission` VALUES ('236', 'stability:case:execute', '执行', '231');
+INSERT INTO `t_permission` VALUES ('237', 'stability:case:find', '查询', '231');
+INSERT INTO `t_permission` VALUES ('238', 'stability:case:log:find', '查询', '232');
+INSERT INTO `t_permission` VALUES ('239', 'stability:case:log:download', '下载', '232');
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -684,7 +694,7 @@ CREATE TABLE `t_permission_role_ref` (
   `role_id` int DEFAULT NULL COMMENT '权限编号',
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
@@ -846,6 +856,26 @@ INSERT INTO `t_permission_role_ref` VALUES ('197', '226', '1', '2021-04-17 15:03
 INSERT INTO `t_permission_role_ref` VALUES ('198', '227', '1', '2021-04-17 16:04:29');
 INSERT INTO `t_permission_role_ref` VALUES ('199', '228', '1', '2021-06-27 18:15:31');
 INSERT INTO `t_permission_role_ref` VALUES ('200', '229', '1', '2021-06-27 18:15:32');
+INSERT INTO `t_permission_role_ref` VALUES ('201', '230', '1', '2021-07-12 18:31:14');
+INSERT INTO `t_permission_role_ref` VALUES ('202', '231', '1', '2021-07-12 18:31:15');
+INSERT INTO `t_permission_role_ref` VALUES ('203', '233', '1', '2021-07-12 18:31:16');
+INSERT INTO `t_permission_role_ref` VALUES ('204', '234', '1', '2021-07-12 18:31:16');
+INSERT INTO `t_permission_role_ref` VALUES ('205', '235', '1', '2021-07-12 18:31:18');
+INSERT INTO `t_permission_role_ref` VALUES ('206', '236', '1', '2021-07-12 18:31:18');
+INSERT INTO `t_permission_role_ref` VALUES ('207', '237', '1', '2021-07-12 18:31:19');
+INSERT INTO `t_permission_role_ref` VALUES ('208', '232', '1', '2021-07-12 18:31:20');
+INSERT INTO `t_permission_role_ref` VALUES ('209', '238', '1', '2021-07-12 18:31:20');
+INSERT INTO `t_permission_role_ref` VALUES ('210', '239', '1', '2021-07-12 18:31:21');
+INSERT INTO `t_permission_role_ref` VALUES ('211', '230', '4', '2021-07-12 18:31:26');
+INSERT INTO `t_permission_role_ref` VALUES ('212', '231', '4', '2021-07-12 18:31:26');
+INSERT INTO `t_permission_role_ref` VALUES ('213', '233', '4', '2021-07-12 18:31:27');
+INSERT INTO `t_permission_role_ref` VALUES ('214', '234', '4', '2021-07-12 18:31:27');
+INSERT INTO `t_permission_role_ref` VALUES ('215', '235', '4', '2021-07-12 18:31:28');
+INSERT INTO `t_permission_role_ref` VALUES ('216', '236', '4', '2021-07-12 18:31:28');
+INSERT INTO `t_permission_role_ref` VALUES ('217', '237', '4', '2021-07-12 18:31:31');
+INSERT INTO `t_permission_role_ref` VALUES ('218', '232', '4', '2021-07-12 18:31:31');
+INSERT INTO `t_permission_role_ref` VALUES ('219', '238', '4', '2021-07-12 18:31:32');
+INSERT INTO `t_permission_role_ref` VALUES ('220', '239', '4', '2021-07-12 18:31:32');
 
 -- ----------------------------
 -- Table structure for t_project
@@ -986,6 +1016,7 @@ CREATE TABLE `t_stability_case` (
   `created_time` datetime DEFAULT NULL COMMENT '任务创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '任务修改时间',
   `run_env` tinyint DEFAULT NULL COMMENT '0dev1test2stg3prod4debug',
+  `last_execute_time` datetime DEFAULT NULL COMMENT '最近一次的执行时间',
   PRIMARY KEY (`stability_test_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1004,7 +1035,7 @@ CREATE TABLE `t_stability_case_log` (
   `stability_test_desc` varchar(30) DEFAULT NULL COMMENT '稳定性用例描述',
   `log_path` varchar(100) DEFAULT NULL COMMENT '日志的目录',
   `status` tinyint DEFAULT NULL COMMENT '0进行中1停止2完成',
-  `executer_id` int DEFAULT NULL COMMENT '执行人用户编号',
+  `execute_id` int DEFAULT NULL COMMENT '执行人用户编号',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `run_env` tinyint DEFAULT NULL COMMENT '0dev1test2stg3prod4debug',
   PRIMARY KEY (`stability_test_log_id`),
@@ -1086,8 +1117,9 @@ CREATE TABLE `t_user_login_log` (
   `ip` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'ip地址',
   `login_time` datetime DEFAULT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of t_user_login_log
 -- ----------------------------
+INSERT INTO `t_user_login_log` VALUES ('1', '1', '123', '0:0:0:0:0:0:0:1', '2021-07-12 18:31:37');

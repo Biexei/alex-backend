@@ -7,7 +7,7 @@ import java.util.List;
 
 @Repository
 public interface StabilityCaseLogMapper {
-    void insertStabilityCaseLog(StabilityCaseLogDO stabilityCaseLogDO);
+    Integer insertStabilityCaseLog(StabilityCaseLogDO stabilityCaseLogDO);
 
     void updateStabilityCaseLog(StabilityCaseLogDO stabilityCaseLogDO);
 
@@ -18,4 +18,8 @@ public interface StabilityCaseLogMapper {
     List<StabilityCaseLogVO> selectStabilityCaseLogByStabilityCaseId(Integer caseId);
 
     List<StabilityCaseLogVO> selectStabilityCaseLogList(StabilityCaseLogDTO stabilityCaseLogDTO);
+
+    Integer countExecuting();
+
+    Integer countExecutingByCaseId(Integer stabilityTestId);
 }
