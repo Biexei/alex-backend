@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.common.Env;
-import org.alex.platform.common.Result;
 import org.alex.platform.core.http.ExecuteHandler;
 import org.alex.platform.core.http.Request;
 import org.alex.platform.core.parser.Parser;
@@ -22,10 +21,7 @@ import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.service.MailService;
 import org.alex.platform.service.ProjectService;
 import org.alex.platform.service.StabilityCaseService;
-import org.alex.platform.util.AssertUtil;
-import org.alex.platform.util.NoUtil;
-import org.alex.platform.util.ParseUtil;
-import org.alex.platform.util.ValidUtil;
+import org.alex.platform.util.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -66,6 +63,8 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
     MailService mailService;
     @Autowired
     StabilityCaseLogMapper stabilityCaseLogMapper;
+    @Autowired
+    RedisUtil redisUtil;
 
     /**
      * 新增稳定性测试用例
@@ -176,6 +175,34 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
     }
 
     /**
+     * 强制停止可靠性任务
+     * @param stabilityTestLogId stabilityTestLogId
+     * @param executeId executeId
+     * @throws BusinessException BusinessException
+     */
+    @Override
+    public void stopStabilityCaseByLogId(Integer stabilityTestLogId, Integer executeId) throws BusinessException {
+        StabilityCaseLogVO stabilityCaseLogVO = stabilityCaseLogMapper.selectStabilityCaseLogById(stabilityTestLogId);
+        if (stabilityCaseLogVO != null) {
+            String stabilityTestLogNo = stabilityCaseLogVO.getStabilityTestLogNo();
+            Byte status = stabilityCaseLogVO.getStatus();
+            if (status != null) {
+                if (status == 0) {
+                    this.setStabilityTestStatus(stabilityTestLogNo, false);
+                    // 手动在将数据库状态调整为1
+                    StabilityCaseLogDO stabilityCaseLogDO = new StabilityCaseLogDO();
+                    stabilityCaseLogDO.setStatus((byte)1);
+                    stabilityCaseLogDO.setStabilityTestLogId(stabilityTestLogId);
+                    stabilityCaseLogMapper.updateStabilityCaseLog(stabilityCaseLogDO);
+                    LOG.warn("可靠性任务被强制停止，日志编号为[{}], 操作人为[{}]", stabilityTestLogId, executeId);
+                }
+            }
+        } else {
+            throw new BusinessException("任务编号不存在");
+        }
+    }
+
+    /**
      * 执行稳定性测试用例
      * @param id 用例编还
      * @param executeId 执行人编号
@@ -198,7 +225,12 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         Byte runEnv = stabilityCaseInfo.getRunEnv();
 
         String stabilityTestLogNo = NoUtil.genStabilityLogNo();
-        String logPath = "src\\main\\resources\\stabilityLog\\" + stabilityTestLogNo + ".log";
+        String logBasePath = "src\\main\\resources\\stabilityLog\\";
+        File file = new File(logBasePath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String logPath = logBasePath + stabilityTestLogNo + ".log";
         FileWriter fw;
         try {
             fw = new FileWriter(logPath);
@@ -206,11 +238,11 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
             throw new BusinessException("可靠性测试日志创建失败");
         }
 
-        this.log(fw, "Stability Test Starting...");
-        this.log(fw, String.format("run environment was %s", runEnv));
-        this.log(fw, "---------Stability Test Case Info---------");
-        this.log(fw, stabilityCaseInfo.toString());
-        this.log(fw, "---------Stability Test Case Info---------");
+        this.log(fw, stabilityTestLogNo,"Stability Test Starting...");
+        this.log(fw, stabilityTestLogNo, String.format("run environment was %s", runEnv));
+        this.log(fw, stabilityTestLogNo, "---------Stability Test Case Info---------");
+        this.log(fw, stabilityTestLogNo, stabilityCaseInfo.toString());
+        this.log(fw, stabilityTestLogNo, "---------Stability Test Case Info---------");
 
         // 写入执行日志
         Date exeDate = new Date();
@@ -225,6 +257,10 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         stabilityCaseLogDO.setExecuteId(executeId);
         stabilityCaseLogMapper.insertStabilityCaseLog(stabilityCaseLogDO);
         Integer logId = stabilityCaseLogDO.getStabilityTestLogId();
+
+        // 将可靠性用例在缓存中设置为运行态
+        this.setStabilityTestStatus(stabilityTestLogNo, true);
+
         // 修改最近执行时间
         stabilityCaseMapper.updateStabilityCaseLastExecuteTime(id, exeDate);
 
@@ -235,57 +271,87 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
 
         if (protocol == 0) { //http(s)
             InterfaceCaseInfoVO interfaceCaseInfoVO = interfaceCaseService.findInterfaceCaseByCaseId(caseId);
-            this.log(fw, "---------Http Case Info---------");
-            this.log(fw, interfaceCaseInfoVO.toString());
-            this.log(fw, "---------Http Case Info---------");
-            this.log(fw, "\r\n\r\n\n");
+            this.log(fw, stabilityTestLogNo, "---------Http Case Info---------");
+            this.log(fw, stabilityTestLogNo, interfaceCaseInfoVO.toString());
+            this.log(fw, stabilityTestLogNo, "---------Http Case Info---------");
+            this.log(fw, stabilityTestLogNo, "\r\n\r\n\n");
 
             // 获取调度方式
             if (executeType == 0) {
                 for (int i = 1; i <= executeTimes; i++) {
-                    this.log(fw, String.format("Current loop count: %s", i));
-                    try {
-                        response = this.doHttpRequest(interfaceCaseInfoVO, runEnv, logRecordContent, fw);
-                    } catch (BusinessException e) {
-                        response.put("executeStatus", 2);
-                        response.put("executeMsg", e.getMessage());
-                        this.log(fw, String.format("Request Error: %s", e.getMessage()));
-                    }
-                    executeStatus = response.getIntValue("executeStatus");
-                    executeMsg = response.getString("executeMsg");
-                    if (executeStatus == 1) {
-                        if (onFailedStop) {
-                            LOG.error("稳定性测试因执行失败终止");
-                            LOG.error("Failed msg：{}", executeMsg);
-                            this.log(fw, "稳定性测试因执行失败终止");
-                            this.log(fw, String.format("Failed msg：%s", executeMsg));
-                            logStatus = 1;
-                            break;
+                    if (this.getStabilityTestIsRunning(stabilityTestLogNo)) {
+                        System.out.println("redis 状态");
+                        System.out.println(this.getStabilityTestIsRunning(stabilityTestLogNo));
+                        this.log(fw, stabilityTestLogNo, String.format("Current loop count: %s", i));
+                        try {
+                            response = this.doHttpRequest(interfaceCaseInfoVO, runEnv, logRecordContent, fw, stabilityTestLogNo);
+                        } catch (BusinessException e) {
+                            response.put("executeStatus", 2);
+                            response.put("executeMsg", e.getMessage());
+                            this.log(fw, stabilityTestLogNo, String.format("Request Error: %s", e.getMessage()));
                         }
-                        this.log(fw, String.format("Warning msg：%s", executeMsg));
-                    } else if (executeStatus == 2) {
-                        if (onErrorStop) {
-                            LOG.error("稳定性测试因执行错误终止");
-                            LOG.error("Error msg：{}", executeMsg);
-                            this.log(fw, "稳定性测试因执行错误终止");
-                            this.log(fw, String.format("Error msg：%s", executeMsg));
+                        executeStatus = response.getIntValue("executeStatus");
+                        executeMsg = response.getString("executeMsg");
+                        if (executeStatus == 1) {
+                            if (onFailedStop) {
+                                LOG.error("稳定性测试因执行失败终止");
+                                LOG.error("Failed msg：{}", executeMsg);
+                                this.log(fw, stabilityTestLogNo, "稳定性测试因执行失败终止");
+                                this.log(fw, stabilityTestLogNo, String.format("Failed msg：%s", executeMsg));
+                                logStatus = 1;
+                                // 将可靠性用例在缓存中设置为停止态
+                                this.setStabilityTestStatus(stabilityTestLogNo, false);
+                                break;
+                            }
+                            this.log(fw, stabilityTestLogNo, String.format("Warning msg：%s", executeMsg));
+                        } else if (executeStatus == 2) {
+                            if (onErrorStop) {
+                                LOG.error("稳定性测试因执行错误终止");
+                                LOG.error("Error msg：{}", executeMsg);
+                                this.log(fw, stabilityTestLogNo, "稳定性测试因执行错误终止");
+                                this.log(fw, stabilityTestLogNo, String.format("Error msg：%s", executeMsg));
+                                logStatus = 2;
+                                // 将可靠性用例在缓存中设置为停止态
+                                this.setStabilityTestStatus(stabilityTestLogNo, false);
+                                break;
+                            }
+                            this.log(fw, stabilityTestLogNo, String.format("Warning msg：%s", executeMsg));
+                        }
+                        try {
+                            Thread.sleep(step*1000);
+                        } catch (InterruptedException e) {
+                            LOG.error("稳定性测试因异常执行终止");
+                            LOG.error("Exception msg：{}", e.getMessage());
+                            this.log(fw, stabilityTestLogNo, "稳定性测试因异常执行终止");
+                            this.log(fw, stabilityTestLogNo, String.format("Exception msg：%s", executeMsg));
                             logStatus = 2;
+                            e.printStackTrace();
+                            // 将可靠性用例在缓存中设置为停止态
+                            this.setStabilityTestStatus(stabilityTestLogNo, false);
                             break;
                         }
-                        this.log(fw, String.format("Warning msg：%s", executeMsg));
-                    }
-                    try {
-                        Thread.sleep(step);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    this.log(fw, "\r\n\r\n\n");
-                    try {
-                        fw.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        this.log(fw, stabilityTestLogNo, "\r\n\r\n\n");
+                        try {
+                            fw.flush();
+                        } catch (IOException e) {
+                            LOG.error("稳定性测试因异常执行终止");
+                            LOG.error("Exception msg：{}", e.getMessage());
+                            this.log(fw, stabilityTestLogNo, "稳定性测试因异常执行终止");
+                            this.log(fw, stabilityTestLogNo, String.format("Exception msg：%s", executeMsg));
+                            logStatus = 2;
+                            e.printStackTrace();
+                            // 将可靠性用例在缓存中设置为停止态
+                            this.setStabilityTestStatus(stabilityTestLogNo, false);
+                            break;
+                        }
+                    } else {
+                        logStatus = 1;
+                        this.log(fw, stabilityTestLogNo, String.format("任务被用户编号[%s]强制终止", executeId));
+                        break;
                     }
                 }
+                // 将可靠性用例在缓存中设置为停止态
+                this.setStabilityTestStatus(stabilityTestLogNo, false);
             } else {
                 LOG.info("next version");
             }
@@ -294,27 +360,35 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         } else { //dubbo
             LOG.debug("next version");
         }
-        this.log(fw, "Stability Test Ending...");
+        this.log(fw, stabilityTestLogNo, "Stability Test Ending...");
         try {
             fw.close();
         } catch (IOException e) {
+            LOG.error("稳定性测试因异常执行终止");
+            LOG.error("Exception msg：{}", e.getMessage());
+            this.log(fw, stabilityTestLogNo, "稳定性测试因异常执行终止");
+            this.log(fw, stabilityTestLogNo, String.format("Exception msg：%s", executeMsg));
+            logStatus = 2;
             e.printStackTrace();
+            // 将可靠性用例在缓存中设置为停止态
+            this.setStabilityTestStatus(stabilityTestLogNo, false);
         }
         // 发送邮件
-        this.sendEmail(fw, emailAddress, executeStatus, executeMsg);
+        this.sendEmail(fw, emailAddress, executeStatus, executeMsg, stabilityTestLogNo);
         // 写日志
         StabilityCaseLogDO logDO = new StabilityCaseLogDO();
         logDO.setStabilityTestLogId(logId);
-        if (logStatus == 0) {
-            logDO.setStatus((byte)2);
+        if (logStatus == 1) {
+            logDO.setStatus((byte) 1);
         } else {
-            logDO.setStatus((byte)1);
+            logDO.setStatus((byte) 2);
         }
         stabilityCaseLogMapper.updateStabilityCaseLog(logDO);
     }
 
     @SuppressWarnings({"unchecked","rawtypes"})
-    private JSONObject doHttpRequest(InterfaceCaseInfoVO interfaceCaseInfoVO, Byte runEnv, Byte logRecordContent, FileWriter fw) throws BusinessException {
+    private JSONObject doHttpRequest(InterfaceCaseInfoVO interfaceCaseInfoVO,
+                                     Byte runEnv, Byte logRecordContent, FileWriter fw, String stabilityTestLogNo) throws BusinessException {
         int executeStatus; //0成功 1失败 2错误
         String executeMsg;
 
@@ -379,7 +453,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
             responseEntity = executeHandler.doRequest(bodyType, methodEnum, url, headersMap, paramsMap, formDataMap, formDataEncodedMap, raw, rawType);
             runTime = System.currentTimeMillis() - start;
 
-            this.log(fw, String.format("Request url: %s", url));
+            this.log(fw, stabilityTestLogNo, String.format("Request url: %s", url));
 
             if (responseEntity == null) {
                 executeStatus = 2;
@@ -389,18 +463,18 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                 String responseHeaders = Request.headersPretty(responseEntity);
                 String responseBody = Request.body(responseEntity);
 
-                this.log(fw, String.format("Response code: %s", responseCode));
+                this.log(fw, stabilityTestLogNo, String.format("Response code: %s", responseCode));
                 if (logRecordContent != null) {
                     if (logRecordContent == 0) {
-                        this.log(fw, String.format("Response headers: %s", responseHeaders));
+                        this.log(fw, stabilityTestLogNo, String.format("Response headers: %s", responseHeaders));
                     } else if (logRecordContent == 1) {
-                        this.log(fw, String.format("Response body: %s", responseBody));
+                        this.log(fw, stabilityTestLogNo, String.format("Response body: %s", responseBody));
                     } else {
-                        this.log(fw, String.format("Response headers: %s", responseHeaders));
-                        this.log(fw, String.format("Response body: %s", responseBody));
+                        this.log(fw, stabilityTestLogNo, String.format("Response headers: %s", responseHeaders));
+                        this.log(fw, stabilityTestLogNo, String.format("Response body: %s", responseBody));
                     }
                 }
-                this.log(fw, String.format("Run time: %sms", runTime));
+                this.log(fw, stabilityTestLogNo, String.format("Run time: %sms", runTime));
 
                 List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
                 JSONObject assertObject = this.doHttpAssert(asserts, responseCode, responseHeaders, responseBody, runTime);
@@ -494,7 +568,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                     assertStatus = 0;
                 } else {
                     assertStatus = 1;
-                    assertMsg = String.format("断言未通过，预期结果为：%s，操作符为：%s，实际结果为：%s", exceptedResult,
+                    assertMsg = String.format("断言未通过，预期结果[%s]，操作符[%s]，实际结果[%s]", exceptedResult,
                             this.getAssertOperatorByCode(operator), actualResult);
                 }
             } catch (Exception e) {
@@ -522,16 +596,20 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
     /**
      * 写日志
      * @param fw FileWriter
+     * @param stabilityTestLogNo stabilityTestLogNo
      * @param text text
      */
-    private void log(FileWriter fw, String text) {
+    private void log(FileWriter fw, String stabilityTestLogNo, String text) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
+            String s;
             if (text.startsWith("\r\n")) {
-                fw.write(text);
+                s = text;
             } else {
-                fw.write(format.format(new Date()) + ":   " + text + "\r\n");
+                s = format.format(new Date()) + ":   " + text + "\r\n";
             }
+            fw.write(s);
+            this.setLogRedisList(stabilityTestLogNo, text);
         } catch (IOException e) {
             LOG.error("稳定性测试写入日志失败，错误消息为{}", e.getMessage());
         }
@@ -576,10 +654,11 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
      * @param executeStatus executeStatus
      * @param executeMsg executeMsg
      */
-    private void sendEmail(FileWriter fw, String emailAddress, int executeStatus, String executeMsg) {
+    private void sendEmail(FileWriter fw, String emailAddress, int executeStatus,
+                           String executeMsg, String stabilityTestLogNo) {
         try {
             if (!StringUtils.isBlank(emailAddress)) {
-                this.log(fw, "------开始发送邮件------");
+                this.log(fw, stabilityTestLogNo, "------开始发送邮件------");
                 if (executeStatus == 0) {
                     mailService.send("稳定性测试成功", executeMsg, emailAddress);
                 } else if (executeStatus == 1) {
@@ -587,13 +666,46 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                 } else {
                     mailService.send("稳定性测试错误", executeMsg, emailAddress);
                 }
-                this.log(fw, "------成功发送邮件------");
+                this.log(fw, stabilityTestLogNo, "------成功发送邮件------");
             }
         } catch (BusinessException e) {
             LOG.error("Send email exception, {}", e.getMessage());
-            this.log(fw, "------发送邮件失败------");
-            this.log(fw, String.format("Send email exception, %s", e.getMessage()));
+            this.log(fw, stabilityTestLogNo, "------发送邮件失败------");
+            this.log(fw, stabilityTestLogNo, String.format("Send email exception, %s", e.getMessage()));
         }
     }
 
+    /**
+     * 设置缓存中的执行状态，用于强制停止稳定性测试任务
+     * @param stabilityTestLogNo 日志编号
+     * @param isRunning 是否在运行
+     */
+    private void setStabilityTestStatus(String stabilityTestLogNo, boolean isRunning) {
+        redisUtil.set(stabilityTestLogNo, isRunning);
+    }
+
+    /**
+     * 获取缓存中的运行状态
+     * @param stabilityTestLogNo stabilityTestLogNo
+     * @return 是否在运行
+     */
+    private boolean getStabilityTestIsRunning(String stabilityTestLogNo) {
+        Object o = redisUtil.get(stabilityTestLogNo);
+        if (o == null) {
+            return false;
+        }
+        return (boolean) redisUtil.get(stabilityTestLogNo);
+    }
+
+    private void setLogRedisList(String stabilityTestLogNo, String text) {
+        String key = NoUtil.genStabilityLogLast10No(stabilityTestLogNo);
+        text = text.replaceAll("(\\r\\n|\\n|\\n\\r)","<br/>");;
+        if (!redisUtil.exist(key)) {
+            redisUtil.queuePush(key, text, 60);
+        }
+        if (redisUtil.lenList(key) >= 20) {
+            redisUtil.queuePop(key);
+        }
+        redisUtil.queuePush(key, text, 60);
+    }
 }

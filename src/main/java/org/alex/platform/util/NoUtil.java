@@ -95,4 +95,13 @@ public class NoUtil {
         String suffix = RandomUtil.randomNumStringByLength(5);
         return "SPL" + prefix + mid + suffix;
     }
+
+    /**
+     * 稳定性日志近10条日志缓存key
+     * @param stabilityTestLogNo stabilityTestLogNo
+     * @return 稳定性日志近100条日志缓存key
+     */
+    public static String genStabilityLogLast10No(String stabilityTestLogNo) {
+        return "LOG-LAST-10-" + stabilityTestLogNo;
+    }
 }

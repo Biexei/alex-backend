@@ -18,8 +18,8 @@ public class StabilityCaseDO implements Serializable {
     private Integer caseId;
     @NotNull(message = "请选择执行方式")
     private Byte executeType;
-    @Min(value = 1000, message = "请重新输入执行间隔")
-    @Max(value = 86400000, message = "请重新输入执行间隔")
+    @Min(value = 1, message = "请重新输入执行间隔")
+    @Max(value = 8640, message = "请重新输入执行间隔")
     private Integer step;
     private Integer executeTimes;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
-Source Server Version : 80020
+Source Server         : localhost
+Source Server Version : 80019
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80020
+Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2021-07-12 18:32:07
+Date: 2021-07-12 22:10:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -527,7 +527,7 @@ CREATE TABLE `t_permission` (
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限名称',
   `parent_id` int DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=240 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=242 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -683,6 +683,8 @@ INSERT INTO `t_permission` VALUES ('236', 'stability:case:execute', '执行', '2
 INSERT INTO `t_permission` VALUES ('237', 'stability:case:find', '查询', '231');
 INSERT INTO `t_permission` VALUES ('238', 'stability:case:log:find', '查询', '232');
 INSERT INTO `t_permission` VALUES ('239', 'stability:case:log:download', '下载', '232');
+INSERT INTO `t_permission` VALUES ('240', 'stability:case:log:stop', '停止', '232');
+INSERT INTO `t_permission` VALUES ('241', 'stability:case:log:last', '近况', '232');
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -694,7 +696,7 @@ CREATE TABLE `t_permission_role_ref` (
   `role_id` int DEFAULT NULL COMMENT '权限编号',
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=225 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
@@ -876,6 +878,10 @@ INSERT INTO `t_permission_role_ref` VALUES ('217', '237', '4', '2021-07-12 18:31
 INSERT INTO `t_permission_role_ref` VALUES ('218', '232', '4', '2021-07-12 18:31:31');
 INSERT INTO `t_permission_role_ref` VALUES ('219', '238', '4', '2021-07-12 18:31:32');
 INSERT INTO `t_permission_role_ref` VALUES ('220', '239', '4', '2021-07-12 18:31:32');
+INSERT INTO `t_permission_role_ref` VALUES ('221', '240', '1', '2021-07-12 22:10:10');
+INSERT INTO `t_permission_role_ref` VALUES ('222', '241', '1', '2021-07-12 22:10:11');
+INSERT INTO `t_permission_role_ref` VALUES ('223', '240', '4', '2021-07-12 22:10:16');
+INSERT INTO `t_permission_role_ref` VALUES ('224', '241', '4', '2021-07-12 22:10:17');
 
 -- ----------------------------
 -- Table structure for t_project

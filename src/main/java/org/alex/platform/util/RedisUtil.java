@@ -55,6 +55,24 @@ public class RedisUtil {
         }
     }
 
+    public void queuePush(String key, Object value) {
+        redisTemplate.opsForList().rightPush(key, value);
+        redisTemplate.expire(key, 60*60, TimeUnit.SECONDS);
+    }
+
+    public void queuePush(String key, Object value, long expire) {
+        if (expire > 0) {
+            redisTemplate.opsForList().rightPush(key, value);
+            redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+        } else {
+            throw new IllegalArgumentException("set redis key time invalid");
+        }
+    }
+
+    public Object queuePop(String key) {
+        return redisTemplate.opsForList().leftPop(key);
+    }
+
     public Object stackPop(String key) {
         return redisTemplate.opsForList().rightPop(key);
     }
@@ -91,5 +109,14 @@ public class RedisUtil {
 
     public Map<Object, Object> hashEntries(String key) {
         return redisTemplate.opsForHash().entries(key);
+    }
+
+    public Long lenList(String key) {
+        return redisTemplate.opsForList().size(key);
+    }
+
+    public boolean exist(String key) {
+        Boolean hasKey = redisTemplate.hasKey(key);
+        return hasKey == null ? false : hasKey;
     }
 }

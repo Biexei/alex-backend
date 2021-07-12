@@ -7,6 +7,7 @@ import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.StabilityCaseDO;
 import org.alex.platform.pojo.StabilityCaseDTO;
 import org.alex.platform.service.StabilityCaseService;
+import org.alex.platform.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -59,8 +61,15 @@ public class StabilityCaseController {
         return Result.success("删除成功");
     }
 
+    @GetMapping("/stability/case/stop/{id}")
+    Result stopStabilityCaseById(@PathVariable Integer id, HttpServletRequest request) throws BusinessException {
+        int userId = loginUserInfo.getUserId(request);
+        stabilityCaseService.stopStabilityCaseByLogId(id, userId);
+        return Result.success("已停止");
+    }
+
     @GetMapping("/stability/case/execute/{id}")
-    Result executeStabilityCaseById(@PathVariable Integer id, HttpServletRequest request) throws BusinessException {
+    Result executeStabilityCaseById(@PathVariable Integer id, HttpServletRequest request) throws Exception {
         int userId = loginUserInfo.getUserId(request);
         stabilityCaseService.executable(id);
         ExecutorService executorService = Executors.newFixedThreadPool(4);
