@@ -161,10 +161,10 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
     @Override
     public void executable(Integer id) throws BusinessException {
 
-        // 最大可靠性测试数量为4
+        // 最大可靠性测试数量为2
         Integer countExecuting = stabilityCaseLogMapper.countExecuting();
-        if (countExecuting > 3) {
-            throw new BusinessException("超过最大可执行任务：4");
+        if (countExecuting > 2) {
+            throw new BusinessException("超过最大可执行任务：2");
         }
 
         // 不可重复创建相同任务
