@@ -239,7 +239,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         }
 
         this.log(fw, stabilityTestLogNo,"Stability Test Starting...");
-        this.log(fw, stabilityTestLogNo, String.format("run environment was %s", runEnv));
+        this.log(fw, stabilityTestLogNo, String.format("Run environment was %s", runEnv));
         this.log(fw, stabilityTestLogNo, "---------Stability Test Case Info---------");
         this.log(fw, stabilityTestLogNo, stabilityCaseInfo.toString());
         this.log(fw, stabilityTestLogNo, "---------Stability Test Case Info---------");

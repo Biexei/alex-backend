@@ -65,6 +65,6 @@ public class StabilityCaseLogController {
         if (s.isEmpty()) {
             s = "已经过期或被清理，请下载详细日志查看";
         }
-        return Result.success(s);
+        return Result.success("操作成功", s);
     };
 }

@@ -7,7 +7,6 @@ import org.alex.platform.exception.ValidException;
 import org.alex.platform.pojo.StabilityCaseDO;
 import org.alex.platform.pojo.StabilityCaseDTO;
 import org.alex.platform.service.StabilityCaseService;
-import org.alex.platform.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
