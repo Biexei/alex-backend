@@ -274,14 +274,13 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
             this.log(fw, stabilityTestLogNo, "---------Http Case Info---------");
             this.log(fw, stabilityTestLogNo, interfaceCaseInfoVO.toString());
             this.log(fw, stabilityTestLogNo, "---------Http Case Info---------");
+            this.log(fw, stabilityTestLogNo, String.format("调度方式：%s", executeType == 0 ? "按执行次数":"按截至时间"));
             this.log(fw, stabilityTestLogNo, "\r\n\r\n\n");
 
             // 获取调度方式
             if (executeType == 0) {
                 for (int i = 1; i <= executeTimes; i++) {
                     if (this.getStabilityTestIsRunning(stabilityTestLogNo)) {
-                        System.out.println("redis 状态");
-                        System.out.println(this.getStabilityTestIsRunning(stabilityTestLogNo));
                         this.log(fw, stabilityTestLogNo, String.format("Current loop count: %s", i));
                         try {
                             response = this.doHttpRequest(interfaceCaseInfoVO, runEnv, logRecordContent, fw, stabilityTestLogNo);
@@ -353,8 +352,91 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                 // 将可靠性用例在缓存中设置为停止态
                 this.setStabilityTestStatus(stabilityTestLogNo, false);
             } else {
-                LOG.info("next version");
+                int loopCount = 1;
+                long end = 0L;
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    end = format.parse(format.format(executeEndTime)).getTime();
+                } catch (java.text.ParseException e) {
+                    LOG.error("Stability end time pattern error");
+                    this.log(fw, stabilityTestLogNo, "稳定性测试因执行错误终止");
+                    this.log(fw, stabilityTestLogNo, String.format("Error msg：%s", e.getMessage()));
+                    logStatus = 2;
+                }
+                while (System.currentTimeMillis() <= end) {
+                    if (this.getStabilityTestIsRunning(stabilityTestLogNo)) {
+                        this.log(fw, stabilityTestLogNo, String.format("Current loop count: %s", loopCount));
+                        try {
+                            response = this.doHttpRequest(interfaceCaseInfoVO, runEnv, logRecordContent, fw, stabilityTestLogNo);
+                        } catch (BusinessException e) {
+                            response.put("executeStatus", 2);
+                            response.put("executeMsg", e.getMessage());
+                            this.log(fw, stabilityTestLogNo, String.format("Request Error: %s", e.getMessage()));
+                        }
+                        executeStatus = response.getIntValue("executeStatus");
+                        executeMsg = response.getString("executeMsg");
+                        if (executeStatus == 1) {
+                            if (onFailedStop) {
+                                LOG.error("稳定性测试因执行失败终止");
+                                LOG.error("Failed msg：{}", executeMsg);
+                                this.log(fw, stabilityTestLogNo, "稳定性测试因执行失败终止");
+                                this.log(fw, stabilityTestLogNo, String.format("Failed msg：%s", executeMsg));
+                                logStatus = 1;
+                                // 将可靠性用例在缓存中设置为停止态
+                                this.setStabilityTestStatus(stabilityTestLogNo, false);
+                                break;
+                            }
+                            this.log(fw, stabilityTestLogNo, String.format("Warning msg：%s", executeMsg));
+                        } else if (executeStatus == 2) {
+                            if (onErrorStop) {
+                                LOG.error("稳定性测试因执行错误终止");
+                                LOG.error("Error msg：{}", executeMsg);
+                                this.log(fw, stabilityTestLogNo, "稳定性测试因执行错误终止");
+                                this.log(fw, stabilityTestLogNo, String.format("Error msg：%s", executeMsg));
+                                logStatus = 2;
+                                // 将可靠性用例在缓存中设置为停止态
+                                this.setStabilityTestStatus(stabilityTestLogNo, false);
+                                break;
+                            }
+                            this.log(fw, stabilityTestLogNo, String.format("Warning msg：%s", executeMsg));
+                        }
+                        try {
+                            Thread.sleep(step*1000);
+                        } catch (InterruptedException e) {
+                            LOG.error("稳定性测试因异常执行终止");
+                            LOG.error("Exception msg：{}", e.getMessage());
+                            this.log(fw, stabilityTestLogNo, "稳定性测试因异常执行终止");
+                            this.log(fw, stabilityTestLogNo, String.format("Exception msg：%s", executeMsg));
+                            logStatus = 2;
+                            e.printStackTrace();
+                            // 将可靠性用例在缓存中设置为停止态
+                            this.setStabilityTestStatus(stabilityTestLogNo, false);
+                            break;
+                        }
+                        this.log(fw, stabilityTestLogNo, "\r\n\r\n\n");
+                        try {
+                            fw.flush();
+                        } catch (IOException e) {
+                            LOG.error("稳定性测试因异常执行终止");
+                            LOG.error("Exception msg：{}", e.getMessage());
+                            this.log(fw, stabilityTestLogNo, "稳定性测试因异常执行终止");
+                            this.log(fw, stabilityTestLogNo, String.format("Exception msg：%s", executeMsg));
+                            logStatus = 2;
+                            e.printStackTrace();
+                            // 将可靠性用例在缓存中设置为停止态
+                            this.setStabilityTestStatus(stabilityTestLogNo, false);
+                            break;
+                        }
+                    } else {
+                        logStatus = 1;
+                        this.log(fw, stabilityTestLogNo, String.format("任务被用户编号[%s]强制终止", executeId));
+                        break;
+                    }
+                    loopCount ++;
+                }
             }
+
+
         } else if (protocol == 1) { //ws(s)
             LOG.debug("next version");
         } else { //dubbo
@@ -609,7 +691,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                 s = format.format(new Date()) + ":   " + text + "\r\n";
             }
             fw.write(s);
-            this.setLogRedisList(stabilityTestLogNo, text);
+            this.setLogRedisList(stabilityTestLogNo, s);
         } catch (IOException e) {
             LOG.error("稳定性测试写入日志失败，错误消息为{}", e.getMessage());
         }
@@ -697,9 +779,14 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         return (boolean) redisUtil.get(stabilityTestLogNo);
     }
 
+    /**
+     * 查看近20行执行记录
+     * @param stabilityTestLogNo stabilityTestLogNo
+     * @param text text
+     */
     private void setLogRedisList(String stabilityTestLogNo, String text) {
         String key = NoUtil.genStabilityLogLast10No(stabilityTestLogNo);
-        text = text.replaceAll("(\\r\\n|\\n|\\n\\r)","<br/>");;
+        text = text.replaceAll("(\\r\\n|\\n|\\n\\r)","<br/>");
         if (!redisUtil.exist(key)) {
             redisUtil.queuePush(key, text, 60);
         }
