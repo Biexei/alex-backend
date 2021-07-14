@@ -198,6 +198,7 @@ INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('239', 'stability:case:log:download', '下载', '232');
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('240', 'stability:case:log:stop', '停止', '232');
 INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('241', 'stability:case:log:last', '近况', '232');
+INSERT INTO `platform`.`t_permission` (`id`, `permission_code`, `permission_name`, `parent_id`) VALUES ('242', 'stability:case:log:delete', '删除', '232');
 
 TRUNCATE t_permission_role_ref;
 INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('31', '89', '1', '2021-03-12 19:58:20');
@@ -381,6 +382,8 @@ INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`
 INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('222', '241', '1', '2021-07-12 22:10:11');
 INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('223', '240', '4', '2021-07-12 22:10:16');
 INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('224', '241', '4', '2021-07-12 22:10:17');
+INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('225', '242', '1', '2021-07-14 16:53:05');
+INSERT INTO `platform`.`t_permission_role_ref` (`id`, `permission_id`, `role_id`, `update_time`) VALUES ('226', '242', '4', '2021-07-14 16:53:09');
 
 
 

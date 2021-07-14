@@ -1,6 +1,7 @@
 package org.alex.platform.controller;
 
 import org.alex.platform.common.Result;
+import org.alex.platform.exception.BusinessException;
 import org.alex.platform.pojo.StabilityCaseLogDTO;
 import org.alex.platform.pojo.StabilityCaseLogVO;
 import org.alex.platform.service.StabilityCaseLogService;
@@ -53,6 +54,15 @@ public class StabilityCaseLogController {
         }
     }
 
+    /**
+     * 删除日志
+     * @param logId 日志编号
+     */
+    @GetMapping("/stability/log/remove/{logId}")
+    public Result removeStabilityCaseLogById(@PathVariable Integer logId) throws BusinessException {
+        stabilityCaseLogService.removeStabilityCaseLogById(logId);
+        return Result.success();
+    }
 
     @GetMapping("/stability/case/log/last/{stabilityTestLogNo}")
     Result stabilityCaseLast10ById(@PathVariable String stabilityTestLogNo) {

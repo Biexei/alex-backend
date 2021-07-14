@@ -80,4 +80,9 @@
     <select id="countExecutingByCaseId" resultType="Integer" flushCache="true">
         select count(*) from `t_stability_case_log` where `status` = 0 and `stability_test_id`=#{stabilityTestId}
     </select>
+
+    <delete id="deleteStabilityCaseLogById" parameterType="Integer">
+        delete from `t_stability_case_log`
+        where `stability_test_log_id`=#{stabilityTestLogId}
+    </delete>
 </mapper>

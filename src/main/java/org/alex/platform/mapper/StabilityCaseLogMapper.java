@@ -22,4 +22,6 @@ public interface StabilityCaseLogMapper {
     Integer countExecuting();
 
     Integer countExecutingByCaseId(Integer stabilityTestId);
+
+    void deleteStabilityCaseLogById(Integer id);
 }

@@ -685,6 +685,8 @@ INSERT INTO `t_permission` VALUES ('238', 'stability:case:log:find', '查询', '
 INSERT INTO `t_permission` VALUES ('239', 'stability:case:log:download', '下载', '232');
 INSERT INTO `t_permission` VALUES ('240', 'stability:case:log:stop', '停止', '232');
 INSERT INTO `t_permission` VALUES ('241', 'stability:case:log:last', '近况', '232');
+INSERT INTO `t_permission` VALUES ('242', 'stability:case:log:delete', '删除', '232');
+
 
 -- ----------------------------
 -- Table structure for t_permission_role_ref
@@ -882,6 +884,8 @@ INSERT INTO `t_permission_role_ref` VALUES ('221', '240', '1', '2021-07-12 22:10
 INSERT INTO `t_permission_role_ref` VALUES ('222', '241', '1', '2021-07-12 22:10:11');
 INSERT INTO `t_permission_role_ref` VALUES ('223', '240', '4', '2021-07-12 22:10:16');
 INSERT INTO `t_permission_role_ref` VALUES ('224', '241', '4', '2021-07-12 22:10:17');
+INSERT INTO `t_permission_role_ref` VALUES ('225', '242', '1', '2021-07-14 16:53:05');
+INSERT INTO `t_permission_role_ref` VALUES ('226', '242', '4', '2021-07-14 16:53:09');
 
 -- ----------------------------
 -- Table structure for t_project
