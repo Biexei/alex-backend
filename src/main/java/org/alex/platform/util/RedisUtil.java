@@ -42,30 +42,38 @@ public class RedisUtil {
     }
 
     public void stackPush(String key, Object value) {
-        redisTemplate.opsForList().rightPush(key, value);
-        redisTemplate.expire(key, 60*60, TimeUnit.SECONDS);
+        if (key != null) {
+            redisTemplate.opsForList().rightPush(key, value);
+            redisTemplate.expire(key, 60*60, TimeUnit.SECONDS);
+        }
     }
 
     public void stackPush(String key, Object value, long expire) {
-        if (expire > 0) {
-            redisTemplate.opsForList().rightPush(key, value);
-            redisTemplate.expire(key, expire, TimeUnit.SECONDS);
-        } else {
-            throw new IllegalArgumentException("set redis key time invalid");
+        if (key != null) {
+            if (expire > 0) {
+                redisTemplate.opsForList().rightPush(key, value);
+                redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+            } else {
+                throw new IllegalArgumentException("set redis key time invalid");
+            }
         }
     }
 
     public void queuePush(String key, Object value) {
-        redisTemplate.opsForList().rightPush(key, value);
-        redisTemplate.expire(key, 60*60, TimeUnit.SECONDS);
+        if (key != null) {
+            redisTemplate.opsForList().rightPush(key, value);
+            redisTemplate.expire(key, 60*60, TimeUnit.SECONDS);
+        }
     }
 
     public void queuePush(String key, Object value, long expire) {
-        if (expire > 0) {
-            redisTemplate.opsForList().rightPush(key, value);
-            redisTemplate.expire(key, expire, TimeUnit.SECONDS);
-        } else {
-            throw new IllegalArgumentException("set redis key time invalid");
+        if (key != null) {
+            if (expire > 0) {
+                redisTemplate.opsForList().rightPush(key, value);
+                redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+            } else {
+                throw new IllegalArgumentException("set redis key time invalid");
+            }
         }
     }
 

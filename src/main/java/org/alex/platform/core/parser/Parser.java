@@ -259,6 +259,7 @@ public class Parser implements Node {
                     } catch (Exception e) {
                         String nf = String.format("dependency init method execution error, maybe not found or parameter error, method was [%s]",methodName);
                         LOG.error(nf);
+                        LOG.error(ExceptionUtil.msg(e));
                         throw new ParseException(nf);
                     }
                 } else if (type >= 2 && type <= 6) { //sql 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
