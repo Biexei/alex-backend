@@ -27,7 +27,7 @@ public class StabilityCaseLogServiceImpl implements StabilityCaseLogService {
     @Autowired
     RedisUtil redisUtil;
     @Autowired
-    StabilityCaseService stabilityCaseService;
+    StabilityCaseServiceImpl stabilityCaseService;
 
     @Override
     public Integer saveStabilityCaseLog(StabilityCaseLogDO stabilityCaseLogDO) {
@@ -103,14 +103,23 @@ public class StabilityCaseLogServiceImpl implements StabilityCaseLogService {
     public JSONArray chartResponseTime(Integer stabilityTestLogId) {
         JSONArray result = new JSONArray();
         StabilityCaseLogVO log = this.findStabilityCaseLogById(stabilityTestLogId);
-        String responseTimeQueue = log.getResponseTimeQueue();
-        JSONArray array = JSONArray.parseArray(responseTimeQueue);
-        if (array != null && !array.isEmpty()) {
-            for (int i = 0; i < array.size(); i++) {
-                JSONObject var1 = new JSONObject();
-                var1.put("Loop", String.valueOf(i+1)); // 如果是数值型前端会无法显示第一个点
-                var1.put("Time", array.getLongValue(i));
-                result.add(var1);
+        JSONArray array; // 响应时间队列
+        if (log != null) {
+            Byte status = log.getStatus();
+            String responseTimeQueue = log.getResponseTimeQueue();
+            String stabilityTestLogNo = log.getStabilityTestLogNo();
+            if (status == 0) { // 进行中状态从缓存取（因为非停止/完成状态还未序列化至数据库）
+                array = stabilityCaseService.getResponseTimeQueue(stabilityTestLogNo);
+            } else {
+                array = JSONArray.parseArray(responseTimeQueue);
+            }
+            if (array != null && !array.isEmpty()) {
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject var1 = new JSONObject();
+                    var1.put("Loop", String.valueOf(i+1)); // 如果是数值型前端会无法显示第一个点
+                    var1.put("Time", array.getLongValue(i));
+                    result.add(var1);
+                }
             }
         }
         return result;

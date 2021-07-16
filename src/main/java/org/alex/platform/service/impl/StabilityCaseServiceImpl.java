@@ -863,7 +863,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
      * @param stabilityTestLogNo stabilityTestLogNo
      * @return 响应时间队列
      */
-    private JSONArray getResponseTimeQueue(String stabilityTestLogNo) {
+    public JSONArray getResponseTimeQueue(String stabilityTestLogNo) {
         String key = NoUtil.genStabilityLogResponseTimeQueueNo(stabilityTestLogNo);
         return JSONArray.parseArray(JSON.toJSONString(redisUtil.stackGetAll(key)));
     }
