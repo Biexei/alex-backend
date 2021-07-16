@@ -272,6 +272,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         int successCount = 0; //记录成功次数
         int failedCount = 0; //记录失败次数
         int errorCount = 0; //记录错误次数
+        int warningCount = 0; //记录警告次数（出错或者失败，但设置出错或者失败不中断）
 
         if (protocol == 0) { //http(s)
             InterfaceCaseInfoVO interfaceCaseInfoVO = interfaceCaseService.findInterfaceCaseByCaseId(caseId);
@@ -303,8 +304,8 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                         executeStatus = response.getIntValue("executeStatus");
                         executeMsg = response.getString("executeMsg");
                         if (executeStatus == 1) {
-                            ++failedCount;
                             if (onFailedStop) {
+                                ++failedCount;
                                 LOG.error("稳定性测试因执行失败终止");
                                 LOG.error("Failed msg：{}", executeMsg);
                                 this.log(fw, stabilityTestLogNo, "稳定性测试因执行失败终止");
@@ -314,10 +315,11 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                                 this.setStabilityTestStatus(stabilityTestLogNo, false);
                                 break;
                             }
-                            this.log(fw, stabilityTestLogNo, String.format("Warning msg：%s", executeMsg));
+                            ++warningCount;
+                            this.log(fw, stabilityTestLogNo, String.format("Warning[Failed] msg：%s", executeMsg));
                         } else if (executeStatus == 2) {
-                            ++errorCount;
                             if (onErrorStop) {
+                                ++errorCount;
                                 LOG.error("稳定性测试因执行错误终止");
                                 LOG.error("Error msg：{}", executeMsg);
                                 this.log(fw, stabilityTestLogNo, "稳定性测试因执行错误终止");
@@ -327,7 +329,8 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                                 this.setStabilityTestStatus(stabilityTestLogNo, false);
                                 break;
                             }
-                            this.log(fw, stabilityTestLogNo, String.format("Warning msg：%s", executeMsg));
+                            ++warningCount;
+                            this.log(fw, stabilityTestLogNo, String.format("Warning[Error] msg：%s", executeMsg));
                         }
                         try {
                             Thread.sleep(step*1000);
@@ -391,8 +394,8 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                         executeStatus = response.getIntValue("executeStatus");
                         executeMsg = response.getString("executeMsg");
                         if (executeStatus == 1) {
-                            ++failedCount;
                             if (onFailedStop) {
+                                ++failedCount;
                                 LOG.error("稳定性测试因执行失败终止");
                                 LOG.error("Failed msg：{}", executeMsg);
                                 this.log(fw, stabilityTestLogNo, "稳定性测试因执行失败终止");
@@ -402,10 +405,11 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                                 this.setStabilityTestStatus(stabilityTestLogNo, false);
                                 break;
                             }
-                            this.log(fw, stabilityTestLogNo, String.format("Warning msg：%s", executeMsg));
+                            ++warningCount;
+                            this.log(fw, stabilityTestLogNo, String.format("Warning[Failed] msg：%s", executeMsg));
                         } else if (executeStatus == 2) {
-                            ++errorCount;
                             if (onErrorStop) {
+                                ++errorCount;
                                 LOG.error("稳定性测试因执行错误终止");
                                 LOG.error("Error msg：{}", executeMsg);
                                 this.log(fw, stabilityTestLogNo, "稳定性测试因执行错误终止");
@@ -415,7 +419,8 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                                 this.setStabilityTestStatus(stabilityTestLogNo, false);
                                 break;
                             }
-                            this.log(fw, stabilityTestLogNo, String.format("Warning msg：%s", executeMsg));
+                            ++warningCount;
+                            this.log(fw, stabilityTestLogNo, String.format("Warning[Error] msg：%s", executeMsg));
                         }
                         try {
                             Thread.sleep(step*1000);
@@ -479,10 +484,11 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         this.log(fw, stabilityTestLogNo, String.format("执行开始时间：%s", startTime));
         this.log(fw, stabilityTestLogNo, String.format("实际结束时间：%s", endTime));
         this.log(fw, stabilityTestLogNo, "\r\n");
-        this.log(fw, stabilityTestLogNo, String.format("实际请求次数：%s", loopCount-1));
-        this.log(fw, stabilityTestLogNo, String.format("实际请求成功次数：%s", successCount-1));
-        this.log(fw, stabilityTestLogNo, String.format("实际请求失败次数：%s", failedCount-1));
-        this.log(fw, stabilityTestLogNo, String.format("实际请求错误次数：%s", errorCount-1));
+        this.log(fw, stabilityTestLogNo, String.format("请求次数：%s", loopCount));
+        this.log(fw, stabilityTestLogNo, String.format("成功次数：%s", successCount));
+        this.log(fw, stabilityTestLogNo, String.format("警告次数：%s", warningCount));
+        this.log(fw, stabilityTestLogNo, String.format("失败次数：%s", failedCount));
+        this.log(fw, stabilityTestLogNo, String.format("错误次数：%s", errorCount));
         this.log(fw, stabilityTestLogNo, "---------Test Report---------");
         // 发送邮件
         this.sendEmail(fw, emailAddress, executeStatus, executeMsg, stabilityTestLogNo);

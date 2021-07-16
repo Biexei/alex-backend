@@ -177,6 +177,26 @@ public class InvokeCenter {
     }
 
     /**
+     * 返回当前时间明天
+     *
+     * @param format 时间格式
+     * @return 返回当前时间明天
+     */
+    public String tomorrow(String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(DateUtils.addDays(new Date(), 1));
+    }
+
+    /**
+     * 返回当前时间明天
+     *
+     * @return 返回当前时间明天
+     */
+    public String tomorrow() {
+        return tomorrow("yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
      * 返回当前时间上个月
      *
      * @param format 时间格式

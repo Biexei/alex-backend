@@ -239,29 +239,54 @@ public class Parser implements Node {
                 byte type = relyDataVO.getType();
                 if (type == 1) { //反射方法
                     LOG.info("--------------------------------------进入预置方法模式");
+
+                    Method method;
+                    String methodReturnValue;
+                    Class<?> clazz;
+                    Constructor<?> constructor;
+
+                    try {
+                        clazz = Class.forName("org.alex.platform.common.InvokeCenter");
+                        constructor = clazz.getConstructor(byte.class);
+                    } catch (ClassNotFoundException | NoSuchMethodException e) {
+                        String nf = "org.alex.platform.common.InvokeCenter constructor not found";
+                        LOG.error(nf);
+                        LOG.error(ExceptionUtil.msg(e));
+                        throw new ParseException(nf);
+                    }
+
                     if (params.length == 1 && "".equals(params[0])) {
                         params = new String[0];
                     }
-                    try {
-                        Class<?> clazz = Class.forName("org.alex.platform.common.InvokeCenter");
-                        Constructor<?> constructor = clazz.getConstructor(byte.class);
+
+                    try { // 尝试固定长度参数
+                        clazz = Class.forName("org.alex.platform.common.InvokeCenter");
+                        constructor = clazz.getConstructor(byte.class);
                         Class[] paramsList = new Class[params.length];
                         for (int i = 0; i < params.length; i++) {
                             paramsList[i] = String.class;
                             params[i] = params[i].substring(1, params[i].length() - 1);
                         }
-                        LOG.info("方法名称={}，方法参数={}", methodName, Arrays.toString(params));
-                        Method method = clazz.getMethod(methodName, paramsList);
-                        String value = (String) method.invoke(constructor.newInstance(runEnv), params);
-                        redisUtil.stackPush(chainNo, chainNode(RelyType.INVOKE, relyDataVO.getId(), relyName, value, TimeUtil.now()-start, null));
-                        s = s.replace(findStr, value);
-                        LOG.info("预置方法执行并替换后的结果={}", s);
+                        LOG.info("固定长度参数，方法名称={}，方法参数={}", methodName, Arrays.toString(params));
+                        method = clazz.getMethod(methodName, paramsList);
+                        methodReturnValue = (String) method.invoke(constructor.newInstance(runEnv), (Object[]) params);
+                        LOG.info("固定长度参数，预置方法执行并替换后的结果={}", s);
                     } catch (Exception e) {
-                        String nf = String.format("dependency init method execution error, maybe not found or parameter error, method was [%s]",methodName);
-                        LOG.error(nf);
-                        LOG.error(ExceptionUtil.msg(e));
-                        throw new ParseException(nf);
+                        // 尝试可变参数
+                        try {
+                            LOG.info("固定长度参数异常，尝试可变长度参数，方法名称={}，方法参数={}", methodName, Arrays.toString(params));
+                            method = clazz.getMethod(methodName, String[].class);
+                            methodReturnValue = (String) method.invoke(constructor.newInstance(runEnv), (Object) params);
+                            LOG.info("固定长度参数异常，尝试可变长度参数，预置方法执行并替换后的结果={}", s);
+                        } catch (Exception ee) {
+                            String nf = String.format("dependency init method execution error, maybe not found or parameter error, method was [%s]",methodName);
+                            LOG.error(nf);
+                            LOG.error(ExceptionUtil.msg(ee));
+                            throw new ParseException(nf);
+                        }
                     }
+                    redisUtil.stackPush(chainNo, chainNode(RelyType.INVOKE, relyDataVO.getId(), relyName, methodReturnValue, TimeUtil.now()-start, null));
+                    s = s.replace(findStr, methodReturnValue);
                 } else if (type >= 2 && type <= 6) { //sql 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
                     LOG.info("--------------------------------------进入动态SQL模式");
                     if (params.length == 1 && "".equals(params[0])) {
