@@ -24,4 +24,5 @@ public interface StabilityCaseService {
     void executable(Integer id) throws BusinessException;
 
     void stopStabilityCaseByLogId(Integer stabilityTestLogId, Integer executeId) throws BusinessException;
+
 }

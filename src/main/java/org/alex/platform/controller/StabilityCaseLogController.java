@@ -64,6 +64,15 @@ public class StabilityCaseLogController {
         return Result.success();
     }
 
+    /**
+     * 查看响应时间报表
+     * @param logId 日志编号
+     */
+    @GetMapping("/stability/log/chart/time/{logId}")
+    public Result chartResponseTime(@PathVariable Integer logId) {
+        return Result.success(stabilityCaseLogService.chartResponseTime(logId));
+    }
+
     @GetMapping("/stability/case/log/last/{stabilityTestLogNo}")
     Result stabilityCaseLast10ById(@PathVariable String stabilityTestLogNo) {
         List<Object> objects = redisUtil.stackGetAll(NoUtil.genStabilityLogLast10No(stabilityTestLogNo));

@@ -16,6 +16,80 @@ public class StabilityCaseLogDO implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
     private Byte runEnv;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endTime;
+    private Integer requestCount;
+    private Integer successCount;
+    private Integer warningCount;
+    private Integer failedCount;
+    private Integer errorCount;
+    private String responseTimeQueue;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Integer getRequestCount() {
+        return requestCount;
+    }
+
+    public void setRequestCount(Integer requestCount) {
+        this.requestCount = requestCount;
+    }
+
+    public Integer getSuccessCount() {
+        return successCount;
+    }
+
+    public void setSuccessCount(Integer successCount) {
+        this.successCount = successCount;
+    }
+
+    public Integer getWarningCount() {
+        return warningCount;
+    }
+
+    public void setWarningCount(Integer warningCount) {
+        this.warningCount = warningCount;
+    }
+
+    public Integer getFailedCount() {
+        return failedCount;
+    }
+
+    public void setFailedCount(Integer failedCount) {
+        this.failedCount = failedCount;
+    }
+
+    public Integer getErrorCount() {
+        return errorCount;
+    }
+
+    public void setErrorCount(Integer errorCount) {
+        this.errorCount = errorCount;
+    }
+
+    public String getResponseTimeQueue() {
+        return responseTimeQueue;
+    }
+
+    public void setResponseTimeQueue(String responseTimeQueue) {
+        this.responseTimeQueue = responseTimeQueue;
+    }
 
     public Integer getStabilityTestId() {
         return stabilityTestId;

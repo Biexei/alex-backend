@@ -478,15 +478,16 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                     new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(executeEndTime)));
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String startTime = format.format(exeDate);
-        String endTime = format.format(new Date());
+        String startTimeS = format.format(exeDate);
+        Date endTime = new Date();
+        String endTimeS = format.format(endTime);
         this.log(fw, stabilityTestLogNo, "\r\n");
-        this.log(fw, stabilityTestLogNo, String.format("执行开始时间：%s", startTime));
-        this.log(fw, stabilityTestLogNo, String.format("实际结束时间：%s", endTime));
+        this.log(fw, stabilityTestLogNo, String.format("执行开始时间：%s", startTimeS));
+        this.log(fw, stabilityTestLogNo, String.format("实际结束时间：%s", endTimeS));
         this.log(fw, stabilityTestLogNo, "\r\n");
         this.log(fw, stabilityTestLogNo, String.format("请求次数：%s", loopCount));
-        this.log(fw, stabilityTestLogNo, String.format("成功次数：%s", successCount));
         this.log(fw, stabilityTestLogNo, String.format("警告次数：%s", warningCount));
+        this.log(fw, stabilityTestLogNo, String.format("成功次数：%s", successCount));
         this.log(fw, stabilityTestLogNo, String.format("失败次数：%s", failedCount));
         this.log(fw, stabilityTestLogNo, String.format("错误次数：%s", errorCount));
         this.log(fw, stabilityTestLogNo, "---------Test Report---------");
@@ -495,6 +496,16 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         // 写日志
         StabilityCaseLogDO logDO = new StabilityCaseLogDO();
         logDO.setStabilityTestLogId(logId);
+        logDO.setStartTime(exeDate);
+        logDO.setEndTime(endTime);
+        logDO.setRequestCount(loopCount);
+        logDO.setSuccessCount(successCount);
+        logDO.setWarningCount(warningCount);
+        logDO.setFailedCount(failedCount);
+        logDO.setErrorCount(errorCount);
+        logDO.setResponseTimeQueue(this.getResponseTimeQueue(stabilityTestLogNo).toJSONString());
+        // 删除缓存
+        this.delResponseTimeQueue(stabilityTestLogNo);
         if (logStatus == 1) {
             logDO.setStatus((byte) 1);
         } else {
@@ -597,6 +608,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                     }
                 }
                 this.log(fw, stabilityTestLogNo, String.format("Run time: %sms", runTime));
+                this.setResponseTimeQueue(stabilityTestLogNo, runTime);
 
                 List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
                 JSONObject assertObject = this.doHttpAssert(asserts, responseCode, responseHeaders, responseBody, runTime);
@@ -834,5 +846,33 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
             redisUtil.queuePop(key);
         }
         redisUtil.queuePush(key, text, 60);
+    }
+
+    /**
+     * 记录每次请求的响应时间
+     * @param stabilityTestLogNo stabilityTestLogNo
+     * @param time time
+     */
+    private void setResponseTimeQueue(String stabilityTestLogNo, long time) {
+        String key = NoUtil.genStabilityLogResponseTimeQueueNo(stabilityTestLogNo);
+        redisUtil.queuePush(key, time);
+    }
+
+    /**
+     * 返回响应时间队列
+     * @param stabilityTestLogNo stabilityTestLogNo
+     * @return 响应时间队列
+     */
+    private JSONArray getResponseTimeQueue(String stabilityTestLogNo) {
+        String key = NoUtil.genStabilityLogResponseTimeQueueNo(stabilityTestLogNo);
+        return JSONArray.parseArray(JSON.toJSONString(redisUtil.stackGetAll(key)));
+    }
+
+    /**
+     * 删除缓存响应时间队列
+     */
+    private void delResponseTimeQueue(String stabilityTestLogNo) {
+        String key = NoUtil.genStabilityLogResponseTimeQueueNo(stabilityTestLogNo);
+        redisUtil.del(key);
     }
 }

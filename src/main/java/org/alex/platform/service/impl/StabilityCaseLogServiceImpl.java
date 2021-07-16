@@ -1,5 +1,7 @@
 package org.alex.platform.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
@@ -90,5 +92,27 @@ public class StabilityCaseLogServiceImpl implements StabilityCaseLogService {
                 throw new BusinessException("该任务正在运行");
             }
         }
+    }
+
+
+    /**
+     * 响应时间报表
+     * @param stabilityTestLogId stabilityTestLogId
+     */
+    @Override
+    public JSONArray chartResponseTime(Integer stabilityTestLogId) {
+        JSONArray result = new JSONArray();
+        StabilityCaseLogVO log = this.findStabilityCaseLogById(stabilityTestLogId);
+        String responseTimeQueue = log.getResponseTimeQueue();
+        JSONArray array = JSONArray.parseArray(responseTimeQueue);
+        if (array != null && !array.isEmpty()) {
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject var1 = new JSONObject();
+                var1.put("Loop", String.valueOf(i+1)); // 如果是数值型前端会无法显示第一个点
+                var1.put("Time", array.getLongValue(i));
+                result.add(var1);
+            }
+        }
+        return result;
     }
 }

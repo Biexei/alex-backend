@@ -97,11 +97,20 @@ public class NoUtil {
     }
 
     /**
-     * 稳定性日志近10条日志缓存key
+     * 稳定性日志近期日志缓存key
      * @param stabilityTestLogNo stabilityTestLogNo
-     * @return 稳定性日志近100条日志缓存key
+     * @return 稳定性日志近期日志缓存key
      */
     public static String genStabilityLogLast10No(String stabilityTestLogNo) {
-        return "LOG-LAST-10-" + stabilityTestLogNo;
+        return "LOG-LAST-" + stabilityTestLogNo;
+    }
+
+    /**
+     * 稳定性响应时间缓存key
+     * @param stabilityTestLogNo stabilityTestLogNo
+     * @return 稳定性响应时间缓存key
+     */
+    public static String genStabilityLogResponseTimeQueueNo(String stabilityTestLogNo) {
+        return "RESPONSE-TIME-QUEUE-" + stabilityTestLogNo;
     }
 }

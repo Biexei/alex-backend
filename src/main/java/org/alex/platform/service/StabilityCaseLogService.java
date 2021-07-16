@@ -1,5 +1,6 @@
 package org.alex.platform.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.pojo.StabilityCaseLogDO;
@@ -24,5 +25,7 @@ public interface StabilityCaseLogService {
     Integer countExecutingByCaseId(Integer stabilityTestId);
 
     void removeStabilityCaseLogById(Integer id) throws BusinessException;
+
+    JSONArray chartResponseTime(Integer stabilityTestLogId);
 
 }

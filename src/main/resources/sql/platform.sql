@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 80019
+Source Server         : 本地
+Source Server Version : 80020
 Source Host           : localhost:3306
 Source Database       : platform
 
 Target Server Type    : MYSQL
-Target Server Version : 80019
+Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2021-07-12 22:10:42
+Date: 2021-07-16 16:46:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -527,7 +527,7 @@ CREATE TABLE `t_permission` (
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限名称',
   `parent_id` int DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=242 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=243 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission
@@ -687,7 +687,6 @@ INSERT INTO `t_permission` VALUES ('240', 'stability:case:log:stop', '停止', '
 INSERT INTO `t_permission` VALUES ('241', 'stability:case:log:last', '近况', '232');
 INSERT INTO `t_permission` VALUES ('242', 'stability:case:log:delete', '删除', '232');
 
-
 -- ----------------------------
 -- Table structure for t_permission_role_ref
 -- ----------------------------
@@ -698,7 +697,7 @@ CREATE TABLE `t_permission_role_ref` (
   `role_id` int DEFAULT NULL COMMENT '权限编号',
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=225 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_permission_role_ref
@@ -953,7 +952,7 @@ INSERT INTO `t_rely_data` VALUES ('3', 'base64', 'base64(String s)', 'base64加�
 INSERT INTO `t_rely_data` VALUES ('4', 'timestamp', 'timestamp()', '获取当前时间戳ms，引用方式示例：${timestamp()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('5', 'timestamps', 'timestamps()', '获取当前时间戳s，引用方式示例：${timestamps()}', '1', null, '2020-09-02 11:37:06', '2020-10-02 09:30:56', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('6', 'now', 'now(String format)', '获取当前时间，引用方式示例：${now(\"yyyy-MM-dd HH:mm:ss\")}，重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-10-21 16:18:07', null, null, null, null, null, null);
-INSERT INTO `t_rely_data` VALUES ('7', 'tomorrow', 'tomorrow(String format)', '获取当前时间对应的明天，引用方式示例：${tomorrow(\"yyyy-MM-dd HH:mm:ss\")}，重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-10-21 16:18:07', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('7', 'tomorrow', 'tomorrow(String format)', '获取当前时间的明天，引用方式示例：${tomorrow(\"yyyy-MM-dd HH:mm:ss\")}，重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-10-21 16:18:07', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('9', 'time', 'time(String operator, String amount, String format)', '获取相较于当前时间的指定时间，operator：y、M、d、h、m、s；分别对应：年、月、日、时、分、秒，amount：数额，format：格式，如yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2020-09-02 11:36:58', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('10', 'yesterday', 'yesterday(String format)', '获取当前时间对应的昨天，引用方式示例：${yesterday(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:06', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('11', 'lastMonth', 'lastMonth(String format)', '获取当前时间对应的上个月，引用方式示例：${lastMonth(\"yyyy-MM-dd HH:mm:ss\")}，\n重载方法参数可为空，默认yyyy-MM-dd HH:mm:ss', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:40:10', null, null, null, null, null, null);
@@ -966,7 +965,7 @@ INSERT INTO `t_rely_data` VALUES ('18', 'randomLower', 'randomLower(String lengt
 INSERT INTO `t_rely_data` VALUES ('19', 'randomEn', 'randomEn(String length)', '获取指定长度的随机英文，引用方式示例：${randomEn(\"10\")}；\nrandomEn(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:27', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('20', 'randomIllegal', 'randomIllegal(String length)', '获取指定长度的非法字符，引用方式示例：${randomIllegal(\"10\")}；\nrandomIllegal(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('21', 'randomLegal', 'randomLegal(String length)', '获取指定长度字母数字，引用方式示例：${randomLegal(\"10\")}；\randomLegal(String minLen, String maxLen)重载方法为随机长度的随机数值', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
-INSERT INTO `t_rely_data` VALUES ('22', 'nextNum', 'nextNum(String minSize, String maxSize)', '获取指定大小的数字，引用方式示例：${nextNum(\"1.0\", \"2.0\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
+INSERT INTO `t_rely_data` VALUES ('22', 'nextNum', 'nextNum(String minSize, String maxSize)', '获取指定大小的数字，引用方式示例：nextNum(\"1.0\", \"2.0\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('23', 'nextInt', 'nextInt(String minSize, String maxSize)', '获取指定大小的整型数字，引用方式示例：${nextInt(\"1\", \"2\")}', '1', null, '2020-09-02 11:37:06', '2021-04-19 16:39:18', null, null, null, null, null, null);
 INSERT INTO `t_rely_data` VALUES ('24', 'cs', '长沙', '长沙市，引用方式示例：${cs}', '0', null, '2020-09-02 11:37:06', '2021-06-04 10:32:24', null, '1', '1', '123', '0', '0');
 INSERT INTO `t_rely_data` VALUES ('29', 'city', 'city()', '随机城市，引用方式示例：${city()}', '1', null, '2020-10-21 15:26:23', '2020-10-21 15:26:32', null, null, null, null, null, null);
@@ -1049,6 +1048,14 @@ CREATE TABLE `t_stability_case_log` (
   `execute_id` int DEFAULT NULL COMMENT '执行人用户编号',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `run_env` tinyint DEFAULT NULL COMMENT '0dev1test2stg3prod4debug',
+  `start_time` datetime DEFAULT NULL COMMENT '稳定性测试开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '稳定性测试结束时间',
+  `request_count` int DEFAULT NULL COMMENT '请求数',
+  `success_count` int DEFAULT NULL COMMENT '成功数',
+  `warning_count` int DEFAULT NULL COMMENT '警告数',
+  `failed_count` int DEFAULT NULL COMMENT '失败数',
+  `error_count` int DEFAULT NULL COMMENT '失败数',
+  `response_time_queue` mediumtext COMMENT '响应时间队列jsonarraystring',
   PRIMARY KEY (`stability_test_log_id`),
   UNIQUE KEY `stability_test_log_no` (`stability_test_log_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1115,7 +1122,7 @@ CREATE TABLE `t_user` (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1', '123', '18e29620f058e8bf085bfed74fdf5e82', '', '1', '1', null, '2021-03-10 16:08:51', '超级管理员', '1');
+INSERT INTO `t_user` VALUES ('1', 'admin', '75fefc85ac39bfcf082cbb0e29274aef', '', '1', '1', null, '2021-03-10 16:08:51', '超级管理员', '1');
 
 -- ----------------------------
 -- Table structure for t_user_login_log
@@ -1128,9 +1135,8 @@ CREATE TABLE `t_user_login_log` (
   `ip` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'ip地址',
   `login_time` datetime DEFAULT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of t_user_login_log
 -- ----------------------------
-INSERT INTO `t_user_login_log` VALUES ('1', '1', '123', '0:0:0:0:0:0:0:1', '2021-07-12 18:31:37');

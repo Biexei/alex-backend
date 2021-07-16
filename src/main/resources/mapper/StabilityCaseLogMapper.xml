@@ -15,6 +15,14 @@
             `execute_id`,
             `created_time`,
             `run_env`,
+            `start_time`,
+            `end_time`,
+            `request_count`,
+            `success_count`,
+            `warning_count`,
+            `failed_count`,
+            `error_count`,
+            `response_time_queue`,
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             #{stabilityTestId},
@@ -25,6 +33,14 @@
             #{executeId},
             #{createdTime},
             #{runEnv},
+            #{startTime},
+            #{endTime},
+            #{requestCount},
+            #{successCount},
+            #{warningCount},
+            #{failedCount},
+            #{errorCount},
+            #{responseTimeQueue},
         </trim>
     </insert>
     <update id="updateStabilityCaseLog" parameterType="org.alex.platform.pojo.StabilityCaseLogDO">
@@ -36,31 +52,71 @@
         <if test="logPath!=null">`log_path`=#{logPath},</if>
         <if test="status!=null">`status`=#{status},</if>
         <if test="runEnv!=null"> `run_env`=#{runEnv},</if>
+        <if test="startTime!=null"> `start_time`=#{startTime},</if>
+        <if test="endTime!=null"> `end_time`=#{endTime},</if>
+        <if test="requestCount!=null"> `request_count`=#{requestCount},</if>
+        <if test="successCount!=null"> `success_count`=#{successCount},</if>
+        <if test="warningCount!=null"> `warning_count`=#{warningCount},</if>
+        <if test="failedCount!=null"> `failed_count`=#{failedCount},</if>
+        <if test="errorCount!=null"> `error_count`=#{errorCount},</if>
+        <if test="responseTimeQueue!=null"> `response_time_queue`=#{responseTimeQueue},</if>
         </set>
         where
             `stability_test_log_id`=#{stabilityTestLogId}
     </update>
     <select id="selectStabilityCaseLogById" parameterType="Integer" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
         select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
-            `log_path`,`status`,`execute_id`,`created_time`, `run_env`
+            `log_path`,`status`,`execute_id`,`created_time`, `run_env`,
+            `start_time`,
+            `end_time`,
+            `request_count`,
+            `success_count`,
+            `warning_count`,
+            `failed_count`,
+            `error_count`,
+            `response_time_queue`
         from `t_stability_case_log`
         where `stability_test_log_id`=#{stabilityTestLogId}
     </select>
     <select id="selectStabilityCaseLogByNo" parameterType="String" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
         select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
-            `log_path`,`status`,`execute_id`,`created_time`, `run_env`
+            `log_path`,`status`,`execute_id`,`created_time`, `run_env`,
+            `start_time`,
+            `end_time`,
+            `request_count`,
+            `success_count`,
+            `warning_count`,
+            `failed_count`,
+            `error_count`,
+            `response_time_queue`
         from `t_stability_case_log`
         where `stability_test_log_no`=#{stabilityTestLogNo}
     </select>
     <select id="selectStabilityCaseLogByStabilityCaseId" parameterType="Integer" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
         select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,
-            `log_path`,`status`,`execute_id`,`created_time`, `run_env`
+            `log_path`,`status`,`execute_id`,`created_time`, `run_env`,
+            `start_time`,
+            `end_time`,
+            `request_count`,
+            `success_count`,
+            `warning_count`,
+            `failed_count`,
+            `error_count`,
+            `response_time_queue`
         from `t_stability_case_log`
         where `stability_test_id`=#{stabilityTestId}
     </select>
 
     <select id="selectStabilityCaseLogList" parameterType="org.alex.platform.pojo.StabilityCaseLogDTO" resultType="org.alex.platform.pojo.StabilityCaseLogVO">
-        select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,`status`,`execute_id`,`created_time`, `run_env`
+        select `stability_test_log_id`, `stability_test_log_no`,`stability_test_id`,`stability_test_desc`,`status`,`execute_id`,`created_time`, `run_env`,
+        `start_time`,
+        `end_time`,
+        `request_count`,
+        `success_count`,
+        `warning_count`,
+        `failed_count`,
+        `error_count`,
+        `response_time_queue`
         from `t_stability_case_log`
         <where>
             <if test="stabilityTestId!=null">and `stability_test_id`=#{stabilityTestId}</if>
