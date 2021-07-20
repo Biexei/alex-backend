@@ -289,9 +289,20 @@ public class JdbcUtil {
      * @throws Exception 异常
      */
     public static <T> List<T> queryForList(String url, String username, String password, String sql, Class<T> elementType) throws Exception {
-        DruidDataSource druidDataSource = getDruidDataSource(url, username, password, SqlType.SELECT);
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(druidDataSource);
-        return jdbcTemplate.queryForList(sql, elementType);
+        DruidDataSource druidDataSource = null;
+        JdbcTemplate jdbcTemplate;
+        try {
+            druidDataSource = getDruidDataSource(url, username, password, SqlType.SELECT);
+            jdbcTemplate = new JdbcTemplate(druidDataSource);
+            return jdbcTemplate.queryForList(sql, elementType);
+        } catch (Exception e) {
+            LOG.error("执行SQL异常,url={},username={},password={},errorMsg={}", url, username, password, e);
+            throw new Exception("执行SQL异常");
+        } finally {
+            if (druidDataSource != null) {
+                druidDataSource.close();
+            }
+        }
     }
 
     /**

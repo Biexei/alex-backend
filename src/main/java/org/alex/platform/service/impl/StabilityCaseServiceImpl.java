@@ -163,7 +163,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
 
         // 最大可靠性测试数量为2
         Integer countExecuting = stabilityCaseLogMapper.countExecuting();
-        if (countExecuting > 2) {
+        if (countExecuting > 1) {
             throw new BusinessException("超过最大可执行任务：2");
         }
 

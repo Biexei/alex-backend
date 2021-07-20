@@ -269,9 +269,10 @@ public class Parser implements Node {
                         }
                         LOG.info("固定长度参数，方法名称={}，方法参数={}", methodName, Arrays.toString(params));
                         method = clazz.getMethod(methodName, paramsList);
-                        methodReturnValue = (String) method.invoke(constructor.newInstance(runEnv), (Object[]) params);
+                        methodReturnValue = (String) method.invoke(constructor.newInstance(runEnv), params);
                         LOG.info("固定长度参数，预置方法执行并替换后的结果={}", s);
                     } catch (Exception e) {
+                        LOG.error(e.getMessage());
                         // 尝试可变参数
                         try {
                             LOG.info("固定长度参数异常，尝试可变长度参数，方法名称={}，方法参数={}", methodName, Arrays.toString(params));
@@ -279,7 +280,7 @@ public class Parser implements Node {
                             methodReturnValue = (String) method.invoke(constructor.newInstance(runEnv), (Object) params);
                             LOG.info("固定长度参数异常，尝试可变长度参数，预置方法执行并替换后的结果={}", s);
                         } catch (Exception ee) {
-                            String nf = String.format("dependency init method execution error, maybe not found or parameter error, method was [%s]",methodName);
+                            String nf = String.format("dependency init method execution error, maybe not found or parameter error, method was [%s], params was[%s]",methodName, Arrays.toString(params));
                             LOG.error(nf);
                             LOG.error(ExceptionUtil.msg(ee));
                             throw new ParseException(nf);
