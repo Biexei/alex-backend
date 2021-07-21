@@ -859,7 +859,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         String key = NoUtil.genStabilityLogResponseTimeQueueNo(stabilityTestLogNo);
         JSONObject var1 = new JSONObject();
         var1.put("Time", time);
-        var1.put("Loop", this.convert2hms(loop));
+        var1.put("Loop", TimeUtil.convert2hms(loop));
         redisUtil.queuePush(key, var1.toString());
     }
 
@@ -879,17 +879,5 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
     public void delResponseTimeQueue(String stabilityTestLogNo) {
         String key = NoUtil.genStabilityLogResponseTimeQueueNo(stabilityTestLogNo);
         redisUtil.del(key);
-    }
-
-    /**
-     * ms转时分秒
-     * @param ms 毫秒
-     * @return 时分秒
-     */
-    private String convert2hms(long ms) {
-        long hours = ms/(3600000);
-        long minutes = (ms%3600000)/60000;
-        long seconds = (ms%60000)/1000;
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 }

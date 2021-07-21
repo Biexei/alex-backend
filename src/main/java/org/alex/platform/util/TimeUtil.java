@@ -79,4 +79,16 @@ public class TimeUtil {
     public static long date2timestamp(String date, SimpleDateFormat format) throws ParseException {
         return format.parse(date).getTime();
     }
+
+    /**
+     * ms转时分秒
+     * @param ms 毫秒
+     * @return 时分秒
+     */
+    public static String convert2hms(long ms) {
+        long hours = ms/(3600000);
+        long minutes = (ms%3600000)/60000;
+        long seconds = (ms%60000)/1000;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
 }
