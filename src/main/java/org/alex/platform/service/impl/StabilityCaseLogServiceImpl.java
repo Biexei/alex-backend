@@ -77,6 +77,7 @@ public class StabilityCaseLogServiceImpl implements StabilityCaseLogService {
         StabilityCaseLogVO log = this.findStabilityCaseLogById(id);
         if (log != null) {
             Byte status = log.getStatus();
+            String stabilityTestLogNo = log.getStabilityTestLogNo();
             String logPath = log.getLogPath();
             if (status == 1 || status == 2) {
                 // 删除日志文件
@@ -88,6 +89,8 @@ public class StabilityCaseLogServiceImpl implements StabilityCaseLogService {
                 }
                 // 删除记录
                 stabilityCaseLogMapper.deleteStabilityCaseLogById(id);
+                // 删除缓存
+                stabilityCaseService.delResponseTimeQueue(stabilityTestLogNo);
             } else {
                 throw new BusinessException("该任务正在运行");
             }
@@ -115,9 +118,10 @@ public class StabilityCaseLogServiceImpl implements StabilityCaseLogService {
             }
             if (array != null && !array.isEmpty()) {
                 for (int i = 0; i < array.size(); i++) {
+                    JSONObject object = JSONObject.parseObject(array.getString(i));
                     JSONObject var1 = new JSONObject();
-                    var1.put("Loop", String.valueOf(i+1)); // 如果是数值型前端会无法显示第一个点
-                    var1.put("Time", array.getLongValue(i));
+                    var1.put("Loop", object.getString("Loop"));
+                    var1.put("Time", object.getString("Time"));
                     result.add(var1);
                 }
             }

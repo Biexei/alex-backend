@@ -295,7 +295,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                     if (this.getStabilityTestIsRunning(stabilityTestLogNo)) {
                         this.log(fw, stabilityTestLogNo, String.format("Current loop count: %s", ++loopCount));
                         try {
-                            response = this.doHttpRequest(interfaceCaseInfoVO, runEnv, logRecordContent, fw, stabilityTestLogNo);
+                            response = this.doHttpRequest(interfaceCaseInfoVO, runEnv, logRecordContent, fw, stabilityTestLogNo, exeDate.getTime());
                         } catch (BusinessException e) {
                             response.put("executeStatus", 2);
                             response.put("executeMsg", e.getMessage());
@@ -371,21 +371,12 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                 // 将可靠性用例在缓存中设置为停止态
                 this.setStabilityTestStatus(stabilityTestLogNo, false);
             } else {
-                long end = 0L;
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    end = format.parse(format.format(executeEndTime)).getTime();
-                } catch (java.text.ParseException e) {
-                    LOG.error("Stability end time pattern error");
-                    this.log(fw, stabilityTestLogNo, "稳定性测试因执行错误终止");
-                    this.log(fw, stabilityTestLogNo, String.format("Error msg：%s", e.getMessage()));
-                    logStatus = 2;
-                }
+                long end = TimeUtil.date2timestamp(executeEndTime);
                 while (System.currentTimeMillis() <= end) {
                     if (this.getStabilityTestIsRunning(stabilityTestLogNo)) {
                         this.log(fw, stabilityTestLogNo, String.format("Current loop count: %s", ++loopCount));
                         try {
-                            response = this.doHttpRequest(interfaceCaseInfoVO, runEnv, logRecordContent, fw, stabilityTestLogNo);
+                            response = this.doHttpRequest(interfaceCaseInfoVO, runEnv, logRecordContent, fw, stabilityTestLogNo, exeDate.getTime());
                         } catch (BusinessException e) {
                             response.put("executeStatus", 2);
                             response.put("executeMsg", e.getMessage());
@@ -474,13 +465,11 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
             this.log(fw, stabilityTestLogNo, String.format("预计执行次数：%s", executeTimes));
         } else {
             this.log(fw, stabilityTestLogNo, String.format("调度方式：%s", "按截至时间"));
-            this.log(fw, stabilityTestLogNo, String.format("预计截至时间：%s",
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(executeEndTime)));
+            this.log(fw, stabilityTestLogNo, String.format("预计截至时间：%s", TimeUtil.format(executeEndTime)));
         }
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String startTimeS = format.format(exeDate);
+        String startTimeS = TimeUtil.format(exeDate);
         Date endTime = new Date();
-        String endTimeS = format.format(endTime);
+        String endTimeS = TimeUtil.format(endTime);
         this.log(fw, stabilityTestLogNo, "\r\n");
         this.log(fw, stabilityTestLogNo, String.format("执行开始时间：%s", startTimeS));
         this.log(fw, stabilityTestLogNo, String.format("实际结束时间：%s", endTimeS));
@@ -519,9 +508,21 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         }
     }
 
+    /**
+     * 稳定性测试-http
+     * @param interfaceCaseInfoVO interfaceCaseInfoVO
+     * @param runEnv 运行环境
+     * @param logRecordContent 日志记录内容
+     * @param fw 文件流
+     * @param stabilityTestLogNo 执行编号
+     * @param startTime 开始执行稳定性测试的时间戳
+     * @return 执行结果
+     * @throws BusinessException BusinessException
+     */
     @SuppressWarnings({"unchecked","rawtypes"})
     private JSONObject doHttpRequest(InterfaceCaseInfoVO interfaceCaseInfoVO,
-                                     Byte runEnv, Byte logRecordContent, FileWriter fw, String stabilityTestLogNo) throws BusinessException {
+                                     Byte runEnv, Byte logRecordContent, FileWriter fw, 
+                                     String stabilityTestLogNo, long startTime) throws BusinessException {
         int executeStatus; //0成功 1失败 2错误
         String executeMsg;
 
@@ -608,7 +609,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                     }
                 }
                 this.log(fw, stabilityTestLogNo, String.format("Run time: %sms", runTime));
-                this.setResponseTimeQueue(stabilityTestLogNo, runTime);
+                this.setResponseTimeQueue(stabilityTestLogNo, runTime, System.currentTimeMillis()-startTime);
 
                 List<InterfaceAssertVO> asserts = interfaceCaseInfoVO.getAsserts();
                 JSONObject assertObject = this.doHttpAssert(asserts, responseCode, responseHeaders, responseBody, runTime);
@@ -851,11 +852,15 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
     /**
      * 记录每次请求的响应时间
      * @param stabilityTestLogNo stabilityTestLogNo
-     * @param time time
+     * @param time 此次请求耗时
+     * @param loop 从开始运行到此次请求耗时
      */
-    private void setResponseTimeQueue(String stabilityTestLogNo, long time) {
+    private void setResponseTimeQueue(String stabilityTestLogNo, long time, long loop) {
         String key = NoUtil.genStabilityLogResponseTimeQueueNo(stabilityTestLogNo);
-        redisUtil.queuePush(key, time);
+        JSONObject var1 = new JSONObject();
+        var1.put("Time", time);
+        var1.put("Loop", this.convert2hms(loop));
+        redisUtil.queuePush(key, var1.toString());
     }
 
     /**
@@ -871,8 +876,20 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
     /**
      * 删除缓存响应时间队列
      */
-    private void delResponseTimeQueue(String stabilityTestLogNo) {
+    public void delResponseTimeQueue(String stabilityTestLogNo) {
         String key = NoUtil.genStabilityLogResponseTimeQueueNo(stabilityTestLogNo);
         redisUtil.del(key);
+    }
+
+    /**
+     * ms转时分秒
+     * @param ms 毫秒
+     * @return 时分秒
+     */
+    private String convert2hms(long ms) {
+        long hours = ms/(3600000);
+        long minutes = (ms%3600000)/60000;
+        long seconds = (ms%60000)/1000;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 }
