@@ -147,7 +147,7 @@ public class RelyDataServiceImpl implements RelyDataService {
         int userId = loginUserInfo.getUserId(request);
         Byte deletable = relyDataVO.getOthersDeletable();
         Integer creatorId = relyDataVO.getCreatorId();
-        if (deletable == null ||  creatorId == null) {
+        if (creatorId == null) {
             throw new BusinessException("仅允许创建人删除");
         }
         if (creatorId != userId && deletable.intValue() == 1) {
@@ -261,13 +261,15 @@ public class RelyDataServiceImpl implements RelyDataService {
         if (type != 3) { // 非新增语句时，将enable_return 设为 null
             relyDataDO.setEnableReturn(null);
         }
-        if (type < 2) { // 0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
-            relyDataDO.setAnalysisRely(null);
-        } else {
+        if (type != 1) {
             ValidUtil.notNUll(relyDataDO.getOthersModifiable(), "请选择是否允许其他人编辑");
             ValidUtil.notNUll(relyDataDO.getOthersDeletable(), "请选择是否允许其他人删除");
             ValidUtil.size(relyDataDO.getOthersModifiable(), 0, 1, "请选择是否允许其他人编辑");
             ValidUtil.size(relyDataDO.getOthersDeletable(), 0, 1, "请选择是否允许其他人删除");
+        }
+        if (type < 2) { // 0固定值 1反射方法 2sql-select 3sql-insert 4sql-update 5sql-delete 6sql-script
+            relyDataDO.setAnalysisRely(null);
+        } else {
             ValidUtil.notNUll(relyDataDO.getAnalysisRely(), "是否解析依赖不能为空");
         }
         // 校验参数
