@@ -4,14 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.alex.platform.exception.BusinessException;
-import org.alex.platform.mapper.HttpSettingMapper;
-import org.alex.platform.pojo.HttpSettingDTO;
-import org.alex.platform.pojo.HttpSettingVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -19,11 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,17 +25,14 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Request {
     @Autowired
-    HttpSettingMapper httpSettingMapper;
+    RequestFactory requestFactory;
 
     private static Request restUtil;
 
     private static final String[] DEFAULT_USER_AGENT = {"Alex"};
     private static final String[] DEFAULT_ACCEPT = {"*/*"};
-    private static final String[] DEFAULT_ACCEPT_ENCODING = {"gzip, deflate, br"};
+    private static final String[] DEFAULT_ACCEPT_ENCODING = {"gzip,deflate,br"};
     private static final String[] DEFAULT_ACCEPT_LANGUAGE = {"zh-CN,zh;q=0.9"};
-
-    private static final int DEFAULT_CONNECT_TIMEOUT = 30 * 1000;
-    private static final int DEFAULT_READ_TIMEOUT = 30 * 1000;
 
     private static class SingleRestTemplate {
         private static final RestTemplate INSTANCE = new RestTemplate();
@@ -50,40 +40,11 @@ public class Request {
 
     public static RestTemplate getInstance() {
         RestTemplate restTemplate = SingleRestTemplate.INSTANCE;
-        restTemplate.setRequestFactory(requestFactory());
+        restTemplate.setRequestFactory(restUtil.requestFactory.byHttpClient());
         restTemplate.setErrorHandler(errorHandler());
         return restTemplate;
     }
 
-    /**
-     * 配置请求设置
-     * @return 请求设置
-     */
-    private static SimpleClientHttpRequestFactory requestFactory() {
-        SimpleClientHttpRequestFactory sh = new SimpleClientHttpRequestFactory();
-        HttpSettingVO proxy = getProxy();
-        if (proxy != null) {
-            String[] domain = proxy.getValue().split(":");
-            String host = domain[0];
-            int port = Integer.parseInt(domain[1]);
-            sh.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port)));
-        }
-        Integer connectTimeout = getTimeout(true);
-        Integer readTimeout = getTimeout(false);
-        if (connectTimeout == null) {
-            connectTimeout = DEFAULT_CONNECT_TIMEOUT;
-        } else if (connectTimeout < 0) {
-            connectTimeout = -1;
-        }
-        if (readTimeout == null) {
-            readTimeout = DEFAULT_READ_TIMEOUT;
-        } else if (readTimeout < 0) {
-            readTimeout = -1;
-        }
-        sh.setConnectTimeout(connectTimeout);
-        sh.setReadTimeout(readTimeout);
-        return sh;
-    }
 
     /**
      * 错误处理
@@ -459,44 +420,7 @@ public class Request {
     @PostConstruct
     public void init() {
         restUtil = this;
-        restUtil.httpSettingMapper = this.httpSettingMapper;
-    }
-
-    public static HttpSettingVO getProxy() {
-        HttpSettingDTO httpSettingDTO = new HttpSettingDTO();
-        httpSettingDTO.setStatus((byte)0);
-        httpSettingDTO.setType((byte)0);
-        List<HttpSettingVO> list = restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO);
-        if (!list.isEmpty()) {
-            return list.get(0);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * 获取超时时常单位秒，0ConnectTimeout  1ReadTimeout
-     * @return 秒
-     */
-    public static Integer getTimeout(boolean isConnectTimeout) {
-        HttpSettingDTO httpSettingDTO = new HttpSettingDTO();
-        httpSettingDTO.setStatus((byte)0);
-        if (isConnectTimeout) {
-            httpSettingDTO.setType((byte) 3);
-        } else {
-            httpSettingDTO.setType((byte) 4);
-        }
-        List<HttpSettingVO> list = restUtil.httpSettingMapper.selectHttpSetting(httpSettingDTO);
-        if (!list.isEmpty()) {
-            String value = list.get(0).getValue();
-            try {
-                return Integer.parseInt(value);
-            } catch (NumberFormatException e) {
-                return null;
-            }
-        } else {
-            return null;
-        }
+        restUtil.requestFactory = this.requestFactory;
     }
 
     private static HttpHeaders getDefaultHeader() {
