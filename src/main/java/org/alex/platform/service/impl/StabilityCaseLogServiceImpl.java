@@ -8,9 +8,9 @@ import org.alex.platform.exception.BusinessException;
 import org.alex.platform.mapper.StabilityCaseLogMapper;
 import org.alex.platform.pojo.StabilityCaseLogDO;
 import org.alex.platform.pojo.StabilityCaseLogDTO;
-import org.alex.platform.pojo.StabilityCaseLogVO;
+import org.alex.platform.pojo.StabilityCaseLogInfoVO;
+import org.alex.platform.pojo.StabilityCaseLogListVO;
 import org.alex.platform.service.StabilityCaseLogService;
-import org.alex.platform.service.StabilityCaseService;
 import org.alex.platform.util.RedisUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,23 +40,23 @@ public class StabilityCaseLogServiceImpl implements StabilityCaseLogService {
     }
 
     @Override
-    public StabilityCaseLogVO findStabilityCaseLogById(Integer id) {
+    public StabilityCaseLogInfoVO findStabilityCaseLogById(Integer id) {
         return stabilityCaseLogMapper.selectStabilityCaseLogById(id);
     }
 
     @Override
-    public StabilityCaseLogVO findStabilityCaseLogByNo(String no) {
+    public StabilityCaseLogInfoVO findStabilityCaseLogByNo(String no) {
         return stabilityCaseLogMapper.selectStabilityCaseLogByNo(no);
     }
 
     @Override
-    public PageInfo<StabilityCaseLogVO> findStabilityCaseLogByStabilityCaseId(Integer caseId, Integer pageNum, Integer pageSize) {
+    public PageInfo<StabilityCaseLogListVO> findStabilityCaseLogByStabilityCaseId(Integer caseId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo<>(stabilityCaseLogMapper.selectStabilityCaseLogByStabilityCaseId(caseId));
     }
 
     @Override
-    public PageInfo<StabilityCaseLogVO> findStabilityCaseLogList(StabilityCaseLogDTO stabilityCaseLogDTO, Integer pageNum, Integer pageSize) {
+    public PageInfo<StabilityCaseLogListVO> findStabilityCaseLogList(StabilityCaseLogDTO stabilityCaseLogDTO, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo<>(stabilityCaseLogMapper.selectStabilityCaseLogList(stabilityCaseLogDTO));
     }
@@ -74,7 +74,7 @@ public class StabilityCaseLogServiceImpl implements StabilityCaseLogService {
     @Override
     public void removeStabilityCaseLogById(Integer id) throws BusinessException {
         // 仅停止、完成状态可删除
-        StabilityCaseLogVO log = this.findStabilityCaseLogById(id);
+        StabilityCaseLogInfoVO log = this.findStabilityCaseLogById(id);
         if (log != null) {
             Byte status = log.getStatus();
             String stabilityTestLogNo = log.getStabilityTestLogNo();
@@ -105,7 +105,7 @@ public class StabilityCaseLogServiceImpl implements StabilityCaseLogService {
     @Override
     public JSONArray chartResponseTime(Integer stabilityTestLogId) {
         JSONArray result = new JSONArray();
-        StabilityCaseLogVO log = this.findStabilityCaseLogById(stabilityTestLogId);
+        StabilityCaseLogInfoVO log = this.findStabilityCaseLogById(stabilityTestLogId);
         JSONArray array; // 响应时间队列
         if (log != null) {
             Byte status = log.getStatus();

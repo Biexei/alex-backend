@@ -3,7 +3,8 @@ package org.alex.platform.controller;
 import org.alex.platform.common.Result;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.pojo.StabilityCaseLogDTO;
-import org.alex.platform.pojo.StabilityCaseLogVO;
+import org.alex.platform.pojo.StabilityCaseLogInfoVO;
+import org.alex.platform.pojo.StabilityCaseLogListVO;
 import org.alex.platform.service.StabilityCaseLogService;
 import org.alex.platform.util.FileUtil;
 import org.alex.platform.util.NoUtil;
@@ -45,7 +46,7 @@ public class StabilityCaseLogController {
      */
     @GetMapping("/stability/log/download/{logId}")
     public void downloadStabilityLog(@PathVariable Integer logId, HttpServletResponse response) {
-        StabilityCaseLogVO log = stabilityCaseLogService.findStabilityCaseLogById(logId);
+        StabilityCaseLogInfoVO log = stabilityCaseLogService.findStabilityCaseLogById(logId);
         if (log != null) {
             String logPath = log.getLogPath();
             String logFileName = logPath.substring(logPath.lastIndexOf("\\") + 1);

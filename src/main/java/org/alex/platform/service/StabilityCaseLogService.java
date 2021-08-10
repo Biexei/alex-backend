@@ -5,20 +5,21 @@ import com.github.pagehelper.PageInfo;
 import org.alex.platform.exception.BusinessException;
 import org.alex.platform.pojo.StabilityCaseLogDO;
 import org.alex.platform.pojo.StabilityCaseLogDTO;
-import org.alex.platform.pojo.StabilityCaseLogVO;
+import org.alex.platform.pojo.StabilityCaseLogInfoVO;
+import org.alex.platform.pojo.StabilityCaseLogListVO;
 
 public interface StabilityCaseLogService {
     Integer saveStabilityCaseLog(StabilityCaseLogDO stabilityCaseLogDO);
 
     void modifyStabilityCaseLog(StabilityCaseLogDO stabilityCaseLogDO);
 
-    StabilityCaseLogVO findStabilityCaseLogById(Integer id);
+    StabilityCaseLogInfoVO findStabilityCaseLogById(Integer id);
 
-    StabilityCaseLogVO findStabilityCaseLogByNo(String no);
+    StabilityCaseLogInfoVO findStabilityCaseLogByNo(String no);
 
-    PageInfo<StabilityCaseLogVO> findStabilityCaseLogByStabilityCaseId(Integer caseId, Integer pageNum, Integer pageSize);
+    PageInfo<StabilityCaseLogListVO> findStabilityCaseLogByStabilityCaseId(Integer caseId, Integer pageNum, Integer pageSize);
 
-    PageInfo<StabilityCaseLogVO> findStabilityCaseLogList(StabilityCaseLogDTO stabilityCaseLogDTO, Integer pageNum, Integer pageSize);
+    PageInfo<StabilityCaseLogListVO> findStabilityCaseLogList(StabilityCaseLogDTO stabilityCaseLogDTO, Integer pageNum, Integer pageSize);
 
     Integer countExecuting();
 

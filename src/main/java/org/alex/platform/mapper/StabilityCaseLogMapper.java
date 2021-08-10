@@ -11,13 +11,13 @@ public interface StabilityCaseLogMapper {
 
     void updateStabilityCaseLog(StabilityCaseLogDO stabilityCaseLogDO);
 
-    StabilityCaseLogVO selectStabilityCaseLogById(Integer id);
+    StabilityCaseLogInfoVO selectStabilityCaseLogById(Integer id);
 
-    StabilityCaseLogVO selectStabilityCaseLogByNo(String no);
+    StabilityCaseLogInfoVO selectStabilityCaseLogByNo(String no);
 
-    List<StabilityCaseLogVO> selectStabilityCaseLogByStabilityCaseId(Integer caseId);
+    List<StabilityCaseLogListVO> selectStabilityCaseLogByStabilityCaseId(Integer caseId);
 
-    List<StabilityCaseLogVO> selectStabilityCaseLogList(StabilityCaseLogDTO stabilityCaseLogDTO);
+    List<StabilityCaseLogListVO> selectStabilityCaseLogList(StabilityCaseLogDTO stabilityCaseLogDTO);
 
     Integer countExecuting();
 

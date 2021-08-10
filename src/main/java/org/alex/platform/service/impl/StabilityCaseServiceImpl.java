@@ -182,10 +182,10 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
      */
     @Override
     public void stopStabilityCaseByLogId(Integer stabilityTestLogId, Integer executeId) throws BusinessException {
-        StabilityCaseLogVO stabilityCaseLogVO = stabilityCaseLogMapper.selectStabilityCaseLogById(stabilityTestLogId);
-        if (stabilityCaseLogVO != null) {
-            String stabilityTestLogNo = stabilityCaseLogVO.getStabilityTestLogNo();
-            Byte status = stabilityCaseLogVO.getStatus();
+        StabilityCaseLogInfoVO stabilityCaseLogInfoVO = stabilityCaseLogMapper.selectStabilityCaseLogById(stabilityTestLogId);
+        if (stabilityCaseLogInfoVO != null) {
+            String stabilityTestLogNo = stabilityCaseLogInfoVO.getStabilityTestLogNo();
+            Byte status = stabilityCaseLogInfoVO.getStatus();
             if (status != null) {
                 if (status == 0) {
                     this.setStabilityTestStatus(stabilityTestLogNo, false);
