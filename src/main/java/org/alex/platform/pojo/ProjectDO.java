@@ -2,9 +2,7 @@ package org.alex.platform.pojo;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,55 +14,71 @@ public class ProjectDO implements Serializable {
     @Size(max = 100, message = "项目描述长度必须小于等于100")
     private String desc;
 
-    @NotNull(message = "项目host不能为空")
-    @NotEmpty(message = "项目host不能为空")
-    @Size(max = 30, message = "项目host长度必须小于等于30")
+    @NotNull(message = "调试环境host不能为空")
+    @NotEmpty(message = "调试环境host不能为空")
+    @Size(max = 30, message = "调试环境host长度必须小于等于30")
+    @Pattern(regexp = "[a-zA-z0-9.]+", message = "调试环境host格式错误")
     private String domain;
-    @NotNull(message = "项目protocol不能为空")
-    @NotEmpty(message = "项目protocol不能为空")
-    @Size(max = 30, message = "项目protocol长度必须小于等于30")
+    @NotNull(message = "调试环境protocol不能为空")
+    @NotEmpty(message = "调试环境protocol不能为空")
+    @Size(max = 30, message = "调试环境protocol长度必须小于等于30")
     private String protocol;
+    @Min(value = 1, message = "调试环境端口号错误")
+    @Max(value = 65535, message = "调试环境端口号错误")
     private Integer port;
 
     @NotNull(message = "开发环境host不能为空")
     @NotEmpty(message = "开发环境host不能为空")
     @Size(max = 30, message = "开发环境host长度必须小于等于30")
+    @Pattern(regexp = "[a-zA-z0-9.]+", message = "开发环境host格式错误")
     private String devDomain;
     @NotNull(message = "开发环境protocol不能为空")
     @NotEmpty(message = "开发环境protocol不能为空")
     @Size(max = 30, message = "开发环境protocol长度必须小于等于30")
     private String devProtocol;
+    @Min(value = 1, message = "开发环境端口号错误")
+    @Max(value = 65535, message = "开发环境端口号错误")
     private Integer devPort;
 
     @NotNull(message = "测试环境host不能为空")
     @NotEmpty(message = "测试环境host不能为空")
     @Size(max = 30, message = "测试环境host长度必须小于等于30")
+    @Pattern(regexp = "[a-zA-z0-9.]+", message = "测试环境host格式错误")
     private String testDomain;
     @NotNull(message = "测试环境protocol不能为空")
     @NotEmpty(message = "测试环境protocol不能为空")
     @Size(max = 30, message = "测试环境protocol长度必须小于等于30")
     private String testProtocol;
+    @Min(value = 1, message = "测试环境端口号错误")
+    @Max(value = 65535, message = "测试环境端口号错误")
     private Integer testPort;
 
     @NotNull(message = "预上线环境host不能为空")
     @NotEmpty(message = "预上线环境host不能为空")
     @Size(max = 30, message = "预上线环境host长度必须小于等于30")
+    @Pattern(regexp = "[a-zA-z0-9.]+", message = "预上线环境host格式错误")
     private String stgDomain;
     @NotNull(message = "预上线环境protocol不能为空")
     @NotEmpty(message = "预上线环境protocol不能为空")
     @Size(max = 30, message = "预上线环境protocol长度必须小于等于30")
     private String stgProtocol;
+    @Min(value = 1, message = "预上线环境端口号错误")
+    @Max(value = 65535, message = "预上线环境端口号错误")
     private Integer stgPort;
 
 
     @NotNull(message = "正式环境host不能为空")
     @NotEmpty(message = "正式环境host不能为空")
     @Size(max = 30, message = "正式环境host长度必须小于等于30")
+    @Pattern(regexp = "[a-zA-z0-9.]+", message = "正式环境host格式错误")
     private String prodDomain;
     @NotNull(message = "正式环境protocol不能为空")
     @NotEmpty(message = "正式环境protocol不能为空")
     @Size(max = 30, message = "正式环境protocol长度必须小于等于30")
+    @Pattern(regexp = "[a-zA-z0-9.]+", message = "正式环境host格式错误")
     private String prodProtocol;
+    @Min(value = 1, message = "正式环境端口号错误")
+    @Max(value = 65535, message = "正式环境端口号错误")
     private Integer prodPort;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
