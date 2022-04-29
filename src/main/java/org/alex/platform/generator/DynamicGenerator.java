@@ -84,7 +84,7 @@ public class DynamicGenerator implements Generator{
         result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4GreaterLength(key, desc, maxLen, 1), randomMaxAddOne, key));
 
         //E.恰好为最小长度-1
-        String randomMinSubOne = this.function("randomLegal", minLen + 1);
+        String randomMinSubOne = this.function("randomLegal", minLen - 1);
         result.add(model(CaseType.INVALID_EQUIVALENCE_CLASS, description.desc4LessLength(key, desc, minLen, 1), randomMinSubOne, key));
 
         //4.非法字符
