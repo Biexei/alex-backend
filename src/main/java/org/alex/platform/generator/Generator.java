@@ -178,7 +178,7 @@ public interface Generator {
         StringBuilder p = new StringBuilder();
         for (Object paramObject : params) {
             String param = paramObject.toString();
-            p.append("\"").append(param).append("\", ");
+            p.append("'").append(param).append("', ");
         }
         p = new StringBuilder(p.substring(0, p.length() - 2));
         return String.format("${%s(%s)}", name, p.toString());
@@ -196,7 +196,7 @@ public interface Generator {
         }
         StringBuilder p = new StringBuilder();
         for (String param : params) {
-            p.append("\"").append(param).append("\", ");
+            p.append("'").append(param).append("', ");
         }
         p = new StringBuilder(p.substring(0, p.length() - 2));
         return String.format("${%s(%s)}", name, p.toString());

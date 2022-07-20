@@ -35,7 +35,7 @@ public class Parser implements Node {
     private static final Logger LOG = LoggerFactory.getLogger(Parser.class);
     private static final String DEPENDENCY_REGEX = "\\$\\{.+?}";
     private static final String DEPENDENCY_REGEX_INDEX = "[a-zA-Z]+\\[[0-9]+]";
-    private static final String DEPENDENCY_REGEX_PARAMS = "\\w+\\((,?|(\".*\")?|\\s?)+\\)$";
+    private static final String DEPENDENCY_REGEX_PARAMS = "\\w+\\((,?|(\'.*\')?|\\s?)+\\)$";
     private static final String PROCESSOR_REGEX = "#\\{.+?}";
 
     @Autowired
