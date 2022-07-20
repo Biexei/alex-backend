@@ -49,22 +49,22 @@ CREATE TABLE `t_db` (
   `name` varchar(20) DEFAULT NULL COMMENT '名称',
   `type` tinyint DEFAULT NULL COMMENT '0mysql 1oracle 2SqlServer',
   `desc` varchar(100) DEFAULT NULL COMMENT '描述',
-  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '连接url',
+  `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '连接url',
   `username` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户名',
   `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '密码',
   `created_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `status` tinyint DEFAULT NULL COMMENT '0启动 1禁用',
-  `test_url` varchar(100) DEFAULT NULL COMMENT '测试环境url',
+  `test_url` varchar(200) DEFAULT NULL COMMENT '测试环境url',
   `test_username` varchar(100) DEFAULT NULL COMMENT '测试环境username',
   `test_password` varchar(100) DEFAULT NULL COMMENT '测试环境password',
-  `dev_url` varchar(100) DEFAULT NULL COMMENT '开发环境url',
+  `dev_url` varchar(200) DEFAULT NULL COMMENT '开发环境url',
   `dev_username` varchar(100) DEFAULT NULL COMMENT '开发环境username',
   `dev_password` varchar(100) DEFAULT NULL COMMENT '开发环境password',
-  `stg_url` varchar(100) DEFAULT NULL COMMENT '预上线环境url',
+  `stg_url` varchar(200) DEFAULT NULL COMMENT '预上线环境url',
   `stg_username` varchar(100) DEFAULT NULL COMMENT '预上线环境username',
   `stg_password` varchar(100) DEFAULT NULL COMMENT '预上线环境password',
-  `prod_url` varchar(100) DEFAULT NULL COMMENT '生产环境url',
+  `prod_url` varchar(200) DEFAULT NULL COMMENT '生产环境url',
   `prod_username` varchar(100) DEFAULT NULL COMMENT '生产环境username',
   `prod_password` varchar(100) DEFAULT NULL COMMENT '生产环境password',
   PRIMARY KEY (`id`),
@@ -74,7 +74,7 @@ CREATE TABLE `t_db` (
 -- ----------------------------
 -- Records of t_db
 -- ----------------------------
-INSERT INTO `t_db` VALUES ('1', 'platform', '0', '自动化平台库', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root', '2020-09-02 15:40:50', '2020-10-21 11:31:11', '0', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8', 'root', 'root');
+INSERT INTO `t_db` VALUES ('1', 'platform', '0', '自动化平台库', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8&tinyInt1isBit=false&transformedBitIsBoolean=false', 'root', 'root', '2020-09-02 15:40:50', '2020-10-21 11:31:11', '0', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8&tinyInt1isBit=false&transformedBitIsBoolean=false', 'root', 'root', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8&tinyInt1isBit=false&transformedBitIsBoolean=false', 'root', 'root', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8&tinyInt1isBit=false&transformedBitIsBoolean=false', 'root', 'root', 'jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf-8&tinyInt1isBit=false&transformedBitIsBoolean=false', 'root', 'root');
 
 -- ----------------------------
 -- Table structure for t_feedback

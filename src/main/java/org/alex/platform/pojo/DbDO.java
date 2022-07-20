@@ -17,7 +17,7 @@ public class DbDO implements Serializable {
     private Byte type;
     private String desc;
     @NotEmpty(message = "URL不能为空")
-    @Size(min = 1, max = 100, message = "URL长度必须为[1,100]")
+    @Size(min = 1, max = 200, message = "URL长度必须为[1,200]")
     private String url;
     @NotEmpty(message = "帐号不能为空")
     @Size(min = 1, max = 100, message = "帐号长度必须为[1,100]")
@@ -33,7 +33,7 @@ public class DbDO implements Serializable {
     private Byte status;
 
     @NotEmpty(message = "开发环境URL不能为空")
-    @Size(min = 1, max = 100, message = "开发环境URL长度必须为[1,100]")
+    @Size(min = 1, max = 200, message = "开发环境URL长度必须为[1,200]")
     private String devUrl;
     @NotEmpty(message = "开发环境帐号不能为空")
     @Size(min = 1, max = 100, message = "开发环境帐号长度必须为[1,100]")
@@ -43,7 +43,7 @@ public class DbDO implements Serializable {
     private String devPassword;
 
     @NotEmpty(message = "测试环境URL不能为空")
-    @Size(min = 1, max = 100, message = "测试环境URL长度必须为[1,100]")
+    @Size(min = 1, max = 200, message = "测试环境URL长度必须为[1,200]")
     private String testUrl;
     @NotEmpty(message = "测试环境帐号不能为空")
     @Size(min = 1, max = 100, message = "测试环境帐号长度必须为[1,100]")
@@ -53,7 +53,7 @@ public class DbDO implements Serializable {
     private String testPassword;
 
     @NotEmpty(message = "预发环境URL不能为空")
-    @Size(min = 1, max = 100, message = "预发环境URL长度必须为[1,100]")
+    @Size(min = 1, max = 200, message = "预发环境URL长度必须为[1,200]")
     private String stgUrl;
     @NotEmpty(message = "预发环境帐号不能为空")
     @Size(min = 1, max = 100, message = "预发环境帐号长度必须为[1,100]")
@@ -63,7 +63,7 @@ public class DbDO implements Serializable {
     private String stgPassword;
 
     @NotEmpty(message = "线上环境URL不能为空")
-    @Size(min = 1, max = 100, message = "线上环境URL长度必须为[1,100]")
+    @Size(min = 1, max = 200, message = "线上环境URL长度必须为[1,200]")
     private String prodUrl;
     @NotEmpty(message = "线上环境帐号不能为空")
     @Size(min = 1, max = 100, message = "线上环境帐号长度必须为[1,100]")
