@@ -22,6 +22,7 @@ spring:
       allow_single_quotes: true
       allow_unquoted_control_chars: true
   redis:
+    # 需同步修改ort.py中的redis连接信息
     host: localhost
     port: 6379
     timeout: 3000

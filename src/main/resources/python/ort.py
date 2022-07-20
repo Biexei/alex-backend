@@ -7,11 +7,13 @@ import sys
 # 根据正交法生成用例
 try:
     key = sys.argv[1]
-    with open(r"src\main\resources\application.yml", "r") as f:
-        content = yaml.load(f, Loader=yaml.FullLoader)
-    redis_info = content["spring"]["redis"]
-    host = redis_info["host"]
-    port = redis_info["port"]
+    # with open(r"src\main\resources\application.yml", "r") as f:
+    #     content = yaml.load(f, Loader=yaml.FullLoader)
+    # redis_info = content["spring"]["redis"]
+    # host = redis_info["host"]
+    # port = redis_info["port"]
+    host = '127.0.0.1'
+    port = '6379'
     redis_conn = Redis(host, port)
 
     field = redis_conn.get(key)
