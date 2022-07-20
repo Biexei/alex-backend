@@ -39,4 +39,9 @@ logging:
     name: src/main/resources/log/log.log
   level:
     root: warn
+myself:
+  path:
+    readme: C:\alex\readme\
+    template: C:\alex\template\
+    python-ort: C:\alex\py\ort.py
 

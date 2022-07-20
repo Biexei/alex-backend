@@ -14,6 +14,7 @@ import org.alex.platform.service.InterfaceCaseService;
 import org.alex.platform.util.FileUtil;
 import org.alex.platform.util.NoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +34,10 @@ public class InterfaceCaseController {
     LoginUserInfo loginUserInfo;
     @Autowired
     InterfaceCaseImportService interfaceCaseImportService;
+    @Value("${myself.path.readme}")
+    private String readmeRoot;
+    @Value("${myself.path.template}")
+    private String templateRoot;
 
     /**
      * 插入接口测试用例
@@ -102,14 +107,16 @@ public class InterfaceCaseController {
      */
     @GetMapping("/interface/template/download/{type}")
     public void downloadTemplate(@PathVariable Integer type, HttpServletResponse response) {
-        String basePath = "src\\main\\resources\\template\\";
+        // String basePath = "src\\main\\resources\\template\\";
+        String basePath = templateRoot;
         String excel = "interface_case_template.xlsx";
         String json = "interface_case_template.json";
         String csv = "interface_case_template.csv";
         String yaml = "interface_case_template.yaml";
         String caseGeneratorTemplate = "用户注册接口自动生成用例约束示例.json";
 
-        String readMeBasePath = "src\\main\\resources\\readme\\";
+        // String readMeBasePath = "src\\main\\resources\\readme\\";
+        String readMeBasePath = readmeRoot;
         String caseGeneratorIntroduce = "用例生成介绍.md";
         if (type == 1) {
             response.setHeader("Content-Disposition", "attachment;filename=" + excel);

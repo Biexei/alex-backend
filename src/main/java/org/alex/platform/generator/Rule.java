@@ -6,6 +6,7 @@ import org.alex.platform.exception.BusinessException;
 import org.alex.platform.util.CommandUtil;
 import org.alex.platform.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 public class Rule {
     @Autowired
     RedisUtil redisUtil;
+    @Value("${myself.path.python-ort}")
+    String pyScriptPath;
     /**
      * 根据用例列表生成笛卡尔积测试用例
      * @param itemSizeList 单属性的用例
@@ -56,7 +59,7 @@ public class Rule {
             return itemList;
         }
         redisUtil.set(key, itemList);
-        String pyOrtCmd = String.format("python src\\main\\resources\\python\\ort.py %s", key);
+        String pyOrtCmd = String.format("python %s %s", pyScriptPath, key);
         String execResult = CommandUtil.exec(pyOrtCmd);
         if ("".equals(execResult)) {
             JSONArray array = JSON.parseArray(JSON.toJSONString(redisUtil.get(key)));
