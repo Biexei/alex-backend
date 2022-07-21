@@ -12,6 +12,7 @@ public class InterfaceCaseRelyDataDO implements Serializable {
     @Size(min = 1, max = 100, message = "依赖名称长度必须为[1,100]")
     @Pattern(regexp = "\\w+", message = "依赖名称必须为字母数字下划线")
     private String relyName;
+    @NotEmpty(message = "依赖描述不能为空")
     @Size(max = 100, message = "依赖描述长度必须为[0,100]")
     private String relyDesc;
     @Max(value = 2, message = "提取类型最大不能超过2")

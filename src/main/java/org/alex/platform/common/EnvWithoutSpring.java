@@ -9,11 +9,13 @@ import org.alex.platform.pojo.entity.DbConnection;
 import org.alex.platform.util.JdbcUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 
 /**
  * 反射不支持spring ioc
@@ -87,7 +89,10 @@ public class EnvWithoutSpring {
      */
     private DruidDataSource connection() throws Exception {
         Yaml yaml = new Yaml();
-        FileInputStream fis = new FileInputStream("src\\main\\resources\\application.yml");
+        // 打成jar包读不到src目录
+        // FileInputStream fis = new FileInputStream("src\\main\\resources\\application.yml");
+        ClassPathResource resource = new ClassPathResource("application.yml");
+        InputStream fis = resource.getInputStream();
         JSONObject yamlConfig = yaml.loadAs(fis, JSONObject.class);
         JSONObject db = yamlConfig.getJSONObject("spring").getJSONObject("datasource");
         String url_ = db.getString("url");
