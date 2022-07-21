@@ -28,7 +28,9 @@ public enum AssertOperator {
     NOT_NULL_("not_null",(byte)9),
     CONTAINS("contains",(byte)10),
     IS_EMPTY("isEmpty",(byte)11),
-    IS_EMPTY_("is_empty",(byte)11);
+    IS_EMPTY_("is_empty",(byte)11),
+    IS_NOT_EMPTY("isNotEmpty",(byte)12),
+    IS_NOT_EMPTY_("is_not_empty",(byte)12);
 
     private final String assertOperatorName;
     private final Byte assertOperatorType;
