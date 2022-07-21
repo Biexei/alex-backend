@@ -130,7 +130,7 @@ CREATE TABLE `t_interface_assert` (
   `case_id` int DEFAULT NULL COMMENT '用例编号',
   `type` tinyint DEFAULT NULL COMMENT '提取数据类型   0json/1html/2header/3responsecode/4runtime',
   `expression` varchar(50) DEFAULT NULL COMMENT '提取表达式',
-  `operator` tinyint DEFAULT NULL COMMENT '操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re、8/isNull、9/notNull、10/contains',
+  `operator` tinyint DEFAULT NULL COMMENT '操作符0/=、1/< 、2/>、3/<=、4/>=、5/in、6/!=、7/re、8/isNull、9/notNull、10/contains、11/isEmpty',
   `excepted_result` varchar(1000) DEFAULT NULL COMMENT '预期结果',
   `order` int DEFAULT NULL COMMENT '排序 执行断言时按照该字段排序',
   `created_time` datetime DEFAULT NULL,

@@ -23,8 +23,12 @@ public enum AssertOperator {
     RE_("re",(byte)7),
 
     IS_NULL("isNull",(byte)8),
+    IS_NULL_("is_null",(byte)8),
     NOT_NULL("notNull",(byte)9),
-    CONTAINS("contains",(byte)10);
+    NOT_NULL_("not_null",(byte)9),
+    CONTAINS("contains",(byte)10),
+    IS_EMPTY("isEmpty",(byte)11),
+    IS_EMPTY_("is_empty",(byte)11);
 
     private final String assertOperatorName;
     private final Byte assertOperatorType;
