@@ -3,7 +3,7 @@ server:
 spring:
   servlet:
     multipart:
-      max-file-size: 5MB
+      max-file-size: 10MB
   mail:
     host: smtp.163.com
     port: 25
@@ -44,5 +44,6 @@ myself:
   path:
     readme: C:\alex\readme\
     template: C:\alex\template\
+    stability-log-path: C:\alex\stability-log\
     python-ort: C:\alex\py\ort.py
 

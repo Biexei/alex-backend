@@ -1,5 +1,8 @@
 package org.alex.platform.common;
 
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.github.javafaker.Faker;
 import org.alex.platform.enums.ResultType;
 import org.alex.platform.pojo.DbVO;
@@ -18,6 +21,10 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class InvokeCenter {
+    // 返回boolean类型的统一处理成String返回
+    public final static String TRUE_STR = "true";
+    public final static String FALSE_STR = "false";
+
     byte runEnv;
 
     public InvokeCenter(byte runEnv) {
@@ -851,5 +858,112 @@ public class InvokeCenter {
             }
             return invalidStr;
         }
+    }
+
+    // -------------------------------------hutools--------------------------------------
+
+    /**
+     * 类似python的语法，支持负数
+     * @param str 字符串
+     * @param fromIndex fromIndex
+     * @param toIndex toIndex
+     * @return subString
+     */
+    public String subString(String str, String fromIndex, String toIndex) {
+        int fromIndexInt;
+        int toIndexInt;
+        try {
+            fromIndexInt = Integer.parseInt(fromIndex);
+        } catch (NumberFormatException e) {
+            fromIndexInt = 0;
+        }
+        try {
+            toIndexInt = Integer.parseInt(toIndex);
+        } catch (NumberFormatException e) {
+            toIndexInt = -1;
+        }
+        return StrUtil.sub(str, fromIndexInt, toIndexInt);
+    }
+
+    /**
+     * 判断是否字符串是否为数字
+     * @param str 字符串
+     * @return isNum
+     */
+    public String isNum(String str) {
+        return StrUtil.isNumeric(str) ? TRUE_STR : FALSE_STR;
+    }
+
+    /**
+     * 判断是否字符串是否为小写字母
+     * @param str 字符串
+     * @return isLowerCase
+     */
+    public String isLowerCase(String str) {
+        return StrUtil.isLowerCase(str) ? TRUE_STR : FALSE_STR;
+    }
+
+    /**
+     * 判断是否字符串是否为大写字母
+     * @param str 字符串
+     * @return isUpperCase
+     */
+    public String isUpperCase(String str) {
+        return StrUtil.isUpperCase(str) ? TRUE_STR : FALSE_STR;
+    }
+
+    /**
+     * 字符串中包含子串的数量
+     * @param str 字符串
+     * @param subStr 子串
+     * @return count
+     */
+    public String count(String str, String subStr) {
+        return String.valueOf(StrUtil.count(str, subStr));
+    }
+
+    /**
+     * 判断字符串是否以xx开头
+     * @param str str
+     * @param subStr subStr
+     * @return startsWith
+     */
+    public String startsWith(String str, String subStr) {
+        return str.startsWith(subStr) ? TRUE_STR : FALSE_STR;
+    }
+
+    /**
+     * 判断字符串是否以xx结尾
+     * @param str str
+     * @param subStr subStr
+     * @return endsWith
+     */
+    public String endsWith(String str, String subStr) {
+        return str.endsWith(subStr) ? TRUE_STR : FALSE_STR;
+    }
+
+    /**
+     * MongoDB唯一ID生成策略
+     * @return objectId
+     */
+    public String objectId() {
+        return IdUtil.objectId();
+    }
+
+    /**
+     * UUID不带-
+     * @return simpleUUID
+     */
+    public String simpleUUID() {
+        return IdUtil.simpleUUID();
+    }
+
+    /**
+     * base64解码
+     * @param str str
+     * @return base64Decode
+     */
+    public String base64Decode(String str) {
+        return cn.hutool.core.codec.Base64.decodeStr(str);
     }
 }

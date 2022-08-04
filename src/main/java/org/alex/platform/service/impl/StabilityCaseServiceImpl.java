@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,8 @@ import java.util.List;
 
 @Service
 public class StabilityCaseServiceImpl implements StabilityCaseService {
+    @Value("${myself.path.stability-log-path}")
+    private String stabilityLogPath;
 
     private static final Logger LOG = LoggerFactory.getLogger(StabilityCaseServiceImpl.class);
 
@@ -225,7 +228,7 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
         Byte runEnv = stabilityCaseInfo.getRunEnv();
 
         String stabilityTestLogNo = NoUtil.genStabilityLogNo();
-        String logBasePath = "src\\main\\resources\\stabilityLog\\";
+        String logBasePath = stabilityLogPath;
         File file = new File(logBasePath);
         if (!file.exists()) {
             file.mkdirs();
@@ -777,8 +780,14 @@ public class StabilityCaseServiceImpl implements StabilityCaseService {
                 return "isNull";
             case 9:
                 return "notNull";
-            default:
+            case 10:
                 return "contains";
+            case 11:
+                return "isEmpty";
+            case 12:
+                return "isNotEmpty";
+            default:
+                return "unknown";
         }
     }
 
