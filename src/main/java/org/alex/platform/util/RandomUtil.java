@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 
 public class RandomUtil {
-    private static final String illegalString = "!@#$%^&*()_+-/,.\\<>";
+    private static final String illegalString = "!@#$%^&*()_+-,.<>";
     private static final String legalString = "123456790abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String numString = "0123456789";
 

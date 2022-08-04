@@ -568,7 +568,7 @@ public class InvokeCenter {
      * @return 返回英文随机数
      */
     public String randomIllegal(String length) {
-        String s = "!@#$%^&*()_+-/,.\\ <>";
+        String s = "!@#$%^&*()_+-,.<>";
         int len;
         try {
             len = Integer.parseInt(length);
@@ -594,7 +594,7 @@ public class InvokeCenter {
      * @return 返回英文随机数
      */
     public String randomIllegal(String minLen, String maxLen) {
-        String s = "!@#$%^&*()_+-/,.\\ <>";
+        String s = "!@#$%^&*()_+-,.<>";
         int min;
         int max;
         try {
