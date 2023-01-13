@@ -2,6 +2,7 @@
 ## 1.地址
 演示地址：http://42.194.187.183:7778/#/    youke/admini0
 开源地址：https://github.com/Biexei
+Testerhome：https://testerhome.com/topics/35203
 
 ## 2.运行环境
 基于vue+elemui+java+mysql
