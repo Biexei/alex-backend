@@ -3,7 +3,9 @@ package org.alex.platform.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.Option;
 import org.alex.platform.exception.ParseException;
 import org.seimicrawler.xpath.JXDocument;
 import org.seimicrawler.xpath.JXNode;
@@ -82,16 +84,9 @@ public class ParseUtil {
      * @return 提取结果
      */
     public static String parseJson(String jsonText, String jsonPath) throws ParseException {
-        ArrayList extractResultArray = new ArrayList<String>();
         try {
-            String extractResult = JSON.toJSONString(JsonPath.read(jsonText, jsonPath));
-            try {
-                extractResultArray = JSONObject.parseObject(extractResult, ArrayList.class);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                extractResultArray.add(extractResult);
-            }
-            return JSON.toJSONString(extractResultArray);
+            Configuration config = Configuration.builder().options(Option.ALWAYS_RETURN_LIST).build();
+            return JSON.toJSONString(JsonPath.using(config).parse(jsonText).read(jsonPath));
         } catch (Exception e) {
             String msg = String.format("json parse error! json=[%s], json-path=[%s], error-msg=[%s]",
                     jsonText, jsonPath, e.getMessage());
